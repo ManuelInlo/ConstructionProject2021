@@ -17,8 +17,9 @@ public class Conexion {
     private final String PASSWORD = "userCA1a2b3c";
     
     public Connection cadena;
+    public static Conexion Instancia;
     
-    public Conexion(){
+    private Conexion(){
         this.cadena=null;
     }
     
@@ -39,5 +40,12 @@ public class Conexion {
             JOptionPane.showMessageDialog(null, e.getMessage());
             System.exit(0);
         }
+    }
+    
+    public static Conexion getInstancia(){
+        if(Instancia == null){
+            Instancia = new Conexion();
+        }
+        return Instancia;
     }
 }
