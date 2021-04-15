@@ -18,4 +18,12 @@ public class Integrant {
     private String institucionalMail;
     private String numberPhone;
     private Date dateBirthday;
+    private int edad;
+   
+    
+    
+    
+    public void saludad(){
+        System.out.println("Hola");
+    }
 }
