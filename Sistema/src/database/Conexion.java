@@ -41,7 +41,7 @@ public class Conexion {
             System.exit(0);
         }
     }
-    
+    //Applying singelton
     public static Conexion getInstancia(){
         if(Instancia == null){
             Instancia = new Conexion();
