@@ -18,7 +18,6 @@ public class MeetingTest {
         
     }
     
-    
     @Test
     public void testInsertMeeting() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
