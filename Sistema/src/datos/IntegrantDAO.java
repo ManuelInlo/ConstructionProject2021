@@ -83,7 +83,32 @@ public class IntegrantDAO implements CrudSimpleInterface<Integrant>{
 
     @Override
     public boolean actualizar(Integrant obj) {
-        
+        resp = false;
+        try {
+            ps = CON.conectar().prepareStatement("UPDATE Integrant SET curp=?, role=?, nameIntengrant=?, studyDegree=?, studyDiscipline=?, prodepParticipation=?, typeTeaching=?, eisStudyDegree=?, institucionalMail=?, numberPhone=?, dateBirthday=? WHERE curp=?");
+            ps.setString(1, obj.getCurp());
+            ps.setString(2, obj.getRole());
+            ps.setString(3, obj.getNameIntegrant());
+            ps.setString(4, obj.getStudyDegree());
+            ps.setString(5, obj.getStudyDicipline());
+            ps.setString(6, obj.getProdepParticipation());
+            ps.setString(7, obj.getTypeTeaching());
+            ps.setString(8, obj.getEisStudyDegree());
+            ps.setString(9, obj.getInstitucionalMail());
+            ps.setString(10, obj.getNumberPhone());
+            ps.setDate(11, obj.getDateBirthday());
+            ps.setString(12, obj.getCurp());
+            if (ps.executeUpdate()>0) {
+                resp = true;
+            }
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } finally{
+            ps = null;
+            CON.desconectar();
+        }
+        return resp;
     }
 
     @Override
