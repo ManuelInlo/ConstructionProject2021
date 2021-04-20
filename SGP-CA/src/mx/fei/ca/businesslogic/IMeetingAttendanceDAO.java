@@ -2,10 +2,10 @@
 package mx.fei.ca.businesslogic;
 
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
-import mx.fei.ca.domain.MeetingAttendance;
+import mx.fei.ca.domain.MeetingAssistant;
 
 
 public interface IMeetingAttendanceDAO {
-    public int saveMeetingAttendance(MeetingAttendance meetingAtendance,int idMeeting, String curp) throws BusinessConnectionException;
+    public int saveMeetingAttendance(MeetingAssistant meetingAtendance,int idMeeting, String curp) throws BusinessConnectionException;
     
 }

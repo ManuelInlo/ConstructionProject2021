@@ -6,8 +6,7 @@ public class Collaborator {
     private int idCollaborator;
     private String name;
     private String position;
-    private ReceptionWork receptionWork;
-
+ 
     public Collaborator(String name, String position) {
         this.name = name;
         this.position = position;
@@ -25,10 +24,6 @@ public class Collaborator {
         return position;
     }
 
-    public ReceptionWork getReceptionWork() {
-        return receptionWork;
-    }
-   
     public void setIdCollaborator(int idCollaborator) {
         this.idCollaborator = idCollaborator;
     }
@@ -40,9 +35,5 @@ public class Collaborator {
     public void setPosition(String position) {
         this.position = position;
     }
-
-    public void setReceptionWork(ReceptionWork receptionWork) {
-        this.receptionWork = receptionWork;
-    }
- 
+    
 }

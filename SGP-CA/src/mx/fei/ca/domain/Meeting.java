@@ -16,6 +16,7 @@ public class Meeting {
     private ArrayList<AgendaPoint> agendaPoints; 
     private Memorandum memorandum;
     private ArrayList<Prerequisite> prerequisites;
+    private ArrayList<MeetingAssistant> assistants;
     
 
     public Meeting(Date meetingDate, Time meetingTime, String meetingPlace, String affair, String projectName) {
@@ -61,6 +62,10 @@ public class Meeting {
     public ArrayList<Prerequisite> getPrerequisites() {
         return prerequisites;
     }
+
+    public ArrayList<MeetingAssistant> getAssistants() {
+        return assistants;
+    }
     
     public void setIdMeeting(int idMeeting) {
         this.idMeeting = idMeeting;
@@ -96,6 +101,10 @@ public class Meeting {
 
     public void setPrerequisites(ArrayList<Prerequisite> prerequisites) {
         this.prerequisites = prerequisites;
+    }
+
+    public void setAssistants(ArrayList<MeetingAssistant> assistants) {
+        this.assistants = assistants;
     }
     
 }
