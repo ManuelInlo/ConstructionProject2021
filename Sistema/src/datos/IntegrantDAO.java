@@ -112,23 +112,49 @@ public class IntegrantDAO implements CrudSimpleInterface<Integrant>{
     }
 
     @Override
-    public boolean desactivar(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean activar(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public int total() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int totalRegistro=0;
+        try {
+            ps=CON.conectar().prepareStatement("SELECT COUNT(id) FROM Integrant");
+            rs=ps.executeQuery();
+            
+            while(rs.next()){
+                totalRegistro=rs.getInt("COUNT(id)");
+            }
+            ps.close();
+            rs.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } finally{
+            ps = null;
+            rs = null;
+            CON.desconectar();
+        }
+        return totalRegistro;
     }
 
     @Override
     public boolean existe(String texto) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        resp = false;
+        try {
+            ps=CON.conectar().prepareStatement("SELECT nameIntegrant FROM Integrant WHERE curp=?");
+            ps.setString(1, texto);
+            rs=ps.executeQuery();
+            rs.last();
+            if(rs.getRow()>0){
+                resp=true;
+            }
+           
+            ps.close();
+            rs.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } finally{
+            ps = null;
+            rs = null;
+            CON.desconectar();
+        }
+        return resp;
     }
     
 }
