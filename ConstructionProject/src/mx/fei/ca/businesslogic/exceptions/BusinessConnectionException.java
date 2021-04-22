@@ -10,10 +10,3 @@ public class BusinessConnectionException extends Exception {
     }
     
 }
-/*
-public class BusinessConnectionException extends Exception{
-    public BusinessConnectionException(String message, Throwable ex){
-        super(message, ex);
-    }
-}
-*/
