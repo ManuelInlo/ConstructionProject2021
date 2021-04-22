@@ -2,6 +2,8 @@ package negocio;
 
 import datos.IntegrantDAO;
 import entidades.Integrant;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -20,6 +22,9 @@ public class CategoriaControl {
     
     public DefaultTableModel listar(String texto){
         List<Integrant> lista =  new ArrayList();
+        lista.addAll(DATOS.listar(texto));
+        
+        String[] titulos ={};
     }
     
     public String insertar(String nombre, String descripcion){
