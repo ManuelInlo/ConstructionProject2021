@@ -14,7 +14,7 @@ public class InvestigationProject {
     private String description;
     
     public InvestigationProject(){
-        //Default project
+        //Default Constructor
     }
 
     public InvestigationProject(int idProject, String projectTittle, Date startDate, Date endDate, String description) {

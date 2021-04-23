@@ -41,6 +41,7 @@ public class dataBaseConnection {
             System.exit(0);
         }
     }
+   
     
     //Applying Singelton
     public static dataBaseConnection getInstancia(){
