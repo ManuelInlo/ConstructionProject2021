@@ -38,7 +38,7 @@ public class LGACDAO implements LGACInterface{
            saveResult = ps.executeUpdate();   
            ps.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+            //JOptionPane.showMessageDialog(null, e.getMessage());
             throw new BusinessConnectionException("Failed connection with database sgpca", e);
         }finally{
             ps = null;
