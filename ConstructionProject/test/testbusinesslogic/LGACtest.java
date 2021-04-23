@@ -16,7 +16,7 @@ public class LGACtest {
     @Test
     public void testSaveLGAC() throws BusinessConnectionException, BusinessDataException{
         LGACDAO lgacDAO = new LGACDAO();
-        LGAC lgac = new LGAC("L1", "Gestión, modelado, y desarrollo de software");
+        LGAC lgac = new LGAC("L4", "Desarrollo de artes");
         int saveResult = lgacDAO.saveLGAC(lgac);
         assertEquals("Test save LGAC",saveResult ,1 );
     }

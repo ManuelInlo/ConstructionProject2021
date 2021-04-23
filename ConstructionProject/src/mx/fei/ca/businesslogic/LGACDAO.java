@@ -1,5 +1,6 @@
 package mx.fei.ca.businesslogic;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.businesslogic.interfaces.LGACInterface;
-import mx.fei.ca.dataaccess.dataBaseConnection;
+import mx.fei.ca.dataaccess.DataBaseConnection;
 import mx.fei.ca.domain.LGAC;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
@@ -18,31 +19,33 @@ import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
  */
 public class LGACDAO implements LGACInterface{
     
-    private final dataBaseConnection CON;
+    private final DataBaseConnection dataBaseConnection;
+    private Connection connection;
     private PreparedStatement ps;
     private ResultSet rs;
    
     
     public LGACDAO(){
-        CON = dataBaseConnection.getInstancia();
+        dataBaseConnection = new DataBaseConnection();
     }
 
     @Override
     public int saveLGAC(LGAC lgac) throws BusinessConnectionException, BusinessDataException {
-        String sql = "INSERT INTO lgac (clabe, nombre) VALUES (?, ?)";
+        String sql = "INSERT INTO lgac (keyCode, name) VALUES (?, ?)";
         int saveResult = 0;
         try {
-           ps = CON.Connect().prepareStatement(sql);
+           connection = dataBaseConnection.getConnection();
+           ps = connection.prepareStatement(sql);
            ps.setString(1, lgac.getKeyCode());
            ps.setString(2, lgac.getName());
            saveResult = ps.executeUpdate();   
-           ps.close();
+           //ps.close();
         } catch (SQLException e) {
             //JOptionPane.showMessageDialog(null, e.getMessage());
             throw new BusinessConnectionException("Failed connection with database sgpca", e);
         }finally{
-            ps = null;
-            CON.Disconnect();
+            //ps = null;
+            dataBaseConnection.closeConnection();
         }
         return saveResult;
     }
@@ -68,7 +71,8 @@ public class LGACDAO implements LGACInterface{
         String sql = "UPDATE lgac SET keyCode = ?, name = ?";
         int updateresult;
         try {
-            ps = CON.Connect().prepareStatement(sql);
+            connection = dataBaseConnection.getConnection();
+            ps = connection.prepareStatement(sql);
             ps.setString(1, lgac.getKeyCode());
             ps.setString(2, lgac.getName());
             updateresult = ps.executeUpdate();
@@ -78,7 +82,7 @@ public class LGACDAO implements LGACInterface{
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", e);
         } finally{
             ps = null;
-            CON.Disconnect();
+            dataBaseConnection.closeConnection();
         }
             return updateresult;
     }
@@ -88,7 +92,8 @@ public class LGACDAO implements LGACInterface{
         String sql = "DELETE FROM lgac WHERE clabe = ?";
         int deleteResult = 0;
         try{
-            ps = CON.Connect().prepareStatement(sql);
+            connection = dataBaseConnection.getConnection();
+            ps = connection.prepareStatement(sql);
             ps.setString(1, keyCode);
             deleteResult = ps.executeUpdate();
             ps.close();
@@ -97,7 +102,7 @@ public class LGACDAO implements LGACInterface{
             throw new BusinessConnectionException("Failed connection with databse", e);
         }finally{
             ps = null;
-            CON.Disconnect();
+            dataBaseConnection.closeConnection();
         }
         return deleteResult;
     }
