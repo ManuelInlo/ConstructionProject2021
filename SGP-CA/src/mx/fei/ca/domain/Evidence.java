@@ -5,10 +5,12 @@ public class Evidence {
     private long idEvidence;
     private String impactCA;
     private String titleEvidence;
+    private String author;
     
-    public Evidence(String impactCA, String titleEvidence){
+    public Evidence(String impactCA, String titleEvidence, String author){
         this.impactCA = impactCA;
         this.titleEvidence = titleEvidence;
+        this.author = author;
     }
 
     public long getIdEvidence() {
@@ -23,6 +25,10 @@ public class Evidence {
         return titleEvidence;
     }
 
+    public String getAuthor(){
+        return author;
+    }
+    
     public void setIdEvidence(long idEvidence) {
         this.idEvidence = idEvidence;
     }
@@ -33,6 +39,10 @@ public class Evidence {
 
     public void setTitleEvidence(String titleEvidence) {
         this.titleEvidence = titleEvidence;
+    }
+    
+    public void setAuthor(String author){
+        this.author = author;
     }
     
 }

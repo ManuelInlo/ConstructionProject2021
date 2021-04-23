@@ -14,14 +14,14 @@ public class Article extends Evidence{
    private Date publicationDate;
    private int volume;
    private String editorial;
-   private String author;
    private String description;
+   private int idProject;
+   private String curp;
    
-   public Article(String impactCA, String titleEvidence, String ISSN, String fileRoute, int homepage,
+   public Article(Evidence evidence, String ISSN, String fileRoute, int homepage,
                   int endPage, String actualState, String magazineName, String country, Date publicationDate, int volume, 
-                  String editorial, String author, String description){
-       
-       super(impactCA, titleEvidence);
+                  String editorial, String description, int idProject, String curp){
+       super(evidence.getImpactCA(), evidence.getTitleEvidence(), evidence.getAuthor());
        this.ISSN = ISSN;
        this.fileRoute = fileRoute;
        this.homepage = homepage;
@@ -32,10 +32,11 @@ public class Article extends Evidence{
        this.publicationDate = publicationDate;
        this.volume = volume;
        this.editorial = editorial;
-       this.author = author;
        this.description = description;
+       this.idProject = idProject;
+       this.curp = curp;
    }
-
+    
     public String getISSN() {
         return ISSN;
     }
@@ -76,14 +77,18 @@ public class Article extends Evidence{
         return editorial;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
     public String getDescription() {
         return description;
     }
 
+    public int getIdProject() {
+        return idProject;
+    }
+
+    public String getCurp() {
+        return curp;
+    }
+        
     public void setISSN(String ISSN) {
         this.ISSN = ISSN;
     }
@@ -124,12 +129,15 @@ public class Article extends Evidence{
         this.editorial = editorial;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }
-    
+ 
+    public void setIdProject(int idProject) {
+        this.idProject = idProject;
+    }
+
+    public void setCurp(String curp) {
+        this.curp = curp;
+    }    
 }

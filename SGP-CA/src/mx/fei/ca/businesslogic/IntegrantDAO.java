@@ -17,8 +17,7 @@ public class IntegrantDAO implements IIntegrantDAO{
     private final DataBaseConnection dataBaseConnection;
     private Connection connection;
     private PreparedStatement preparedStatement;
-    private ResultSet resultSet;
-    private Statement statement;    
+    private ResultSet resultSet;    
  
     public IntegrantDAO(){
         dataBaseConnection = new DataBaseConnection();       
@@ -80,7 +79,7 @@ public class IntegrantDAO implements IIntegrantDAO{
         }      
         return updateResult;       
     }
-    
+            
     @Override
     public int deleteIntegrantByCurp(String curp) throws BusinessConnectionException{
         String sql = "DELETE FROM Integrant WHERE curp = ?";
