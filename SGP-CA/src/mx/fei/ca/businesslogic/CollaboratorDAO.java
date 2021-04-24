@@ -62,7 +62,7 @@ public class CollaboratorDAO implements ICollaboratorDAO{
     
     @Override
     public Collaborator findCollaboratorByIdCollaborator(int idCollaborator) throws BusinessConnectionException{
-        String sql = "DELETE FROM collaborator WHERE idCollaborator = ?";
+        String sql = "SELECT * FROM collaborator WHERE idCollaborator = ?";
         Collaborator collaborator = null;
         try{
             connection = dataBaseConnection.getConnection();

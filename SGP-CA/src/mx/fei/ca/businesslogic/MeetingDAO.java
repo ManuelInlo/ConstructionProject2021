@@ -23,9 +23,9 @@ public class MeetingDAO implements IMeetingDAO{
     }
     
     @Override
-    public int saveMeeting(Meeting meeting) throws BusinessConnectionException{
-        String sql = "INSERT INTO meeting (meetingDate, meetingTime, meetingPlace, affair, projectName)"
-                     + "VALUES (?, ?, ?, ?, ?)";
+    public int saveMeeting(Meeting meeting, String curp) throws BusinessConnectionException{
+        String sql = "INSERT INTO meeting (meetingDate, meetingTime, meetingPlace, affair, projectName, curp)"
+                     + "VALUES (?, ?, ?, ?, ?, ?)";
         int saveResult = 0;
         try{
             connection = dataBaseConnection.getConnection();
@@ -35,6 +35,7 @@ public class MeetingDAO implements IMeetingDAO{
             preparedStatement.setString(3, meeting.getMeetingPlace());
             preparedStatement.setString(4, meeting.getAffair());
             preparedStatement.setString(5, meeting.getProjectName());
+            preparedStatement.setString(6, curp);
             saveResult = preparedStatement.executeUpdate();
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
@@ -114,28 +115,31 @@ public class MeetingDAO implements IMeetingDAO{
             preparedStatement.setInt(6, idMeeting);
             updateResult = preparedStatement.executeUpdate();
         }catch(SQLException ex){
-            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
         }finally{
             dataBaseConnection.closeConnection();
         }
         return updateResult;
     }
-    
+
     @Override
-    public int deleteMeetingById(int idMeeting)throws BusinessConnectionException{
-        String sql = "DELETE FROM meeting WHERE idMeeting = ?";
-        int deleteResult = 0;
+    public String getCurpOfResponsibleMeeting(int idMeeting) throws BusinessConnectionException {
+        String sql = "SELECT curp FROM meeting where idMeeting = ?";
+        String resultingCurp = null;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, idMeeting);
-            deleteResult = preparedStatement.executeUpdate();
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                resultingCurp = resultSet.getString("curp");
+            }
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
         }finally{
             dataBaseConnection.closeConnection();
         }
-        return deleteResult;
+        return resultingCurp;
     }
-    
+ 
 }

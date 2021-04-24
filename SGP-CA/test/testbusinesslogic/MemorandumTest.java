@@ -27,14 +27,7 @@ public class MemorandumTest {
         int updateResult = memorandumDAO.updateMemorandum(memorandum, 1, 2);
         assertEquals("Prueba correcta, si modificó", updateResult, 1);
     }
-    
-    @Test
-    public void deleteMemorandumById() throws BusinessConnectionException{
-        MemorandumDAO memorandumDAO = new MemorandumDAO();
-        int deleteResult = memorandumDAO.deleteMemorandumById(2);
-        assertEquals("Prueba correcta, si eliminó", deleteResult, 1);
-    }
-    
+        
     @Test
     public void testFindMemorandumByIdMeeting() throws BusinessConnectionException{
         MemorandumDAO memorandumDAO = new MemorandumDAO();

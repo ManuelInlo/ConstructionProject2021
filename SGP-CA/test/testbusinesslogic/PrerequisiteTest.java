@@ -19,7 +19,7 @@ public class PrerequisiteTest {
         PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
         Prerequisite prerequisite = new Prerequisite("Contemplar las evidencias a tratar", "Juan Carlos Pérez Arriaga");
         int saveResult = prerequisiteDAO.savePrerequisite(prerequisite, 2);
-        assertEquals("Prueba correcta, si guardó", saveResult, 1);
+        assertEquals("Prueba insertar prerequisito", saveResult, 1);
     }
     
     @Test

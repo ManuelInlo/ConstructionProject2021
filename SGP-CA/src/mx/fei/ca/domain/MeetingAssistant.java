@@ -3,7 +3,7 @@ package mx.fei.ca.domain;
 
 public class MeetingAssistant {
     private Integrant integrant;
-    String role;
+    private String role;
 
     public MeetingAssistant(Integrant integrant, String role) {
         this.integrant = integrant;

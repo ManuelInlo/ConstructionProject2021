@@ -10,5 +10,19 @@ package mx.fei.ca.domain;
  * @author david
  */
 public class Integrant {
+    private String curp;
+
+    public Integrant(String curp) {
+        this.curp = curp;
+    }
+
+    public String getCurp() {
+        return curp;
+    }
+
+    public void setCurp(String curp) {
+        this.curp = curp;
+    }
+    
     
 }

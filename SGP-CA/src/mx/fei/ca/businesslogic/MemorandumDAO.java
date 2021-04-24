@@ -60,23 +60,6 @@ public class MemorandumDAO implements IMemorandumDAO{
     }
     
     @Override
-    public int deleteMemorandumById(int idMemorandum) throws BusinessConnectionException{
-        String sql = "DELETE FROM memorandum WHERE idMemorandum = ?";
-        int deleteResult = 0;
-        try{
-            connection = dataBaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, idMemorandum);
-            deleteResult = preparedStatement.executeUpdate();
-        }catch(SQLException ex){
-            throw new BusinessConnectionException("Perdida de conexión con la base de datos",ex);
-        }finally{
-            dataBaseConnection.closeConnection();
-        }
-        return deleteResult;
-    }
-    
-    @Override
     public Memorandum findMemorandumByIdMeeting(int idMeeting) throws BusinessConnectionException{
         String sql = "SELECT * FROM memorandum WHERE idMeeting = ?";
         Memorandum memorandum = null;

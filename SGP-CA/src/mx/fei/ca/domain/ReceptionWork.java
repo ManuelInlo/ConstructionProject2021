@@ -6,10 +6,9 @@ import java.sql.Date;
 public class ReceptionWork {
     private String impactCA;
     private String titleReceptionWork;
-    private String workAddress;
+    private String fileRoute;
     private Date startDate;
     private Date endDate;
-    private int numStudents;
     private String grade;
     private String workType;
     private String actualState;
@@ -18,14 +17,24 @@ public class ReceptionWork {
     private InvestigationProject investigationProject;
     private Integrant integrant;
 
-    public ReceptionWork(String impactCA, String titleReceptionWork, String workAddress, Date startDate, Date endDate,
-                         int numStudents, String grade, String workType, String actualState) {
+    public ReceptionWork(String impactCA, String titleReceptionWork, String fileRoute, Date startDate, Date endDate,
+                         String grade, String workType, String actualState) {
         this.impactCA = impactCA;
         this.titleReceptionWork = titleReceptionWork;
-        this.workAddress = workAddress;
+        this.fileRoute = fileRoute;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.numStudents = numStudents;
+        this.grade = grade;
+        this.workType = workType;
+        this.actualState = actualState;
+    }
+    
+    public ReceptionWork(String impactCA, String titleReceptionWork, String fileRoute, Date startDate,
+                         String grade, String workType, String actualState){
+        this.impactCA = impactCA;
+        this.titleReceptionWork = titleReceptionWork;
+        this.fileRoute = fileRoute;
+        this.startDate = startDate;
         this.grade = grade;
         this.workType = workType;
         this.actualState = actualState;
@@ -39,8 +48,8 @@ public class ReceptionWork {
         return titleReceptionWork;
     }
 
-    public String getWorkAddress() {
-        return workAddress;
+    public String getFileRoute() {
+        return fileRoute;
     }
 
     public Date getStartDate() {
@@ -49,10 +58,6 @@ public class ReceptionWork {
 
     public Date getEndDate() {
         return endDate;
-    }
-
-    public int getNumStudents() {
-        return numStudents;
     }
 
     public String getGrade() {
@@ -91,8 +96,8 @@ public class ReceptionWork {
         this.titleReceptionWork = titleReceptionWork;
     }
 
-    public void setWorkAddress(String workAddress) {
-        this.workAddress = workAddress;
+    public void setFileRoute(String fileRoute) {
+        this.fileRoute = fileRoute;
     }
 
     public void setStartDate(Date startDate) {
@@ -101,10 +106,6 @@ public class ReceptionWork {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }
-
-    public void setNumStudents(int numStudents) {
-        this.numStudents = numStudents;
     }
 
     public void setGrade(String grade) {

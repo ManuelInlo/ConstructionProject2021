@@ -37,20 +37,20 @@ public class MeetingTest {
             Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         Meeting meeting = new Meeting(meetingDate, meetingTime, "FEI", "Revisar anteproyecto", "Reunión Anteproyecto");
-        int saveResult = meetingDAO.saveMeeting(meeting);
-        assertEquals("Prueba correcta, si guardó", saveResult, 1);
+        int saveResult = meetingDAO.saveMeeting(meeting, "JCPA940514RDTREOP1");
+        assertEquals("Prueba insertar nueva reunión", saveResult, 1);
     }
     
     @Test
     public void testFindMeetingsByProjectName() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
-        ArrayList<Meeting> meetings = meetingDAO.findMeetingsByProjectName("Reunión CA");
-        assertEquals("Prueba correcta",meetings.size(), 1);
+        ArrayList<Meeting> meetings = meetingDAO.findMeetingsByProjectName("Reunión Anteproyecto");
+        assertEquals("Prueba encontrar reuniones por nombre proyecto",meetings.size(), 1);
     }
     
     @Test
     public void testFindMeetingsByProjectNameAndDate() throws BusinessConnectionException{
-        String date = "08-04-2021";
+        String date = "15-04-2021";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         java.sql.Date meetingDate = null;
         try {
@@ -59,8 +59,8 @@ public class MeetingTest {
             Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         MeetingDAO meetingDAO = new MeetingDAO();
-        ArrayList<Meeting> meetings = meetingDAO.findMeetingsByProjectNameAndDate("Reunión CA", meetingDate);
-        assertEquals("Prueba correcta",meetings.size(), 1);
+        ArrayList<Meeting> meetings = meetingDAO.findMeetingsByProjectNameAndDate("Reunión Anteproyecto", meetingDate);
+        assertEquals("Prueba encontrar reuniones por nombre proyecto y fecha",meetings.size(), 1);
     }
     
     @Test
@@ -83,14 +83,15 @@ public class MeetingTest {
             Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         Meeting meeting = new Meeting(meetingDate, meetingTime, "FEI", "Revisar anteproyecto", "Reunión Anteproyecto");
-        int updateResult = meetingDAO.updateMeeting(meeting, 3);
-        assertEquals("Prueba correcta, si modificó", updateResult, 1);
+        int updateResult = meetingDAO.updateMeeting(meeting, 5);
+        assertEquals("Prueba modificar reunión", updateResult, 1);
     }
     
     @Test
-    public void testDeleteMeetingById() throws BusinessConnectionException{
+    public void testGetCurpOfResponsibleMeeting() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
-        int deleteResult = meetingDAO.deleteMeetingById(3);
-        assertEquals("Prueba correcta, si eliminó", deleteResult, 1);
+        String curpExpected = "JCPA940514RDTREOP1";
+        String resultingCurp = meetingDAO.getCurpOfResponsibleMeeting(5);
+        assertEquals("Prueba retornar curp del responsable de la reunión", curpExpected, resultingCurp);
     }
 }

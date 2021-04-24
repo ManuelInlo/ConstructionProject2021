@@ -5,11 +5,11 @@ package mx.fei.ca.domain;
 public class InvestigationProject {
     private int idProject;
 
-    public InvestigationProject(int idProject) {
-        this.idProject = idProject;
+    public InvestigationProject() {
+        
     }
 
-    public long getIdProject() {
+    public int getIdProject() {
         return idProject;
     }
 

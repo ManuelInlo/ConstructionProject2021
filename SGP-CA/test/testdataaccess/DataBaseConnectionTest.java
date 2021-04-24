@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 
-public class DataAccessTest {
+public class DataBaseConnectionTest {
     
     @Test
     public void DataBaseConnectionTest() throws SQLException, ClassNotFoundException{
