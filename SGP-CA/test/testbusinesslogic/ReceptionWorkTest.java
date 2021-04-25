@@ -100,4 +100,11 @@ public class ReceptionWorkTest {
         ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorksByPositiveImpactCA();
         assertEquals("Prueba busqueda de trabajos recepcionales por su impacto al ca", receptionWorks.size(), 1);
     }
+    
+    @Test
+    public void testFindReceptionWorksByCurpIntegrant() throws BusinessConnectionException{
+        ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
+        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorksByCurpIntegrant("JCPA940514RDTREOP1");
+        assertEquals("Prueba busqueda de trabajos recepcionales de un integrante por curp", receptionWorks.size(), 1);
+    }
 }

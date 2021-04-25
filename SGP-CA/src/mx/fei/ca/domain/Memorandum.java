@@ -9,6 +9,7 @@ public class Memorandum {
     private String pending;
     private String note;
     private ArrayList<Agreement> agreements;
+    private ArrayList<MemorandumApprover> approvers;
 
     public Memorandum(String pending, String note) {
         this.pending = pending;
@@ -30,6 +31,10 @@ public class Memorandum {
     public ArrayList<Agreement> getAgreement() {
         return agreements;
     }
+
+    public ArrayList<MemorandumApprover> getApprovers() {
+        return approvers;
+    }
     
     public void setIdMemorandum(int idMemorandum) {
         this.idMemorandum = idMemorandum;
@@ -45,6 +50,10 @@ public class Memorandum {
 
     public void setAgreement(ArrayList<Agreement> agreements) {
         this.agreements = agreements;
+    }
+
+    public void setApprovers(ArrayList<MemorandumApprover> approvers) {
+        this.approvers = approvers;
     }
     
 }

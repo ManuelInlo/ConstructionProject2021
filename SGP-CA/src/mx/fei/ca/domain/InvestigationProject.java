@@ -9,6 +9,10 @@ public class InvestigationProject {
         
     }
 
+    public InvestigationProject(int idProject) {
+        this.idProject = idProject;
+    }
+
     public int getIdProject() {
         return idProject;
     }
