@@ -53,7 +53,7 @@ public class LGACDAO implements LGACInterface{
     @Override
     public ArrayList<LGAC> findLGACByClave(String clabe) throws BusinessConnectionException, BusinessDataException {
         ArrayList<LGAC> lgac = new ArrayList<>();
-        String sql = "SELECT * FROM LGAC WHERE clabe LIKE ?";
+        String sql = "SELECT * FROM lgac WHERE clabe LIKE ?";
         try {
            ps =CON.Connect().prepareStatement(sql);
            ps.setString(1, "%"+clabe+"%");
