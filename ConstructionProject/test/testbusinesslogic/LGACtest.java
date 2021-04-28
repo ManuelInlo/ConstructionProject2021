@@ -16,7 +16,7 @@ public class LGACtest {
     @Test
     public void testSaveLGAC() throws BusinessConnectionException, BusinessDataException{
         LGACDAO lgacDAO = new LGACDAO();
-        LGAC lgac = new LGAC("L4", "Desarrollo de artes");
+        LGAC lgac = new LGAC("L4", "Dise;o WEB avanzado");
         int saveResult = lgacDAO.saveLGAC(lgac);
         assertEquals("Test save LGAC",saveResult ,1 );
     }
@@ -24,7 +24,7 @@ public class LGACtest {
     @Test
     public void testDeleteLGAC() throws BusinessConnectionException, BusinessDataException{
         LGACDAO lgacDAO = new LGACDAO();
-        int deleteResult = lgacDAO.deleteAgreementById("L4");
+        int deleteResult = lgacDAO.deleteAgreementById("L5");
         assertEquals("Test delete LGAC", deleteResult, 1);
     }
 }

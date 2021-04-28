@@ -17,7 +17,7 @@ public class DataBaseConnection {
     private String password;
     
     public DataBaseConnection(){
-       this.url = PropertyUtil.getProperties("dates.url"); //l + "?useSSL=false";
+       this.url = PropertyUtil.getProperties("dates.url"); //+ "?useSSL=false";
        this.user = PropertyUtil.getProperties("dates.user");
        this.password = PropertyUtil.getProperties("dates.password");
     }
@@ -37,5 +37,6 @@ public class DataBaseConnection {
                Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, ex);
            }
        }
-    }
+    } 
+    
 }

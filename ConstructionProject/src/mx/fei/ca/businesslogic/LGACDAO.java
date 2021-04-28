@@ -89,7 +89,7 @@ public class LGACDAO implements LGACInterface{
 
     @Override
     public int deleteAgreementById(String keyCode) throws BusinessConnectionException, BusinessDataException {
-        String sql = "DELETE FROM lgac WHERE clabe = ?";
+        String sql = "DELETE FROM lgac WHERE keyCode = ?";
         int deleteResult = 0;
         try{
             connection = dataBaseConnection.getConnection();
