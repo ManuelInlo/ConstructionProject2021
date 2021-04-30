@@ -14,6 +14,7 @@ import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.InvestigationProject;
 import mx.fei.ca.domain.ReceptionWork;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class ReceptionWorkTest {
@@ -107,4 +108,26 @@ public class ReceptionWorkTest {
         ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorksByCurpIntegrant("JCPA940514RDTREOP1");
         assertEquals("Prueba busqueda de trabajos recepcionales de un integrante por curp", receptionWorks.size(), 1);
     }
+    
+    @Test
+    public void testFindReceptionWorkByTitle() throws BusinessConnectionException{
+        ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
+        ReceptionWork receptionWork = receptionWorkDAO.findReceptionWorkByTitle("Impacto de la Inteligencia Artificial en el diseño de software");
+        int idReceptionWorkExpected = 1;
+        assertEquals("Prueba encontrar trabajo recepcional por título", receptionWork.getId(), idReceptionWorkExpected);
+    }
+    
+    @Test
+    public void testValidateExistenceOfReceptionWorkTitle() throws BusinessConnectionException{
+        ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
+        boolean exists = receptionWorkDAO.validateExistenceOfReceptionWorkTitle("Impacto de la Inteligencia Artificial en el diseño de software");
+        assertTrue("Prueba mandar a validar un titulo que ya existe de trabajo recepcional", exists);
+    }
+    
+    @Test
+    public void testValidateExistenceOfReceptionWorkFileRoute() throws BusinessConnectionException{
+        ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
+        boolean exists = receptionWorkDAO.validateExistenceOfReceptionWorkFileRoute("Prueba, falta ruta");
+        assertTrue("Prueba mandar a validar una ruta de archivo que ya existe en un trabajo recepcional", exists);
+    }  
 }

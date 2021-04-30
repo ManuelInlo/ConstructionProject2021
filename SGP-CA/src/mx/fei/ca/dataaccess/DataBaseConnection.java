@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 
 public class DataBaseConnection {
     private Connection connection;
-    private String url;
-    private String user;
-    private String password;
+    private final String url;
+    private final String user;
+    private final String password;
     
     public DataBaseConnection(){
        this.url = PropertyUtil.getProperties("dates.url") + "?useSSL=false";

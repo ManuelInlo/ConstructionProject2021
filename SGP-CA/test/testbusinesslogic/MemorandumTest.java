@@ -16,7 +16,7 @@ public class MemorandumTest {
     public void testInsertMemorandum() throws BusinessConnectionException{
         MemorandumDAO memorandumDAO = new MemorandumDAO();
         Memorandum memorandum = new Memorandum("Revisar ultima parte de metas", "Hasta el momento todo correcto");
-        int saveResult = memorandumDAO.saveMemorandum(memorandum, 2);
+        int saveResult = memorandumDAO.saveMemorandum(memorandum, 5);
         assertEquals("Prueba correcta, si guardó", saveResult, 1);
     }
     

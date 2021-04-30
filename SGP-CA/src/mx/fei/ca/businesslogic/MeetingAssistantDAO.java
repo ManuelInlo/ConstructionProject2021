@@ -33,7 +33,7 @@ public class MeetingAssistantDAO implements IMeetingAssistantDAO {
             preparedStatement.setString(3, meetingAssistant.getRole());
             saveResult = preparedStatement.executeUpdate();
         }catch(SQLException ex){
-            throw new BusinessConnectionException("Perdida de conexión con la base de datos",ex);
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
         }finally{
             dataBaseConnection.closeConnection();
         }
@@ -81,5 +81,26 @@ public class MeetingAssistantDAO implements IMeetingAssistantDAO {
             dataBaseConnection.closeConnection();
         }
         return meetingAssistants;
+    }
+
+    @Override
+    public boolean validateExistenceOfMeetingAssistantRole(String role, int idMeeting) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM meetingAssistant WHERE idMeeting = ? AND role = ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idMeeting);
+            preparedStatement.setString(2, role);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
     }
 }

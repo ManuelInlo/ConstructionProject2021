@@ -111,5 +111,26 @@ public class AgreementDAO implements IAgreementDAO{
         }
         return updateResult;
     }
+
+    @Override
+    public boolean validateExistenceOfAgreementDescription(String description, int idAgreement) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM agreement WHERE description = ? AND idAgreement = ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, description);
+            preparedStatement.setInt(2, idAgreement);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }
     
 }

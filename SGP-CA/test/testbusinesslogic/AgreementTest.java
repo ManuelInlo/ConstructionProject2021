@@ -12,6 +12,7 @@ import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
 import mx.fei.ca.domain.Agreement;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 
@@ -35,7 +36,7 @@ public class AgreementTest {
         
         Agreement agreement = new Agreement(2, "Revisar pendientes del CA", dateAgreement, "Juan Carlos Pérez"
                                             + "Arriaga");
-        int saveResult = agreementDAO.saveAgreement(agreement, 1);
+        int saveResult = agreementDAO.saveAgreement(agreement, 3);
         assertEquals("Prueba correcta, si guardó", saveResult, 1);
     }
     
@@ -68,5 +69,12 @@ public class AgreementTest {
         AgreementDAO agreementDAO = new AgreementDAO();
         ArrayList<Agreement> agreements = agreementDAO.findAgreementsByIdMemorandum(1);
         assertEquals("Prueba correcta",agreements.size(), 3);
+    }
+    
+    @Test 
+    public void testValidateExistenceOfAgreementDescription() throws BusinessConnectionException{
+        AgreementDAO agreementDAO = new AgreementDAO();
+       boolean exists = agreementDAO.validateExistenceOfAgreementDescription("Revisar pendientes del CA", 11);
+       assertTrue("Prueba mandar a validar una descripción que ya existe en la minuta", exists);
     }
 }

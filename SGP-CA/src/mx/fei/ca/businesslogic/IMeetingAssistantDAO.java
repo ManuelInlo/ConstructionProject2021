@@ -10,4 +10,5 @@ public interface IMeetingAssistantDAO {
     public int saveMeetingAssistant(MeetingAssistant meetingAssistant,int idMeeting) throws BusinessConnectionException;
     public int updateRoleOfMeetingAssistant(MeetingAssistant meetingAssistant, int idMeeting) throws BusinessConnectionException;
     public ArrayList<MeetingAssistant> findMeetingAssistantsByIdMeeting(int idMeeting) throws BusinessConnectionException;
+    public boolean validateExistenceOfMeetingAssistantRole(String role, int idMeeting) throws BusinessConnectionException;
 }

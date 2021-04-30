@@ -11,4 +11,5 @@ public interface IPrerequisiteDAO {
     public int updatePrerequisite(Prerequisite prerequisite, int idPrerequisite, int idMeeting) throws BusinessConnectionException;
     public int deletePrerequisiteById(int idPrerequisite)throws BusinessConnectionException;
     public ArrayList<Prerequisite> findPrerequisitesByIdMeeting(int idMeeting) throws BusinessConnectionException;
+    public boolean validateExistenceOfPrerequisiteDescription(String description, int idPrerequisite) throws BusinessConnectionException;
 }

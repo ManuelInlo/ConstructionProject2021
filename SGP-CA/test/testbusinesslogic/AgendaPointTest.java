@@ -10,6 +10,8 @@ import mx.fei.ca.businesslogic.AgendaPointDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.AgendaPoint;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 
@@ -35,7 +37,7 @@ public class AgendaPointTest {
             Logger.getLogger(AgendaPointTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         AgendaPoint agendaPoint = new AgendaPoint(startTime, endTime, 1, "Introducción reunión", "María Karen Cortés Verdín");
-        int saveResult = agendaPointDAO.saveAgendaPoint(agendaPoint, 2);
+        int saveResult = agendaPointDAO.saveAgendaPoint(agendaPoint, 5);
         assertEquals("Prueba correcta, si guardó", saveResult, 1);
     }
     
@@ -72,5 +74,32 @@ public class AgendaPointTest {
         AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
         ArrayList<AgendaPoint> agendaPoints = agendaPointDAO.findAgendaPointsByIdMeeting(2);
         assertEquals("Prueba correcta", agendaPoints.size(), 1);
+    }
+    
+    @Test 
+    public void testValidateExistenceOfAgendaPointTopic() throws BusinessConnectionException{
+        AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
+        boolean exists = agendaPointDAO.validateExistenceOfAgendaPointTopic("Introducción reunión", 2);
+        assertTrue("Prueba mandar a validar un tema que ya existe en un punto de agenda", exists);
+    }
+    
+    @Test
+    public void testValidateAvailableHoursForAgendaPoint() throws BusinessConnectionException{
+        AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
+        SimpleDateFormat simpleDateFormatTime = new SimpleDateFormat("hh:mm");
+        java.sql.Time startTime = null;
+        java.sql.Time endTime = null;
+        try {
+            startTime = new java.sql.Time(simpleDateFormatTime.parse("13:30").getTime());
+        } catch (ParseException ex) {
+            Logger.getLogger(AgendaPointTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try{
+            endTime = new java.sql.Time(simpleDateFormatTime.parse("13:45").getTime());
+        }catch (ParseException ex){
+            Logger.getLogger(AgendaPointTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        boolean hoursAvailable = agendaPointDAO.validateAvailableHoursForAgendaPoint(startTime, endTime, 2);
+        assertFalse("Prueba mandar a validar horas que ya están en un punto de agenda", hoursAvailable);
     }
 }

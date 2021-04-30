@@ -102,5 +102,26 @@ public class PrerequisiteDAO implements IPrerequisiteDAO{
         }
         return prerequisites;
     }
+
+    @Override
+    public boolean validateExistenceOfPrerequisiteDescription(String description, int idPrerequisite) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM prerequisite WHERE idPrerequisite = ? AND description = ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idPrerequisite);
+            preparedStatement.setString(2, description);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }
 }
 

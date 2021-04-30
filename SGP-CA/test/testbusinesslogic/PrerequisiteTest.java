@@ -6,6 +6,7 @@ import mx.fei.ca.businesslogic.PrerequisiteDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Prerequisite;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class PrerequisiteTest {
@@ -18,7 +19,7 @@ public class PrerequisiteTest {
     public void testInsertPrerequisite() throws BusinessConnectionException{
         PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
         Prerequisite prerequisite = new Prerequisite("Contemplar las evidencias a tratar", "Juan Carlos Pérez Arriaga");
-        int saveResult = prerequisiteDAO.savePrerequisite(prerequisite, 2);
+        int saveResult = prerequisiteDAO.savePrerequisite(prerequisite, 5);
         assertEquals("Prueba insertar prerequisito", saveResult, 1);
     }
     
@@ -42,6 +43,13 @@ public class PrerequisiteTest {
         PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
         ArrayList<Prerequisite> prerequisites = prerequisiteDAO.findPrerequisitesByIdMeeting(2);
         assertEquals("Prueba corerecta", prerequisites.size(), 1);
+    }
+    
+    @Test
+    public void testValidateExistenceOfPrerequisiteDescription() throws BusinessConnectionException{
+        PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
+        boolean exists = prerequisiteDAO.validateExistenceOfPrerequisiteDescription("Contemplar las evidencias a tratar", 4);
+        assertTrue("Prueba mandar a validar la descripción ya existente de un prerequisito", exists);
     }
     
 }

@@ -112,4 +112,47 @@ public class AgendaPointDAO implements IAgendaPointDAO{
         }
         return agendaPoints;
     }
+
+    @Override
+    public boolean validateExistenceOfAgendaPointTopic(String topic, int idAgendaPoint) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM agendaPoint WHERE topic = ? AND idAgendaPoint = ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, topic);
+            preparedStatement.setInt(2, idAgendaPoint);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }
+
+    @Override
+    public boolean validateAvailableHoursForAgendaPoint(Time startTime, Time endTime, int idAgendaPoint) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM agendaPoint WHERE startTime = ? AND endTime = ? AND idAgendaPoint = ?";
+        boolean hoursAvailable = true;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setTime(1, startTime);
+            preparedStatement.setTime(2, endTime);
+            preparedStatement.setInt(3, idAgendaPoint);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                hoursAvailable = false;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return hoursAvailable;
+    }
 }

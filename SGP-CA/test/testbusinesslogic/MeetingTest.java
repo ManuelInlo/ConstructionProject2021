@@ -10,6 +10,8 @@ import mx.fei.ca.businesslogic.MeetingDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Meeting;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class MeetingTest {
@@ -20,8 +22,8 @@ public class MeetingTest {
     @Test
     public void testInsertMeeting() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
-        String date = "15-04-2021";
-        String time = "12:30";
+        String date = "18-04-2021";
+        String time = "13:30";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         java.sql.Date meetingDate = null;
         try {
@@ -36,7 +38,7 @@ public class MeetingTest {
         } catch (ParseException ex) {
             Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Meeting meeting = new Meeting(meetingDate, meetingTime, "FEI", "Revisar anteproyecto", "Reunión Anteproyecto");
+        Meeting meeting = new Meeting(meetingDate, meetingTime, "FEI", "Revisar tesis de José", "Reunión CA");
         int saveResult = meetingDAO.saveMeeting(meeting, "JCPA940514RDTREOP1");
         assertEquals("Prueba insertar nueva reunión", saveResult, 1);
     }
@@ -93,5 +95,72 @@ public class MeetingTest {
         String curpExpected = "JCPA940514RDTREOP1";
         String resultingCurp = meetingDAO.getCurpOfResponsibleMeeting(5);
         assertEquals("Prueba retornar curp del responsable de la reunión", curpExpected, resultingCurp);
+    }
+    
+    @Test 
+    public void testFindLastFiveMeetings() throws BusinessConnectionException{
+        MeetingDAO meetingDAO = new MeetingDAO();
+        ArrayList<Meeting> meetings = meetingDAO.findLastFiveMeetings();
+        assertEquals("Prueba encontrar últimas 5 reuniones", meetings.size(), 5);
+    }
+    
+    @Test
+    public void testValidateExistenceOfMeetingAffair() throws BusinessConnectionException{
+        MeetingDAO meetingDAO = new MeetingDAO();
+        boolean exists = meetingDAO.validateExistenceOfMeetingAffair("Revisar Anteproyecto");
+        assertTrue("Prueba mandar un asunto que si existe", exists);
+    }
+    
+    @Test 
+    public void testValidateDateAndTimeAvailable() throws BusinessConnectionException{
+        MeetingDAO meetingDAO = new MeetingDAO();
+        String date = "12-04-2021";
+        String time = "13:30";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        java.sql.Date meetingDate = null;
+        try {
+            meetingDate = new java.sql.Date(simpleDateFormat.parse(date).getTime());
+        } catch (ParseException ex) {
+            Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("hh:mm");
+        java.sql.Time meetingTime = null;
+        try {
+            meetingTime = new java.sql.Time(simpleDateFormat2.parse(time).getTime());
+        } catch (ParseException ex) {
+            Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        boolean available = meetingDAO.validateDateAndTimeAvailable(meetingDate, meetingTime);
+        assertFalse("Prueba mandar fecha y hora ya registradas", available);
+    }
+    
+    @Test
+    public void testValidateExistenceOfMeetingAffairForUpdate() throws BusinessConnectionException{
+        MeetingDAO meetingDAO = new MeetingDAO();
+        boolean exists = meetingDAO.validateExistenceOfMeetingAffairForUpdate("Revisar tesis de José", 5);
+        assertTrue("Prueba mandar un asunto modificado que ya existe", exists);
+    }
+    
+    @Test 
+    public void testValidateDateAndTimeAvailableForUpdate() throws BusinessConnectionException{
+        MeetingDAO meetingDAO = new MeetingDAO();
+        String date = "18-04-2021";
+        String time = "13:30";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        java.sql.Date meetingDate = null;
+        try {
+            meetingDate = new java.sql.Date(simpleDateFormat.parse(date).getTime());
+        } catch (ParseException ex) {
+            Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("hh:mm");
+        java.sql.Time meetingTime = null;
+        try {
+            meetingTime = new java.sql.Time(simpleDateFormat2.parse(time).getTime());
+        } catch (ParseException ex) {
+            Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        boolean available = meetingDAO.validateDateAndTimeAvailableForUpdate(meetingDate, meetingTime, 5);
+        assertFalse("Prueba mandar fecha y hora modificadas que ya están registradas", available);
     }
 }

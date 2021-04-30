@@ -162,7 +162,85 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
     }
 
     @Override
-    public ReceptionWork findReceptionWorkByCurpAndTitle(String titleReceptionWork, String curp) throws BusinessConnectionException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ReceptionWork findReceptionWorkByTitle(String titleReceptionWork) throws BusinessConnectionException {
+        String sql = "SELECT * FROM receptionWork WHERE titleReceptionWork = ?";
+        ReceptionWork receptionWork = null;
+        CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, titleReceptionWork);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                int id = resultSet.getInt("id");
+                String impactCA = resultSet.getString("impactCA");
+                String fileRoute = resultSet.getString("fileRoute");
+                Date startDate = resultSet.getDate("startDate");
+                Date endDate = resultSet.getDate("endDate");
+                String grade = resultSet.getString("grade");
+                String workType = resultSet.getString("workType");
+                String actualState = resultSet.getString("actualState");
+                int idProject = resultSet.getInt("idProject");
+                String curp = resultSet.getString("curp");
+                int idCollaborator = resultSet.getInt("idCollaborator");
+                if(endDate != null){
+                    receptionWork = new ReceptionWork(impactCA, titleReceptionWork, fileRoute, startDate, endDate, grade, workType, actualState);
+                }else{
+                    receptionWork = new ReceptionWork(impactCA, titleReceptionWork, fileRoute, startDate, grade, workType, actualState);
+                }
+                Integrant integrant = new Integrant(curp); //Aquí debe mandar a llamar metodo de buscar integrante por curp
+                InvestigationProject investigationProject = new InvestigationProject(idProject); //En vez de esto, debe mandar a llamar metodo buscar proyecto por id
+                Collaborator collaborator = collaboratorDAO.findCollaboratorByIdCollaborator(idCollaborator);
+                receptionWork.setId(id);
+                receptionWork.setIntegrant(integrant);
+                receptionWork.setInvestigationProject(investigationProject);
+                receptionWork.setCollaborator(collaborator);
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return receptionWork;
+    }
+
+    @Override
+    public boolean validateExistenceOfReceptionWorkTitle(String titleReceptionWork) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM receptionWork WHERE titleReceptionWork = ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, titleReceptionWork);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }
+
+    @Override
+    public boolean validateExistenceOfReceptionWorkFileRoute(String fileRoute) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM receptionWork WHERE fileRoute = ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, fileRoute);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
     }
 }

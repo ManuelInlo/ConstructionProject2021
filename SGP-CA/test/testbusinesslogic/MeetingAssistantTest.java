@@ -7,6 +7,7 @@ import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.MeetingAssistant;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class MeetingAssistantTest {
@@ -37,5 +38,12 @@ public class MeetingAssistantTest {
         MeetingAssistantDAO meetingAssistantDAO = new MeetingAssistantDAO();
         ArrayList<MeetingAssistant> meetingAssistants = meetingAssistantDAO.findMeetingAssistantsByIdMeeting(5);
         assertEquals("Prueba encontrar asistentes de una reunión", meetingAssistants.size(), 1);
+    }
+    
+    @Test
+    public void testValidateExistenceOfMeetingAssistantRole() throws BusinessConnectionException{
+        MeetingAssistantDAO meetingAssistantDAO = new MeetingAssistantDAO();
+        boolean exists = meetingAssistantDAO.validateExistenceOfMeetingAssistantRole("Secretario", 5);
+        assertTrue("Prueba mandar un rol que ya existe de un asistente de reunión", exists);
     }
 }
