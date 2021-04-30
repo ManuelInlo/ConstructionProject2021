@@ -64,7 +64,7 @@ public class CollaboratorDAO implements collaboratorInterface {
     }
 
     @Override
-    public int deleteAgreementById(String idCollaborator) throws BusinessConnectionException, BusinessDataException {
+    public int deleteCollaboratorById(String idCollaborator) throws BusinessConnectionException, BusinessDataException {
         String sql = "DELETE FROM collaborator where idCollaborator = ?";
         int deleteCollaborator = 0;
         try {

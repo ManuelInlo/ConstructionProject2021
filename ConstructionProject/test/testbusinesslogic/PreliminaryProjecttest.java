@@ -21,12 +21,3 @@ public class PreliminaryProjecttest {
         assertEquals("Test save preliminaryProject", saveResult, 1);
     }
 }
- /*
-@Test
-    public void testSaveLGAC() throws BusinessConnectionException, BusinessDataException{
-        LGACDAO lgacDAO = new LGACDAO();
-        LGAC lgac = new LGAC("L4", "Dise;o WEB avanzado");
-        int saveResult = lgacDAO.saveLGAC(lgac);
-        assertEquals("Test save LGAC",saveResult ,1 );
-    }
-*/

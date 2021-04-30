@@ -11,6 +11,6 @@ import mx.fei.ca.domain.Collaborator;
 public interface collaboratorInterface {
     public int saveCollaborator(Collaborator collaborator) throws BusinessConnectionException, BusinessDataException;
     public int updateCollaborator(Collaborator collaborator, int idCollaborator, String nameCollaborator, String position) throws BusinessConnectionException;
-    public int deleteAgreementById(String idCollaborator) throws BusinessConnectionException, BusinessDataException; 
+    public int deleteCollaboratorById(String idCollaborator) throws BusinessConnectionException, BusinessDataException; 
 }
 
