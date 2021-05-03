@@ -79,7 +79,7 @@ public class AgendaPointTest {
     @Test 
     public void testValidateExistenceOfAgendaPointTopic() throws BusinessConnectionException{
         AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
-        boolean exists = agendaPointDAO.validateExistenceOfAgendaPointTopic("Introducción reunión", 2);
+        boolean exists = agendaPointDAO.existsAgendaPointTopic("Introducción reunión", 5);
         assertTrue("Prueba mandar a validar un tema que ya existe en un punto de agenda", exists);
     }
     
@@ -99,7 +99,7 @@ public class AgendaPointTest {
         }catch (ParseException ex){
             Logger.getLogger(AgendaPointTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boolean hoursAvailable = agendaPointDAO.validateAvailableHoursForAgendaPoint(startTime, endTime, 2);
+        boolean hoursAvailable = agendaPointDAO.existsAvailableHoursForAgendaPoint(startTime, endTime, 5);
         assertFalse("Prueba mandar a validar horas que ya están en un punto de agenda", hoursAvailable);
     }
 }

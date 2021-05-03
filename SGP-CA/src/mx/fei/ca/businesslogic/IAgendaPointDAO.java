@@ -11,6 +11,8 @@ public interface IAgendaPointDAO {
     public int updateAgendaPoint(AgendaPoint agendaPoint, int idAgendaPoint, int idMeeting) throws BusinessConnectionException;
     public int deleteAgendaPointById(int idAgendaPoint) throws BusinessConnectionException;
     public ArrayList<AgendaPoint> findAgendaPointsByIdMeeting(int idMeeting) throws BusinessConnectionException;
-    public boolean validateExistenceOfAgendaPointTopic(String topic, int idAgendaPoint) throws BusinessConnectionException;
-    public boolean validateAvailableHoursForAgendaPoint(Time startTime, Time endTime, int idAgendaPoint) throws BusinessConnectionException;
+    public boolean existsAgendaPointTopic(String topic, int idMeeting) throws BusinessConnectionException;
+    public boolean existsAvailableHoursForAgendaPoint(Time startTime, Time endTime, int idMeeting) throws BusinessConnectionException;
+    public boolean existsAgendaPointTopicForUpdate(String topic, int idAgendaPoint, int idMeeting) throws BusinessConnectionException;
+    public boolean existsAvailableHoursForAgendaPointForUpdate(AgendaPoint agendaPoint, int idAgendaPoint, int idMeeting) throws BusinessConnectionException;
 }

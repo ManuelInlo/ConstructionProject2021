@@ -212,7 +212,7 @@ public class MeetingDAO implements IMeetingDAO{
     }
 
     @Override
-    public boolean validateExistenceOfMeetingAffair(String meetingAffair) throws BusinessConnectionException {
+    public boolean existsMeetingAffair(String meetingAffair) throws BusinessConnectionException {
         String sql = "SELECT 1 FROM meeting WHERE affair = ?";
         boolean exists = false;
         try{
@@ -232,7 +232,7 @@ public class MeetingDAO implements IMeetingDAO{
     }
 
     @Override
-    public boolean validateDateAndTimeAvailable(Date meetingDate, Time meetingTime) throws BusinessConnectionException {
+    public boolean existsDateAndTimeAvailable(Date meetingDate, Time meetingTime) throws BusinessConnectionException {
         String sql = "SELECT 1 FROM meeting WHERE meetingDate = ? and meetingTime = ?";
         boolean available = true;
         try{
@@ -253,7 +253,7 @@ public class MeetingDAO implements IMeetingDAO{
     }
 
     @Override
-    public boolean validateExistenceOfMeetingAffairForUpdate(String meetingAffair, int idMeeting) throws BusinessConnectionException {
+    public boolean existsMeetingAffairForUpdate(String meetingAffair, int idMeeting) throws BusinessConnectionException {
         String sql = "SELECT 1 FROM meeting WHERE affair = ? and idMeeting<> ?";
         boolean exists = false;
         try{
@@ -274,7 +274,7 @@ public class MeetingDAO implements IMeetingDAO{
     }
 
     @Override
-    public boolean validateDateAndTimeAvailableForUpdate(Date meetingDate, Time meetingTime, int idMeeting) throws BusinessConnectionException {
+    public boolean existsDateAndTimeAvailableForUpdate(Date meetingDate, Time meetingTime, int idMeeting) throws BusinessConnectionException {
         String sql = "SELECT 1 FROM meeting WHERE meetingDate = ? and meetingTime = ? and idMeeting <> ?";
         boolean available = true;
         try{

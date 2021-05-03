@@ -205,7 +205,7 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
     }
 
     @Override
-    public boolean validateExistenceOfReceptionWorkTitle(String titleReceptionWork) throws BusinessConnectionException {
+    public boolean existsReceptionWorkTitle(String titleReceptionWork) throws BusinessConnectionException {
         String sql = "SELECT 1 FROM receptionWork WHERE titleReceptionWork = ?";
         boolean exists = false;
         try{
@@ -225,13 +225,55 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
     }
 
     @Override
-    public boolean validateExistenceOfReceptionWorkFileRoute(String fileRoute) throws BusinessConnectionException {
+    public boolean existsReceptionWorkFileRoute(String fileRoute) throws BusinessConnectionException {
         String sql = "SELECT 1 FROM receptionWork WHERE fileRoute = ?";
         boolean exists = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, fileRoute);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }
+
+    @Override
+    public boolean existsReceptionWorkTitleForUpdate(String titleReceptionWork, int id) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM receptionWork WHERE titleReceptionWork = ? AND id <> ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, titleReceptionWork);
+            preparedStatement.setInt(2, id);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }
+
+    @Override
+    public boolean existsReceptionWorkFileRouteForUpdate(String fileRoute, int id) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM receptionWork WHERE fileRoute = ? AND id <> ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, fileRoute);
+            preparedStatement.setInt(2, id);
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 exists = true;

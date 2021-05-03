@@ -10,6 +10,8 @@ public interface IReceptionWorkDAO {
     public ArrayList<ReceptionWork> findReceptionWorksByPositiveImpactCA() throws BusinessConnectionException;
     public ArrayList<ReceptionWork> findReceptionWorksByCurpIntegrant(String curp) throws BusinessConnectionException;
     public ReceptionWork findReceptionWorkByTitle(String titleReceptionWork) throws BusinessConnectionException;
-    public boolean validateExistenceOfReceptionWorkTitle(String titleReceptionWork) throws BusinessConnectionException;
-    public boolean validateExistenceOfReceptionWorkFileRoute(String fileRoute) throws BusinessConnectionException;
+    public boolean existsReceptionWorkTitle(String titleReceptionWork) throws BusinessConnectionException;
+    public boolean existsReceptionWorkFileRoute(String fileRoute) throws BusinessConnectionException;
+    public boolean existsReceptionWorkTitleForUpdate(String titleReceptionWork, int id) throws BusinessConnectionException;
+    public boolean existsReceptionWorkFileRouteForUpdate(String fileRoute, int id) throws BusinessConnectionException;
 }

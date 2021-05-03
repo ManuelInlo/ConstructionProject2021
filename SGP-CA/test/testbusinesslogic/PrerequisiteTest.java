@@ -48,7 +48,7 @@ public class PrerequisiteTest {
     @Test
     public void testValidateExistenceOfPrerequisiteDescription() throws BusinessConnectionException{
         PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
-        boolean exists = prerequisiteDAO.validateExistenceOfPrerequisiteDescription("Contemplar las evidencias a tratar", 4);
+        boolean exists = prerequisiteDAO.existsPrerequisiteDescription("Contemplar las evidencias a tratar", 4);
         assertTrue("Prueba mandar a validar la descripción ya existente de un prerequisito", exists);
     }
     

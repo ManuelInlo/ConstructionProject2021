@@ -20,11 +20,11 @@ public class MeetingAssistantDAO implements IMeetingAssistantDAO {
     public MeetingAssistantDAO(){
         dataBaseConnection = new DataBaseConnection();
     }
-    
+
     @Override
     public int saveMeetingAssistant(MeetingAssistant meetingAssistant, int idMeeting) throws BusinessConnectionException{
         String sql = "INSERT INTO meetingAssistant (curp, idMeeting, role) VALUES (?, ?, ?)";
-        int saveResult = 0;
+        int saveResult;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -84,7 +84,7 @@ public class MeetingAssistantDAO implements IMeetingAssistantDAO {
     }
 
     @Override
-    public boolean validateExistenceOfMeetingAssistantRole(String role, int idMeeting) throws BusinessConnectionException {
+    public boolean existsMeetingAssistantRole(String role, int idMeeting) throws BusinessConnectionException {
         String sql = "SELECT 1 FROM meetingAssistant WHERE idMeeting = ? AND role = ?";
         boolean exists = false;
         try{
@@ -103,4 +103,27 @@ public class MeetingAssistantDAO implements IMeetingAssistantDAO {
         }
         return exists;
     }
+    
+    @Override
+    public boolean existsMeetingAssistantRoleForUpdate(String role, int idMeeting, String curp) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM meetingAssistant WHERE idMeeting = ? AND role = ? AND curp <> ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idMeeting);
+            preparedStatement.setString(2, role);
+            preparedStatement.setString(3, curp);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }
+    
 }

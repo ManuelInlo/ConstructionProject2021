@@ -43,7 +43,7 @@ public class MeetingAssistantTest {
     @Test
     public void testValidateExistenceOfMeetingAssistantRole() throws BusinessConnectionException{
         MeetingAssistantDAO meetingAssistantDAO = new MeetingAssistantDAO();
-        boolean exists = meetingAssistantDAO.validateExistenceOfMeetingAssistantRole("Secretario", 5);
+        boolean exists = meetingAssistantDAO.existsMeetingAssistantRole("Secretario", 5);
         assertTrue("Prueba mandar un rol que ya existe de un asistente de reunión", exists);
     }
 }

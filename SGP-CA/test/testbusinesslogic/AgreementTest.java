@@ -74,7 +74,7 @@ public class AgreementTest {
     @Test 
     public void testValidateExistenceOfAgreementDescription() throws BusinessConnectionException{
         AgreementDAO agreementDAO = new AgreementDAO();
-       boolean exists = agreementDAO.validateExistenceOfAgreementDescription("Revisar pendientes del CA", 11);
+       boolean exists = agreementDAO.existsAgreementDescription("Revisar pendientes del CA", 11);
        assertTrue("Prueba mandar a validar una descripción que ya existe en la minuta", exists);
     }
 }

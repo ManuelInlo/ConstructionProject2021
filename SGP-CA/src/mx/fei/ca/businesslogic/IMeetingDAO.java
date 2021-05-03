@@ -13,8 +13,8 @@ public interface IMeetingDAO {
     public ArrayList<Meeting> findLastFiveMeetings() throws BusinessConnectionException;
     public int updateMeeting(Meeting meeting, int idMeeting)throws BusinessConnectionException;
     public String getCurpOfResponsibleMeeting(int idMeeting) throws BusinessConnectionException;
-    public boolean validateExistenceOfMeetingAffair(String meetingAffair) throws BusinessConnectionException;
-    public boolean validateDateAndTimeAvailable(Date meetingDate, Time meetingTime) throws BusinessConnectionException;
-    public boolean validateExistenceOfMeetingAffairForUpdate(String meetingAffair, int idMeeting) throws BusinessConnectionException;
-    public boolean validateDateAndTimeAvailableForUpdate(Date meetingDate, Time meetingTime, int idMeeting) throws BusinessConnectionException;
+    public boolean existsMeetingAffair(String meetingAffair) throws BusinessConnectionException;
+    public boolean existsDateAndTimeAvailable(Date meetingDate, Time meetingTime) throws BusinessConnectionException;
+    public boolean existsMeetingAffairForUpdate(String meetingAffair, int idMeeting) throws BusinessConnectionException;
+    public boolean existsDateAndTimeAvailableForUpdate(Date meetingDate, Time meetingTime, int idMeeting) throws BusinessConnectionException;
 }

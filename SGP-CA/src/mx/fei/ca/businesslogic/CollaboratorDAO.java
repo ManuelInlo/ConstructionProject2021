@@ -84,13 +84,34 @@ public class CollaboratorDAO implements ICollaboratorDAO{
     }
 
     @Override
-    public boolean validateExistenceOfCollaboratorName(String nameCollaborator) throws BusinessConnectionException {
+    public boolean existsCollaboratorName(String nameCollaborator) throws BusinessConnectionException {
         String sql = "SELECT 1 FROM collaborator WHERE nameCollaborator = ?";
         boolean exists = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, nameCollaborator);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }
+
+    @Override
+    public boolean existsCollaboratorNameForUpdate(String nameCollaborator, int idCollaborator) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM collaborator WHERE nameCollaborator = ? AND idCollaborator <> ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, nameCollaborator);
+            preparedStatement.setInt(2, idCollaborator);
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 exists = true;

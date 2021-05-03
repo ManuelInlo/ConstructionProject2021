@@ -107,7 +107,7 @@ public class MeetingTest {
     @Test
     public void testValidateExistenceOfMeetingAffair() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
-        boolean exists = meetingDAO.validateExistenceOfMeetingAffair("Revisar Anteproyecto");
+        boolean exists = meetingDAO.existsMeetingAffair("Revisar Anteproyecto");
         assertTrue("Prueba mandar un asunto que si existe", exists);
     }
     
@@ -130,14 +130,14 @@ public class MeetingTest {
         } catch (ParseException ex) {
             Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boolean available = meetingDAO.validateDateAndTimeAvailable(meetingDate, meetingTime);
+        boolean available = meetingDAO.existsDateAndTimeAvailable(meetingDate, meetingTime);
         assertFalse("Prueba mandar fecha y hora ya registradas", available);
     }
     
     @Test
     public void testValidateExistenceOfMeetingAffairForUpdate() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
-        boolean exists = meetingDAO.validateExistenceOfMeetingAffairForUpdate("Revisar tesis de José", 5);
+        boolean exists = meetingDAO.existsMeetingAffairForUpdate("Revisar tesis de José", 5);
         assertTrue("Prueba mandar un asunto modificado que ya existe", exists);
     }
     
@@ -160,7 +160,7 @@ public class MeetingTest {
         } catch (ParseException ex) {
             Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boolean available = meetingDAO.validateDateAndTimeAvailableForUpdate(meetingDate, meetingTime, 5);
+        boolean available = meetingDAO.existsDateAndTimeAvailableForUpdate(meetingDate, meetingTime, 5);
         assertFalse("Prueba mandar fecha y hora modificadas que ya están registradas", available);
     }
 }

@@ -42,7 +42,7 @@ public class CollaboratorTest {
     @Test 
     public void testValidateExistenceOfCollaboratorName() throws BusinessConnectionException{
         CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
-        boolean exists = collaboratorDAO.validateExistenceOfCollaboratorName("Roberto Méndez Mendoza");
+        boolean exists = collaboratorDAO.existsCollaboratorName("Roberto Méndez Mendoza");
         assertTrue("Prueba mandar a validar el nombre que ya existe de un colaborador", exists);
     }
 }

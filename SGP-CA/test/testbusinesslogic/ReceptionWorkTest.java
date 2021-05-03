@@ -120,14 +120,14 @@ public class ReceptionWorkTest {
     @Test
     public void testValidateExistenceOfReceptionWorkTitle() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
-        boolean exists = receptionWorkDAO.validateExistenceOfReceptionWorkTitle("Impacto de la Inteligencia Artificial en el diseño de software");
+        boolean exists = receptionWorkDAO.existsReceptionWorkTitle("Impacto de la Inteligencia Artificial en el diseño de software");
         assertTrue("Prueba mandar a validar un titulo que ya existe de trabajo recepcional", exists);
     }
     
     @Test
     public void testValidateExistenceOfReceptionWorkFileRoute() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
-        boolean exists = receptionWorkDAO.validateExistenceOfReceptionWorkFileRoute("Prueba, falta ruta");
+        boolean exists = receptionWorkDAO.existsReceptionWorkFileRoute("Prueba, falta ruta");
         assertTrue("Prueba mandar a validar una ruta de archivo que ya existe en un trabajo recepcional", exists);
     }  
 }

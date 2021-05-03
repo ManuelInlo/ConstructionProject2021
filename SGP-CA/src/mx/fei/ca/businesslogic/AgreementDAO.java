@@ -113,14 +113,36 @@ public class AgreementDAO implements IAgreementDAO{
     }
 
     @Override
-    public boolean validateExistenceOfAgreementDescription(String description, int idAgreement) throws BusinessConnectionException {
-        String sql = "SELECT 1 FROM agreement WHERE description = ? AND idAgreement = ?";
+    public boolean existsAgreementDescription(String description, int idMemorandum) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM agreement WHERE description = ? AND idMemorandum = ?";
         boolean exists = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, description);
-            preparedStatement.setInt(2, idAgreement);
+            preparedStatement.setInt(2, idMemorandum);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }
+
+    @Override
+    public boolean existsAgreementDescriptionForUpdate(String description, int idMemorandum, int idAgreement) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM agreement WHERE description = ? AND idMemorandum = ? AND idAgreement <> ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, description);
+            preparedStatement.setInt(2, idMemorandum);
+            preparedStatement.setInt(3, idAgreement);
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 exists = true;
