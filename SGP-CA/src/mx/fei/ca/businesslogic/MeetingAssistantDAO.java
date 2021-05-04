@@ -22,16 +22,17 @@ public class MeetingAssistantDAO implements IMeetingAssistantDAO {
     }
 
     @Override
-    public int saveMeetingAssistant(MeetingAssistant meetingAssistant, int idMeeting) throws BusinessConnectionException{
+    public boolean savedMeetingAssistant(MeetingAssistant meetingAssistant, int idMeeting) throws BusinessConnectionException{
         String sql = "INSERT INTO meetingAssistant (curp, idMeeting, role) VALUES (?, ?, ?)";
-        int saveResult;
+        boolean saveResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,meetingAssistant.getIntegrant().getCurp());
             preparedStatement.setInt(2,idMeeting);
             preparedStatement.setString(3, meetingAssistant.getRole());
-            saveResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            saveResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
         }finally{
@@ -41,16 +42,17 @@ public class MeetingAssistantDAO implements IMeetingAssistantDAO {
     }
     
     @Override 
-    public int updateRoleOfMeetingAssistant(MeetingAssistant meetingAssistant, int idMeeting) throws BusinessConnectionException{
+    public boolean updatedRoleOfMeetingAssistant(MeetingAssistant meetingAssistant, int idMeeting) throws BusinessConnectionException{
         String sql = "UPDATE meetingAssistant SET role = ? WHERE curp = ? and idMeeting = ?";
-        int updateResult = 0;
+        boolean updateResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, meetingAssistant.getRole());
             preparedStatement.setString(2, meetingAssistant.getIntegrant().getCurp());
             preparedStatement.setInt(3, idMeeting);
-            updateResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            updateResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
         }finally{

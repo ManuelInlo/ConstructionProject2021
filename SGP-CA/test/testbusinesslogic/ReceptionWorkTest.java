@@ -14,6 +14,7 @@ import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.InvestigationProject;
 import mx.fei.ca.domain.ReceptionWork;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
@@ -40,7 +41,7 @@ public class ReceptionWorkTest {
         }
         
         Collaborator collaborator = new Collaborator("Roberto Méndez Mendoza", "Estudiante");
-        int idCollaboratorResult = collaboratorDAO.saveCollaborator(collaborator);
+        int idCollaboratorResult = collaboratorDAO.saveCollaboratorAndReturnId(collaborator);
         collaborator.setIdCollaborator(idCollaboratorResult);
         
         InvestigationProject investigationProject = new InvestigationProject();
@@ -56,8 +57,8 @@ public class ReceptionWorkTest {
         receptionWork.setIntegrant(integrant);
         receptionWork.setInvestigationProject(investigationProject);
         
-        int saveResult = receptionWorkDAO.saveReceptionWork(receptionWork);
-        assertEquals("Prueba insertar trabajo recepcional", saveResult, 1);
+        boolean saveResult = receptionWorkDAO.savedReceptionWork(receptionWork);
+        assertTrue("Prueba insertar trabajo recepcional", saveResult);
     }
     
     @Test
@@ -91,8 +92,8 @@ public class ReceptionWorkTest {
         receptionWork.setIntegrant(integrant);
         receptionWork.setInvestigationProject(investigationProject);
         
-        int updateResult = receptionWorkDAO.updateReceptionWorkById(receptionWork, 1);
-        assertEquals("Prueba modificar trabajo recepcional", updateResult, 1);
+        boolean updateResult = receptionWorkDAO.updatedReceptionWorkById(receptionWork, 1);
+        assertTrue("Prueba modificar trabajo recepcional", updateResult);
     }
     
     @Test
@@ -118,16 +119,30 @@ public class ReceptionWorkTest {
     }
     
     @Test
-    public void testValidateExistenceOfReceptionWorkTitle() throws BusinessConnectionException{
+    public void testExistsReceptionWorkTitle() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         boolean exists = receptionWorkDAO.existsReceptionWorkTitle("Impacto de la Inteligencia Artificial en el diseño de software");
         assertTrue("Prueba mandar a validar un titulo que ya existe de trabajo recepcional", exists);
     }
     
     @Test
-    public void testValidateExistenceOfReceptionWorkFileRoute() throws BusinessConnectionException{
+    public void testExistsReceptionWorkFileRoute() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         boolean exists = receptionWorkDAO.existsReceptionWorkFileRoute("Prueba, falta ruta");
         assertTrue("Prueba mandar a validar una ruta de archivo que ya existe en un trabajo recepcional", exists);
     }  
+    
+    @Test
+    public void testExistsReceptionWorkTitleForUpdate() throws BusinessConnectionException{
+        ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
+        boolean exists = receptionWorkDAO.existsReceptionWorkTitleForUpdate("La reeingeniería de software", 1);
+        assertFalse("Prueba mandar a validar un titulo modificado que no existe de trabajo recepcional", exists);
+    }
+    
+    @Test
+    public void testExistsReceptionWorkFileRouteForUpdate() throws BusinessConnectionException{
+        ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
+        boolean exists = receptionWorkDAO.existsReceptionWorkFileRouteForUpdate("Esto es una prueba, falta ruta", 1);
+        assertFalse("Prueba mandar a validar una ruta de archivo modificada que no existe en un trabajo recepcional", exists);
+    } 
 }

@@ -22,16 +22,17 @@ public class PrerequisiteDAO implements IPrerequisiteDAO{
     }
     
     @Override
-    public int savePrerequisite(Prerequisite prerequisite, int idMeeting) throws BusinessConnectionException{
+    public boolean savedPrerequisite(Prerequisite prerequisite, int idMeeting) throws BusinessConnectionException{
         String sql = "INSERT INTO prerequisite (description, prerequisiteManager, idMeeting) VALUES (?, ?, ?)";
-        int saveResult = 0;
+        boolean saveResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, prerequisite.getDescription());
             preparedStatement.setString(2, prerequisite.getPrerequisiteManager());
             preparedStatement.setInt(3, idMeeting);
-            saveResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            saveResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
         }finally{
@@ -41,10 +42,10 @@ public class PrerequisiteDAO implements IPrerequisiteDAO{
     }
     
     @Override
-    public int updatePrerequisite(Prerequisite prerequisite, int idPrerequisite, int idMeeting) throws BusinessConnectionException{
+    public boolean updatedPrerequisite(Prerequisite prerequisite, int idPrerequisite, int idMeeting) throws BusinessConnectionException{
         String sql = "UPDATE prerequisite SET description = ?, prerequisiteManager = ?, idMeeting = ? "
                      + "WHERE idPrerequisite = ?";
-        int updateResult = 0;
+        boolean updateResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -52,7 +53,8 @@ public class PrerequisiteDAO implements IPrerequisiteDAO{
             preparedStatement.setString(2, prerequisite.getPrerequisiteManager());
             preparedStatement.setInt(3, idMeeting);
             preparedStatement.setInt(4, idPrerequisite);
-            updateResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            updateResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
         }finally{
@@ -62,14 +64,15 @@ public class PrerequisiteDAO implements IPrerequisiteDAO{
     }
     
     @Override
-    public int deletePrerequisiteById(int idPrerequisite) throws BusinessConnectionException{
+    public boolean deletedPrerequisiteById(int idPrerequisite) throws BusinessConnectionException{
         String sql = "DELETE FROM prerequisite WHERE idPrerequisite = ?";
-        int deleteResult = 0;
+        boolean deleteResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, idPrerequisite);
-            deleteResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            deleteResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
         }finally{

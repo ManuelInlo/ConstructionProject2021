@@ -39,8 +39,8 @@ public class MeetingTest {
             Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         Meeting meeting = new Meeting(meetingDate, meetingTime, "FEI", "Revisar tesis de José", "Reunión CA");
-        int saveResult = meetingDAO.saveMeeting(meeting, "JCPA940514RDTREOP1");
-        assertEquals("Prueba insertar nueva reunión", saveResult, 1);
+        boolean saveResult = meetingDAO.savedMeeting(meeting, "JCPA940514RDTREOP1");
+        assertTrue("Prueba insertar nueva reunión", saveResult);
     }
     
     @Test
@@ -85,8 +85,8 @@ public class MeetingTest {
             Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         Meeting meeting = new Meeting(meetingDate, meetingTime, "FEI", "Revisar anteproyecto", "Reunión Anteproyecto");
-        int updateResult = meetingDAO.updateMeeting(meeting, 5);
-        assertEquals("Prueba modificar reunión", updateResult, 1);
+        boolean updateResult = meetingDAO.updatedMeeting(meeting, 5);
+        assertTrue("Prueba modificar reunión", updateResult);
     }
     
     @Test
@@ -105,14 +105,14 @@ public class MeetingTest {
     }
     
     @Test
-    public void testValidateExistenceOfMeetingAffair() throws BusinessConnectionException{
+    public void testExistsMeetingAffair() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
         boolean exists = meetingDAO.existsMeetingAffair("Revisar Anteproyecto");
         assertTrue("Prueba mandar un asunto que si existe", exists);
     }
     
     @Test 
-    public void testValidateDateAndTimeAvailable() throws BusinessConnectionException{
+    public void testExistsDateAndTimeAvailable() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
         String date = "12-04-2021";
         String time = "13:30";
@@ -135,14 +135,14 @@ public class MeetingTest {
     }
     
     @Test
-    public void testValidateExistenceOfMeetingAffairForUpdate() throws BusinessConnectionException{
+    public void testExistsMeetingAffairForUpdate() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
         boolean exists = meetingDAO.existsMeetingAffairForUpdate("Revisar tesis de José", 5);
         assertTrue("Prueba mandar un asunto modificado que ya existe", exists);
     }
     
     @Test 
-    public void testValidateDateAndTimeAvailableForUpdate() throws BusinessConnectionException{
+    public void testExistsDateAndTimeAvailableForUpdate() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
         String date = "18-04-2021";
         String time = "13:30";

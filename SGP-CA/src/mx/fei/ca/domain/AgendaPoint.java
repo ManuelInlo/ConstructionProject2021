@@ -19,6 +19,11 @@ public class AgendaPoint {
         this.leader = leader;
     }
 
+    public AgendaPoint(Time startTime, Time endTime) {
+       this.startTime = startTime;
+       this.endTime = endTime;
+    }
+
     public int getIdAgendaPoint() {
         return idAgendaPoint;
     }

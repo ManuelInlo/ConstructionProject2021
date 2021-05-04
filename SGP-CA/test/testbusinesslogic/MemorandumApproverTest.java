@@ -7,6 +7,7 @@ import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.MemorandumApprover;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 
@@ -20,8 +21,8 @@ public class MemorandumApproverTest {
         MemorandumApproverDAO memorandumApproverDAO = new MemorandumApproverDAO();
         Integrant integrant = new Integrant("JCPA940514RDTREOP1");
         MemorandumApprover memorandumApprover = new MemorandumApprover(integrant);
-        int saveResult = memorandumApproverDAO.saveMemorandumApprover(memorandumApprover, 3);
-        assertEquals("Prueba insertar aprovador de minuta", saveResult, 1);
+        boolean saveResult = memorandumApproverDAO.savedMemorandumApprover(memorandumApprover, 3);
+        assertTrue("Prueba insertar aprovador de minuta", saveResult);
     }
     
     public void testFindMemorandumApproversByIdMemorandum() throws BusinessConnectionException{

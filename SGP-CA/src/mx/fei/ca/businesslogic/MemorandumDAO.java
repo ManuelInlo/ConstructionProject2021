@@ -21,16 +21,17 @@ public class MemorandumDAO implements IMemorandumDAO{
     }
     
     @Override
-    public int saveMemorandum(Memorandum memorandum, int idMeeting) throws BusinessConnectionException{
+    public boolean savedMemorandum(Memorandum memorandum, int idMeeting) throws BusinessConnectionException{
         String sql = "INSERT INTO memorandum (pending, note, idMeeting) VALUES (?, ?, ?)";
-        int saveResult = 0;
+        boolean saveResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,memorandum.getPending());
             preparedStatement.setString(2, memorandum.getNote());
             preparedStatement.setInt(3, idMeeting);
-            saveResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            saveResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos",ex);
         }finally{
@@ -40,9 +41,9 @@ public class MemorandumDAO implements IMemorandumDAO{
     }
     
     @Override
-    public int updateMemorandum(Memorandum memorandum, int idMemorandum, int idMeeting) throws BusinessConnectionException{
+    public boolean updatedMemorandum(Memorandum memorandum, int idMemorandum, int idMeeting) throws BusinessConnectionException{
         String sql = "UPDATE memorandum SET pending = ?, note = ?, idMeeting = ? WHERE idMemorandum = ?";
-        int updateResult = 0;
+        boolean updateResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -50,7 +51,8 @@ public class MemorandumDAO implements IMemorandumDAO{
             preparedStatement.setString(2, memorandum.getNote());
             preparedStatement.setInt(3, idMeeting);
             preparedStatement.setInt(4, idMemorandum);
-            updateResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            updateResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos",ex);
         }finally{

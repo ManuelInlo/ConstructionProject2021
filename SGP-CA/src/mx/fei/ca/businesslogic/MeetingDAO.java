@@ -27,10 +27,10 @@ public class MeetingDAO implements IMeetingDAO{
     }
     
     @Override
-    public int saveMeeting(Meeting meeting, String curp) throws BusinessConnectionException{
+    public boolean savedMeeting(Meeting meeting, String curp) throws BusinessConnectionException{
         String sql = "INSERT INTO meeting (meetingDate, meetingTime, meetingPlace, affair, projectName, curp)"
                      + "VALUES (?, ?, ?, ?, ?, ?)";
-        int saveResult = 0;
+        boolean saveResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -40,7 +40,8 @@ public class MeetingDAO implements IMeetingDAO{
             preparedStatement.setString(4, meeting.getAffair());
             preparedStatement.setString(5, meeting.getProjectName());
             preparedStatement.setString(6, curp);
-            saveResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            saveResult = true; 
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
         }finally{
@@ -169,10 +170,10 @@ public class MeetingDAO implements IMeetingDAO{
     }
     
     @Override
-    public int updateMeeting(Meeting meeting, int idMeeting)throws BusinessConnectionException{
+    public boolean updatedMeeting(Meeting meeting, int idMeeting)throws BusinessConnectionException{
         String sql = "UPDATE meeting SET meetingDate = ?, meetingTime = ?, meetingPlace = ?, affair = ?, projectName = ?"
                     + "WHERE idMeeting = ?";
-        int updateResult = 0;
+        boolean updateResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -182,7 +183,8 @@ public class MeetingDAO implements IMeetingDAO{
             preparedStatement.setString(4, meeting.getAffair());
             preparedStatement.setString(5, meeting.getProjectName());
             preparedStatement.setInt(6, idMeeting);
-            updateResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            updateResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
         }finally{

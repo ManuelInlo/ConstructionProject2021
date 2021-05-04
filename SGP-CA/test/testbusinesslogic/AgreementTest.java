@@ -12,6 +12,7 @@ import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
 import mx.fei.ca.domain.Agreement;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
@@ -36,12 +37,12 @@ public class AgreementTest {
         
         Agreement agreement = new Agreement(2, "Revisar pendientes del CA", dateAgreement, "Juan Carlos Pérez"
                                             + "Arriaga");
-        int saveResult = agreementDAO.saveAgreement(agreement, 3);
-        assertEquals("Prueba correcta, si guardó", saveResult, 1);
+        boolean saveResult = agreementDAO.savedAgreement(agreement, 3);
+        assertTrue("Prueba guardar acuerdo", saveResult);
     }
     
     @Test
-    public void testUpdateAgreement() throws BusinessConnectionException{
+    public void testUpdatedAgreement() throws BusinessConnectionException{
         AgreementDAO agreementDAO = new AgreementDAO();
         String date = "01-08-2021";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -53,15 +54,15 @@ public class AgreementTest {
         }
         
         Agreement agreement = new Agreement(1, "Revisar pendientes de metas del CA", dateAgreement, "Juan Carlos Pérez Arriaga");
-        int updateResult = agreementDAO.updateAgreement(agreement, 5, 1);
-        assertEquals("Prueba correcta, si guardó", updateResult, 1);
+        boolean updateResult = agreementDAO.updatedAgreement(agreement, 5, 1);
+        assertTrue("Prueba modificar acuerdo", updateResult);
     }
     
     @Test
-    public void testDeleteAgreementById() throws BusinessConnectionException{
+    public void testDeletedAgreementById() throws BusinessConnectionException{
         AgreementDAO agreementDAO = new AgreementDAO();
-        int deleteResult = agreementDAO.deleteAgreementById(4);
-        assertEquals("Prueba correcta, se eliminó", deleteResult, 1);
+        boolean deleteResult = agreementDAO.deletedAgreementById(4);
+        assertTrue("Prueba borrar acuerdo", deleteResult);
     }
     
     @Test
@@ -72,9 +73,16 @@ public class AgreementTest {
     }
     
     @Test 
-    public void testValidateExistenceOfAgreementDescription() throws BusinessConnectionException{
+    public void testExistsAgreementDescription() throws BusinessConnectionException{
         AgreementDAO agreementDAO = new AgreementDAO();
-       boolean exists = agreementDAO.existsAgreementDescription("Revisar pendientes del CA", 11);
+       boolean exists = agreementDAO.existsAgreementDescription("Revisar pendientes del CA", 3);
        assertTrue("Prueba mandar a validar una descripción que ya existe en la minuta", exists);
+    }
+    
+    @Test 
+    public void testExistsAgreementDescriptionForUpdate() throws BusinessConnectionException{
+        AgreementDAO agreementDAO = new AgreementDAO();
+       boolean exists = agreementDAO.existsAgreementDescriptionForUpdate("Revisar acuerdos de la reunión pasada del CA", 11, 3);
+       assertFalse("Prueba mandar a validar una descripción modificada que no existe en la minuta", exists);
     }
 }

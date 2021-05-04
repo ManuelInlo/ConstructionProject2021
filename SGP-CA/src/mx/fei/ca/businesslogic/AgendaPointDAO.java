@@ -22,10 +22,10 @@ public class AgendaPointDAO implements IAgendaPointDAO{
     }
     
     @Override
-    public int saveAgendaPoint(AgendaPoint agendaPoint, int idMeeting) throws BusinessConnectionException{
+    public boolean savedAgendaPoint(AgendaPoint agendaPoint, int idMeeting) throws BusinessConnectionException{
         String sql = "INSERT INTO agendaPoint (startTime, endTime, number, topic, leader, idMeeting) VALUES "
                      + "(?, ?, ?, ?, ?, ?)";
-        int saveResult = 0;
+        boolean saveResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -35,7 +35,8 @@ public class AgendaPointDAO implements IAgendaPointDAO{
             preparedStatement.setString(4, agendaPoint.getTopic());
             preparedStatement.setString(5, agendaPoint.getLeader());
             preparedStatement.setInt(6, idMeeting);
-            saveResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            saveResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
         }finally{
@@ -45,10 +46,10 @@ public class AgendaPointDAO implements IAgendaPointDAO{
     }
     
     @Override
-    public int updateAgendaPoint(AgendaPoint agendaPoint, int idAgendaPoint, int idMeeting) throws BusinessConnectionException{
+    public boolean updatedAgendaPoint(AgendaPoint agendaPoint, int idAgendaPoint, int idMeeting) throws BusinessConnectionException{
         String sql = "UPDATE agendaPoint SET startTime = ?, endTime = ?, number = ?, topic =?, leader = ?, idMeeting = ? "
                      + "WHERE idAgendaPoint = ?";
-        int updateResult = 0;
+        boolean updateResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -59,7 +60,8 @@ public class AgendaPointDAO implements IAgendaPointDAO{
             preparedStatement.setString(5, agendaPoint.getLeader());
             preparedStatement.setInt(6, idMeeting);
             preparedStatement.setInt(7, idAgendaPoint);
-            updateResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            updateResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
         }finally{
@@ -69,14 +71,15 @@ public class AgendaPointDAO implements IAgendaPointDAO{
     }
     
     @Override
-    public int deleteAgendaPointById(int idAgendaPoint) throws BusinessConnectionException{
+    public boolean deletedAgendaPointById(int idAgendaPoint) throws BusinessConnectionException{
         String sql = "DELETE FROM agreement WHERE idAgendaPoint = ?";
-        int deleteResult = 0;
+        boolean deleteResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, idAgendaPoint);
-            deleteResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            deleteResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
         }finally{

@@ -23,15 +23,16 @@ public class MemorandumApproverDAO implements IMemorandumApproverDAO{
     }
 
     @Override
-    public int saveMemorandumApprover(MemorandumApprover memorandumApprover, int idMemorandum) throws BusinessConnectionException {
+    public boolean savedMemorandumApprover(MemorandumApprover memorandumApprover, int idMemorandum) throws BusinessConnectionException {
         String sql = "INSERT INTO memorandumApprover (curp, idMemorandum) VALUES (?, ?)";
-        int saveResult = 0;
+        boolean saveResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, memorandumApprover.getIntegrant().getCurp());
             preparedStatement.setInt(2, idMemorandum);
-            saveResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            saveResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
         }finally{

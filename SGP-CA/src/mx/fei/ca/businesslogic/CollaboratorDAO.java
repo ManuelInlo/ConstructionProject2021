@@ -21,7 +21,7 @@ public class CollaboratorDAO implements ICollaboratorDAO{
     }
 
     @Override
-    public int saveCollaborator(Collaborator collaborator) throws BusinessConnectionException{
+    public int saveCollaboratorAndReturnId(Collaborator collaborator) throws BusinessConnectionException{
         String sql = "INSERT INTO collaborator (nameCollaborator, position) VALUES (?, ?)";
         int idCollaboratorResult = 0;
         try{
@@ -43,15 +43,16 @@ public class CollaboratorDAO implements ICollaboratorDAO{
     }
     
     @Override
-    public int updateCollaboratorByIdCollaborator(Collaborator collaborator, int idCollaborator) throws BusinessConnectionException{
+    public boolean updatedCollaboratorByIdCollaborator(Collaborator collaborator, int idCollaborator) throws BusinessConnectionException{
         String sql = "UPDATE collaborator SET nameCollaborator = ?, position = ?";
-        int updateResult = 0;
+        boolean updateResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, collaborator.getName());
             preparedStatement.setString(2, collaborator.getPosition());
-            updateResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            updateResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
         }finally{

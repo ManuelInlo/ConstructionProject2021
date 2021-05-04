@@ -24,10 +24,10 @@ public class AgreementDAO implements IAgreementDAO{
     }
     
     @Override
-    public int saveAgreement(Agreement agreement, int idMemorandum) throws BusinessConnectionException{
+    public boolean savedAgreement(Agreement agreement, int idMemorandum) throws BusinessConnectionException{
         String sql = "INSERT INTO agreement (number, description, dateAgreement, responsible, idMemorandum) "
                      + "VALUES (?, ?, ?, ?, ?)";
-        int saveResult = 0;
+        boolean saveResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -36,7 +36,8 @@ public class AgreementDAO implements IAgreementDAO{
             preparedStatement.setDate(3, agreement.getDateAgreement());
             preparedStatement.setString(4, agreement.getResponsible());
             preparedStatement.setInt(5, idMemorandum);
-            saveResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            saveResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
         }finally{
@@ -73,14 +74,15 @@ public class AgreementDAO implements IAgreementDAO{
     }
     
     @Override
-    public int deleteAgreementById(int idAgreement) throws BusinessConnectionException{
+    public boolean deletedAgreementById(int idAgreement) throws BusinessConnectionException{
         String sql = "DELETE FROM agreement WHERE idAgreement = ?";
-        int deleteResult = 0;
+        boolean deleteResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, idAgreement);
-            deleteResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            deleteResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
         }finally{
@@ -90,10 +92,10 @@ public class AgreementDAO implements IAgreementDAO{
     }
     
     @Override
-    public int updateAgreement(Agreement agreement, int idAgreement, int idMemorandum) throws BusinessConnectionException{
+    public boolean updatedAgreement(Agreement agreement, int idAgreement, int idMemorandum) throws BusinessConnectionException{
         String sql = "UPDATE agreement SET number = ?, description = ?, dateAgreement = ?, responsible = ?, idMemorandum = ?"
                      + " WHERE idAgreement = ?";
-        int updateResult = 0;
+        boolean updateResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -103,7 +105,8 @@ public class AgreementDAO implements IAgreementDAO{
             preparedStatement.setString(4, agreement.getResponsible());
             preparedStatement.setInt(5, idMemorandum);
             preparedStatement.setInt(6, idAgreement);
-            updateResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            updateResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
         }finally{

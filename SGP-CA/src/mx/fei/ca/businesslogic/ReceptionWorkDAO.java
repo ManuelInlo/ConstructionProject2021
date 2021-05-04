@@ -25,10 +25,10 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
     }
     
     @Override
-    public int saveReceptionWork(ReceptionWork receptionWork) throws BusinessConnectionException{
+    public boolean savedReceptionWork(ReceptionWork receptionWork) throws BusinessConnectionException{
         String sql = "INSERT INTO receptionwork (impactCA, titleReceptionWork, fileRoute, startDate, endDate,"
                      + "grade, workType, actualState, idProject, curp, idCollaborator) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        int saveResult = 0;
+        boolean saveResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -43,7 +43,8 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
             preparedStatement.setInt(9, receptionWork.getInvestigationProject().getIdProject());
             preparedStatement.setString(10, receptionWork.getIntegrant().getCurp());
             preparedStatement.setInt(11, receptionWork.getCollaborator().getIdCollaborator());
-            saveResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            saveResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
         }finally{
@@ -53,10 +54,10 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
     }
 
     @Override
-    public int updateReceptionWorkById(ReceptionWork receptionWork, int id) throws BusinessConnectionException {
+    public boolean updatedReceptionWorkById(ReceptionWork receptionWork, int id) throws BusinessConnectionException {
         String sql = "UPDATE receptionWork SET impactCA = ?, titleReceptionWork = ?, fileRoute = ?, startDate = ?, endDate = ?, "
                     + "grade = ?, workType = ?, actualState = ?, idProject = ?, curp = ?, idCollaborator = ? WHERE id = ?";
-        int updateResult = 0;
+        boolean updateResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -72,7 +73,8 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
             preparedStatement.setString(10, receptionWork.getIntegrant().getCurp());
             preparedStatement.setInt(11, receptionWork.getCollaborator().getIdCollaborator());
             preparedStatement.setInt(12, id);
-            updateResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            updateResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
         }finally{

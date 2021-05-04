@@ -7,9 +7,9 @@ import mx.fei.ca.domain.Prerequisite;
 
 
 public interface IPrerequisiteDAO {
-    public int savePrerequisite(Prerequisite prerequisite, int idMeeting) throws BusinessConnectionException;
-    public int updatePrerequisite(Prerequisite prerequisite, int idPrerequisite, int idMeeting) throws BusinessConnectionException;
-    public int deletePrerequisiteById(int idPrerequisite)throws BusinessConnectionException;
+    public boolean savedPrerequisite(Prerequisite prerequisite, int idMeeting) throws BusinessConnectionException;
+    public boolean updatedPrerequisite(Prerequisite prerequisite, int idPrerequisite, int idMeeting) throws BusinessConnectionException;
+    public boolean deletedPrerequisiteById(int idPrerequisite)throws BusinessConnectionException;
     public ArrayList<Prerequisite> findPrerequisitesByIdMeeting(int idMeeting) throws BusinessConnectionException;
     public boolean existsPrerequisiteDescription(String description, int idMeeting) throws BusinessConnectionException;
     public boolean existsPrerequisiteDescriptionForUpdate(String description, int idMeeting, int idPrerequiste) throws BusinessConnectionException;
