@@ -1,0 +1,167 @@
+
+package mx.fei.ca.presentation;
+
+import java.net.URL;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import mx.fei.ca.businesslogic.MeetingDAO;
+import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
+import mx.fei.ca.domain.Integrant;
+import mx.fei.ca.domain.Meeting;
+
+/**
+ * FXML Controller class
+ *
+ * @author david
+ */
+public class WindowMeetingHistoryController implements Initializable {
+
+    @FXML
+    private TextField tfMeetingProject;
+    @FXML
+    private DatePicker dpMeetingDate;
+    @FXML
+    private Button btnExit;
+    @FXML
+    private TableView<Meeting> tbMeetingHistory;
+    @FXML
+    private TableColumn<Meeting, String> columnProject;
+    @FXML
+    private TableColumn<Meeting, Date> columnDate;
+    @FXML
+    private TableColumn<Meeting, Time> columnTime;
+    
+    private enum TypeError{
+        EMPTYFIELD, INVALIDSTRING;
+    }
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb){
+        columnProject.setCellValueFactory(new PropertyValueFactory("projectName"));
+        columnDate.setCellValueFactory(new PropertyValueFactory("meetingDate"));
+        columnTime.setCellValueFactory(new PropertyValueFactory("meetingTime"));
+        try{
+            MeetingDAO meetingDAO = new MeetingDAO();
+            ArrayList<Meeting> listMeetings = meetingDAO.findLastFiveMeetings();
+            fillMeetingHistory(listMeetings);
+        } catch (BusinessConnectionException ex) {
+            Logger.getLogger(WindowMeetingHistoryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }  
+    
+    @FXML
+    private void fillMeetingHistory(ArrayList<Meeting> listMeetings) throws BusinessConnectionException{
+        ObservableList<Meeting> meetings = FXCollections.observableArrayList(listMeetings);
+        tbMeetingHistory.setItems(meetings);
+    }
+    
+    @FXML
+    private void searchMeeting(ActionEvent event) throws BusinessConnectionException{
+        MeetingDAO meetingDAO = new MeetingDAO();
+        ArrayList<Meeting> listMeetings;
+        if(!existsEmptyField() && !existsInvalidString()){
+            if(dpMeetingDate.getValue() == null){
+                listMeetings = meetingDAO.findMeetingsByProjectName(tfMeetingProject.getText());
+            }else{
+                Date meetingDate = parseToSqlDate(java.util.Date.from(dpMeetingDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                listMeetings = meetingDAO.findMeetingsByProjectNameAndDate(tfMeetingProject.getText(), meetingDate);
+            }
+            if(listMeetings.isEmpty()){
+                showNoMatchAlert();
+            }else{
+                fillMeetingHistory(listMeetings);
+            }
+            cleanFields();
+        }
+    }
+    
+    private java.sql.Date parseToSqlDate(java.util.Date date){
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+        return sqlDate;
+    }
+
+    @FXML
+    private void scheduleMeeting(ActionEvent event){
+        
+    }
+
+    @FXML
+    private void exitMeetingHistory(ActionEvent event){
+        Stage stage = (Stage) this.btnExit.getScene().getWindow();
+        stage.close();
+    }
+    
+    @FXML
+    private boolean existsEmptyField(){
+        boolean emptyField = false;
+        if(tfMeetingProject.getText().isEmpty()){
+            emptyField = true;
+            TypeError typeError = TypeError.EMPTYFIELD;
+            showInvalidFieldAlert(typeError);
+        }
+        return emptyField;
+    }
+    
+    @FXML
+    private boolean existsInvalidString(){
+        boolean invalidString = false;
+        Pattern pattern = Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s]+$");
+        Matcher matcher = pattern.matcher(tfMeetingProject.getText());
+        if(!matcher.find()){
+           invalidString = true;
+           TypeError typeError = TypeError.INVALIDSTRING;
+           showInvalidFieldAlert(typeError);
+        }
+        return invalidString;
+    }
+    
+    @FXML
+    private void showInvalidFieldAlert(TypeError typeError){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setTitle("Campo inválido");
+        if(typeError == TypeError.EMPTYFIELD){
+            alert.setContentText("Existe campo vacío, llena el campo para poder buscar reunión");
+        }
+        if(typeError == TypeError.INVALIDSTRING){
+            alert.setContentText("Existe caracter inválido, revisa el texto para poder buscar reunión");
+        }
+        alert.showAndWait();
+    }
+    
+    @FXML
+    private void showNoMatchAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setTitle("Sin coincidencias");
+        alert.setContentText("No se encontrarón coincidencias con la reunión buscada");
+        alert.showAndWait();
+    }
+    
+    @FXML
+    private void cleanFields(){
+        tfMeetingProject.clear();
+        dpMeetingDate.getEditor().clear();
+    }
+    
+}

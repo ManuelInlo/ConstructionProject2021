@@ -13,18 +13,20 @@ public class Meeting {
     private String meetingPlace;
     private String affair;
     private String projectName;
+    private String state;
     private ArrayList<AgendaPoint> agendaPoints; 
     private Memorandum memorandum;
     private ArrayList<Prerequisite> prerequisites;
     private ArrayList<MeetingAssistant> assistants;
     
 
-    public Meeting(Date meetingDate, Time meetingTime, String meetingPlace, String affair, String projectName) {
+    public Meeting(Date meetingDate, Time meetingTime, String meetingPlace, String affair, String projectName, String state) {
         this.meetingDate = meetingDate;
         this.meetingTime = meetingTime;
         this.meetingPlace = meetingPlace;
         this.affair = affair;
         this.projectName = projectName;
+        this.state = state;
     }
 
     public int getIdMeeting() {
@@ -51,6 +53,10 @@ public class Meeting {
         return projectName;
     }
 
+    public String getState() {
+        return state;
+    }
+    
     public ArrayList<AgendaPoint> getAgendaPoints() {
         return agendaPoints;
     }
@@ -90,6 +96,10 @@ public class Meeting {
     public void setProjectName(String projectName) {
         this.projectName = projectName;
     } 
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public void setAgendaPoints(ArrayList<AgendaPoint> agendaPoints) {
         this.agendaPoints = agendaPoints;

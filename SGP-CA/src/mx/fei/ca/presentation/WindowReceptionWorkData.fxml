@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="446.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowReceptionWorkDataController">
+   <children>
+      <Pane prefHeight="70.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">
+         <children>
+            <Separator layoutY="62.0" minHeight="-Infinity" prefHeight="10.0" prefWidth="800.0" />
+            <Label layoutX="14.0" layoutY="27.0" text="Sistema Gestor de Cuerpo Academico">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="715.0" layoutY="27.0" text="UserXXXX">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutY="70.0" prefHeight="426.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">
+         <children>
+            <Separator layoutY="386.0" prefHeight="10.0" prefWidth="800.0" />
+            <Label layoutX="220.0" layoutY="404.0" text="Facultad de Estadistica e Informática - Universidad  Veracruzana">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <Label layoutX="14.0" layoutY="14.0" text="DATOS DE EVIDENCIA">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="55.0" text="Tipo de evidencia: ">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="297.0" layoutY="55.0" text="Impacto al CA: ">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Pane layoutX="25.0" layoutY="90.0" prefHeight="254.0" prefWidth="737.0" style="-fx-background-color: #A8CCE6;">
+               <children>
+                  <Label layoutX="15.0" layoutY="21.0" text="Título de evidencia:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="15.0" layoutY="66.0" text="Tipo de trabajo:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="15.0" layoutY="111.0" text="Estado actual:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="376.0" layoutY="21.0" text="Fecha inicio:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="376.0" layoutY="66.0" text="Fecha fin:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="376.0" layoutY="111.0" text="Grado:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="15.0" layoutY="156.0" text="Autor:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="15.0" layoutY="201.0" text="Cargo autor:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="376.0" layoutY="156.0" text="Proyecto de investigación:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="376.0" layoutY="201.0" text="Ruta del archivo:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbTitleEvidence" layoutX="15.0" layoutY="40.0" />
+                  <Label fx:id="lbTypeWork" layoutX="15.0" layoutY="85.0" />
+                  <Label fx:id="lbActualState" layoutX="15.0" layoutY="130.0" />
+                  <Label fx:id="lbAuthor" layoutX="15.0" layoutY="175.0" />
+                  <Label fx:id="lbPositionAuthor" layoutX="15.0" layoutY="220.0" />
+                  <Label fx:id="lbStartDate" layoutX="376.0" layoutY="40.0" />
+                  <Label fx:id="lbEndDate" layoutX="376.0" layoutY="85.0" />
+                  <Label fx:id="lbGrade" layoutX="376.0" layoutY="130.0" />
+                  <Label fx:id="lbInvestigationProject" layoutX="376.0" layoutY="175.0" />
+                  <Label fx:id="lbFileRoute" layoutX="376.0" layoutY="220.0" />
+               </children>
+            </Pane>
+            <Button fx:id="btnExit" layoutX="702.0" layoutY="361.0" mnemonicParsing="false" onAction="#closeReceptionWorkData" prefHeight="25.0" prefWidth="84.0" text="Salir" />
+            <Button fx:id="btnModify" layoutX="702.0" layoutY="52.0" mnemonicParsing="false" onAction="#modifyReceptionWork" prefHeight="25.0" prefWidth="84.0" text="Modificar" />
+            <Label fx:id="lbTypeEvidence" layoutX="135.0" layoutY="56.0" />
+            <Label fx:id="lbImpactCA" layoutX="400.0" layoutY="56.0" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

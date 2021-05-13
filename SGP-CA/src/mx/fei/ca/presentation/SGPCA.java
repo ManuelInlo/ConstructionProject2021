@@ -11,15 +11,24 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import mx.fei.ca.businesslogic.ReceptionWorkDAO;
+import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
+import mx.fei.ca.domain.ReceptionWork;
 
 public class SGPCA extends Application {
     
     @Override
-    public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("WindowAddReceptionWork.fxml"));
-        Scene scene = new Scene(root);
+    public void start(Stage stage) throws IOException, BusinessConnectionException {
+       // Parent root = FXMLLoader.load(getClass().getResource("WindowReceptionWorkData.fxml"));
+        //Solo es de prueba para ver que funcione la ventana
+       // ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
+        //ReceptionWork receptionWork = receptionWorkDAO.findReceptionWorkByTitle("Impacto de la Inteligencia Artificial en el diseño de software");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMeetingHistory.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.setResizable(false);
+       // WindowReceptionWorkDataController windowReceptionWorkDataController = (WindowReceptionWorkDataController) fxmlLoader.getController();
+        //windowReceptionWorkDataController.showReceptionWorkData(receptionWork);
         stage.show();
     }
 

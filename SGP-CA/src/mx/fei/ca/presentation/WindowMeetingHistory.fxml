@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="446.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowMeetingHistoryController">
+   <children>
+      <Pane prefHeight="70.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">
+         <children>
+            <Label layoutX="14.0" layoutY="27.0" text="Sistema Gestor de Cuerpo Académico">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="715.0" layoutY="27.0" text="UserXXX">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Separator layoutY="63.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="9.0" prefWidth="800.0" />
+         </children>
+      </Pane>
+      <Pane layoutY="70.0" prefHeight="416.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">
+         <children>
+            <Pane layoutY="387.0" prefHeight="30.0" prefWidth="800.0">
+               <children>
+                  <Label layoutX="220.0" layoutY="8.0" text="Facultad de Estadistica e Informática - Universidad  Veracruzana">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Separator layoutY="386.0" prefHeight="3.0" prefWidth="800.0" />
+            <Label layoutX="14.0" layoutY="14.0" text="HISTORIAL DE REUNIONES">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="52.0" text="Nombre del proyecto de reunión:">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="482.0" layoutY="52.0" text="Fecha:">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="482.0" layoutY="75.0" text="*Este campo no es obligatorio " />
+            <TextField fx:id="tfMeetingProject" layoutX="229.0" layoutY="49.0" minHeight="-Infinity" prefHeight="25.0" prefWidth="225.0" promptText="Escribe el proyecto de reunión" />
+            <DatePicker fx:id="dpMeetingDate" layoutX="526.0" layoutY="49.0" prefHeight="25.0" prefWidth="129.0" />
+            <Button fx:id="btnSearch" layoutX="683.0" layoutY="47.0" mnemonicParsing="false" onAction="#searchMeeting" prefHeight="29.0" prefWidth="103.0" text="Buscar">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnScheduleMeeting" layoutX="682.0" layoutY="309.0" mnemonicParsing="false" onAction="#scheduleMeeting" text="Agendar reunión" />
+            <Button fx:id="btnExit" layoutX="683.0" layoutY="348.0" mnemonicParsing="false" onAction="#exitMeetingHistory" prefHeight="25.0" prefWidth="103.0" text="Salir">
+               <font>
+                  <Font name="System Bold" size="11.0" />
+               </font>
+            </Button>
+            <TableView fx:id="tbMeetingHistory" layoutX="14.0" layoutY="108.0" prefHeight="265.0" prefWidth="661.0" style="-fx-background-color: #A8CCE6;">
+              <columns>
+                <TableColumn fx:id="columnProject" prefWidth="259.0" text="Proyecto" />
+                <TableColumn fx:id="columnDate" prefWidth="180.0" text="Fecha" />
+                  <TableColumn fx:id="columnTime" prefWidth="207.0" text="Hora" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

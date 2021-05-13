@@ -28,8 +28,8 @@ public class MeetingDAO implements IMeetingDAO{
     
     @Override
     public boolean savedMeeting(Meeting meeting, String curp) throws BusinessConnectionException{
-        String sql = "INSERT INTO meeting (meetingDate, meetingTime, meetingPlace, affair, projectName, curp)"
-                     + "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO meeting (meetingDate, meetingTime, meetingPlace, affair, projectName, state, curp)"
+                     + "VALUES (?, ?, ?, ?, ?, ?, ?)";
         boolean saveResult = false;
         try{
             connection = dataBaseConnection.getConnection();
@@ -39,7 +39,8 @@ public class MeetingDAO implements IMeetingDAO{
             preparedStatement.setString(3, meeting.getMeetingPlace());
             preparedStatement.setString(4, meeting.getAffair());
             preparedStatement.setString(5, meeting.getProjectName());
-            preparedStatement.setString(6, curp);
+            preparedStatement.setString(6, meeting.getState());
+            preparedStatement.setString(7, curp);
             preparedStatement.executeUpdate();
             saveResult = true; 
         }catch(SQLException ex){
@@ -70,7 +71,8 @@ public class MeetingDAO implements IMeetingDAO{
                 String meetingPlace = resultSet.getString("meetingPlace");
                 String affair = resultSet.getString("affair");
                 String projectName = resultSet.getString("projectName");
-                Meeting meeting = new Meeting(meetingDate, meetingTime, meetingPlace, affair, projectName);
+                String state = resultSet.getString("state");
+                Meeting meeting = new Meeting(meetingDate, meetingTime, meetingPlace, affair, projectName, state);
                 ArrayList<AgendaPoint> agendaPoints = agendaPointDAO.findAgendaPointsByIdMeeting(idMeeting);
                 ArrayList<Prerequisite> prerequisites = prerequisiteDAO.findPrerequisitesByIdMeeting(idMeeting);
                 ArrayList<MeetingAssistant> assistants = meetingAssistantDAO.findMeetingAssistantsByIdMeeting(idMeeting);
@@ -110,7 +112,8 @@ public class MeetingDAO implements IMeetingDAO{
                 Time meetingTime = resultSet.getTime("meetingTime");
                 String meetingPlace = resultSet.getString("meetingPlace");
                 String affair = resultSet.getString("affair");
-                Meeting meeting = new Meeting(meetingDate, meetingTime, meetingPlace, affair, projectName);
+                String state = resultSet.getString("state");
+                Meeting meeting = new Meeting(meetingDate, meetingTime, meetingPlace, affair, projectName,state);
                 ArrayList<AgendaPoint> agendaPoints = agendaPointDAO.findAgendaPointsByIdMeeting(idMeeting);
                 ArrayList<Prerequisite> prerequisites = prerequisiteDAO.findPrerequisitesByIdMeeting(idMeeting);
                 ArrayList<MeetingAssistant> assistants = meetingAssistantDAO.findMeetingAssistantsByIdMeeting(idMeeting);
@@ -149,7 +152,8 @@ public class MeetingDAO implements IMeetingDAO{
                 Time meetingTime = resultSet.getTime("meetingTime");
                 String meetingPlace = resultSet.getString("meetingPlace");
                 String affair = resultSet.getString("affair");
-                Meeting meeting = new Meeting(meetingDate, meetingTime, meetingPlace, affair, projectName);
+                String state = resultSet.getString("state");
+                Meeting meeting = new Meeting(meetingDate, meetingTime, meetingPlace, affair, projectName, state);
                 ArrayList<AgendaPoint> agendaPoints = agendaPointDAO.findAgendaPointsByIdMeeting(idMeeting);
                 ArrayList<Prerequisite> prerequisites = prerequisiteDAO.findPrerequisitesByIdMeeting(idMeeting);
                 ArrayList<MeetingAssistant> assistants = meetingAssistantDAO.findMeetingAssistantsByIdMeeting(idMeeting);
@@ -191,6 +195,25 @@ public class MeetingDAO implements IMeetingDAO{
             dataBaseConnection.closeConnection();
         }
         return updateResult;
+    }
+    
+    @Override 
+    public boolean updatedStateOfMeeting(String state, int idMeeting)throws BusinessConnectionException{
+        String sql = "UPDATE meeting SET state = ? WHERE idMeeting = ?";
+        boolean updateStateResult = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, state);
+            preparedStatement.setInt(2, idMeeting);
+            preparedStatement.executeUpdate();
+            updateStateResult = true;
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return updateStateResult;
     }
 
     @Override

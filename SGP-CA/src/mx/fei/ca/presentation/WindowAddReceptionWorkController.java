@@ -16,10 +16,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.CollaboratorDAO;
 import mx.fei.ca.businesslogic.ReceptionWorkDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
@@ -57,6 +60,13 @@ public class WindowAddReceptionWorkController implements Initializable {
     private ComboBox cbGrade;
     @FXML
     private ComboBox cbPositionAuthor;
+    @FXML
+    private Button btnCancel;
+    
+    private enum TypeError{
+        EMPTYFIELD, INVALIDSTRING, MISSINGSELECTION, MISSINGDATE, OVERDATE, INCONSISTENTDATE, TITLEDUPLICATE, 
+        FILEROUTEDUPLICATE, COLLABORATORDUPLICATE;
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -103,17 +113,20 @@ public class WindowAddReceptionWorkController implements Initializable {
     @FXML
     public void saveReceptionWork(ActionEvent event) throws BusinessConnectionException {
         if(!existMissingSelection() && !existsEmptyFields() && !existsInvalidStrings() && !existInvalidDates()){
+            Date endDate = null;
             String impactCA = cbImpactCA.getSelectionModel().getSelectedItem().toString();
             String titleReceptionWork = tfTitleReceptionWork.getText();
             String fileRoute = tfFileRoute.getText();
             Date startDate = parseToSqlDate(java.util.Date.from(dpStartDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-            Date endDate = parseToSqlDate(java.util.Date.from(dpEndDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
             String grade = cbGrade.getSelectionModel().getSelectedItem().toString();
             String workType = cbType.getSelectionModel().getSelectedItem().toString();
             String actualState = cbActualState.getSelectionModel().getSelectedItem().toString();
             String nameAuthor = tfAuthor.getText();
             String positionAuthor = cbPositionAuthor.getSelectionModel().getSelectedItem().toString();
             String nameInvestigationProject = cbInvestigationProject.getSelectionModel().getSelectedItem().toString();
+            if(cbActualState.getSelectionModel().getSelectedItem().toString().equals("Terminado")){
+               endDate = parseToSqlDate(java.util.Date.from(dpEndDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())); 
+            }
             
             Collaborator collaborator = new Collaborator(nameAuthor, positionAuthor);
             InvestigationProject investigationProject = new InvestigationProject();
@@ -138,17 +151,24 @@ public class WindowAddReceptionWorkController implements Initializable {
         
     }
     
+    @FXML
+    private void closeReceptionWorkRegistration(ActionEvent event){
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
+    }
+    
     private java.sql.Date parseToSqlDate(java.util.Date date){
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         return sqlDate;
     }
     
-    @FXML
     private boolean existsEmptyFields(){
         boolean emptyFields = false;
         if(tfTitleReceptionWork.getText().isEmpty() || tfFileRoute.getText().isEmpty() || tfAuthor.getText().isEmpty()){
             emptyFields = true;
-            showEmptyFieldsAlert();
+            TypeError typeError = TypeError.EMPTYFIELD;
+            showInvalidFieldAlert(typeError);
         }
         return emptyFields;
     }
@@ -157,7 +177,8 @@ public class WindowAddReceptionWorkController implements Initializable {
         boolean invalidStrings = false;
         if(existsInvalidCharacters(tfTitleReceptionWork.getText()) || existsInvalidCharacters(tfAuthor.getText())){
             invalidStrings = true;
-            showInvalidStringsAlert();
+            TypeError typeError = TypeError.INVALIDSTRING;
+            showInvalidFieldAlert(typeError);
         }
         return invalidStrings;
     }
@@ -177,7 +198,8 @@ public class WindowAddReceptionWorkController implements Initializable {
            cbType.getSelectionModel().getSelectedIndex() < 0 || cbActualState.getSelectionModel().getSelectedIndex() < 0 ||
            cbGrade.getSelectionModel().getSelectedIndex() < 0 || cbPositionAuthor.getSelectionModel().getSelectedIndex() < 0){
             missingSelection = true;
-            showMissingSelectionAlert();
+            TypeError typeError = TypeError.MISSINGSELECTION;
+            showInvalidFieldAlert(typeError);
         }
         return missingSelection;
     }
@@ -189,9 +211,8 @@ public class WindowAddReceptionWorkController implements Initializable {
                 invalidDates = true;
             }
         }else{
-            if(existMissingDate(dpStartDate) || !existMissingDate(dpEndDate)){
+            if(existMissingDate(dpStartDate) || existLeftOverDateSelection(dpEndDate)){
                 invalidDates = true;
-                showOverDateAlert();
             }
         }
         return invalidDates;
@@ -201,12 +222,22 @@ public class WindowAddReceptionWorkController implements Initializable {
         boolean missingDate = false;
         if(datePicker.getValue() == null){
             missingDate = true;
-            showMissingDateAlert();
+            TypeError typeError = TypeError.MISSINGDATE;
+            showInvalidFieldAlert(typeError);
         }
         return missingDate;
     }
     
-    @FXML
+    private boolean existLeftOverDateSelection(DatePicker datePicker){
+        boolean selection = false;
+        if(datePicker.getValue() != null){
+            selection = true;
+            TypeError typeError = TypeError.OVERDATE;
+            showInvalidFieldAlert(typeError);
+        }
+        return selection;
+    }
+    
     private boolean existInconsistentDates(){
         boolean inconsistentDates = false;
         int startDay = dpStartDate.getValue().getDayOfMonth();
@@ -217,7 +248,8 @@ public class WindowAddReceptionWorkController implements Initializable {
         int endYear = dpEndDate.getValue().getYear();
         if(startDay > endDay && startMonth >= endMonth && startYear >= endYear){
             inconsistentDates = true;
-            showInconsistentDatesAlert();
+            TypeError typeError = TypeError.INCONSISTENTDATE;
+            showInvalidFieldAlert(typeError);
         }
         return inconsistentDates;
     }
@@ -231,17 +263,20 @@ public class WindowAddReceptionWorkController implements Initializable {
         boolean collaboratorNameDuplicate = false;
         if(receptionWorkDAO.existsReceptionWorkTitle(receptionWork.getTitleReceptionWork())){
             receptionWorkTitleDuplicate = true;
-            showTitleReceptionWorkDuplicateAlert();
+            TypeError typeError = TypeError.TITLEDUPLICATE;
+            showInvalidFieldAlert(typeError);
         }
            
         if(receptionWorkDAO.existsReceptionWorkFileRoute(receptionWork.getFileRoute())){
             fileRouteDuplicate = true;
-            showFileRouteDuplicateAlert();
+            TypeError typeError = TypeError.FILEROUTEDUPLICATE;
+            showInvalidFieldAlert(typeError);
         }
         
         if(collaboratorDAO.existsCollaboratorName(collaborator.getName())){
             collaboratorNameDuplicate = true;
-            showCollaboratorNameDuplicateAlert();
+            TypeError typeError = TypeError.COLLABORATORDUPLICATE;
+            showInvalidFieldAlert(typeError);
         }
         
         if(receptionWorkTitleDuplicate || fileRouteDuplicate || collaboratorNameDuplicate){
@@ -251,85 +286,47 @@ public class WindowAddReceptionWorkController implements Initializable {
         return duplicateValues;
     }
     
-    @FXML
-    private void showEmptyFieldsAlert(){
+    @FXML 
+    private void showInvalidFieldAlert(TypeError typeError){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
         alert.setTitle("Campo inválido");
-        alert.setContentText("Existen campos vacíos, llena los campos para poder guardar");
-        alert.showAndWait();
-    }
-    
-    @FXML
-    private void showMissingSelectionAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(null);
-        alert.setTitle("Campo inválido");
-        alert.setContentText("Existe selección de campo faltante, selecciona los campos para poder guardar");
-        alert.showAndWait();
-    }
-    
-    @FXML
-    private void showInvalidStringsAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(null);
-        alert.setTitle("Campo inválido");
-        alert.setContentText("Existen caracteres inválidos, revisa los textos para poder guardar");
-        alert.showAndWait();
-    }
-    
-    @FXML
-    private void showMissingDateAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(null);
-        alert.setTitle("Campo inválido");
-        alert.setContentText("Existe fecha faltante, selecciona las fechas para poder guardar");
-        alert.showAndWait();
-    }
-    
-    @FXML
-    private void showInconsistentDatesAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(null);
-        alert.setTitle("Campo inválido");
-        alert.setContentText("La fecha de inicio es mayor a la fecha de fin, corrige campos para poder guardar");
-        alert.showAndWait();
-    }
-    
-    @FXML
-    private void showOverDateAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(null);
-        alert.setTitle("Campo inválido");
-        alert.setContentText("El trabajo recepcional está en proceso, no puedes guardar una fecha de fin");
-        alert.showAndWait();
-    }
-    
-    @FXML
-    private void showTitleReceptionWorkDuplicateAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(null);
-        alert.setTitle("Campo inválido");
-        alert.setContentText("El título del trabajo recepcional ya se encuentra registrado en el sistema");
-        alert.showAndWait();
-    }
-    
-    @FXML
-    private void showFileRouteDuplicateAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(null);
-        alert.setTitle("Campo inválido");
-        alert.setContentText("La ruta de archivo del trabajo recepcional ya se encuentra registrado en otro trabajo recepcional");
-        alert.showAndWait();
-    }
-    
-    @FXML
-    private void showCollaboratorNameDuplicateAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(null);
-        alert.setTitle("Campo inválido");
-        alert.setContentText("El estudiante ya cuenta con un trabajo recepcional registrado en el sistema");
-        alert.showAndWait();
+        if(typeError == TypeError.EMPTYFIELD){
+          alert.setContentText("Existen campos vacíos, llena los campos para poder guardar");  
+        }
+        
+        if(typeError == TypeError.INVALIDSTRING){
+            alert.setContentText("Existen caracteres inválidos, revisa los textos para poder guardar");
+        }
+        
+        if(typeError == TypeError.MISSINGSELECTION){
+            alert.setContentText("Existe selección de campo faltante, selecciona los campos para poder guardar");
+        }
+        
+        if(typeError == TypeError.MISSINGDATE){
+            alert.setContentText("Existe fecha faltante, selecciona las fechas para poder guardar");
+        }
+        
+        if(typeError == TypeError.INCONSISTENTDATE){
+            alert.setContentText("La fecha de inicio es mayor a la fecha de fin, corrige campos para poder guardar");
+        }
+        
+        if(typeError == TypeError.OVERDATE){
+            alert.setContentText("El trabajo recepcional está en proceso, no puedes guardar una fecha de fin");
+        }
+        
+        if(typeError == TypeError.TITLEDUPLICATE){
+            alert.setContentText("El título del trabajo recepcional ya se encuentra registrado en el sistema");
+        }
+        
+        if(typeError == TypeError.FILEROUTEDUPLICATE){
+            alert.setContentText("La ruta de archivo del trabajo recepcional ya se encuentra registrado en otro trabajo recepcional");
+        }
+
+        if(typeError == TypeError.COLLABORATORDUPLICATE){
+            alert.setContentText("El estudiante ya cuenta con un trabajo recepcional registrado en el sistema");
+        }
+        alert.showAndWait();    
     }
     
     @FXML
