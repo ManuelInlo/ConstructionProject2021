@@ -11,6 +11,7 @@ import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Meeting;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
@@ -39,8 +40,8 @@ public class MeetingTest {
             Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         Meeting meeting = new Meeting(meetingDate, meetingTime, "FEI", "Revisar pendientes del plan", "Reunión CA", "Registrada");
-        boolean saveResult = meetingDAO.savedMeeting(meeting, "JCPA940514RDTREOP1");
-        assertTrue("Prueba insertar nueva reunión", saveResult);
+        int idMeetingResult = meetingDAO.saveAndReturnIdNewMeeting(meeting, "JCPA940514RDTREOP1");
+        assertNotSame("Prueba insertar reunión", idMeetingResult, 0);
     }
     
     @Test

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -22,6 +23,11 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
+            <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="370.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/CentralIcon.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
       <Pane layoutY="70.0" prefHeight="426.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">

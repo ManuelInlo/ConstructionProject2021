@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="446.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowNewMeetingController">
+   <children>
+      <Pane prefHeight="70.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">
+         <children>
+            <Label layoutX="14.0" layoutY="27.0" text="Sistema Gestor de Cuerpo Académico">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="715.0" layoutY="27.0" text="UserXXXX">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Separator layoutY="63.0" prefHeight="9.0" prefWidth="800.0" />
+            <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="370.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/CentralIcon.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane layoutY="417.0" prefHeight="30.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">
+         <children>
+            <Separator layoutY="-7.0" prefHeight="9.0" prefWidth="800.0" />
+            <Label layoutX="220.0" layoutY="6.0" text="Facultad de Estadistica e Informática - Universidad  Veracruzana" />
+         </children>
+      </Pane>
+      <ScrollPane layoutY="70.0" prefHeight="347.0" prefWidth="800.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="483.0" prefWidth="793.0" />
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

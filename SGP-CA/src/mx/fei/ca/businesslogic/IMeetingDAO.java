@@ -7,7 +7,7 @@ import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Meeting;
 
 public interface IMeetingDAO {
-    public boolean savedMeeting(Meeting meeting, String curp) throws BusinessConnectionException;
+    public int saveAndReturnIdNewMeeting(Meeting meeting, String curp) throws BusinessConnectionException;
     public ArrayList<Meeting> findMeetingsByProjectName(String projectName) throws BusinessConnectionException;
     public ArrayList<Meeting> findMeetingsByProjectNameAndDate(String projectName, Date meetingDate) throws BusinessConnectionException;
     public ArrayList<Meeting> findLastFiveMeetings() throws BusinessConnectionException;

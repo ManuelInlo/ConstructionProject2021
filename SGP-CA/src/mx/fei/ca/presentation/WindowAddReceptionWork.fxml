@@ -21,7 +21,7 @@
                   </Label>
                   <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="370.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../../Cuarto%20semestre/Principios%20de%20construcción%20de%20software/Proyecto/Iconos/MicrosoftTeams-image.png" />
+                        <Image url="@images/CentralIcon.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="726.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">

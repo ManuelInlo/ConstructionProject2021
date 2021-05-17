@@ -8,7 +8,7 @@ public interface IReceptionWorkDAO {
     public boolean savedReceptionWork(ReceptionWork receptionWork) throws BusinessConnectionException;
     public boolean updatedReceptionWorkById(ReceptionWork receptionWork, int id) throws BusinessConnectionException;
     public ArrayList<ReceptionWork> findReceptionWorksByPositiveImpactCA() throws BusinessConnectionException;
-    public ArrayList<ReceptionWork> findReceptionWorksByCurpIntegrant(String curp) throws BusinessConnectionException;
+    public ArrayList<ReceptionWork> findLastTwoReceptionWorksByCurpIntegrant(String curp) throws BusinessConnectionException;
     public ReceptionWork findReceptionWorkByTitle(String titleReceptionWork) throws BusinessConnectionException;
     public boolean existsReceptionWorkTitle(String titleReceptionWork) throws BusinessConnectionException;
     public boolean existsReceptionWorkFileRoute(String fileRoute) throws BusinessConnectionException;

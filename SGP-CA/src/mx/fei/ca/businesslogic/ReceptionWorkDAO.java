@@ -119,7 +119,7 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
     }
 
     @Override
-    public ArrayList<ReceptionWork> findReceptionWorksByCurpIntegrant(String curp) throws BusinessConnectionException {
+    public ArrayList<ReceptionWork> findLastTwoReceptionWorksByCurpIntegrant(String curp) throws BusinessConnectionException {
         String sql = "SELECT * FROM receptionWork WHERE curp = ?";
         ArrayList<ReceptionWork> receptionWorks = new ArrayList<>();
         CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
@@ -128,7 +128,8 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, curp);
             resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
+            int receptionWorksCounter = 0;
+            while(resultSet.next() && receptionWorksCounter < 2){
                 ReceptionWork receptionWork;
                 int id = resultSet.getInt("id");
                 String impactCA = resultSet.getString("impactCA");
@@ -154,6 +155,7 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
                 receptionWork.setInvestigationProject(investigationProject);
                 receptionWork.setCollaborator(collaborator);
                 receptionWorks.add(receptionWork);
+                receptionWorksCounter++;
             }
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);

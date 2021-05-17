@@ -43,20 +43,26 @@ public class WindowReceptionWorkDataController implements Initializable {
     @FXML
     private Label lbFileRoute;
     @FXML
-    private Button btnExit;
-    @FXML
-    private Button btnModify;
-    @FXML
     private Label lbTypeEvidence;
     @FXML
     private Label lbImpactCA;
+    
+    private ReceptionWork receptionWork;
+    
+    @FXML
+    private Button btnExit;
+    @FXML
+    private Button btnModify;
+    
+    public void setReceptionWork(ReceptionWork receptionWork){
+        this.receptionWork = receptionWork;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        //showReceptionWorkData(receptionWork);
     }   
     
-    @FXML
     public void showReceptionWorkData(ReceptionWork receptionWork){
         lbTypeEvidence.setText("Trabajo recepcional");
         lbTitleEvidence.setText(receptionWork.getTitleReceptionWork());

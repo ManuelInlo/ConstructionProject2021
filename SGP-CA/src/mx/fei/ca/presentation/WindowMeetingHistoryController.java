@@ -1,6 +1,7 @@
 
 package mx.fei.ca.presentation;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.Time;
@@ -15,7 +16,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -79,7 +82,7 @@ public class WindowMeetingHistoryController implements Initializable {
     private void searchMeeting(ActionEvent event) throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
         ArrayList<Meeting> listMeetings;
-        if(!existsEmptyField() && !existsInvalidString()){
+        if(!existsInvalidField()){
             if(dpMeetingDate.getValue() == null){
                 listMeetings = meetingDAO.findMeetingsByProjectName(tfMeetingProject.getText());
             }else{
@@ -101,14 +104,26 @@ public class WindowMeetingHistoryController implements Initializable {
     }
 
     @FXML
-    private void scheduleMeeting(ActionEvent event){
-        
+    private void scheduleMeeting(ActionEvent event) throws IOException{
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowNewMeeting.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
     private void exitMeetingHistory(ActionEvent event){
         Stage stage = (Stage) this.btnExit.getScene().getWindow();
         stage.close();
+    }
+    
+    private boolean existsInvalidField(){
+        boolean invalidField = false;
+        if(existsEmptyField() || existsInvalidString()){
+            invalidField = true;
+        }
+        return invalidField;
     }
     
     @FXML

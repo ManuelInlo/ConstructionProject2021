@@ -106,7 +106,7 @@ public class ReceptionWorkTest {
     @Test
     public void testFindReceptionWorksByCurpIntegrant() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
-        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorksByCurpIntegrant("JCPA940514RDTREOP1");
+        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findLastTwoReceptionWorksByCurpIntegrant("JCPA940514RDTREOP1");
         assertEquals("Prueba busqueda de trabajos recepcionales de un integrante por curp", receptionWorks.size(), 1);
     }
     

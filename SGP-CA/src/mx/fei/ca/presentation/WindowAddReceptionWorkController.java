@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package mx.fei.ca.presentation;
 
 import java.net.URL;
@@ -18,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -60,8 +55,7 @@ public class WindowAddReceptionWorkController implements Initializable {
     private ComboBox cbGrade;
     @FXML
     private ComboBox cbPositionAuthor;
-    @FXML
-    private Button btnCancel;
+    
     
     private enum TypeError{
         EMPTYFIELD, INVALIDSTRING, MISSINGSELECTION, MISSINGDATE, OVERDATE, INCONSISTENTDATE, TITLEDUPLICATE, 
@@ -78,32 +72,38 @@ public class WindowAddReceptionWorkController implements Initializable {
         fillComboBoxInvestigationProject();
     }  
     
+    @FXML
     private void fillComboBoxImpactCA(){
         ObservableList<String> listImpactCA = FXCollections.observableArrayList("SI","NO");
         cbImpactCA.setItems(listImpactCA);
     }
     
+    @FXML
     private void fillComboBoxGrade(){
         ObservableList<String> listImpactCA = FXCollections.observableArrayList("Licenciatura");
         cbGrade.setItems(listImpactCA);
     }
     
+    @FXML
     private void fillComboBoxActualState(){
         ObservableList<String> listActualState = FXCollections.observableArrayList("En proceso","Terminado");
         cbActualState.setItems(listActualState);
     }
     
+    @FXML
     private void fillComboBoxType(){
-        ObservableList<String> listType = FXCollections.observableArrayList("Tesis","Monografía");
+        ObservableList<String> listType = FXCollections.observableArrayList("Tesis","Monografía", "Práctico");
         cbType.setItems(listType);
         
     }
     
+    @FXML
     private void fillComboBoxPositionAuthor(){
         ObservableList<String> listPositionAuthor = FXCollections.observableArrayList("Estudiante");
         cbPositionAuthor.setItems(listPositionAuthor);
     }
     
+    @FXML
     private void fillComboBoxInvestigationProject(){
         //En realidad debe mandar a recuperar los proyectos de la base, esta es una prueba
         ObservableList<String> listInvestigationProject = FXCollections.observableArrayList("Inteligencia artificial");
@@ -112,7 +112,7 @@ public class WindowAddReceptionWorkController implements Initializable {
 
     @FXML
     public void saveReceptionWork(ActionEvent event) throws BusinessConnectionException {
-        if(!existMissingSelection() && !existsEmptyFields() && !existsInvalidStrings() && !existInvalidDates()){
+        if(!existsInvalidFields()){
             Date endDate = null;
             String impactCA = cbImpactCA.getSelectionModel().getSelectedItem().toString();
             String titleReceptionWork = tfTitleReceptionWork.getText();
@@ -134,7 +134,7 @@ public class WindowAddReceptionWorkController implements Initializable {
             investigationProject.setIdProject(1);
             ReceptionWork receptionWork = new ReceptionWork(impactCA, titleReceptionWork, fileRoute, startDate, endDate, grade,
                                                         workType, actualState);
-            Integrant integrant = new Integrant("JCPA940514RDTREOP1"); //Es prueba, deberia recuperar la curp del que está loggeado
+            Integrant integrant = new Integrant("JCPA940514RDTREOP1"); //Es prueba, deberia recuperar la curp del que está loggeado o bien recibir parámetro
             if(!existsDuplicateValues(receptionWork, collaborator)){
                 ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
                 CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
@@ -147,8 +147,6 @@ public class WindowAddReceptionWorkController implements Initializable {
                 showConfirmationAlert(saveResult);
             }
         }
-        
-        
     }
     
     @FXML
@@ -163,6 +161,15 @@ public class WindowAddReceptionWorkController implements Initializable {
         return sqlDate;
     }
     
+    private boolean existsInvalidFields(){
+        boolean invalidFields = false;
+        if(existsEmptyFields() || existsInvalidStrings() || existsMissingSelection() || existsInvalidDates()){
+            invalidFields = true;
+        }
+        return invalidFields;
+    }
+    
+    @FXML
     private boolean existsEmptyFields(){
         boolean emptyFields = false;
         if(tfTitleReceptionWork.getText().isEmpty() || tfFileRoute.getText().isEmpty() || tfAuthor.getText().isEmpty()){
@@ -173,6 +180,7 @@ public class WindowAddReceptionWorkController implements Initializable {
         return emptyFields;
     }
     
+    @FXML
     private boolean existsInvalidStrings(){
         boolean invalidStrings = false;
         if(existsInvalidCharacters(tfTitleReceptionWork.getText()) || existsInvalidCharacters(tfAuthor.getText())){
@@ -192,7 +200,8 @@ public class WindowAddReceptionWorkController implements Initializable {
         }
         return invalidCharacters;
     }
-    private boolean existMissingSelection(){
+    
+    private boolean existsMissingSelection(){
         boolean missingSelection = false;
         if(cbImpactCA.getSelectionModel().getSelectedIndex() < 0 || cbInvestigationProject.getSelectionModel().getSelectedIndex() < 0 ||
            cbType.getSelectionModel().getSelectedIndex() < 0 || cbActualState.getSelectionModel().getSelectedIndex() < 0 ||
@@ -204,7 +213,7 @@ public class WindowAddReceptionWorkController implements Initializable {
         return missingSelection;
     }
     
-    private boolean existInvalidDates(){
+    private boolean existsInvalidDates(){
         boolean invalidDates = false;
         if(cbActualState.getSelectionModel().getSelectedItem().toString().equals("Terminado")){
             if(existMissingDate(dpStartDate) || existMissingDate(dpEndDate) || existInconsistentDates()){

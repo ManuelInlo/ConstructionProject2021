@@ -3,9 +3,14 @@ package mx.fei.ca.presentation;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,10 +19,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import mx.fei.ca.businesslogic.ReceptionWorkDAO;
+import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Evidence;
 import mx.fei.ca.domain.ReceptionWork;
 
@@ -43,26 +52,64 @@ public class WindowMemberProductionController implements Initializable {
     @FXML
     private Button btnExit;
     @FXML
-    private TableView<Evidence> tbEvidences;
+    private TableView<ReceptionWork> tbReceptionWorks;
     @FXML
-    private TableColumn<Evidence, String> columnImpactCA;
+    private TableView<?> tbArticles;
     @FXML
-    private TableColumn<Evidence, String> columnNameEvidence;
+    private TableView<?> tbBooks;
+    @FXML
+    private TableView<?> tbChapterBooks;
+    @FXML
+    private TableColumn<ReceptionWork, String> columnImpactCAReceptionWork;
+    @FXML
+    private TableColumn<ReceptionWork, String> columnNameReceptionWork;
+    @FXML
+    private TableColumn<?, ?> columnImpactCAArticle;
+    @FXML
+    private TableColumn<?, ?> columnNameArticle;
+    @FXML
+    private TableColumn<?, ?> columnImpactCABook;
+    @FXML
+    private TableColumn<?, ?> columnNameBook;
+    @FXML
+    private TableColumn<?, ?> columnImpactCAChapterBook;
+    @FXML
+    private TableColumn<?, ?> columnNameChapterBook;
+    @FXML
+    private ScrollBar scrollBar;
 
-   
+    private enum TypeError{
+        EMPTYFIELD, INVALIDSTRING;
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        try {  
+            recoverEvidences();
+        } catch (BusinessConnectionException ex) {
+            Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //Mandar a llamar a metodo para ver la selección
     } 
     
-    @FXML
-    private void fillEvidencesTable(){
-        
+    private void recoverEvidences() throws BusinessConnectionException{
+        ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
+        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findLastTwoReceptionWorksByCurpIntegrant("JCPA940514RDTREOP1"); //En realidad debe pasar la curp del integrante que está loggeado
+        fillReceptionWorkTable(receptionWorks);
     }
+    
+    private void fillReceptionWorkTable(ArrayList<ReceptionWork> receptionWorks){
+        columnImpactCAReceptionWork.setCellValueFactory(new PropertyValueFactory("impactCA"));
+        columnNameReceptionWork.setCellValueFactory(new PropertyValueFactory("titleReceptionWork"));
+        ObservableList<ReceptionWork> listReceptionWorks = FXCollections.observableArrayList(receptionWorks);
+        tbReceptionWorks.setItems(listReceptionWorks);
+    }
+    
+    
 
     @FXML
     private void searchEvidence(ActionEvent event){
-        if(!existsEmptyField() && !existsInvalidString()){
+        if(!existsInvalidField()){
             
         }
     }
@@ -81,9 +128,10 @@ public class WindowMemberProductionController implements Initializable {
 
     @FXML
     private void openReceptionWorkRegistration(ActionEvent event) throws IOException{
-        Parent root = FXMLLoader.load(getClass().getResource("WindowAddReceptionWork.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddReceptionWork.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
+        stage.setScene(scene);
         stage.show();
     }
 
@@ -93,11 +141,20 @@ public class WindowMemberProductionController implements Initializable {
         stage.close();
     }
     
+    private boolean existsInvalidField(){
+        boolean invalidField = false;
+        if(existsEmptyField() || existsInvalidString()){
+            invalidField = true;
+        }
+        return invalidField;
+    }
+    
     private boolean existsEmptyField(){
         boolean emptyField = false;
         if(tfEvidenceName.getText().isEmpty()){
             emptyField = true;
-            showEmptyFieldAlert();
+            TypeError typeError = TypeError.EMPTYFIELD;
+            showInvalidFieldAlert(typeError);
         }
         return emptyField;
     }
@@ -108,24 +165,22 @@ public class WindowMemberProductionController implements Initializable {
         Matcher matcher = pattern.matcher(tfEvidenceName.getText());
         if(!matcher.find()){
            invalidString = true;
-           showInvalidStringAlert();
+           TypeError typeError = TypeError.INVALIDSTRING;
+           showInvalidFieldAlert(typeError);
         }
         return invalidString;
     }
     
-    private void showEmptyFieldAlert(){
+    private void showInvalidFieldAlert(TypeError typeError){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
         alert.setTitle("Campo inválido");
-        alert.setContentText("Existen campo vacío, llena el campo para poder buscar evidencia");
-        alert.showAndWait();
-    }
-    
-    private void showInvalidStringAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(null);
-        alert.setTitle("Campo inválido");
-        alert.setContentText("Existe caracter inválido, revisa el texto para poder buscar evidencia");
+        if(typeError == TypeError.EMPTYFIELD){
+            alert.setContentText("Existe campo vacío, llena el campo para poder buscar reunión");
+        }
+        if(typeError == TypeError.INVALIDSTRING){
+            alert.setContentText("Existe caracter inválido, revisa el texto para poder buscar reunión");
+        }
         alert.showAndWait();
     }
     

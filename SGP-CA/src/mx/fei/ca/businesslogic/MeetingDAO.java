@@ -27,10 +27,10 @@ public class MeetingDAO implements IMeetingDAO{
     }
     
     @Override
-    public boolean savedMeeting(Meeting meeting, String curp) throws BusinessConnectionException{
+    public int saveAndReturnIdNewMeeting(Meeting meeting, String curp) throws BusinessConnectionException{
         String sql = "INSERT INTO meeting (meetingDate, meetingTime, meetingPlace, affair, projectName, state, curp)"
                      + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        boolean saveResult = false;
+        int idMeetingResult = 0;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -42,13 +42,16 @@ public class MeetingDAO implements IMeetingDAO{
             preparedStatement.setString(6, meeting.getState());
             preparedStatement.setString(7, curp);
             preparedStatement.executeUpdate();
-            saveResult = true; 
+            resultSet = preparedStatement.getGeneratedKeys();
+            if(resultSet.next()){
+                idMeetingResult = resultSet.getInt(1);
+            }
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
         }finally{
             dataBaseConnection.closeConnection();
         }
-        return saveResult;
+        return idMeetingResult;
     }
     
     @Override
@@ -59,11 +62,11 @@ public class MeetingDAO implements IMeetingDAO{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
-            int meetingCounter = 0;
             AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
             MemorandumDAO  memorandumDAO = new MemorandumDAO();
             PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
             MeetingAssistantDAO meetingAssistantDAO = new MeetingAssistantDAO();
+            int meetingCounter = 0;
             while(resultSet.next() && meetingCounter < 5){
                 int idMeeting = resultSet.getInt("idMeeting");
                 Date meetingDate = resultSet.getDate("meetingDate");
