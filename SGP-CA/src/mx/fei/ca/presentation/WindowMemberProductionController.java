@@ -12,10 +12,10 @@ import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -24,10 +24,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.ReceptionWorkDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
-import mx.fei.ca.domain.Evidence;
 import mx.fei.ca.domain.ReceptionWork;
 
 /**
@@ -75,8 +75,6 @@ public class WindowMemberProductionController implements Initializable {
     private TableColumn<?, ?> columnImpactCAChapterBook;
     @FXML
     private TableColumn<?, ?> columnNameChapterBook;
-    @FXML
-    private ScrollBar scrollBar;
 
     private enum TypeError{
         EMPTYFIELD, INVALIDSTRING;
@@ -89,7 +87,7 @@ public class WindowMemberProductionController implements Initializable {
         } catch (BusinessConnectionException ex) {
             Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //Mandar a llamar a metodo para ver la selección
+        openReceptionWorkData();
     } 
     
     private void recoverEvidences() throws BusinessConnectionException{
@@ -105,7 +103,23 @@ public class WindowMemberProductionController implements Initializable {
         tbReceptionWorks.setItems(listReceptionWorks);
     }
     
-    
+    public void openReceptionWorkData(){
+        tbReceptionWorks.setOnMouseClicked((MouseEvent event) -> {
+            ReceptionWork receptionWork = tbReceptionWorks.getItems().get(tbReceptionWorks.getSelectionModel().getSelectedIndex());
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowReceptionWorkData.fxml"));
+            Scene scene = null;
+            try {
+                scene = new Scene(fxmlLoader.load());
+            } catch (IOException ex) {
+                Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            WindowReceptionWorkDataController windowReceptionWorkDataController = (WindowReceptionWorkDataController) fxmlLoader.getController();
+            windowReceptionWorkDataController.showReceptionWorkData(receptionWork);
+            stage.show();
+        });
+    }
 
     @FXML
     private void searchEvidence(ActionEvent event){

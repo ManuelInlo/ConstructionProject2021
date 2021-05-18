@@ -183,7 +183,7 @@ public class WindowAddReceptionWorkController implements Initializable {
     @FXML
     private boolean existsInvalidStrings(){
         boolean invalidStrings = false;
-        if(existsInvalidCharacters(tfTitleReceptionWork.getText()) || existsInvalidCharacters(tfAuthor.getText())){
+        if(existsInvalidCharactersForTitle(tfTitleReceptionWork.getText()) || existsInvalidCharactersForAuthor(tfAuthor.getText())){
             invalidStrings = true;
             TypeError typeError = TypeError.INVALIDSTRING;
             showInvalidFieldAlert(typeError);
@@ -191,9 +191,19 @@ public class WindowAddReceptionWorkController implements Initializable {
         return invalidStrings;
     }
     
-    private boolean existsInvalidCharacters(String textToValidate){
+    private boolean existsInvalidCharactersForAuthor(String textToValidate){
         boolean invalidCharacters = false;
         Pattern pattern = Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s]+$");
+        Matcher matcher = pattern.matcher(textToValidate);
+        if(!matcher.find()){
+           invalidCharacters = true; 
+        }
+        return invalidCharacters;
+    }
+    
+    private boolean existsInvalidCharactersForTitle(String textToValidate){
+        boolean invalidCharacters = false;
+        Pattern pattern = Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s\\.,:]+$");
         Matcher matcher = pattern.matcher(textToValidate);
         if(!matcher.find()){
            invalidCharacters = true; 
