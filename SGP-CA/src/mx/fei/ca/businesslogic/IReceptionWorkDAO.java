@@ -9,7 +9,7 @@ public interface IReceptionWorkDAO {
     public boolean updatedReceptionWorkById(ReceptionWork receptionWork, int id) throws BusinessConnectionException;
     public ArrayList<ReceptionWork> findReceptionWorksByPositiveImpactCA() throws BusinessConnectionException;
     public ArrayList<ReceptionWork> findLastTwoReceptionWorksByCurpIntegrant(String curp) throws BusinessConnectionException;
-    public ReceptionWork findReceptionWorkByTitle(String titleReceptionWork) throws BusinessConnectionException;
+    public ArrayList<ReceptionWork> findReceptionWorkByInitialesOfTitle(String InitialesTitleReceptionWork) throws BusinessConnectionException;
     public boolean existsReceptionWorkTitle(String titleReceptionWork) throws BusinessConnectionException;
     public boolean existsReceptionWorkFileRoute(String fileRoute) throws BusinessConnectionException;
     public boolean existsReceptionWorkTitleForUpdate(String titleReceptionWork, int id) throws BusinessConnectionException;

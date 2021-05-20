@@ -74,7 +74,8 @@ public class MeetingAssistantDAO implements IMeetingAssistantDAO {
                 String curp = resultSet.getString("curp");
                 String role = resultSet.getString("role");
                 Integrant integrant = new Integrant(curp); //Acá debe mandar a llamar método buscar integrante por curp 
-                MeetingAssistant meetingAssistant = new MeetingAssistant(integrant, role);
+                MeetingAssistant meetingAssistant = new MeetingAssistant(integrant);
+                meetingAssistant.setRole(role);
                 meetingAssistants.add(meetingAssistant);
             }
         }catch(SQLException ex){
@@ -85,47 +86,4 @@ public class MeetingAssistantDAO implements IMeetingAssistantDAO {
         return meetingAssistants;
     }
 
-    @Override
-    public boolean existsMeetingAssistantRole(String role, int idMeeting) throws BusinessConnectionException {
-        String sql = "SELECT 1 FROM meetingAssistant WHERE idMeeting = ? AND role = ?";
-        boolean exists = false;
-        try{
-            connection = dataBaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, idMeeting);
-            preparedStatement.setString(2, role);
-            resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                exists = true;
-            }
-        }catch(SQLException ex){
-            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
-        }finally{
-            dataBaseConnection.closeConnection();
-        }
-        return exists;
-    }
-    
-    @Override
-    public boolean existsMeetingAssistantRoleForUpdate(String role, int idMeeting, String curp) throws BusinessConnectionException {
-        String sql = "SELECT 1 FROM meetingAssistant WHERE idMeeting = ? AND role = ? AND curp <> ?";
-        boolean exists = false;
-        try{
-            connection = dataBaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, idMeeting);
-            preparedStatement.setString(2, role);
-            preparedStatement.setString(3, curp);
-            resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                exists = true;
-            }
-        }catch(SQLException ex){
-            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
-        }finally{
-            dataBaseConnection.closeConnection();
-        }
-        return exists;
-    }
-    
 }

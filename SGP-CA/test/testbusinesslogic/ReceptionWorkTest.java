@@ -111,11 +111,10 @@ public class ReceptionWorkTest {
     }
     
     @Test
-    public void testFindReceptionWorkByTitle() throws BusinessConnectionException{
+    public void testFindReceptionWorkByInitialesOfTitle() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
-        ReceptionWork receptionWork = receptionWorkDAO.findReceptionWorkByTitle("Impacto de la Inteligencia Artificial en el diseño de software");
-        int idReceptionWorkExpected = 1;
-        assertEquals("Prueba encontrar trabajo recepcional por título", receptionWork.getId(), idReceptionWorkExpected);
+        ArrayList <ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorkByInitialesOfTitle("Impa");
+        assertEquals("Prueba encontrar trabajo recepcional por título", receptionWorks.size(), 2);
     }
     
     @Test

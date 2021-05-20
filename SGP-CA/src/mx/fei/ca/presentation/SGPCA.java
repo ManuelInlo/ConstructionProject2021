@@ -19,16 +19,11 @@ public class SGPCA extends Application {
     
     @Override
     public void start(Stage stage) throws IOException, BusinessConnectionException {
-        //Solo es de prueba para ver que funcione la ventana
-        //ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
-        //ReceptionWork receptionWork = receptionWorkDAO.findReceptionWorkByTitle("Impacto de la Inteligencia Artificial en el diseño de software");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMemberProduction.fxml"));
+       
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowNewMeeting.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.setResizable(false);
-       //WindowReceptionWorkDataController windowReceptionWorkDataController = (WindowReceptionWorkDataController) fxmlLoader.getController();
-        //windowReceptionWorkDataController.setReceptionWork(receptionWork);
-        //windowReceptionWorkDataController.showReceptionWorkData(receptionWork);
         stage.show();
     }
 

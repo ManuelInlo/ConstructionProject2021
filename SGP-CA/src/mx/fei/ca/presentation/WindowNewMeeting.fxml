@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="446.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowNewMeetingController">
    <children>
-      <Pane prefHeight="70.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">
+      <Pane prefHeight="66.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">
          <children>
             <Label layoutX="14.0" layoutY="27.0" text="Sistema Gestor de Cuerpo Académico">
                <font>
@@ -22,7 +22,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Separator layoutY="63.0" prefHeight="9.0" prefWidth="800.0" />
+            <Separator layoutY="62.0" prefHeight="8.0" prefWidth="800.0" />
             <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="370.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/CentralIcon.png" />
@@ -32,13 +32,69 @@
       </Pane>
       <Pane layoutY="417.0" prefHeight="30.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">
          <children>
-            <Separator layoutY="-7.0" prefHeight="9.0" prefWidth="800.0" />
-            <Label layoutX="220.0" layoutY="6.0" text="Facultad de Estadistica e Informática - Universidad  Veracruzana" />
+            <Label layoutX="220.0" layoutY="6.0" text="Facultad de Estadistica e Informática - Universidad  Veracruzana">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <Separator layoutY="-5.0" prefHeight="8.0" prefWidth="800.0" />
          </children>
       </Pane>
-      <ScrollPane layoutY="70.0" prefHeight="347.0" prefWidth="800.0">
+      <ScrollPane hbarPolicy="NEVER" layoutY="66.0" prefHeight="351.0" prefWidth="800.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="483.0" prefWidth="793.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="508.0" prefWidth="789.0" style="-fx-background-color: #60ABE0;">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="NUEVA REUNIÓN">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="50.0" text="Nombre del proyecto:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="80.0" text="Lugar de la reunión:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="111.0" text="Asunto:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="506.0" layoutY="50.0" text="Fecha de la reunión:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="509.0" layoutY="80.0" text="Hora de la reunión:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfProjectName" layoutX="155.0" layoutY="49.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="21.0" prefWidth="344.0" promptText="Reunión CA" />
+                  <TextField fx:id="tfMeetingPlace" layoutX="155.0" layoutY="79.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="21.0" prefWidth="344.0" promptText="FEI 104" />
+                  <TextField fx:id="tfAffair" layoutX="155.0" layoutY="108.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="21.0" prefWidth="621.0" promptText="Escriba el asunto de la reunión..." />
+                  <DatePicker fx:id="dpMeetingDate" layoutX="633.0" layoutY="49.0" minHeight="-Infinity" prefHeight="21.0" prefWidth="143.0" />
+                  <ComboBox fx:id="cbHours" layoutX="633.0" layoutY="79.0" minHeight="-Infinity" prefHeight="21.0" prefWidth="60.0" promptText="hh" style="-fx-background-color: #FFFFFF;" />
+                  <ComboBox fx:id="cbMinutes" layoutX="713.0" layoutY="79.0" minHeight="-Infinity" prefHeight="21.0" prefWidth="63.0" promptText="mm" style="-fx-background-color: #FFFFFF;" />
+                  <Label layoutX="702.0" layoutY="77.0" text=":">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="696.0" layoutY="286.0" mnemonicParsing="false" onAction="#scheduleMeeting" prefHeight="25.0" prefWidth="83.0" text="Agendar" />
+                  <Button cancelButton="true" layoutX="696.0" layoutY="317.0" mnemonicParsing="false" onAction="#closeNewMeeting" prefHeight="25.0" prefWidth="82.0" text="Salir" />
+                  <TableView fx:id="tbIntegrants" layoutX="14.0" layoutY="142.0" prefHeight="112.0" prefWidth="617.0">
+                    <columns>
+                      <TableColumn fx:id="columnIntegrant" prefWidth="326.0" text="Integrante del CA" />
+                      <TableColumn fx:id="columnLeader" prefWidth="82.0" text="Líder" />
+                        <TableColumn fx:id="columnTimeTaker" prefWidth="125.0" text="Tomador de tiempo" />
+                        <TableColumn fx:id="columnSecretary" prefWidth="83.0" text="Secretario" />
+                    </columns>
+                  </TableView>
+               </children></AnchorPane>
         </content>
       </ScrollPane>
    </children>

@@ -85,7 +85,7 @@ public class WindowMemberProductionController implements Initializable {
         try {  
             recoverEvidences();
         } catch (BusinessConnectionException ex) {
-            Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
+            showLostConnectionAlert();
         }
         openReceptionWorkData();
     } 
@@ -124,8 +124,28 @@ public class WindowMemberProductionController implements Initializable {
     @FXML
     private void searchEvidence(ActionEvent event){
         if(!existsInvalidField()){
-            
+            try {
+                //Mandar a recuperar listas de las evidencias que coincidan con el texto ->QUITAR ESTE COMENTARIO DESPUES
+                ArrayList<ReceptionWork> receptionWorks = recoverReceptionWorks();
+                
+                if(receptionWorks.isEmpty()){  //DEBE PREGUNTAR SI TODAS LAS LISTAS RECUPERADAS ESTAN VACIAS
+                    showNoMatchAlert();
+                }
+            } catch (BusinessConnectionException ex) {
+                showLostConnectionAlert();
+            }
+  
         }
+    }
+    
+    @FXML
+    private ArrayList<ReceptionWork> recoverReceptionWorks() throws BusinessConnectionException{
+        ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
+        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorkByInitialesOfTitle(tfEvidenceName.getText());
+        if(receptionWorks.size() > 0){
+            fillReceptionWorkTable(receptionWorks);
+        }
+        return receptionWorks;
     }
 
     @FXML
@@ -195,6 +215,24 @@ public class WindowMemberProductionController implements Initializable {
         if(typeError == TypeError.INVALIDSTRING){
             alert.setContentText("Existe caracter inválido, revisa el texto para poder buscar reunión");
         }
+        alert.showAndWait();
+    }
+    
+    @FXML
+    private void showLostConnectionAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setTitle("Perdida de conexión");
+        alert.setContentText("Perdida de conexión con la base de datos, no se pudo guardar. Intente más tarde");
+        alert.showAndWait();
+    }
+    
+    @FXML
+    private void showNoMatchAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setTitle("Sin coincidencias");
+        alert.setContentText("No se encontró ningún tipo de evidencia que coincida con el texto ingresado");
         alert.showAndWait();
     }
     

@@ -11,6 +11,7 @@ package mx.fei.ca.domain;
  */
 public class Integrant {
     private String curp;
+    private String name;
 
     public Integrant(String curp) {
         this.curp = curp;
@@ -20,9 +21,16 @@ public class Integrant {
         return curp;
     }
 
+    public String getName() {
+        return name;
+    }
+    
     public void setCurp(String curp) {
         this.curp = curp;
     }
-    
+
+    public void setName(String name) {
+        this.name = name;
+    }    
     
 }

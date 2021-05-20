@@ -86,7 +86,7 @@ public class WindowAddReceptionWorkController implements Initializable {
     
     @FXML
     private void fillComboBoxActualState(){
-        ObservableList<String> listActualState = FXCollections.observableArrayList("En proceso","Terminado");
+        ObservableList<String> listActualState = FXCollections.observableArrayList("Propuesto","En proceso","Terminado");
         cbActualState.setItems(listActualState);
     }
     
@@ -135,16 +135,18 @@ public class WindowAddReceptionWorkController implements Initializable {
             ReceptionWork receptionWork = new ReceptionWork(impactCA, titleReceptionWork, fileRoute, startDate, endDate, grade,
                                                         workType, actualState);
             Integrant integrant = new Integrant("JCPA940514RDTREOP1"); //Es prueba, deberia recuperar la curp del que está loggeado o bien recibir parámetro
-            if(!existsDuplicateValues(receptionWork, collaborator)){
-                ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
-                CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
-                int idCollaborator = collaboratorDAO.saveCollaboratorAndReturnId(collaborator);
+            ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
+            CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
+            int idCollaborator = collaboratorDAO.saveCollaboratorAndReturnId(collaborator);
+            if(idCollaborator != 0){
                 collaborator.setIdCollaborator(idCollaborator);
                 receptionWork.setCollaborator(collaborator);
                 receptionWork.setInvestigationProject(investigationProject);
                 receptionWork.setIntegrant(integrant);
                 boolean saveResult = receptionWorkDAO.savedReceptionWork(receptionWork);
                 showConfirmationAlert(saveResult);
+            }else{
+                showLostConnectionAlert();
             }
         }
     }
@@ -161,9 +163,11 @@ public class WindowAddReceptionWorkController implements Initializable {
         return sqlDate;
     }
     
-    private boolean existsInvalidFields(){
+    private boolean existsInvalidFields() throws BusinessConnectionException{
         boolean invalidFields = false;
         if(existsEmptyFields() || existsInvalidStrings() || existsMissingSelection() || existsInvalidDates()){
+            invalidFields = true;
+        }else if(existsDuplicateValues()){
             invalidFields = true;
         }
         return invalidFields;
@@ -273,26 +277,27 @@ public class WindowAddReceptionWorkController implements Initializable {
         return inconsistentDates;
     }
     
-    private boolean existsDuplicateValues(ReceptionWork receptionWork, Collaborator collaborator) throws BusinessConnectionException{
+    @FXML
+    private boolean existsDuplicateValues() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
         boolean duplicateValues = false;
         boolean receptionWorkTitleDuplicate = false;
         boolean fileRouteDuplicate = false;
         boolean collaboratorNameDuplicate = false;
-        if(receptionWorkDAO.existsReceptionWorkTitle(receptionWork.getTitleReceptionWork())){
+        if(receptionWorkDAO.existsReceptionWorkTitle(tfTitleReceptionWork.getText())){  //DEBE HACER LO MISMO CON LAS OTRAS EVIDENCIAS
             receptionWorkTitleDuplicate = true;
             TypeError typeError = TypeError.TITLEDUPLICATE;
             showInvalidFieldAlert(typeError);
         }
            
-        if(receptionWorkDAO.existsReceptionWorkFileRoute(receptionWork.getFileRoute())){
+        if(receptionWorkDAO.existsReceptionWorkFileRoute(tfFileRoute.getText())){
             fileRouteDuplicate = true;
             TypeError typeError = TypeError.FILEROUTEDUPLICATE;
             showInvalidFieldAlert(typeError);
         }
         
-        if(collaboratorDAO.existsCollaboratorName(collaborator.getName())){
+        if(collaboratorDAO.existsCollaboratorName(tfAuthor.getText())){
             collaboratorNameDuplicate = true;
             TypeError typeError = TypeError.COLLABORATORDUPLICATE;
             showInvalidFieldAlert(typeError);
@@ -331,7 +336,7 @@ public class WindowAddReceptionWorkController implements Initializable {
         }
         
         if(typeError == TypeError.OVERDATE){
-            alert.setContentText("El trabajo recepcional está en proceso, no puedes guardar una fecha de fin");
+            alert.setContentText("El trabajo recepcional no está terminado, por lo tanto no puedes guardar una fecha de fin");
         }
         
         if(typeError == TypeError.TITLEDUPLICATE){
@@ -356,8 +361,19 @@ public class WindowAddReceptionWorkController implements Initializable {
             alert.setTitle("Confirmación de guardado");
             alert.setContentText("La información fue guardada con éxito");
             alert.showAndWait();
+        }else{
+            showLostConnectionAlert();
         }
         
+    }
+    
+    @FXML
+    private void showLostConnectionAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setTitle("Perdida de conexión");
+        alert.setContentText("Perdida de conexión con la base de datos, no se pudo guardar. Intente más tarde");
+        alert.showAndWait();
     }
 
 }

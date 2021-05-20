@@ -166,16 +166,17 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
     }
 
     @Override
-    public ReceptionWork findReceptionWorkByTitle(String titleReceptionWork) throws BusinessConnectionException {
-        String sql = "SELECT * FROM receptionWork WHERE titleReceptionWork = ?";
-        ReceptionWork receptionWork = null;
+    public ArrayList<ReceptionWork> findReceptionWorkByInitialesOfTitle(String InitialesTitleReceptionWork) throws BusinessConnectionException {
+        String sql = "SELECT * FROM receptionWork WHERE titleReceptionWork LIKE CONCAT('%',?,'%')";
+        ArrayList<ReceptionWork> receptionWorks = new ArrayList<>();
         CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, titleReceptionWork);
+            preparedStatement.setString(1, InitialesTitleReceptionWork);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
+                ReceptionWork receptionWork;
                 int id = resultSet.getInt("id");
                 String impactCA = resultSet.getString("impactCA");
                 String fileRoute = resultSet.getString("fileRoute");
@@ -187,6 +188,7 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
                 int idProject = resultSet.getInt("idProject");
                 String curp = resultSet.getString("curp");
                 int idCollaborator = resultSet.getInt("idCollaborator");
+                String titleReceptionWork = resultSet.getString("titleReceptionWork");
                 if(endDate != null){
                     receptionWork = new ReceptionWork(impactCA, titleReceptionWork, fileRoute, startDate, endDate, grade, workType, actualState);
                 }else{
@@ -199,13 +201,14 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
                 receptionWork.setIntegrant(integrant);
                 receptionWork.setInvestigationProject(investigationProject);
                 receptionWork.setCollaborator(collaborator);
+                receptionWorks.add(receptionWork);
             }
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
         }finally{
             dataBaseConnection.closeConnection();
         }
-        return receptionWork;
+        return receptionWorks;
     }
 
     @Override
