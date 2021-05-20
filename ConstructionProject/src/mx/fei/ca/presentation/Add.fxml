@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.AddController">
+   <children>
+      <VBox prefHeight="400.0" prefWidth="602.0">
+         <children>
+            <Pane prefHeight="70.0" prefWidth="600.0" style="-fx-background-color: #60ABE0;">
+               <children>
+                  <Label layoutX="14.0" layoutY="27.0" text="Sistema Gestor de Cuespo academico">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="60.0" fitWidth="61.0" layoutX="256.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../Downloads/presentation.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="548.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../Downloads/man.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="461.0" layoutY="27.0" text="USER XXXXXX">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane prefHeight="300.0" prefWidth="600.0" style="-fx-background-color: #60ABE0;">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="Label" />
+                  <TextField layoutX="14.0" layoutY="31.0" style="-fx-background-color: #BDC7DB;" text="ingresa tu nombre" />
+                  <Button fx:id="AddButton" layoutX="536.0" layoutY="205.0" mnemonicParsing="false" text="Button" />
+                  <Separator layoutX="22.0" layoutY="-1.0" prefHeight="0.0" prefWidth="560.0" />
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
