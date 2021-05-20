@@ -77,7 +77,7 @@ public class WindowNewMeetingController implements Initializable {
     }   
 
     @FXML
-    private void scheduleMeeting(ActionEvent event){
+    private void scheduleMeeting(ActionEvent event) throws BusinessConnectionException{
         if(!existsInvalidFields()){
             String projectName = tfProjectName.getText();
             String meetingPlace = tfMeetingPlace.getText();
@@ -149,10 +149,12 @@ public class WindowNewMeetingController implements Initializable {
         }
         return meetingTime;
     }
-    private boolean existsInvalidFields(){
+    private boolean existsInvalidFields() throws BusinessConnectionException{
         boolean invalidFields = false;
         if(existsEmptyFields() || existsInvalidStrings() || existsMissingDate() || existsIncorretDate() 
            || existsMissingMeetingTime() || existsInvalidRoleSelection()){
+            invalidFields = true;
+        }else if(existsDuplicateValues()){
             invalidFields = true;
         }
         return invalidFields;
@@ -299,17 +301,19 @@ public class WindowNewMeetingController implements Initializable {
         }
         return duplicateRole;
     }
-    private boolean existsDuplicateValues(Meeting meeting) throws BusinessConnectionException{
+    private boolean existsDuplicateValues() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
         boolean meetingAffairDuplicate = false;
-        if(meetingDAO.existsMeetingAffair(meeting.getAffair())){
+        if(meetingDAO.existsMeetingAffair(tfAffair.getText())){
             meetingAffairDuplicate = true;
             TypeError typeError = TypeError.MEETINGAFFAIRDUPLICATE;
             showInvalidFieldAlert(typeError);
         }
         
         boolean dateAndTimeDuplicate = false;
-        if(!meetingDAO.existsDateAndTimeAvailable(meeting.getMeetingDate(), meeting.getMeetingTime())){
+        if(!meetingDAO.existsDateAndTimeAvailable(
+                parseToSqlDate(java.util.Date.from(dpMeetingDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())),
+                parseToSqlTime(cbHours.getSelectionModel().getSelectedItem().toString(), cbMinutes.getSelectionModel().getSelectedItem().toString()))){
             dateAndTimeDuplicate = true;
             TypeError typeError = TypeError.DATEANDTIMEDUPLICATE;
             showInvalidFieldAlert(typeError);
