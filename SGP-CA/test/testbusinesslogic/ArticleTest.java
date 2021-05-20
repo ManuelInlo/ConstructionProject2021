@@ -29,10 +29,10 @@ public class ArticleTest {
             Logger.getLogger(IntegrantTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         Evidence evidence = new Evidence("SI", "Importancia de la Ingeniería de Software", "Alicia Ruiz");
-        Article article = new Article(evidence, "7487-0982", "C:\\usuarios\\alicia\\arc1.fil", 95, 110,
+        Article article = new Article(evidence, "7487-0984", "C:\\usuarios\\alicia\\arc1.fil", 95, 110,
                     "Publicado", "UVserva", "México", publicationDate, 300, "CUO", "El desarrollo de la educación y la ingeniería de software", 1, "MCUD940585RDTRER10");
-        int saveResult = articleDAO.saveArticle(article);
-        assertEquals("Prueba correcta, si guardó", saveResult, 1);
+        boolean saveResult = articleDAO.saveArticle(article);
+        assertEquals("Prueba correcta, si guardó", saveResult, true);
     }
     
     @Test
@@ -49,7 +49,7 @@ public class ArticleTest {
         Evidence evidence = new Evidence("NO", "Importancia de la Ingeniería de Software", "Alicia Ruiz");
         Article article = new Article(evidence, "7000-0982", "C:\\usuarios\\alicia\\arc1.fil", 80, 110,
                     "Publicado", "UVserva", "México", publicationDate, 8, "CUO", "El desarrollo de la educación y la ingeniería de software", 1, "MCUD940585RDTRER10");
-        int updateResult = articleDAO.updateArticle(article,"7485-0952");
-        assertEquals("Prueba correcta, si actualizo", updateResult, 1);
+        boolean updateResult = articleDAO.updateArticle(article,"7485-0952");
+        assertEquals("Prueba correcta, si actualizo", updateResult, true);
     }    
 }

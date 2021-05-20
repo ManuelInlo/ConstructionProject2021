@@ -21,10 +21,10 @@ public class ArticleDAO implements IArticleDAO{
     }  
     
     @Override
-    public int saveArticle (Article article) throws BusinessConnectionException{
+    public boolean saveArticle (Article article) throws BusinessConnectionException{
        String sql = "INSERT INTO article (impactCA, titleEvidence, ISSN, fileRoute, homepage, endPage, actualState, magazineName, country, publicationDate, volume, editorial, author, description, idProject, curp)"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        int saveResult = 0;
+        boolean saveResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -44,7 +44,8 @@ public class ArticleDAO implements IArticleDAO{
             preparedStatement.setString(14, article.getDescription());  
             preparedStatement.setInt(15, article.getIdProject()); 
             preparedStatement.setString(16, article.getCurp());             
-            saveResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            saveResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
         }finally{
@@ -54,11 +55,11 @@ public class ArticleDAO implements IArticleDAO{
     }
     
     @Override
-    public int updateArticle (Article article, String ISSN) throws BusinessConnectionException{
+    public boolean updateArticle (Article article, String ISSN) throws BusinessConnectionException{
        String sql = "UPDATE article SET impactCA = ?, titleEvidence = ?, ISSN = ?, fileRoute = ?, homepage = ?, endPage = ?, actualState = ?, magazineName = ?, country = ?,"
                + " publicationDate = ?, volume = ?, editorial = ?, author = ?, description = ?, idProject = ?, curp = ?"
                + " WHERE ISSN = ? ";
-        int updateResult = 0;
+        boolean updateResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -79,7 +80,8 @@ public class ArticleDAO implements IArticleDAO{
             preparedStatement.setInt(15, article.getIdProject()); 
             preparedStatement.setString(16, article.getCurp()); 
             preparedStatement.setString(17, ISSN);
-            updateResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            updateResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
         }finally{

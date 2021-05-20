@@ -5,6 +5,6 @@ import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Article;
 
 public interface IArticleDAO {
-    public int saveArticle (Article article) throws BusinessConnectionException;    
-    public int updateArticle (Article article, String ISSN) throws BusinessConnectionException;    
+    public boolean saveArticle (Article article) throws BusinessConnectionException;    
+    public boolean updateArticle (Article article, String ISSN) throws BusinessConnectionException;    
 }

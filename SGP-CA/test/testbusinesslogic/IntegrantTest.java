@@ -28,9 +28,9 @@ public class IntegrantTest {
             Logger.getLogger(IntegrantTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         Integrant integrant = new Integrant("MCUD940585RDTRER23", "Responsable", "María Karen Cortés Verdín", "Doctorado", "Ingeniería de software",
-                    "Activo", "PTC", "Universidad Veracruzana", "kcortes@uv.mx", "2251214658", birthdayDate);
-        int saveResult = integrantDAO.saveIntegrant(integrant);
-        assertEquals("Prueba correcta, si guardó", saveResult, 1);
+                    "Activo", "PTC", "Universidad Veracruzana", "kcortes@uv.mx", "2251214658", birthdayDate, "Activo");
+        boolean saveResult = integrantDAO.saveIntegrant(integrant);
+        assertEquals("Prueba correcta, si guardó", saveResult, true);
     }
 
     @Test    
@@ -44,16 +44,16 @@ public class IntegrantTest {
         } catch (ParseException ex) {
             Logger.getLogger(IntegrantTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Integrant integrant = new Integrant("MCUD940585RDTRER23", "Responsable", "Alicia Ruiz", "Doctorado", "Ingeniería de software",
-                    "Inactivo", "PTC", "Universidad Veracruzana", "hasgret@uv.mx", "2251214658", birthdayDate);
-        int updateResult = integrantDAO.updateIntegrant(integrant, "MCUD940585RDTRER23");
-        assertEquals("Prueba correcta, si actualizo", updateResult, 1);
+        Integrant integrant = new Integrant("MCUD940585RDTRER22", "Responsable", "Alicia Ruiz", "Doctorado", "Ingeniería de software",
+                    "Inactivo", "PTC", "Universidad Veracruzana", "hasgret@uv.mx", "2251214658", birthdayDate, "Activo");
+        boolean updateResult = integrantDAO.updateIntegrant(integrant, "MCUD940585RDTRER22");
+        assertEquals("Prueba correcta, si actualizo", updateResult, true);
     }    
     
     @Test    
     public void testDeleteIntegrantByCurp() throws BusinessConnectionException{
         IntegrantDAO integrantDAO = new IntegrantDAO();
-        int deleteResult = integrantDAO.deleteIntegrantByCurp("MCUD940585RDTRER23");
-        assertEquals("Prueba correcta, se elimino integrante", deleteResult, 1);       
+        boolean deleteResult = integrantDAO.deleteIntegrantByCurp("MCUD940585RDTRER23");
+        assertEquals("Prueba correcta, se elimino integrante", deleteResult, true);       
     }    
 }

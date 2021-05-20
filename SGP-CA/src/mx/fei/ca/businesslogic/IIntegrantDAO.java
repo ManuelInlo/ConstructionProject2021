@@ -7,7 +7,7 @@ import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
 import mx.fei.ca.domain.Integrant;
 
 public interface IIntegrantDAO {
-    public int saveIntegrant(Integrant integrant) throws BusinessConnectionException;
-    public int updateIntegrant(Integrant integrant, String curp) throws BusinessConnectionException; 
-    public int deleteIntegrantByCurp(String curp) throws BusinessConnectionException;
+    public boolean saveIntegrant(Integrant integrant) throws BusinessConnectionException;
+    public boolean updateIntegrant(Integrant integrant, String curp) throws BusinessConnectionException; 
+    public boolean deleteIntegrantByCurp(String curp) throws BusinessConnectionException;
 }

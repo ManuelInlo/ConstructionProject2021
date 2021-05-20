@@ -15,9 +15,10 @@ public class Integrant {
     private String institutionalMail;
     private String numberPhone;
     private Date dateBirthday;
+    private String statusIntegrant;
    
     public Integrant(String curp, String role, String nameIntegrant, String studyDegree, String studyDiscipline,
-                    String prodepParticipation, String typeTeaching, String iesStudyDegree, String institutionalMail, String numberPhone, Date dateBirthday){
+                    String prodepParticipation, String typeTeaching, String iesStudyDegree, String institutionalMail, String numberPhone, Date dateBirthday, String statusIntegrant){
         this.curp = curp;
         this.role = role;
         this.nameIntegrant = nameIntegrant;
@@ -28,7 +29,8 @@ public class Integrant {
         this.iesStudyDegree = iesStudyDegree;
         this.institutionalMail = institutionalMail;
         this.numberPhone = numberPhone;
-        this.dateBirthday = dateBirthday;    
+        this.dateBirthday = dateBirthday; 
+        this.statusIntegrant = statusIntegrant;
     }
 
     public String getCurp() {
@@ -74,6 +76,10 @@ public class Integrant {
     public Date getDateBirthday() {
         return dateBirthday;
     }
+    
+    public String getStatusIntegrant() {
+        return statusIntegrant;
+    }    
 
     public void setCurp(String curp) {
         this.curp = curp;
@@ -118,6 +124,10 @@ public class Integrant {
     public void setDateBirthday(Date dateBirthday) {
         this.dateBirthday = dateBirthday;
     }   
+
+    public void setStatusIntegrant(String statusIntegrant) {
+        this.statusIntegrant = statusIntegrant;
+    } 
     
     public String toString(){
         return "";

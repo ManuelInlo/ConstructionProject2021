@@ -1,6 +1,10 @@
 
 package mx.fei.ca.businesslogic;
 
-public class IChapterBookDAO {
-    
+import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
+import mx.fei.ca.domain.ChapterBook;
+
+public interface IChapterBookDAO {
+    public boolean saveChapterBook (ChapterBook chapterBook) throws BusinessConnectionException;
+    public boolean updateChapterBook (ChapterBook chapterBook, int chapterNumber) throws BusinessConnectionException;    
 }

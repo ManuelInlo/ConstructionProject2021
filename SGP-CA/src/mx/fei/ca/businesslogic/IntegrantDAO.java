@@ -24,10 +24,10 @@ public class IntegrantDAO implements IIntegrantDAO{
     }
     
     @Override
-    public int saveIntegrant(Integrant integrant) throws BusinessConnectionException{
-        String sql = "INSERT INTO Integrant (curp, role, nameIntegrant, studyDegree, studyDiscipline, prodepParticipation, typeTeaching, eisStudyDegree, institutionalMail, numberPhone, dateBirthday)"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        int saveResult = 0;
+    public boolean saveIntegrant(Integrant integrant) throws BusinessConnectionException{
+        String sql = "INSERT INTO Integrant (curp, role, nameIntegrant, studyDegree, studyDiscipline, prodepParticipation, typeTeaching, eisStudyDegree, institutionalMail, numberPhone, dateBirthday, statusIntegrant)"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        boolean saveResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -42,7 +42,9 @@ public class IntegrantDAO implements IIntegrantDAO{
             preparedStatement.setString(9, integrant.getInstitutionalMail()); 
             preparedStatement.setString(10, integrant.getNumberPhone());
             preparedStatement.setDate(11, integrant.getDateBirthday()); 
-            saveResult = preparedStatement.executeUpdate();
+            preparedStatement.setString(12, integrant.getStatusIntegrant());            
+            preparedStatement.executeUpdate();
+            saveResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
         }finally{
@@ -52,10 +54,10 @@ public class IntegrantDAO implements IIntegrantDAO{
     }
     
     @Override
-    public int updateIntegrant(Integrant integrant, String curp) throws BusinessConnectionException{
-        String sql = "UPDATE Integrant SET curp = ?, role = ?, nameIntegrant = ?, studyDegree = ?, studyDiscipline = ?, prodepParticipation = ?, typeTeaching = ?, eisStudyDegree = ?, institutionalMail = ?, numberPhone = ?, dateBirthday = ?"
-                + " WHERE curp = ?" ;
-        int updateResult = 0;                         
+    public boolean updateIntegrant(Integrant integrant, String curp) throws BusinessConnectionException{
+        String sql = "UPDATE Integrant SET curp = ?, role = ?, nameIntegrant = ?, studyDegree = ?, studyDiscipline = ?, prodepParticipation = ?, typeTeaching = ?, eisStudyDegree = ?, institutionalMail = ?, numberPhone = ?, dateBirthday = ?, statusIntegrant = ?"
+                + " WHERE curp = ?";
+        boolean updateResult = false;                         
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -70,8 +72,10 @@ public class IntegrantDAO implements IIntegrantDAO{
             preparedStatement.setString(9, integrant.getInstitutionalMail()); 
             preparedStatement.setString(10, integrant.getNumberPhone());
             preparedStatement.setDate(11, integrant.getDateBirthday()); 
-            preparedStatement.setString(12, curp);
-            updateResult = preparedStatement.executeUpdate();
+            preparedStatement.setString(12, integrant.getStatusIntegrant());            
+            preparedStatement.setString(13, curp);
+            preparedStatement.executeUpdate();
+            updateResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
         }finally{
@@ -81,14 +85,15 @@ public class IntegrantDAO implements IIntegrantDAO{
     }
             
     @Override
-    public int deleteIntegrantByCurp(String curp) throws BusinessConnectionException{
+    public boolean deleteIntegrantByCurp(String curp) throws BusinessConnectionException{
         String sql = "DELETE FROM Integrant WHERE curp = ?";
-        int deleteResult = 0;
+        boolean deleteResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, curp);
-            deleteResult = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+            deleteResult = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
         }finally{
