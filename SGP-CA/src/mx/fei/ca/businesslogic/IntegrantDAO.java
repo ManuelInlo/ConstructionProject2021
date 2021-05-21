@@ -101,4 +101,15 @@ public class IntegrantDAO implements IIntegrantDAO{
         }
         return deleteResult;
     }
+
+    @Override
+    public String encryptPassword(String secretKey, String password) {
+        String encryptedPassword;
+        
+    }
+
+    @Override
+    public String decryptPassword(String secreyKey, String encryptedPassword) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

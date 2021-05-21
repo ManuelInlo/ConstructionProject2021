@@ -8,13 +8,9 @@ package mx.fei.ca.presentation;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import mx.fei.ca.businesslogic.ReceptionWorkDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
-import mx.fei.ca.domain.ReceptionWork;
-
 public class SGPCA extends Application {
     
     @Override

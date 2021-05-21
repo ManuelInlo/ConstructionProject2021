@@ -141,7 +141,8 @@ public class WindowMemberProductionController implements Initializable {
     @FXML
     private ArrayList<ReceptionWork> recoverReceptionWorks() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
-        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorkByInitialesOfTitle(tfEvidenceName.getText());
+        String titleReceptionWork = tfEvidenceName.getText();
+        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorkByInitialesOfTitle(titleReceptionWork);
         if(receptionWorks.size() > 0){
             fillReceptionWorkTable(receptionWorks);
         }

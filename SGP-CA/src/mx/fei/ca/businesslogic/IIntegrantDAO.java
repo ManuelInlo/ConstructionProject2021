@@ -10,4 +10,7 @@ public interface IIntegrantDAO {
     public boolean saveIntegrant(Integrant integrant) throws BusinessConnectionException;
     public boolean updateIntegrant(Integrant integrant, String curp) throws BusinessConnectionException; 
     public boolean deleteIntegrantByCurp(String curp) throws BusinessConnectionException;
+    
+    public String encryptPassword(String secretKey, String password);
+    public String decryptPassword(String secreyKey, String encryptedPassword);
 }

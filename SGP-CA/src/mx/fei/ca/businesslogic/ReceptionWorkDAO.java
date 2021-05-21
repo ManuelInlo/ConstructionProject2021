@@ -56,7 +56,7 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
     @Override
     public boolean updatedReceptionWorkById(ReceptionWork receptionWork, int id) throws BusinessConnectionException {
         String sql = "UPDATE receptionWork SET impactCA = ?, titleReceptionWork = ?, fileRoute = ?, startDate = ?, endDate = ?, "
-                    + "grade = ?, workType = ?, actualState = ?, idProject = ?, curp = ?, idCollaborator = ? WHERE id = ?";
+                    + "grade = ?, workType = ?, actualState = ?, idProject = ?, idCollaborator = ? WHERE id = ?";
         boolean updateResult = false;
         try{
             connection = dataBaseConnection.getConnection();
@@ -70,7 +70,6 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
             preparedStatement.setString(7, receptionWork.getWorkType());
             preparedStatement.setString(8, receptionWork.getActualState());
             preparedStatement.setInt(9, receptionWork.getInvestigationProject().getIdProject());
-            preparedStatement.setString(10, receptionWork.getIntegrant().getCurp());
             preparedStatement.setInt(11, receptionWork.getCollaborator().getIdCollaborator());
             preparedStatement.setInt(12, id);
             preparedStatement.executeUpdate();
@@ -122,7 +121,7 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
     public ArrayList<ReceptionWork> findLastTwoReceptionWorksByCurpIntegrant(String curp) throws BusinessConnectionException {
         String sql = "SELECT * FROM receptionWork WHERE curp = ?";
         ArrayList<ReceptionWork> receptionWorks = new ArrayList<>();
-        CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
+        
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -147,11 +146,11 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
                 }else{
                     receptionWork = new ReceptionWork(impactCA, titleReceptionWork, fileRoute, startDate, grade, workType, actualState);
                 }
-                Integrant integrant = new Integrant(curp); //Aquí debe mandar a llamar metodo de buscar integrante por curp
+                //InvestigationProjectDAO investigatioProjectDAO = new InvestigationProjectDAO();
                 InvestigationProject investigationProject = new InvestigationProject(idProject); //En vez de esto, debe mandar a llamar metodo buscar proyecto por id
+                CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
                 Collaborator collaborator = collaboratorDAO.findCollaboratorByIdCollaborator(idCollaborator);
                 receptionWork.setId(id);
-                receptionWork.setIntegrant(integrant);
                 receptionWork.setInvestigationProject(investigationProject);
                 receptionWork.setCollaborator(collaborator);
                 receptionWorks.add(receptionWork);
@@ -166,14 +165,15 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
     }
 
     @Override
-    public ArrayList<ReceptionWork> findReceptionWorkByInitialesOfTitle(String InitialesTitleReceptionWork) throws BusinessConnectionException {
-        String sql = "SELECT * FROM receptionWork WHERE titleReceptionWork LIKE CONCAT('%',?,'%')";
+    public ArrayList<ReceptionWork> findReceptionWorkByInitialesOfTitle(String InitialesTitleReceptionWork, String curp) throws BusinessConnectionException {
+        String sql = "SELECT * FROM receptionWork WHERE titleReceptionWork LIKE CONCAT('%',?,'%') AND curp = ?";
         ArrayList<ReceptionWork> receptionWorks = new ArrayList<>();
-        CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
+        
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, InitialesTitleReceptionWork);
+            preparedStatement.setString(2, curp);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 ReceptionWork receptionWork;
@@ -186,7 +186,6 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
                 String workType = resultSet.getString("workType");
                 String actualState = resultSet.getString("actualState");
                 int idProject = resultSet.getInt("idProject");
-                String curp = resultSet.getString("curp");
                 int idCollaborator = resultSet.getInt("idCollaborator");
                 String titleReceptionWork = resultSet.getString("titleReceptionWork");
                 if(endDate != null){
@@ -194,11 +193,11 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
                 }else{
                     receptionWork = new ReceptionWork(impactCA, titleReceptionWork, fileRoute, startDate, grade, workType, actualState);
                 }
-                Integrant integrant = new Integrant(curp); //Aquí debe mandar a llamar metodo de buscar integrante por curp
+                //ProyectoInvestigacionDAO proyectoInvestigacionDAO = new ProyectoInvestigacionDAO;
                 InvestigationProject investigationProject = new InvestigationProject(idProject); //En vez de esto, debe mandar a llamar metodo buscar proyecto por id
+                CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
                 Collaborator collaborator = collaboratorDAO.findCollaboratorByIdCollaborator(idCollaborator);
                 receptionWork.setId(id);
-                receptionWork.setIntegrant(integrant);
                 receptionWork.setInvestigationProject(investigationProject);
                 receptionWork.setCollaborator(collaborator);
                 receptionWorks.add(receptionWork);

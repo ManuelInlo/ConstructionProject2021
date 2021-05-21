@@ -113,7 +113,7 @@ public class ReceptionWorkTest {
     @Test
     public void testFindReceptionWorkByInitialesOfTitle() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
-        ArrayList <ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorkByInitialesOfTitle("Impa");
+        ArrayList <ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorkByInitialesOfTitle("Impa", "JCPA940514RDTREOP1");
         assertEquals("Prueba encontrar trabajo recepcional por título", receptionWorks.size(), 2);
     }
     
