@@ -132,17 +132,17 @@ public class WindowAddReceptionWorkController implements Initializable {
             InvestigationProject investigationProject = new InvestigationProject();
             investigationProject.setName(nameInvestigationProject);  //Debe mandar a llamar al buscar por nombre
             investigationProject.setIdProject(1);
-            ReceptionWork receptionWork = new ReceptionWork(impactCA, titleReceptionWork, fileRoute, startDate, endDate, grade,
-                                                        workType, actualState);
             Integrant integrant = new Integrant("JCPA940514RDTREOP1"); //Es prueba, deberia recuperar la curp del que está loggeado o bien recibir parámetro
-            ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
             CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
             int idCollaborator = collaboratorDAO.saveCollaboratorAndReturnId(collaborator);
             if(idCollaborator != 0){
                 collaborator.setIdCollaborator(idCollaborator);
+                ReceptionWork receptionWork = new ReceptionWork(impactCA, titleReceptionWork, fileRoute, startDate, endDate, grade,
+                                                        workType, actualState);
                 receptionWork.setCollaborator(collaborator);
                 receptionWork.setInvestigationProject(investigationProject);
                 receptionWork.setIntegrant(integrant);
+                ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
                 boolean saveResult = receptionWorkDAO.savedReceptionWork(receptionWork);
                 showConfirmationAlert(saveResult);
             }else{

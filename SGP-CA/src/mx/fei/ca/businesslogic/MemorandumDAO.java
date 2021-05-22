@@ -21,7 +21,7 @@ public class MemorandumDAO implements IMemorandumDAO{
     }
     
     @Override
-    public boolean savedMemorandum(Memorandum memorandum, int idMeeting) throws BusinessConnectionException{
+    public boolean saveAndReturnIdMemorandum(Memorandum memorandum, int idMeeting) throws BusinessConnectionException{
         String sql = "INSERT INTO memorandum (pending, note, idMeeting) VALUES (?, ?, ?)";
         boolean saveResult = false;
         try{

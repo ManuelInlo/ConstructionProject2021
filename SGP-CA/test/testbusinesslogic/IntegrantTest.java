@@ -56,4 +56,9 @@ public class IntegrantTest {
         boolean deleteResult = integrantDAO.deleteIntegrantByCurp("MCUD940585RDTRER23");
         assertEquals("Prueba correcta, se elimino integrante", deleteResult, true);       
     }    
+    
+    @Test 
+    public void testChangedPasswordIntegrant() throws BusinessConnectionException{
+        
+    }
 }

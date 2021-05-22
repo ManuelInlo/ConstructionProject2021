@@ -11,6 +11,8 @@ public interface IIntegrantDAO {
     public boolean updateIntegrant(Integrant integrant, String curp) throws BusinessConnectionException; 
     public boolean deleteIntegrantByCurp(String curp) throws BusinessConnectionException;
     
-    public String encryptPassword(String secretKey, String password);
-    public String decryptPassword(String secreyKey, String encryptedPassword);
+    public boolean changedPasswordIntegrant(String password, String curp) throws BusinessConnectionException;
+    public Integrant getIntegrantByInstitutionalMail(String institutionalMail) throws BusinessConnectionException;
+    public String encryptPassword(String password);
+    public String decryptPassword(String encryptedPassword);
 }

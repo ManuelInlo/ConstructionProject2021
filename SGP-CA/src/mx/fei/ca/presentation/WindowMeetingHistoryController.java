@@ -72,7 +72,6 @@ public class WindowMeetingHistoryController implements Initializable {
         }
     }  
     
-    @FXML
     private void fillMeetingHistory(ArrayList<Meeting> listMeetings) throws BusinessConnectionException{
         ObservableList<Meeting> meetings = FXCollections.observableArrayList(listMeetings);
         tbMeetingHistory.setItems(meetings);
@@ -126,7 +125,6 @@ public class WindowMeetingHistoryController implements Initializable {
         return invalidField;
     }
     
-    @FXML
     private boolean existsEmptyField(){
         boolean emptyField = false;
         if(tfMeetingProject.getText().isEmpty()){
@@ -137,7 +135,6 @@ public class WindowMeetingHistoryController implements Initializable {
         return emptyField;
     }
     
-    @FXML
     private boolean existsInvalidString(){
         boolean invalidString = false;
         Pattern pattern = Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s]+$");
@@ -150,7 +147,6 @@ public class WindowMeetingHistoryController implements Initializable {
         return invalidString;
     }
     
-    @FXML
     private void showInvalidFieldAlert(TypeError typeError){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
@@ -164,7 +160,6 @@ public class WindowMeetingHistoryController implements Initializable {
         alert.showAndWait();
     }
     
-    @FXML
     private void showNoMatchAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
@@ -173,7 +168,6 @@ public class WindowMeetingHistoryController implements Initializable {
         alert.showAndWait();
     }
     
-    @FXML
     private void cleanFields(){
         tfMeetingProject.clear();
         dpMeetingDate.getEditor().clear();

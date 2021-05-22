@@ -121,7 +121,6 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
     public ArrayList<ReceptionWork> findLastTwoReceptionWorksByCurpIntegrant(String curp) throws BusinessConnectionException {
         String sql = "SELECT * FROM receptionWork WHERE curp = ?";
         ArrayList<ReceptionWork> receptionWorks = new ArrayList<>();
-        
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);

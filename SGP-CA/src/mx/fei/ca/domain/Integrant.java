@@ -16,6 +16,7 @@ public class Integrant {
     private String numberPhone;
     private Date dateBirthday;
     private String statusIntegrant;
+    private String password;
    
     public Integrant(String curp, String role, String nameIntegrant, String studyDegree, String studyDiscipline,
                     String prodepParticipation, String typeTeaching, String iesStudyDegree, String institutionalMail, String numberPhone, Date dateBirthday, String statusIntegrant){
@@ -81,6 +82,10 @@ public class Integrant {
         return statusIntegrant;
     }    
 
+    public String getPassword() {
+        return password;
+    }
+    
     public void setCurp(String curp) {
         this.curp = curp;
     }
@@ -128,6 +133,10 @@ public class Integrant {
     public void setStatusIntegrant(String statusIntegrant) {
         this.statusIntegrant = statusIntegrant;
     } 
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     
     public String toString(){
         return "";
