@@ -10,60 +10,61 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.IntegrantDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Integrant;
-
 
 public class WindowAddIntegrantController implements Initializable {
 
     @FXML
     private TextField tfNameIntegrant;
     @FXML
-    private ComboBox cbRole;    
-    @FXML
     private TextField tfStudyDiscipline;
     @FXML
     private TextField tfStudyDegree;
     @FXML
+    private ComboBox cbRole;
+    @FXML
     private ComboBox cbProdepParticipation;
     @FXML
-    private TextField tfTypeTeaching;   
+    private TextField tfTypeTeaching;
     @FXML
     private RadioButton rbL1;
     @FXML
-    private RadioButton rbL2;   
+    private RadioButton rbL2;
     @FXML
-    private TextField tfIesStudyDegree;  
+    private TextField tfIesStudyDegree;
     @FXML
-    private TextField tfNumberPhone;         
+    private TextField tfNumberPhone;
+    @FXML
+    private TextField tfCurp;
+    @FXML
+    private TextField tfInstitutionalMail;
+    @FXML
+    private ComboBox cbStatusIntegrant;
     @FXML
     private DatePicker dpDateBirthday;
     @FXML
-    private TextField tfInstitutionalMail;  
-    @FXML
-    private TextField tfCurp;   
-    @FXML
-    private ComboBox cbStatusIntegrant;   
-    @FXML   
     private Button btnCancel;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         fillComboBoxRole();
         fillComboBoxProdepParticipation();
         fillComboBoxStatusIntegrant();
     }    
-
     @FXML
     private void fillComboBoxRole() {
-        ObservableList<String> listRole = FXCollections.observableArrayList("Responsable","Integrante");
+        ObservableList<String> listRole = FXCollections.observableArrayList();
+        listRole.addAll("Responsable", "Integrante");
         cbRole.setItems(listRole);
     }
 
@@ -100,6 +101,13 @@ public class WindowAddIntegrantController implements Initializable {
         showConfirmationAlert(saveResult);
     }
 
+    @FXML
+    private void closeIntegrantRegistration(ActionEvent event){
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
+    }
+    
     private java.sql.Date parseToSqlDate(java.util.Date date){
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         return sqlDate;
@@ -114,6 +122,5 @@ public class WindowAddIntegrantController implements Initializable {
             alert.setContentText("La información del miembro fue guardada con éxito");
             alert.showAndWait();
         }       
-    }
-        
+    }   
 }
