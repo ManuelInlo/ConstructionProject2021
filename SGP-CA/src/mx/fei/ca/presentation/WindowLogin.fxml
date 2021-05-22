@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #60e0d5;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="mx.fei.ca.presentation.LoginController">
+   <children>
+      <Label layoutX="16.0" layoutY="56.0" text="User Name:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <TextField layoutX="89.0" layoutY="52.0" prefHeight="25.0" prefWidth="195.0" text="example@gmail.com" />
+      <Label layoutX="16.0" layoutY="95.0" text="Password:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <TextField layoutX="89.0" layoutY="91.0" prefHeight="25.0" prefWidth="195.0" />
+      <Button layoutX="126.0" layoutY="130.0" mnemonicParsing="false" text="Login" />
+      <Hyperlink layoutX="28.0" layoutY="165.0" text="i dont remember my user name or password" />
+      <Label layoutX="135.0" layoutY="14.0" text="SGPCA">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
