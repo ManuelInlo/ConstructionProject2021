@@ -41,7 +41,7 @@ public class MemorandumApproverDAO implements IMemorandumApproverDAO{
         return saveResult;
     }
 
-    @Override
+   /* @Override
     public ArrayList<MemorandumApprover> findMemorandumApproversByIdMemorandum(int idMemorandum) throws BusinessConnectionException {
         String sql = "SELECT * FROM memorandumApprover WHERE idMemorandum = ?";
         ArrayList<MemorandumApprover> memorandumApprovers = new ArrayList<>();
@@ -62,6 +62,11 @@ public class MemorandumApproverDAO implements IMemorandumApproverDAO{
             dataBaseConnection.closeConnection();
         }
         return memorandumApprovers;
+    }*/
+
+    @Override
+    public ArrayList<MemorandumApprover> findMemorandumApproversByIdMemorandum(int idMemorandum) throws BusinessConnectionException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

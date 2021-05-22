@@ -59,6 +59,18 @@ public class IntegrantTest {
     
     @Test 
     public void testChangedPasswordIntegrant() throws BusinessConnectionException{
-        
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        String newPassword = "password123";
+        boolean changedResult = integrantDAO.changedPasswordIntegrant(newPassword, "MCUD940585RDTRER23");
+        assertEquals("Prueba cambio contraseña", changedResult, true);
     }
+    
+    @Test
+    public void testGetIntegrantByInstitutionalMail() throws BusinessConnectionException{
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        String passwordIntegrantExpected = "password123";
+        Integrant integrant = integrantDAO.getIntegrantByInstitutionalMail("kcortes@uv.mx");
+        assertEquals("Prueba encontrar integrante por email", passwordIntegrantExpected, integrant.getPassword());
+    }
+          
 }

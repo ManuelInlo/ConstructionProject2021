@@ -21,9 +21,9 @@ public class MemorandumDAO implements IMemorandumDAO{
     }
     
     @Override
-    public boolean saveAndReturnIdMemorandum(Memorandum memorandum, int idMeeting) throws BusinessConnectionException{
+    public int saveAndReturnIdMemorandum(Memorandum memorandum, int idMeeting) throws BusinessConnectionException{
         String sql = "INSERT INTO memorandum (pending, note, idMeeting) VALUES (?, ?, ?)";
-        boolean saveResult = false;
+        int idMemorandumResult = 0;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -31,13 +31,16 @@ public class MemorandumDAO implements IMemorandumDAO{
             preparedStatement.setString(2, memorandum.getNote());
             preparedStatement.setInt(3, idMeeting);
             preparedStatement.executeUpdate();
-            saveResult = true;
+            resultSet = preparedStatement.getGeneratedKeys();
+            if(resultSet.next()){
+                idMemorandumResult = resultSet.getInt(1);
+            }
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos",ex);
         }finally{
             dataBaseConnection.closeConnection();
         }
-        return saveResult;
+        return idMemorandumResult;
     }
     
     @Override

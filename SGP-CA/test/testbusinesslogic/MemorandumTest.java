@@ -5,6 +5,7 @@ import mx.fei.ca.businesslogic.MemorandumDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Memorandum;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
@@ -17,8 +18,8 @@ public class MemorandumTest {
     public void testInsertMemorandum() throws BusinessConnectionException{
         MemorandumDAO memorandumDAO = new MemorandumDAO();
         Memorandum memorandum = new Memorandum("Revisar ultima parte de metas", "Hasta el momento todo correcto");
-        boolean saveResult = memorandumDAO.saveAndReturnIdMemorandum(memorandum, 5);
-        assertTrue("Prueba guardar minuta", saveResult);
+        int idMemorandumResult = memorandumDAO.saveAndReturnIdMemorandum(memorandum, 5);
+        assertNotSame("Prueba guardar minuta", idMemorandumResult, 0);
     }
     
     @Test

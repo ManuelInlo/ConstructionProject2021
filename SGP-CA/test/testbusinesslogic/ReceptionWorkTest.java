@@ -47,14 +47,14 @@ public class ReceptionWorkTest {
         InvestigationProject investigationProject = new InvestigationProject();
         investigationProject.setIdProject(1);
         
-        Integrant integrant = new Integrant("JCPA940514RDTREOP1");
+       // Integrant integrant = new Integrant("JCPA940514RDTREOP1");
         
         ReceptionWork receptionWork = new ReceptionWork("SI", "Impacto de la IA en el diseño de software",
                                                         "Prueba, falta ruta", 
                                                         startDateReceptionWork, endDateReceptionWork, "Licenciatura", "Tesis", "Terminado");
         
         receptionWork.setCollaborator(collaborator);
-        receptionWork.setIntegrant(integrant);
+       // receptionWork.setIntegrant(integrant);
         receptionWork.setInvestigationProject(investigationProject);
         
         boolean saveResult = receptionWorkDAO.savedReceptionWork(receptionWork);
@@ -82,14 +82,14 @@ public class ReceptionWorkTest {
         InvestigationProject investigationProject = new InvestigationProject();
         investigationProject.setIdProject(1);
         
-        Integrant integrant = new Integrant("JCPA940514RDTREOP1");
+      //  Integrant integrant = new Integrant("JCPA940514RDTREOP1");
         
         ReceptionWork receptionWork = new ReceptionWork("SI", "Impacto de la Inteligencia Artificial en el diseño de software",
                                                         "Prueba, falta ruta", 
                                                         startDateReceptionWork, endDateReceptionWork, "Licenciatura", "Tesis", "Terminado");
         
         receptionWork.setCollaborator(collaborator);
-        receptionWork.setIntegrant(integrant);
+      //  receptionWork.setIntegrant(integrant);
         receptionWork.setInvestigationProject(investigationProject);
         
         boolean updateResult = receptionWorkDAO.updatedReceptionWorkById(receptionWork, 1);

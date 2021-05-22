@@ -121,7 +121,7 @@ public class WindowMemberProductionController implements Initializable {
         });
     }
 
-    @FXML
+    /*@FXML
     private void searchEvidence(ActionEvent event){
         if(!existsInvalidField()){
             try {
@@ -136,9 +136,9 @@ public class WindowMemberProductionController implements Initializable {
             }
   
         }
-    }
+    }*/
     
-    @FXML
+    /*@FXML
     private ArrayList<ReceptionWork> recoverReceptionWorks() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         String titleReceptionWork = tfEvidenceName.getText();
@@ -147,7 +147,7 @@ public class WindowMemberProductionController implements Initializable {
             fillReceptionWorkTable(receptionWorks);
         }
         return receptionWorks;
-    }
+    }*/
 
     @FXML
     private void openArticleRegistration(ActionEvent event) {

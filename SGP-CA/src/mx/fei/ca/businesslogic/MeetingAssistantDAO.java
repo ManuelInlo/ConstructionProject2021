@@ -61,7 +61,7 @@ public class MeetingAssistantDAO implements IMeetingAssistantDAO {
         return updateResult;
     }
 
-    @Override
+    /*@Override
     public ArrayList<MeetingAssistant> findMeetingAssistantsByIdMeeting(int idMeeting) throws BusinessConnectionException {
         String sql = "SELECT curp, role FROM meetingAssistant WHERE idMeeting = ?";
         ArrayList<MeetingAssistant> meetingAssistants = new ArrayList<>();
@@ -84,6 +84,11 @@ public class MeetingAssistantDAO implements IMeetingAssistantDAO {
             dataBaseConnection.closeConnection();
         }
         return meetingAssistants;
+    }*/
+
+    @Override
+    public ArrayList<MeetingAssistant> findMeetingAssistantsByIdMeeting(int idMeeting) throws BusinessConnectionException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

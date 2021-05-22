@@ -117,7 +117,7 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
         return receptionWorks;
     }
 
-    @Override
+    /*@Override
     public ArrayList<ReceptionWork> findLastTwoReceptionWorksByCurpIntegrant(String curp) throws BusinessConnectionException {
         String sql = "SELECT * FROM receptionWork WHERE curp = ?";
         ArrayList<ReceptionWork> receptionWorks = new ArrayList<>();
@@ -161,9 +161,9 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
             dataBaseConnection.closeConnection();
         }
         return receptionWorks;
-    }
+    }*/
 
-    @Override
+   /* @Override
     public ArrayList<ReceptionWork> findReceptionWorkByInitialesOfTitle(String InitialesTitleReceptionWork, String curp) throws BusinessConnectionException {
         String sql = "SELECT * FROM receptionWork WHERE titleReceptionWork LIKE CONCAT('%',?,'%') AND curp = ?";
         ArrayList<ReceptionWork> receptionWorks = new ArrayList<>();
@@ -208,7 +208,7 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
         }
         return receptionWorks;
     }
-
+*/
     @Override
     public boolean existsReceptionWorkTitle(String titleReceptionWork) throws BusinessConnectionException {
         String sql = "SELECT 1 FROM receptionWork WHERE titleReceptionWork = ?";
@@ -289,5 +289,15 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
             dataBaseConnection.closeConnection();
         }
         return exists;
+    }
+
+    @Override
+    public ArrayList<ReceptionWork> findLastTwoReceptionWorksByCurpIntegrant(String curp) throws BusinessConnectionException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<ReceptionWork> findReceptionWorkByInitialesOfTitle(String InitialesTitleReceptionWork, String curp) throws BusinessConnectionException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

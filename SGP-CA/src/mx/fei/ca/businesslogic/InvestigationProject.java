@@ -26,10 +26,10 @@ public class InvestigationProject implements IInvestigationProject {
         try {
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, investigationProject.ge);
+          //  preparedStatement.setInt(1, investigationProject.ge);
         } catch (Exception e) {
         }
-       
+       return saveResult;
     }
     
     /*public boolean savedAgendaPoint(AgendaPoint agendaPoint, int idMeeting) throws BusinessConnectionException{
@@ -60,9 +60,14 @@ public class InvestigationProject implements IInvestigationProject {
         return false;
         }
 
-    @Override
+   /* @Override
     public mx.fei.ca.domain.InvestigationProject findInvestigationProjectById(int idInvestigationproject) throws BusinessConnectionException {
         //
     }
-    
+    */
+
+    @Override
+    public mx.fei.ca.domain.InvestigationProject findInvestigationProjectById(int idInvestigationproject) throws BusinessConnectionException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -16,14 +16,14 @@ public class MemorandumApproverTest {
         
     }
     
-    @Test
+   /* @Test
     public void testInsertMemorandumApprover() throws BusinessConnectionException{
         MemorandumApproverDAO memorandumApproverDAO = new MemorandumApproverDAO();
         Integrant integrant = new Integrant("JCPA940514RDTREOP1");
         MemorandumApprover memorandumApprover = new MemorandumApprover(integrant);
         boolean saveResult = memorandumApproverDAO.savedMemorandumApprover(memorandumApprover, 3);
         assertTrue("Prueba insertar aprovador de minuta", saveResult);
-    }
+    }*/
     
     public void testFindMemorandumApproversByIdMemorandum() throws BusinessConnectionException{
         MemorandumApproverDAO memorandumApproverDAO = new MemorandumApproverDAO();

@@ -73,7 +73,7 @@ public class WindowNewMeetingController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         fillComboBoxHours();
         fillComboBoxMinutes();
-        fillIntegrantsTable();
+       // fillIntegrantsTable();
     }   
 
     @FXML
@@ -113,7 +113,7 @@ public class WindowNewMeetingController implements Initializable {
         cbMinutes.setItems(listMinutes);
     }
     
-    @FXML
+   /* @FXML
     private void fillIntegrantsTable(){
         //Prueba, en realidad debe mandar a recuperar todos los integrantes y con eso crear los meetingAssistant
         Integrant integrant = new Integrant("JCPA940514RDTREOP1");
@@ -133,7 +133,7 @@ public class WindowNewMeetingController implements Initializable {
         columnSecretary.setCellValueFactory(new PropertyValueFactory("rbSecretaryRole"));
         tbIntegrants.setItems(meetingAssistants);
     }
-    
+    */
     private java.sql.Date parseToSqlDate(java.util.Date date){
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         return sqlDate;

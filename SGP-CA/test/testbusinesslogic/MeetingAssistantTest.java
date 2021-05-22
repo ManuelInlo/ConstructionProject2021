@@ -16,7 +16,7 @@ public class MeetingAssistantTest {
         
     }
     
-    @Test
+   /* @Test
     public void testInsertMeetingAssistant() throws BusinessConnectionException{
         MeetingAssistantDAO meetingAssistantDAO = new MeetingAssistantDAO();
         Integrant integrant = new Integrant("JCPA940514RDTREOP1");
@@ -24,9 +24,9 @@ public class MeetingAssistantTest {
         meetingAssistant.setRole("Lider");
         boolean saveResult = meetingAssistantDAO.savedMeetingAssistant(meetingAssistant, 5);
         assertTrue("Prueba insertar asistente de reunión", saveResult);
-    }
+    }*/
     
-    @Test
+    /*@Test
     public void testUpdateRoleOfMeetingAssistant() throws BusinessConnectionException{
         MeetingAssistantDAO meetingAssistantDAO = new MeetingAssistantDAO();
         Integrant integrant = new Integrant("JCPA940514RDTREOP1");
@@ -34,7 +34,7 @@ public class MeetingAssistantTest {
         meetingAssistant.setRole("Secretario");
         boolean updateResult = meetingAssistantDAO.updatedRoleOfMeetingAssistant(meetingAssistant, 5);
         assertTrue("Prueba modificar rol de asistente de reunión", updateResult);
-    }
+    }*/
     
     @Test
     public void testFindMeetingAssistantsByIdMeeting() throws BusinessConnectionException{
