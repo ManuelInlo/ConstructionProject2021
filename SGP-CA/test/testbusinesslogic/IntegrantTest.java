@@ -29,7 +29,7 @@ public class IntegrantTest {
         }
         Integrant integrant = new Integrant("MCUD940585RDTRER23", "Responsable", "María Karen Cortés Verdín", "Doctorado", "Ingeniería de software",
                     "Activo", "PTC", "Universidad Veracruzana", "kcortes@uv.mx", "2251214658", birthdayDate, "Activo");
-        boolean saveResult = integrantDAO.saveIntegrant(integrant);
+        boolean saveResult = integrantDAO.savedIntegrant(integrant);
         assertEquals("Prueba correcta, si guardó", saveResult, true);
     }
 
@@ -46,7 +46,7 @@ public class IntegrantTest {
         }
         Integrant integrant = new Integrant("MCUD940585RDTRER22", "Responsable", "Alicia Ruiz", "Doctorado", "Ingeniería de software",
                     "Inactivo", "PTC", "Universidad Veracruzana", "hasgret@uv.mx", "2251214658", birthdayDate, "Activo");
-        boolean updateResult = integrantDAO.updateIntegrant(integrant, "MCUD940585RDTRER22");
+        boolean updateResult = integrantDAO.updatedIntegrant(integrant, "MCUD940585RDTRER22");
         assertEquals("Prueba correcta, si actualizo", updateResult, true);
     }    
     
@@ -71,6 +71,13 @@ public class IntegrantTest {
         String passwordIntegrantExpected = "password123";
         Integrant integrant = integrantDAO.getIntegrantByInstitutionalMail("kcortes@uv.mx");
         assertEquals("Prueba encontrar integrante por email", passwordIntegrantExpected, integrant.getPassword());
+    }
+    
+    @Test
+    public void testFindIntegrantByCurp() throws BusinessConnectionException{
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        boolean findResult = integrantDAO.findIntegrantByCurp("JCPA940514RDTREOP1");
+        assertEquals("Prueba encontrar integrante por curp", findResult, true);
     }
           
 }
