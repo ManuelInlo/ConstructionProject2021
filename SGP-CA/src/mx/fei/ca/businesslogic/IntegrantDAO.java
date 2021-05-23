@@ -223,8 +223,6 @@ public class IntegrantDAO implements IIntegrantDAO{
             preparedStatement.setString(1, curp);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                Integrant integrant;
-                String curpIntegrant = resultSet.getString("curp");
                 String role = resultSet.getString("role");
                 String nameIntegrant = resultSet.getString("nameIntegrant");
                 String studyDegree = resultSet.getString("studyDegree");
@@ -232,11 +230,11 @@ public class IntegrantDAO implements IIntegrantDAO{
                 String prodepParticipation = resultSet.getString("prodepParticipation");
                 String typeTeaching = resultSet.getString("typeTeaching");
                 String eisStudyDegree = resultSet.getString("eisStudyDegree");
-                String institutionalMail = resultSet.getString("institucionalMail");
+                String institutionalMail = resultSet.getString("institutionalMail");
                 String numberPhone = resultSet.getString("numberPhone");
                 Date dateBirthday = resultSet.getDate("dateBirthday");
                 String statusIntegrant = resultSet.getString("statusIntegrant");
-                integrant = new Integrant(curpIntegrant, role, nameIntegrant, studyDegree, studyDiscipline, prodepParticipation, typeTeaching,
+                Integrant integrant = new Integrant(curp, role, nameIntegrant, studyDegree, studyDiscipline, prodepParticipation, typeTeaching,
                                           eisStudyDegree, institutionalMail, numberPhone, dateBirthday, statusIntegrant);
                 findResult = true;
             }
@@ -246,10 +244,5 @@ public class IntegrantDAO implements IIntegrantDAO{
             dataBaseConnection.closeConnection();
         }
         return findResult;
-    }
-
-    @Override
-    public boolean findIntegrantByName(String name) throws BusinessConnectionException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
