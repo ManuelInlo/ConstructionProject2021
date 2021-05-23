@@ -89,42 +89,25 @@ public class PreliminaryProjectDAO implements IPreliminaryProjectDAO{
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                int idPreliminaryproject;
-                int idProject;
-                int idCollaborator;
-                String tittlePreliminaryProject;
-                String preliminaryProjectCondition;
-                String duration;
-                String modality;
-                String preliminaryProjectDescription;
-                Date startDate;
+                int idPreliminaryProject = resultSet.getInt("idPreliminaryProject");
+                int idProject = resultSet.getInt("idProject");
+                int idCollaborator = resultSet.getInt("idCollaborator");
+                String tittlePreliminaryProject = resultSet.getString("tittlePreliminaryProject");
+                String preliminaryProjectCondition = resultSet.getString("preliminaryProjectCondition");
+                String duration = resultSet.getString("duration");
+                String modality = resultSet.getString("modality");
+                String preliminaryProjectDescription = resultSet.getString("preliminaryProjectDescription");
+                Date startDate = resultSet.getDate("startDate");
+                preliminaryProject = new PreliminaryProject(idPreliminaryProject, idProject, idCollaborator, tittlePreliminaryProject, 
+                preliminaryProjectCondition, duration, modality, preliminaryProjectDescription, startDate);
             }
-        } catch (Exception e) {
-        }
-    }
-    /*
-    public Memorandum findMemorandumByIdMeeting(int idMeeting) throws BusinessConnectionException{
-        String sql = "SELECT * FROM memorandum WHERE idMeeting = ?";
-        Memorandum memorandum = null;
-        try{
-            connection = dataBaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, idMeeting);
-            resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                int idMemorandum = resultSet.getInt("idMemorandum");
-                String pending = resultSet.getString("pending");
-                String note = resultSet.getString("note");
-                memorandum = new Memorandum(pending, note);
-                memorandum.setIdMemorandum(idMemorandum);
-            }
-        }catch(SQLException ex){
-            throw new BusinessConnectionException("Perdida de conexión con la base de datos",ex);
-        }finally{
+        } catch (SQLException e) {
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos",e);
+        } finally{
             dataBaseConnection.closeConnection();
         }
-        return memorandum;
+        return preliminaryProject;
     }
-    */
+    
     
 }
