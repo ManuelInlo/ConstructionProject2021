@@ -1,14 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mx.fei.ca.businesslogic;
 
-/**
- *
- * @author inigu
- */
+import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
+import mx.fei.ca.domain.WorkPlan;
+
 public interface IWorkPlanDAO {
     
+    public boolean savedWorkPlan(WorkPlan workPlan, String curp) throws BusinessConnectionException;
+    public boolean updatedWorkPlan(WorkPlan workPlan, int keyCodePlan) throws BusinessConnectionException;
+    /*
+    public boolean savedPreliminaryProject(PreliminaryProject preliminaryproject, int idProject, int idCollaborator) throws BusinessConnectionException, BusinessDataException;
+    public boolean updatePreliminaryProject(PreliminaryProject preliminaryproject, int idProject, int idCollaborator)throws BusinessConnectionException, BusinessDataException;
+    public PreliminaryProject findpreliminaryProjectById(int id) throws BusinessConnectionException;
+    */
 }

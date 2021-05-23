@@ -47,9 +47,9 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO {
     }
     
     @Override
-    public boolean updateInvestigationproject(mx.fei.ca.domain.InvestigationProject investigationproject, int keycode) throws BusinessConnectionException, BusinessDataException {
+    public boolean updateInvestigationproject(InvestigationProject investigationproject, int keycode) throws BusinessConnectionException, BusinessDataException {
         String sql = "UPDATE investigationProject SET idProject = ?, keyCode = ?, endDate = ?, startDate = ?, tittleProject = ?, "
-                + "description = ? WHERE idProject = idproject = ?";
+                + "description = ? WHERE idProject = ?";
         boolean updateResult = false;
         try {
             connection = dataBaseConnection.getConnection();
