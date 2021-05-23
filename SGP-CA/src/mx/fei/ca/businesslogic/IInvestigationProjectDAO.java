@@ -13,7 +13,7 @@ import mx.fei.ca.domain.InvestigationProject;
  *
  * @author inigu
  */
-public interface IInvestigationProject {
+public interface IInvestigationProjectDAO {
      public boolean savedInvestigationProject(InvestigationProject investigationproject, int keycode) throws BusinessConnectionException, BusinessDataException;
      public boolean updateInvestigationproject(InvestigationProject investigationproject, int keycode) throws BusinessConnectionException, BusinessDataException;
      public InvestigationProject findInvestigationProjectById(int idInvestigationproject) throws BusinessConnectionException;

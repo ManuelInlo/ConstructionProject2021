@@ -10,11 +10,10 @@ import org.junit.Test;
 
 
 public class DataBaseConnectionTest {
-    
+   
     @Test
     public void DataBaseConnectionTest() throws SQLException, ClassNotFoundException{
         Connection currentConnection = (Connection) new DataBaseConnection().getConnection();
         Assert.assertNotNull(currentConnection);
-    }
-    
+    } 
 }

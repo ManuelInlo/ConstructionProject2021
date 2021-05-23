@@ -1,5 +1,7 @@
 package mx.fei.ca.domain;
 
+import java.sql.Date;
+
 
 public class PreliminaryProject {
     private int idPreliminaryproject;
@@ -10,11 +12,12 @@ public class PreliminaryProject {
     private String duration;
     private String modality;
     private String preliminaryProjectDescription;
+    private Date startDate;
 
     public PreliminaryProject() {
     }
 
-    public PreliminaryProject(int idPreliminaryproject, int idProject, int idCollaborator, String tittlePreliminaryProject, String preliminaryProjectCondition, String duration, String modality, String preliminaryProjectDescription) {
+    public PreliminaryProject(int idPreliminaryproject, int idProject, int idCollaborator, String tittlePreliminaryProject, String preliminaryProjectCondition, String duration, String modality, String preliminaryProjectDescription, Date startDate) {
         this.idPreliminaryproject = idPreliminaryproject;
         this.idProject = idProject;
         this.idCollaborator = idCollaborator;
@@ -23,7 +26,17 @@ public class PreliminaryProject {
         this.duration = duration;
         this.modality = modality;
         this.preliminaryProjectDescription = preliminaryProjectDescription;
+        this.startDate = startDate;
     }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
 
     public int getIdPreliminaryproject() {
         return idPreliminaryproject;
@@ -91,7 +104,9 @@ public class PreliminaryProject {
 
     @Override
     public String toString() {
-        return "PreliminaryProject{" + "idPreliminaryproject=" + idPreliminaryproject + ", idProject=" + idProject + ", idCollaborator=" + idCollaborator + ", tittlePreliminaryProject=" + tittlePreliminaryProject + ", preliminaryProjectCondition=" + preliminaryProjectCondition + ", duration=" + duration + ", modality=" + modality + ", preliminaryProjectDescription=" + preliminaryProjectDescription + '}';
+        return "PreliminaryProject{" + "idPreliminaryproject=" + idPreliminaryproject + ", idProject=" + idProject + ", idCollaborator=" + idCollaborator + ", tittlePreliminaryProject=" + tittlePreliminaryProject + ", preliminaryProjectCondition=" + preliminaryProjectCondition + ", duration=" + duration + ", modality=" + modality + ", preliminaryProjectDescription=" + preliminaryProjectDescription + ", startDate=" + startDate + '}';
     }
+
+    
     
 }
