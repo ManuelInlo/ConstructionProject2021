@@ -7,7 +7,10 @@ package mx.fei.ca.presentation;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 /**
  * FXML Controller class
@@ -16,6 +19,9 @@ import javafx.fxml.Initializable;
  */
 public class WindowHomeController implements Initializable {
 
+    @FXML
+    private Pane pnBtnProyectod;
+
     /**
      * Initializes the controller class.
      */
@@ -23,5 +29,21 @@ public class WindowHomeController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void ClickProjects(MouseEvent event) {
+    }
+
+    @FXML
+    private void ClickMettings(MouseEvent event) {
+    }
+
+    @FXML
+    private void ClickEvidences(MouseEvent event) {
+    }
+
+    @FXML
+    private void ClickWorkPlan(MouseEvent event) {
+    }
     
 }

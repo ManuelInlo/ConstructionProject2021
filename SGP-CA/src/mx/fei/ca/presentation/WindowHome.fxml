@@ -8,12 +8,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="mx.fei.ca.presentation.WindowHomeController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowHomeController">
    <children>
       <Pane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #60ABE0;">
          <children>
-            <Pane layoutX="36.0" layoutY="106.0" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
+            <Pane fx:id="pnBtnProyectod" layoutX="36.0" layoutY="106.0" onMouseClicked="#ClickProjects" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
                <children>
                   <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="166.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -27,31 +26,46 @@
                   </Text>
                </children>
             </Pane>
-            <Pane layoutX="340.0" layoutY="106.0" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
+            <Pane layoutX="340.0" layoutY="106.0" onMouseClicked="#ClickMettings" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
                <children>
                   <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="154.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/users-group.png" />
                      </image>
                   </ImageView>
+                  <Text layoutX="28.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reuniones">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Text>
                </children>
             </Pane>
-            <Pane layoutX="36.0" layoutY="209.0" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
+            <Pane layoutX="36.0" layoutY="209.0" onMouseClicked="#ClickEvidences" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
                <children>
                   <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="159.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/help.png" />
                      </image>
                   </ImageView>
+                  <Text layoutX="14.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Evidencias">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Text>
                </children>
             </Pane>
-            <Pane layoutX="340.0" layoutY="200.0" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
+            <Pane layoutX="340.0" layoutY="209.0" onMouseClicked="#ClickWorkPlan" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
                <children>
                   <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="159.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/book.png" />
                      </image>
                   </ImageView>
+                  <Text layoutX="24.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Plan de trabajo">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Text>
                </children>
             </Pane>
          </children>

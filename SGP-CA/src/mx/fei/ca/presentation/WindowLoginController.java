@@ -45,7 +45,7 @@ public class WindowLoginController implements Initializable {
     @FXML
     private void openHomePage(ActionEvent event) throws BusinessConnectionException {
         if(!existsInvalidFields()){
-            
+            System.out.println("FUNCIONA");
         }
     }
 
