@@ -1,6 +1,7 @@
 package mx.fei.ca.businesslogic;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,7 +25,7 @@ public class PreliminaryProjectDAO implements IPreliminaryProjectDAO{
     @Override
     public boolean savedPreliminaryProject(PreliminaryProject preliminaryproject, int idProject, int idCollaborator) throws BusinessConnectionException, BusinessDataException {
        String sql = "INSERT INTO preliminaryProject (idPreliminaryproject, idProject, idCollaborator, tittlePreliminaryProject, \n" +
-"            preliminaryProjectCondition, duration, modality, preliminaryProjectDescription, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";  
+                    "preliminaryProjectCondition, duration, modality, preliminaryProjectDescription, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";  
        boolean saveResult = false;
         try {
             connection = dataBaseConnection.getConnection();
@@ -77,38 +78,53 @@ public class PreliminaryProjectDAO implements IPreliminaryProjectDAO{
         }
         return updateResult;
     }
-    
-    /* 
-    public boolean updateChapterBook (ChapterBook chapterBook, int chapterNumber) throws BusinessConnectionException{
-       String sql = "UPDATE chapterBook SET impactCA = ?, titleEvidence = ?, author = ?, homepage =?, endPage = ?, ISBN = ?, idProject = ?, curp = ? "
-               + " WHERE chapterNumber = ? ";
-        boolean updateResult = false;
-        try{
-            connection = dataBaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, chapterBook.getImpactCA());
-            preparedStatement.setString(2, chapterBook.getTitleEvidence()); 
-            preparedStatement.setString(3, chapterBook.getAuthor());
-            preparedStatement.setInt(4, chapterBook.getHomepage());
-            preparedStatement.setInt(5, chapterBook.getEndPage()); 
-            preparedStatement.setString(6, chapterBook.getISBN());
-            preparedStatement.setInt(7, chapterBook.getIdProject()); 
-            preparedStatement.setString(8, chapterBook.getCurp());  
-            preparedStatement.setInt(9, chapterNumber);          
-            preparedStatement.executeUpdate();
-            updateResult = true;
-        }catch(SQLException ex){
-            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
-        }finally{
-            dataBaseConnection.closeConnection();
-        }
-        return updateResult;
-    }
-    */
 
     @Override
     public PreliminaryProject findpreliminaryProjectById(int id) throws BusinessConnectionException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "SELECT * FROM preliminaryProject WHERE idPreliminaryProject = ?";
+        PreliminaryProject preliminaryProject = null;
+        try {
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                int idPreliminaryproject;
+                int idProject;
+                int idCollaborator;
+                String tittlePreliminaryProject;
+                String preliminaryProjectCondition;
+                String duration;
+                String modality;
+                String preliminaryProjectDescription;
+                Date startDate;
+            }
+        } catch (Exception e) {
+        }
     }
+    /*
+    public Memorandum findMemorandumByIdMeeting(int idMeeting) throws BusinessConnectionException{
+        String sql = "SELECT * FROM memorandum WHERE idMeeting = ?";
+        Memorandum memorandum = null;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idMeeting);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                int idMemorandum = resultSet.getInt("idMemorandum");
+                String pending = resultSet.getString("pending");
+                String note = resultSet.getString("note");
+                memorandum = new Memorandum(pending, note);
+                memorandum.setIdMemorandum(idMemorandum);
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos",ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return memorandum;
+    }
+    */
     
 }

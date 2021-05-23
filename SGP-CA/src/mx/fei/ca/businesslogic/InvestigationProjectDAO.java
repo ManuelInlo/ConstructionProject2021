@@ -8,13 +8,13 @@ import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
 import mx.fei.ca.dataaccess.DataBaseConnection;
 
 
-public class InvestigationProject implements IInvestigationProjectDAO {
+public class InvestigationProjectDAO implements IInvestigationProjectDAO {
     private final DataBaseConnection dataBaseConnection;
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     
-    public InvestigationProject(){
+    public InvestigationProjectDAO(){
         dataBaseConnection = new DataBaseConnection();
     }
 
