@@ -5,14 +5,17 @@
  */
 package mx.fei.ca.presentation;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -43,9 +46,14 @@ public class WindowLoginController implements Initializable {
     }    
 
     @FXML
-    private void openHomePage(ActionEvent event) throws BusinessConnectionException {
+    private void openHomePage(ActionEvent event) throws BusinessConnectionException, IOException {
         if(!existsInvalidFields()){
-            System.out.println("FUNCIONA");
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowHome.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            closeWindowLogin(event);
+            stage.show();
         }
     }
 
@@ -59,7 +67,7 @@ public class WindowLoginController implements Initializable {
     @FXML
     private boolean existsInvalidFields() throws BusinessConnectionException{
         boolean invalidField = false;
-        if(existsEmptyFields() || !existsEmailAndPassword() || existsInvalidEmail()){
+        if(existsEmptyFields() || existsInvalidEmail()|| !existsEmailAndPassword()){
             invalidField = true;
         }
         return invalidField;
