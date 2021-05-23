@@ -5,6 +5,7 @@
  */
 package mx.fei.ca.businesslogic;
 
+import java.util.ArrayList;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
 import mx.fei.ca.domain.InvestigationProject;
@@ -17,5 +18,7 @@ public interface IInvestigationProjectDAO {
      public boolean savedInvestigationProject(InvestigationProject investigationproject, int keycode) throws BusinessConnectionException, BusinessDataException;
      public boolean updateInvestigationproject(InvestigationProject investigationproject, int keycode) throws BusinessConnectionException, BusinessDataException;
      public InvestigationProject findInvestigationProjectById(int idInvestigationproject) throws BusinessConnectionException;
+     public InvestigationProject findInvestigationProjectByName(String tittleproject) throws BusinessConnectionException;
+     public ArrayList<InvestigationProject> findAllInvestigationProjects() throws BusinessConnectionException;
      //maybe will be necessary more methods
 }

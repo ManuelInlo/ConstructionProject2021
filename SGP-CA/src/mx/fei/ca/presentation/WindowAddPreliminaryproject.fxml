@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="550.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowAddPreliminaryprojectController">
+   <children>
+      <Pane prefHeight="550.0" prefWidth="750.0" style="-fx-background-color: #60ABE0;">
+         <children>
+            <Text layoutX="6.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Agregar anteproyecto">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Text>
+            <TextField layoutX="136.0" layoutY="124.0" />
+            <Pane prefHeight="70.0" prefWidth="748.0" style="-fx-background-color: #A8CCE6;">
+               <children>
+                  <Text layoutX="22.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sistema Gestor de Cuespo Academico">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="563.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="USER XXXX">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="48.0" fitWidth="45.0" layoutX="689.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/logout.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="346.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/man%20(1).png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Label layoutX="14.0" layoutY="128.0" text="Titulo anteproyecto:">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </children></Pane>
+   </children>
+</AnchorPane>

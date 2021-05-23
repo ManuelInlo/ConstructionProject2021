@@ -25,7 +25,7 @@ public class TargetDAO implements ITargetDAO {
         try {
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
-            //prrep
+           
         } catch (Exception e) {
             
         } finally{
