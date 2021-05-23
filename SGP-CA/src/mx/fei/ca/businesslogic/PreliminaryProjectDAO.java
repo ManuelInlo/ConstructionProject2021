@@ -107,7 +107,5 @@ public class PreliminaryProjectDAO implements IPreliminaryProjectDAO{
             dataBaseConnection.closeConnection();
         }
         return preliminaryProject;
-    }
-    
-    
+    }   
 }
