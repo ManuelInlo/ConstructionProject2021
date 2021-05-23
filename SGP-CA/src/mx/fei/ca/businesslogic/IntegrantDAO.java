@@ -39,7 +39,7 @@ public class IntegrantDAO implements IIntegrantDAO{
     }
     
     @Override
-    public boolean saveIntegrant(Integrant integrant) throws BusinessConnectionException{
+    public boolean savedIntegrant(Integrant integrant) throws BusinessConnectionException{
         String sql = "INSERT INTO Integrant (curp, role, nameIntegrant, studyDegree, studyDiscipline, prodepParticipation, typeTeaching, eisStudyDegree, institutionalMail, numberPhone, dateBirthday, statusIntegrant, password)"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         boolean saveResult = false;
@@ -70,7 +70,7 @@ public class IntegrantDAO implements IIntegrantDAO{
     }
     
     @Override
-    public boolean updateIntegrant(Integrant integrant, String curp) throws BusinessConnectionException{
+    public boolean updatedIntegrant(Integrant integrant, String curp) throws BusinessConnectionException{
         String sql = "UPDATE Integrant SET curp = ?, role = ?, nameIntegrant = ?, studyDegree = ?, studyDiscipline = ?, prodepParticipation = ?, typeTeaching = ?, eisStudyDegree = ?, institutionalMail = ?, numberPhone = ?, dateBirthday = ?, statusIntegrant = ?"
                 + " WHERE curp = ?";
         boolean updateResult = false;                         
@@ -116,9 +116,7 @@ public class IntegrantDAO implements IIntegrantDAO{
             dataBaseConnection.closeConnection();
         }
         return deleteResult;
-    }
-    
-    
+    }   
 
     @Override
     public String encryptPassword(String password) {
@@ -213,5 +211,45 @@ public class IntegrantDAO implements IIntegrantDAO{
             dataBaseConnection.closeConnection();
         }
         return changedResult;
+    }
+
+    @Override
+    public boolean findIntegrantByCurp(String curp) throws BusinessConnectionException {
+        String sql = "SELECT * FROM integrant WHERE curp = ?";
+        boolean findResult = false; 
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, curp);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Integrant integrant;
+                String curpIntegrant = resultSet.getString("curp");
+                String role = resultSet.getString("role");
+                String nameIntegrant = resultSet.getString("nameIntegrant");
+                String studyDegree = resultSet.getString("studyDegree");
+                String studyDiscipline = resultSet.getString("studyDiscipline");
+                String prodepParticipation = resultSet.getString("prodepParticipation");
+                String typeTeaching = resultSet.getString("typeTeaching");
+                String eisStudyDegree = resultSet.getString("eisStudyDegree");
+                String institutionalMail = resultSet.getString("institucionalMail");
+                String numberPhone = resultSet.getString("numberPhone");
+                Date dateBirthday = resultSet.getDate("dateBirthday");
+                String statusIntegrant = resultSet.getString("statusIntegrant");
+                integrant = new Integrant(curpIntegrant, role, nameIntegrant, studyDegree, studyDiscipline, prodepParticipation, typeTeaching,
+                                          eisStudyDegree, institutionalMail, numberPhone, dateBirthday, statusIntegrant);
+                findResult = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return findResult;
+    }
+
+    @Override
+    public boolean findIntegrantByName(String name) throws BusinessConnectionException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
