@@ -4,7 +4,10 @@ package mx.fei.ca.presentation;
 import java.net.URL;
 import java.sql.Date;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
@@ -19,6 +22,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.CollaboratorDAO;
+import mx.fei.ca.businesslogic.IntegrantDAO;
+import mx.fei.ca.businesslogic.InvestigationProjectDAO;
 import mx.fei.ca.businesslogic.ReceptionWorkDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Collaborator;
@@ -42,7 +47,7 @@ public class WindowAddReceptionWorkController implements Initializable {
     @FXML
     private ComboBox cbImpactCA;
     @FXML
-    private ComboBox cbInvestigationProject;
+    private ComboBox<InvestigationProject> cbInvestigationProject;
     @FXML
     private ComboBox cbType;
     @FXML
@@ -69,7 +74,11 @@ public class WindowAddReceptionWorkController implements Initializable {
         fillComboBoxActualState();
         fillComboBoxType();
         fillComboBoxPositionAuthor();
-        fillComboBoxInvestigationProject();
+        try {
+            fillComboBoxInvestigationProject();
+        } catch (BusinessConnectionException ex) {
+            showLostConnectionAlert();
+        }
     }  
     
     @FXML
@@ -104,9 +113,10 @@ public class WindowAddReceptionWorkController implements Initializable {
     }
     
     @FXML
-    private void fillComboBoxInvestigationProject(){
-        //En realidad debe mandar a recuperar los proyectos de la base, esta es una prueba
-        ObservableList<String> listInvestigationProject = FXCollections.observableArrayList("Inteligencia artificial");
+    private void fillComboBoxInvestigationProject() throws BusinessConnectionException{
+        InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
+        ArrayList<InvestigationProject> investigationProjects = investigationProjectDAO.findAllInvestigationProjects();
+        ObservableList<InvestigationProject> listInvestigationProject = FXCollections.observableArrayList(investigationProjects);
         cbInvestigationProject.setItems(listInvestigationProject);
     }
 
@@ -123,16 +133,14 @@ public class WindowAddReceptionWorkController implements Initializable {
             String actualState = cbActualState.getSelectionModel().getSelectedItem().toString();
             String nameAuthor = tfAuthor.getText();
             String positionAuthor = cbPositionAuthor.getSelectionModel().getSelectedItem().toString();
-            String nameInvestigationProject = cbInvestigationProject.getSelectionModel().getSelectedItem().toString();
+            InvestigationProject investigationProject = cbInvestigationProject.getSelectionModel().getSelectedItem();
             if(cbActualState.getSelectionModel().getSelectedItem().toString().equals("Terminado")){
                endDate = parseToSqlDate(java.util.Date.from(dpEndDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())); 
             }
             
             Collaborator collaborator = new Collaborator(nameAuthor, positionAuthor);
-            InvestigationProject investigationProject = new InvestigationProject();
-           // investigationProject.setName(nameInvestigationProject);  //Debe mandar a llamar al buscar por nombre
-            investigationProject.setIdProject(1);
-           // Integrant integrant = new Integrant("JCPA940514RDTREOP1"); //Es prueba, deberia recuperar la curp del que está loggeado o bien recibir parámetro
+            IntegrantDAO integrantDAO = new IntegrantDAO();
+            Integrant integrant = integrantDAO.findIntegrantByCurp("JCPA940514RDTREOP1"); //La curp es de prueba, checar como recuperar la del loggeado
             CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
             int idCollaborator = collaboratorDAO.saveCollaboratorAndReturnId(collaborator);
             if(idCollaborator != 0){
@@ -141,7 +149,7 @@ public class WindowAddReceptionWorkController implements Initializable {
                                                         workType, actualState);
                 receptionWork.setCollaborator(collaborator);
                 receptionWork.setInvestigationProject(investigationProject);
-                //receptionWork.setIntegrant(integrant);
+                receptionWork.setIntegrant(integrant);
                 ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
                 boolean saveResult = receptionWorkDAO.savedReceptionWork(receptionWork);
                 showConfirmationAlert(saveResult);

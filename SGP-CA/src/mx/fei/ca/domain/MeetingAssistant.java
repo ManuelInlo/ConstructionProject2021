@@ -11,8 +11,12 @@ public class MeetingAssistant {
     private RadioButton rbSecretaryRole;
     private final String nameAssistant;
 
-    public MeetingAssistant(Integrant integrant) {
+    public MeetingAssistant(Integrant integrant){
         this.integrant = integrant;
+        this.nameAssistant = integrant.getNameIntegrant();
+    }
+    
+    public MeetingAssistant() {
         this.nameAssistant = integrant.getNameIntegrant();
         this.rbLeaderRole = new RadioButton();
         this.rbTimeTakerRole = new RadioButton();

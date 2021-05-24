@@ -23,8 +23,8 @@ public class MeetingTest {
     @Test
     public void testInsertMeeting() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
-        String date = "18-05-2021";
-        String time = "10:30";
+        String date = "06-06-2021";
+        String time = "11:30";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         java.sql.Date meetingDate = null;
         try {
@@ -39,7 +39,8 @@ public class MeetingTest {
         } catch (ParseException ex) {
             Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Meeting meeting = new Meeting(meetingDate, meetingTime, "FEI", "Revisar pendientes del plan", "Reunión CA", "Registrada");
+        Meeting meeting = new Meeting(meetingDate, meetingTime, "FEI 104", "Revisar plan de contigencia ante regreso",
+                                                                "Reunión CA", "Registrada");
         int idMeetingResult = meetingDAO.saveAndReturnIdNewMeeting(meeting, "JCPA940514RDTREOP1");
         assertNotSame("Prueba insertar reunión", idMeetingResult, 0);
     }
@@ -47,13 +48,13 @@ public class MeetingTest {
     @Test
     public void testFindMeetingsByProjectName() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
-        ArrayList<Meeting> meetings = meetingDAO.findMeetingsByProjectName("Reunión Anteproyecto");
-        assertEquals("Prueba encontrar reuniones por nombre proyecto",meetings.size(), 1);
+        ArrayList<Meeting> meetings = meetingDAO.findMeetingsByProjectName("Reunión CA");
+        assertEquals("Prueba encontrar reuniones por nombre proyecto",meetings.size(), 7);
     }
     
     @Test
     public void testFindMeetingsByProjectNameAndDate() throws BusinessConnectionException{
-        String date = "15-04-2021";
+        String date = "12-04-2021";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         java.sql.Date meetingDate = null;
         try {
@@ -69,7 +70,7 @@ public class MeetingTest {
     @Test
     public void testUpdateMeeting() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
-        String date = "12-04-2021";
+        String date = "15-04-2021";
         String time = "13:30";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         java.sql.Date meetingDate = null;
@@ -85,7 +86,8 @@ public class MeetingTest {
         } catch (ParseException ex) {
             Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Meeting meeting = new Meeting(meetingDate, meetingTime, "FEI", "Revisar anteproyecto", "Reunión Anteproyecto", "Registrada");
+        Meeting meeting = new Meeting(meetingDate, meetingTime, "FEI", "Revisar anteproyecto", 
+                                                        "Reunión Anteproyecto", "Registrada");
         boolean updateResult = meetingDAO.updatedMeeting(meeting, 5);
         assertTrue("Prueba modificar reunión", updateResult);
     }
@@ -115,7 +117,7 @@ public class MeetingTest {
     @Test 
     public void testExistsDateAndTimeAvailable() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
-        String date = "12-04-2021";
+        String date = "15-04-2021";
         String time = "13:30";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         java.sql.Date meetingDate = null;

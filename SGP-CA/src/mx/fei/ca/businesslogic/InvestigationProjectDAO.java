@@ -73,16 +73,15 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO {
     }
     
     @Override
-    public InvestigationProject findInvestigationProjectById(int idInvestigationproject) throws BusinessConnectionException {
-        String sql = "SELECT * FROM investigationProject WHERE idInvestigationProject = ?";
+    public InvestigationProject findInvestigationProjectById(int idProject) throws BusinessConnectionException {
+        String sql = "SELECT * FROM investigationProject WHERE idProject = ?";
         InvestigationProject investigationProject = null;
         try {
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareCall(sql);
-            preparedStatement.setInt(1, idInvestigationproject);
+            preparedStatement.setInt(1, idProject);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                int idProject = resultSet.getInt("idProject");
                 String keyCode = resultSet.getString("keycode");
                 Date startDate = resultSet.getDate("startDate");
                 Date endDate  = resultSet.getDate("endDate");
@@ -99,20 +98,19 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO {
     }
 
     @Override
-    public InvestigationProject findInvestigationProjectByName(String tittleproject) throws BusinessConnectionException {
+    public InvestigationProject findInvestigationProjectByName(String tittleProject) throws BusinessConnectionException {
         String sql = "SELECT * FROM investigationProject WHERE tittleProject = ?";
         InvestigationProject investigationProject = null;
         try {
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareCall(sql);
-            preparedStatement.setString(1, tittleproject);
+            preparedStatement.setString(1, tittleProject);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 int idProject = resultSet.getInt("idProject");
                 String keyCode = resultSet.getString("keycode");
                 Date startDate = resultSet.getDate("startDate");
                 Date endDate  = resultSet.getDate("endDate");
-                String tittleProject = resultSet.getString("tittleproject");
                 String description = resultSet.getString("description");
                 investigationProject = new InvestigationProject(idProject, keyCode, startDate, endDate, tittleProject, description);
             }
@@ -133,66 +131,22 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO {
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                InvestigationProject investigationProject = new InvestigationProject();
+                InvestigationProject investigationProject;
                 int idProject = resultSet.getInt("idProject");
                 String keyCode = resultSet.getString("keycode");
                 Date startDate = resultSet.getDate("startDate");
                 Date endDate  = resultSet.getDate("endDate");
                 String tittleProject = resultSet.getString("tittleproject");
                 String description = resultSet.getString("description");
+                investigationProject = new InvestigationProject(idProject, keyCode, startDate, endDate, tittleProject, description);
                 investigationProjects.add(investigationProject);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", e);
         } finally{
             dataBaseConnection.closeConnection();
         }
         return investigationProjects;
     }
-    /*
-    public ArrayList<ReceptionWork> findLastTwoReceptionWorksByCurpIntegrant(String curp) throws BusinessConnectionException {
-        String sql = "SELECT * FROM receptionWork WHERE curp = ?";
-        ArrayList<ReceptionWork> receptionWorks = new ArrayList<>();
-        try{
-            connection = dataBaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, curp);
-            resultSet = preparedStatement.executeQuery();
-            int receptionWorksCounter = 0;
-            while(resultSet.next() && receptionWorksCounter < 2){
-                ReceptionWork receptionWork;
-                int id = resultSet.getInt("id");
-                String impactCA = resultSet.getString("impactCA");
-                String titleReceptionWork = resultSet.getString("titleReceptionWork");
-                String fileRoute = resultSet.getString("fileRoute");
-                Date startDate = resultSet.getDate("startDate");
-                Date endDate = resultSet.getDate("endDate");
-                String grade = resultSet.getString("grade");
-                String workType = resultSet.getString("workType");
-                String actualState = resultSet.getString("actualState");
-                int idProject = resultSet.getInt("idProject");
-                int idCollaborator = resultSet.getInt("idCollaborator");
-                if(endDate != null){
-                    receptionWork = new ReceptionWork(impactCA, titleReceptionWork, fileRoute, startDate, endDate, grade, workType, actualState);
-                }else{
-                    receptionWork = new ReceptionWork(impactCA, titleReceptionWork, fileRoute, startDate, grade, workType, actualState);
-                }
-                //InvestigationProjectDAO investigatioProjectDAO = new InvestigationProjectDAO();
-                InvestigationProject investigationProject = new InvestigationProject(idProject); //En vez de esto, debe mandar a llamar metodo buscar proyecto por id
-                CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
-                Collaborator collaborator = collaboratorDAO.findCollaboratorByIdCollaborator(idCollaborator);
-                receptionWork.setId(id);
-                receptionWork.setInvestigationProject(investigationProject);
-                receptionWork.setCollaborator(collaborator);
-                receptionWorks.add(receptionWork);
-                receptionWorksCounter++;
-            }
-        }catch(SQLException ex){
-            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
-        }finally{
-            dataBaseConnection.closeConnection();
-        }
-        return receptionWorks;
-    }
-    */
+
 }

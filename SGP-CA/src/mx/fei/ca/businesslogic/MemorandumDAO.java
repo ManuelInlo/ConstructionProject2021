@@ -22,14 +22,15 @@ public class MemorandumDAO implements IMemorandumDAO{
     
     @Override
     public int saveAndReturnIdMemorandum(Memorandum memorandum, int idMeeting) throws BusinessConnectionException{
-        String sql = "INSERT INTO memorandum (pending, note, idMeeting) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO memorandum (pending, note, idMeeting, state) VALUES (?, ?, ?, ?)";
         int idMemorandumResult = 0;
         try{
             connection = dataBaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,memorandum.getPending());
             preparedStatement.setString(2, memorandum.getNote());
             preparedStatement.setInt(3, idMeeting);
+            preparedStatement.setString(4, memorandum.getState());
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
             if(resultSet.next()){
@@ -77,7 +78,8 @@ public class MemorandumDAO implements IMemorandumDAO{
                 int idMemorandum = resultSet.getInt("idMemorandum");
                 String pending = resultSet.getString("pending");
                 String note = resultSet.getString("note");
-                memorandum = new Memorandum(pending, note);
+                String state = resultSet.getString("state");
+                memorandum = new Memorandum(pending, note, state);
                 memorandum.setIdMemorandum(idMemorandum);
             }
         }catch(SQLException ex){

@@ -27,16 +27,16 @@ public class AgendaPointTest {
         java.sql.Time startTime = null;
         java.sql.Time endTime = null;
         try {
-            startTime = new java.sql.Time(simpleDateFormatTime.parse("13:30").getTime());
+            startTime = new java.sql.Time(simpleDateFormatTime.parse("13:45").getTime());
         } catch (ParseException ex) {
             Logger.getLogger(AgendaPointTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         try{
-            endTime = new java.sql.Time(simpleDateFormatTime.parse("13:45").getTime());
+            endTime = new java.sql.Time(simpleDateFormatTime.parse("14:00").getTime());
         }catch (ParseException ex){
             Logger.getLogger(AgendaPointTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        AgendaPoint agendaPoint = new AgendaPoint(startTime, endTime, 1, "Introducción reunión", "María Karen Cortés Verdín");
+        AgendaPoint agendaPoint = new AgendaPoint(startTime, endTime, "Pase de lista", "María Karen Cortés Verdín");
         boolean saveResult = agendaPointDAO.savedAgendaPoint(agendaPoint, 5);
         assertTrue("Prueba guardar punto de agenda", saveResult);
     }
@@ -48,31 +48,31 @@ public class AgendaPointTest {
         java.sql.Time startTime = null;
         java.sql.Time endTime = null;
         try {
-            startTime = new java.sql.Time(simpleDateFormatTime.parse("16:30").getTime());
+            startTime = new java.sql.Time(simpleDateFormatTime.parse("13:45").getTime());
         } catch (ParseException ex) {
             Logger.getLogger(AgendaPointTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         try{
-            endTime = new java.sql.Time(simpleDateFormatTime.parse("16:45").getTime());
+            endTime = new java.sql.Time(simpleDateFormatTime.parse("13:50").getTime());
         }catch (ParseException ex){
             Logger.getLogger(AgendaPointTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        AgendaPoint agendaPoint = new AgendaPoint(startTime, endTime, 1, "Introducción a reunión", "María Karen Cortés Verdín");
-        boolean updateResult = agendaPointDAO.updatedAgendaPoint(agendaPoint, 1, 2);
+        AgendaPoint agendaPoint = new AgendaPoint(startTime, endTime, "Pase de lista", "María Karen Cortés Verdín");
+        boolean updateResult = agendaPointDAO.updatedAgendaPoint(agendaPoint, 3, 5);
         assertTrue("Prueba modificar punto agenda", updateResult);
     }
     
     @Test
     public void testDeleteAgendaPointById() throws BusinessConnectionException{
         AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
-        boolean deleteResult = agendaPointDAO.deletedAgendaPointById(1);
+        boolean deleteResult = agendaPointDAO.deletedAgendaPointById(3);
         assertTrue("Prueba eliminar punto agenda", deleteResult);
     }
     
     @Test 
     public void testFindAgendaPointsByIdMeeting() throws BusinessConnectionException{
         AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
-        ArrayList<AgendaPoint> agendaPoints = agendaPointDAO.findAgendaPointsByIdMeeting(2);
+        ArrayList<AgendaPoint> agendaPoints = agendaPointDAO.findAgendaPointsByIdMeeting(5);
         assertEquals("Prueba correcta", agendaPoints.size(), 1);
     }
     
@@ -103,7 +103,7 @@ public class AgendaPointTest {
         assertFalse("Prueba mandar a validar horas que ya están en un punto de agenda", hoursAvailable);
     }
     
-     @Test 
+    @Test 
     public void testExistsAgendaPointTopicForUpdate() throws BusinessConnectionException{
         AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
         boolean exists = agendaPointDAO.existsAgendaPointTopicForUpdate("Introducción plan de trabajo", 2 ,5);

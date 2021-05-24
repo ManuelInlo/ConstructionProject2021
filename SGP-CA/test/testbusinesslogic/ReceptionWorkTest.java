@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mx.fei.ca.businesslogic.CollaboratorDAO;
+import mx.fei.ca.businesslogic.IntegrantDAO;
 import mx.fei.ca.businesslogic.ReceptionWorkDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Collaborator;
@@ -47,14 +48,15 @@ public class ReceptionWorkTest {
         InvestigationProject investigationProject = new InvestigationProject();
         investigationProject.setIdProject(1);
         
-       // Integrant integrant = new Integrant("JCPA940514RDTREOP1");
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        Integrant integrant = integrantDAO.findIntegrantByCurp("JCPA940514RDTREOP1");
         
         ReceptionWork receptionWork = new ReceptionWork("SI", "Impacto de la IA en el diseño de software",
                                                         "Prueba, falta ruta", 
                                                         startDateReceptionWork, endDateReceptionWork, "Licenciatura", "Tesis", "Terminado");
         
         receptionWork.setCollaborator(collaborator);
-       // receptionWork.setIntegrant(integrant);
+        receptionWork.setIntegrant(integrant);
         receptionWork.setInvestigationProject(investigationProject);
         
         boolean saveResult = receptionWorkDAO.savedReceptionWork(receptionWork);
@@ -82,14 +84,15 @@ public class ReceptionWorkTest {
         InvestigationProject investigationProject = new InvestigationProject();
         investigationProject.setIdProject(1);
         
-      //  Integrant integrant = new Integrant("JCPA940514RDTREOP1");
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        Integrant integrant = integrantDAO.findIntegrantByCurp("JCPA940514RDTREOP1");
         
         ReceptionWork receptionWork = new ReceptionWork("SI", "Impacto de la Inteligencia Artificial en el diseño de software",
                                                         "Prueba, falta ruta", 
                                                         startDateReceptionWork, endDateReceptionWork, "Licenciatura", "Tesis", "Terminado");
         
         receptionWork.setCollaborator(collaborator);
-      //  receptionWork.setIntegrant(integrant);
+        receptionWork.setIntegrant(integrant);
         receptionWork.setInvestigationProject(investigationProject);
         
         boolean updateResult = receptionWorkDAO.updatedReceptionWorkById(receptionWork, 1);

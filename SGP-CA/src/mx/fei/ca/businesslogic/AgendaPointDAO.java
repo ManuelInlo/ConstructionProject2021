@@ -23,18 +23,17 @@ public class AgendaPointDAO implements IAgendaPointDAO{
     
     @Override
     public boolean savedAgendaPoint(AgendaPoint agendaPoint, int idMeeting) throws BusinessConnectionException{
-        String sql = "INSERT INTO agendaPoint (startTime, endTime, number, topic, leader, idMeeting) VALUES "
-                     + "(?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO agendaPoint (startTime, endTime, topic, leader, idMeeting) VALUES "
+                     + "(?, ?, ?, ?, ?)";
         boolean saveResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setTime(1, agendaPoint.getStartTime());
             preparedStatement.setTime(2, agendaPoint.getEndTime());
-            preparedStatement.setInt(3, agendaPoint.getNumber());
-            preparedStatement.setString(4, agendaPoint.getTopic());
-            preparedStatement.setString(5, agendaPoint.getLeader());
-            preparedStatement.setInt(6, idMeeting);
+            preparedStatement.setString(3, agendaPoint.getTopic());
+            preparedStatement.setString(4, agendaPoint.getLeader());
+            preparedStatement.setInt(5, idMeeting);
             preparedStatement.executeUpdate();
             saveResult = true;
         }catch(SQLException ex){
@@ -47,7 +46,7 @@ public class AgendaPointDAO implements IAgendaPointDAO{
     
     @Override
     public boolean updatedAgendaPoint(AgendaPoint agendaPoint, int idAgendaPoint, int idMeeting) throws BusinessConnectionException{
-        String sql = "UPDATE agendaPoint SET startTime = ?, endTime = ?, number = ?, topic =?, leader = ?, idMeeting = ? "
+        String sql = "UPDATE agendaPoint SET startTime = ?, endTime = ?, topic =?, leader = ?, idMeeting = ? "
                      + "WHERE idAgendaPoint = ?";
         boolean updateResult = false;
         try{
@@ -55,11 +54,10 @@ public class AgendaPointDAO implements IAgendaPointDAO{
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setTime(1, agendaPoint.getStartTime());
             preparedStatement.setTime(2, agendaPoint.getEndTime());
-            preparedStatement.setInt(3, agendaPoint.getNumber());
-            preparedStatement.setString(4, agendaPoint.getTopic());
-            preparedStatement.setString(5, agendaPoint.getLeader());
-            preparedStatement.setInt(6, idMeeting);
-            preparedStatement.setInt(7, idAgendaPoint);
+            preparedStatement.setString(3, agendaPoint.getTopic());
+            preparedStatement.setString(4, agendaPoint.getLeader());
+            preparedStatement.setInt(5, idMeeting);
+            preparedStatement.setInt(6, idAgendaPoint);
             preparedStatement.executeUpdate();
             updateResult = true;
         }catch(SQLException ex){
@@ -72,7 +70,7 @@ public class AgendaPointDAO implements IAgendaPointDAO{
     
     @Override
     public boolean deletedAgendaPointById(int idAgendaPoint) throws BusinessConnectionException{
-        String sql = "DELETE FROM agreement WHERE idAgendaPoint = ?";
+        String sql = "DELETE FROM agendapoint WHERE idAgendaPoint = ?";
         boolean deleteResult = false;
         try{
             connection = dataBaseConnection.getConnection();
@@ -101,10 +99,9 @@ public class AgendaPointDAO implements IAgendaPointDAO{
                 int idAgendaPoint = resultSet.getInt("idAgendaPoint");
                 Time startTime = resultSet.getTime("startTime");
                 Time endTime = resultSet.getTime("endTime");
-                int number = resultSet.getInt("number");
                 String topic = resultSet.getString("topic");
                 String leader = resultSet.getString("leader");
-                AgendaPoint agendaPoint = new AgendaPoint(startTime, endTime, number, topic, leader);
+                AgendaPoint agendaPoint = new AgendaPoint(startTime, endTime, topic, leader);
                 agendaPoint.setIdAgendaPoint(idAgendaPoint);
                 agendaPoints.add(agendaPoint);
             }

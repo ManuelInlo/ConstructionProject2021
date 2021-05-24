@@ -76,8 +76,9 @@ public class IntegrantTest {
     @Test
     public void testFindIntegrantByCurp() throws BusinessConnectionException{
         IntegrantDAO integrantDAO = new IntegrantDAO();
-        boolean findResult = integrantDAO.findIntegrantByCurp("JCPA940514RDTREOP1");
-        assertEquals("Prueba encontrar integrante por curp", findResult, true);
+        Integrant integrant = integrantDAO.findIntegrantByCurp("JCPA940514RDTREOP1");
+        String nameIntegrantExpected = "Juan Carlos Pérez Arriaga";
+        assertEquals("Prueba encontrar integrante por curp", nameIntegrantExpected, integrant.getNameIntegrant());
     }
           
 }

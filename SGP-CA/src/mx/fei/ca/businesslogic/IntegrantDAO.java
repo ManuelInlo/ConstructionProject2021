@@ -214,9 +214,9 @@ public class IntegrantDAO implements IIntegrantDAO{
     }
 
     @Override
-    public boolean findIntegrantByCurp(String curp) throws BusinessConnectionException {
+    public Integrant findIntegrantByCurp(String curp) throws BusinessConnectionException {
         String sql = "SELECT * FROM integrant WHERE curp = ?";
-        boolean findResult = false; 
+        Integrant integrant = null;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -234,15 +234,14 @@ public class IntegrantDAO implements IIntegrantDAO{
                 String numberPhone = resultSet.getString("numberPhone");
                 Date dateBirthday = resultSet.getDate("dateBirthday");
                 String statusIntegrant = resultSet.getString("statusIntegrant");
-                Integrant integrant = new Integrant(curp, role, nameIntegrant, studyDegree, studyDiscipline, prodepParticipation, typeTeaching,
+                integrant = new Integrant(curp, role, nameIntegrant, studyDegree, studyDiscipline, prodepParticipation, typeTeaching,
                                           eisStudyDegree, institutionalMail, numberPhone, dateBirthday, statusIntegrant);
-                findResult = true;
             }
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
         }finally{
             dataBaseConnection.closeConnection();
         }
-        return findResult;
+        return integrant;
     }
 }

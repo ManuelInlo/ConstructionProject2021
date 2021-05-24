@@ -17,7 +17,8 @@ public class MemorandumTest {
     @Test
     public void testInsertMemorandum() throws BusinessConnectionException{
         MemorandumDAO memorandumDAO = new MemorandumDAO();
-        Memorandum memorandum = new Memorandum("Revisar ultima parte de metas", "Hasta el momento todo correcto");
+        Memorandum memorandum = new Memorandum("Revisar ultima parte de metas", "Hasta el momento todo correcto", 
+                                               "Por aprobar");
         int idMemorandumResult = memorandumDAO.saveAndReturnIdMemorandum(memorandum, 5);
         assertNotSame("Prueba guardar minuta", idMemorandumResult, 0);
     }
@@ -25,16 +26,17 @@ public class MemorandumTest {
     @Test
     public void testUpdateMemorandum() throws BusinessConnectionException{
         MemorandumDAO memorandumDAO = new MemorandumDAO();
-        Memorandum memorandum = new Memorandum("Revisar ultima parte de las metas del plan", "Corregir fallo");
-        boolean updateResult = memorandumDAO.updatedMemorandum(memorandum, 1, 2);
+        Memorandum memorandum = new Memorandum("Revisar ultima parte de las metas del plan", "Corregir fallo", 
+                                                "Por aprobar");
+        boolean updateResult = memorandumDAO.updatedMemorandum(memorandum, 3, 5);
         assertTrue("Prueba correcta, si modificó", updateResult);
     }
         
     @Test
     public void testFindMemorandumByIdMeeting() throws BusinessConnectionException{
         MemorandumDAO memorandumDAO = new MemorandumDAO();
-        int idMemorandumExpected = 1;
-        Memorandum memorandum = memorandumDAO.findMemorandumByIdMeeting(2);
+        int idMemorandumExpected = 3;
+        Memorandum memorandum = memorandumDAO.findMemorandumByIdMeeting(5);
         assertEquals("Prueba busqueda de minuta con id reunión", idMemorandumExpected, memorandum.getIdMemorandum());
     }
     

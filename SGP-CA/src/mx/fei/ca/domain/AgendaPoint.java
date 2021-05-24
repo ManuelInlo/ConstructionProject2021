@@ -7,14 +7,12 @@ public class AgendaPoint {
     private int idAgendaPoint;
     private Time startTime;
     private Time endTime;
-    private int number;
     private String topic;
     private String leader;
 
-    public AgendaPoint(Time startTime, Time endTime, int number, String topic, String leader) {
+    public AgendaPoint(Time startTime, Time endTime, String topic, String leader) {
         this.startTime = startTime;
         this.endTime = endTime;
-        this.number = number;
         this.topic = topic;
         this.leader = leader;
     }
@@ -36,10 +34,6 @@ public class AgendaPoint {
         return endTime;
     }
 
-    public int getNumber() {
-        return number;
-    }
-
     public String getTopic() {
         return topic;
     }
@@ -59,11 +53,7 @@ public class AgendaPoint {
     public void setEndTime(Time endTime) {
         this.endTime = endTime;
     }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
+    
     public void setTopic(String topic) {
         this.topic = topic;
     }

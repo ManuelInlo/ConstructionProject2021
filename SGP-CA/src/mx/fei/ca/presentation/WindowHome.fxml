@@ -12,7 +12,7 @@
    <children>
       <Pane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #60ABE0;">
          <children>
-            <Pane fx:id="pnBtnProyectod" layoutX="36.0" layoutY="106.0" onMouseClicked="#ClickProjects" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
+            <Pane fx:id="pnBtnProyectod" layoutX="36.0" layoutY="106.0" onMouseClicked="#clickProjects" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
                <children>
                   <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="166.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -26,7 +26,7 @@
                   </Text>
                </children>
             </Pane>
-            <Pane layoutX="340.0" layoutY="106.0" onMouseClicked="#ClickMettings" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
+            <Pane layoutX="340.0" layoutY="106.0" onMouseClicked="#clickMettings" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
                <children>
                   <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="154.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -40,7 +40,7 @@
                   </Text>
                </children>
             </Pane>
-            <Pane layoutX="36.0" layoutY="209.0" onMouseClicked="#ClickEvidences" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
+            <Pane layoutX="36.0" layoutY="209.0" onMouseClicked="#clickEvidences" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
                <children>
                   <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="159.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -54,7 +54,7 @@
                   </Text>
                </children>
             </Pane>
-            <Pane layoutX="340.0" layoutY="209.0" onMouseClicked="#ClickWorkPlan" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
+            <Pane layoutX="340.0" layoutY="209.0" onMouseClicked="#clickWorkPlan" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
                <children>
                   <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="159.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                      <image>

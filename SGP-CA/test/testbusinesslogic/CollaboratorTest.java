@@ -28,14 +28,14 @@ public class CollaboratorTest {
     public void testUpdateCollaboratorByIdCollaborator() throws BusinessConnectionException{
         CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
         Collaborator collaborator = new Collaborator("Rodrigo Rodríguez Jiménez", "Estudiante");
-        boolean updateResult = collaboratorDAO.updatedCollaboratorByIdCollaborator(collaborator, 1);
+        boolean updateResult = collaboratorDAO.updatedCollaboratorByIdCollaborator(collaborator, 13);
         assertTrue("Prueba modificar colaborador", updateResult);
     }
     
     @Test
     public void testFindCollaboratorByIdCollaborator() throws BusinessConnectionException{
         CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
-        Collaborator collaborator = collaboratorDAO.findCollaboratorByIdCollaborator(1);
+        Collaborator collaborator = collaboratorDAO.findCollaboratorByIdCollaborator(13);
         String nameCollaboratorExpected = "Rodrigo Rodríguez Jiménez";
         assertEquals("Prueba buscar colaborador por id", nameCollaboratorExpected, collaborator.getName());
     }
@@ -43,14 +43,14 @@ public class CollaboratorTest {
     @Test 
     public void testExistsCollaboratorName() throws BusinessConnectionException{
         CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
-        boolean exists = collaboratorDAO.existsCollaboratorName("Roberto Méndez Mendoza");
+        boolean exists = collaboratorDAO.existsCollaboratorName("Rodrigo Rodríguez Jiménez");
         assertTrue("Prueba mandar a validar el nombre que ya existe de un colaborador", exists);
     }
     
     @Test 
     public void testExistsCollaboratorNameForUpdate() throws BusinessConnectionException{
         CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
-        boolean exists = collaboratorDAO.existsCollaboratorNameForUpdate("Roberto José Mendoza", 6);
+        boolean exists = collaboratorDAO.existsCollaboratorNameForUpdate("Roberto José Mendoza", 13);
         assertFalse("Prueba mandar a validar el nombre modificado que no existe de un colaborador", exists);
     }
 }

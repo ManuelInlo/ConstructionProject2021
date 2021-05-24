@@ -75,7 +75,7 @@ public class InvestigationProject {
 
     @Override
     public String toString() {
-        return "InvestigationProject{" + "idProject=" + idProject + ", keyCode=" + keyCode + ", startDate=" + startDate + ", endDate=" + endDate + ", tittleProject=" + tittleProject + ", description=" + description + '}';
+        return tittleProject;
     }
       
 }

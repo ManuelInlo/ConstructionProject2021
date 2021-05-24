@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.dataaccess.DataBaseConnection;
 import mx.fei.ca.domain.Collaborator;
-import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.InvestigationProject;
 import mx.fei.ca.domain.ReceptionWork;
 
@@ -117,7 +116,7 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
         return receptionWorks;
     }
 
-    /*@Override
+    @Override
     public ArrayList<ReceptionWork> findLastTwoReceptionWorksByCurpIntegrant(String curp) throws BusinessConnectionException {
         String sql = "SELECT * FROM receptionWork WHERE curp = ?";
         ArrayList<ReceptionWork> receptionWorks = new ArrayList<>();
@@ -145,8 +144,8 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
                 }else{
                     receptionWork = new ReceptionWork(impactCA, titleReceptionWork, fileRoute, startDate, grade, workType, actualState);
                 }
-                //InvestigationProjectDAO investigatioProjectDAO = new InvestigationProjectDAO();
-                InvestigationProject investigationProject = new InvestigationProject(idProject); //En vez de esto, debe mandar a llamar metodo buscar proyecto por id
+                InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
+                InvestigationProject investigationProject = investigationProjectDAO.findInvestigationProjectById(idProject); 
                 CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
                 Collaborator collaborator = collaboratorDAO.findCollaboratorByIdCollaborator(idCollaborator);
                 receptionWork.setId(id);
@@ -161,9 +160,9 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
             dataBaseConnection.closeConnection();
         }
         return receptionWorks;
-    }*/
+    }
 
-   /* @Override
+    @Override
     public ArrayList<ReceptionWork> findReceptionWorkByInitialesOfTitle(String InitialesTitleReceptionWork, String curp) throws BusinessConnectionException {
         String sql = "SELECT * FROM receptionWork WHERE titleReceptionWork LIKE CONCAT('%',?,'%') AND curp = ?";
         ArrayList<ReceptionWork> receptionWorks = new ArrayList<>();
@@ -192,8 +191,8 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
                 }else{
                     receptionWork = new ReceptionWork(impactCA, titleReceptionWork, fileRoute, startDate, grade, workType, actualState);
                 }
-                //ProyectoInvestigacionDAO proyectoInvestigacionDAO = new ProyectoInvestigacionDAO;
-                InvestigationProject investigationProject = new InvestigationProject(idProject); //En vez de esto, debe mandar a llamar metodo buscar proyecto por id
+                InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
+                InvestigationProject investigationProject = investigationProjectDAO.findInvestigationProjectById(idProject); 
                 CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
                 Collaborator collaborator = collaboratorDAO.findCollaboratorByIdCollaborator(idCollaborator);
                 receptionWork.setId(id);
@@ -208,7 +207,7 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
         }
         return receptionWorks;
     }
-*/
+
     @Override
     public boolean existsReceptionWorkTitle(String titleReceptionWork) throws BusinessConnectionException {
         String sql = "SELECT 1 FROM receptionWork WHERE titleReceptionWork = ?";
@@ -289,15 +288,5 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
             dataBaseConnection.closeConnection();
         }
         return exists;
-    }
-
-    @Override
-    public ArrayList<ReceptionWork> findLastTwoReceptionWorksByCurpIntegrant(String curp) throws BusinessConnectionException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<ReceptionWork> findReceptionWorkByInitialesOfTitle(String InitialesTitleReceptionWork, String curp) throws BusinessConnectionException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

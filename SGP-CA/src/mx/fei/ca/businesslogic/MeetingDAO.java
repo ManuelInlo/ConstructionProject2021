@@ -33,7 +33,7 @@ public class MeetingDAO implements IMeetingDAO{
         int idMeetingResult = 0;
         try{
             connection = dataBaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setDate(1, meeting.getMeetingDate());
             preparedStatement.setTime(2, meeting.getMeetingTime());
             preparedStatement.setString(3, meeting.getMeetingPlace());

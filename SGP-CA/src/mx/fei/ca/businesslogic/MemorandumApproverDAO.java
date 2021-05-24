@@ -41,7 +41,7 @@ public class MemorandumApproverDAO implements IMemorandumApproverDAO{
         return saveResult;
     }
 
-   /* @Override
+    @Override
     public ArrayList<MemorandumApprover> findMemorandumApproversByIdMemorandum(int idMemorandum) throws BusinessConnectionException {
         String sql = "SELECT * FROM memorandumApprover WHERE idMemorandum = ?";
         ArrayList<MemorandumApprover> memorandumApprovers = new ArrayList<>();
@@ -52,7 +52,8 @@ public class MemorandumApproverDAO implements IMemorandumApproverDAO{
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 String curp = resultSet.getString("curp");
-                Integrant integrant = new Integrant(curp); //Acá debe mandar a llamar método buscar integrante por curp 
+                IntegrantDAO integrantDAO = new IntegrantDAO();
+                Integrant integrant = integrantDAO.findIntegrantByCurp(curp); 
                 MemorandumApprover memorandumApprover = new MemorandumApprover(integrant);
                 memorandumApprovers.add(memorandumApprover);
             }
@@ -62,11 +63,5 @@ public class MemorandumApproverDAO implements IMemorandumApproverDAO{
             dataBaseConnection.closeConnection();
         }
         return memorandumApprovers;
-    }*/
-
-    @Override
-    public ArrayList<MemorandumApprover> findMemorandumApproversByIdMemorandum(int idMemorandum) throws BusinessConnectionException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
 }

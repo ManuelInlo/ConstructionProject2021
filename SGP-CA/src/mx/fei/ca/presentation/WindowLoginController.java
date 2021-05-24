@@ -53,7 +53,9 @@ public class WindowLoginController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(scene);
             closeWindowLogin(event);
-            stage.show();
+            //WindowHomeController windowHomeController = (WindowHomeController) fxmlLoader.getController();
+            //windowHomeController.setIntegrantSession(getIntegrantByEmail());
+            stage.showAndWait();
         }
     }
 
@@ -87,8 +89,7 @@ public class WindowLoginController implements Initializable {
     @FXML
     private boolean existsEmailAndPassword() throws BusinessConnectionException{
         boolean exists = true;
-        IntegrantDAO integrantDAO = new IntegrantDAO();
-        Integrant integrant = integrantDAO.getIntegrantByInstitutionalMail(tfEmail.getText());
+        Integrant integrant = getIntegrantByEmail();
         if(integrant == null){
             exists = false;
         }else if(!integrant.getPassword().equals(pfPassword.getText())){
@@ -99,6 +100,13 @@ public class WindowLoginController implements Initializable {
             showInvalidFieldAlert(typeError);
         }
         return exists;
+    }
+    
+    @FXML
+    private Integrant getIntegrantByEmail() throws BusinessConnectionException{
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        Integrant integrant = integrantDAO.getIntegrantByInstitutionalMail(tfEmail.getText());
+        return integrant;
     }
     
     @FXML

@@ -19,7 +19,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -121,7 +120,7 @@ public class WindowMemberProductionController implements Initializable {
         });
     }
 
-    /*@FXML
+    @FXML
     private void searchEvidence(ActionEvent event){
         if(!existsInvalidField()){
             try {
@@ -136,18 +135,18 @@ public class WindowMemberProductionController implements Initializable {
             }
   
         }
-    }*/
+    }
     
-    /*@FXML
+    @FXML
     private ArrayList<ReceptionWork> recoverReceptionWorks() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         String titleReceptionWork = tfEvidenceName.getText();
-        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorkByInitialesOfTitle(titleReceptionWork);
+        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorkByInitialesOfTitle(titleReceptionWork, "JCPA940514RDTREOP1"); //Acá debe pasar la curp del que está loggeado
         if(receptionWorks.size() > 0){
             fillReceptionWorkTable(receptionWorks);
         }
         return receptionWorks;
-    }*/
+    }
 
     @FXML
     private void openArticleRegistration(ActionEvent event) {
