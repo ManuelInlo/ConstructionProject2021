@@ -14,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -95,7 +96,7 @@ public class WindowAddReceptionWorkController implements Initializable {
     
     @FXML
     private void fillComboBoxActualState(){
-        ObservableList<String> listActualState = FXCollections.observableArrayList("Propuesto","En proceso","Terminado");
+        ObservableList<String> listActualState = FXCollections.observableArrayList("En proceso","Terminado");
         cbActualState.setItems(listActualState);
     }
     
@@ -139,8 +140,6 @@ public class WindowAddReceptionWorkController implements Initializable {
             }
             
             Collaborator collaborator = new Collaborator(nameAuthor, positionAuthor);
-            IntegrantDAO integrantDAO = new IntegrantDAO();
-            Integrant integrant = integrantDAO.findIntegrantByCurp("JCPA940514RDTREOP1"); //La curp es de prueba, checar como recuperar la del loggeado
             CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
             int idCollaborator = collaboratorDAO.saveCollaboratorAndReturnId(collaborator);
             if(idCollaborator != 0){
@@ -149,6 +148,8 @@ public class WindowAddReceptionWorkController implements Initializable {
                                                         workType, actualState);
                 receptionWork.setCollaborator(collaborator);
                 receptionWork.setInvestigationProject(investigationProject);
+                IntegrantDAO integrantDAO = new IntegrantDAO();
+                Integrant integrant = integrantDAO.findIntegrantByCurp("JCPA940514RDTREOP1"); //La curp es de prueba, checar como recuperar la del loggeado
                 receptionWork.setIntegrant(integrant);
                 ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
                 boolean saveResult = receptionWorkDAO.savedReceptionWork(receptionWork);

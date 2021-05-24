@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mx.fei.ca.domain.Integrant;
 
@@ -29,17 +30,23 @@ public class WindowHomeController implements Initializable {
     
     @FXML
     private Pane pnBtnProyectod;
+    @FXML
+    private Text lbUser;
     
-    
-    /*public void setIntegrantSession(Integrant integrant){
-        this.integrant = integrant;
-    }*/
- 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
     }    
 
+    public void setIntegrant(Integrant integrant){
+        this.integrant = integrant;
+        lbUser.setText(this.integrant.getNameIntegrant());
+    }
+    
+    public Integrant getIntegrant(){
+        return integrant;
+    }
+ 
     @FXML
     private void clickProjects(MouseEvent event) {
         

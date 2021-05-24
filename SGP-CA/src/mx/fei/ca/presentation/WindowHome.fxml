@@ -87,7 +87,7 @@
                   <Image url="@images/logout.png" />
                </image>
             </ImageView>
-            <Text layoutX="427.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="USER XXXX">
+            <Text fx:id="lbUser" layoutX="347.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="USER XXXX">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>

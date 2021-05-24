@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
@@ -36,6 +37,8 @@ public class WindowLoginController implements Initializable {
     @FXML
     private PasswordField pfPassword;
     
+    private Integrant integrant;
+    
     private enum TypeError{
         EMPTYFIELD, INVALIDEMAIL, NONEXISTENINTEGRANT;
     }
@@ -49,12 +52,13 @@ public class WindowLoginController implements Initializable {
     private void openHomePage(ActionEvent event) throws BusinessConnectionException, IOException {
         if(!existsInvalidFields()){
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowHome.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
+            Parent root = fxmlLoader.load();
+            WindowHomeController windowHomeController = fxmlLoader.getController();
+            windowHomeController.setIntegrant(integrant);
+            Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
             closeWindowLogin(event);
-            //WindowHomeController windowHomeController = (WindowHomeController) fxmlLoader.getController();
-            //windowHomeController.setIntegrantSession(getIntegrantByEmail());
             stage.showAndWait();
         }
     }
@@ -89,7 +93,7 @@ public class WindowLoginController implements Initializable {
     @FXML
     private boolean existsEmailAndPassword() throws BusinessConnectionException{
         boolean exists = true;
-        Integrant integrant = getIntegrantByEmail();
+        integrant = getIntegrantByEmail();
         if(integrant == null){
             exists = false;
         }else if(!integrant.getPassword().equals(pfPassword.getText())){
@@ -105,7 +109,7 @@ public class WindowLoginController implements Initializable {
     @FXML
     private Integrant getIntegrantByEmail() throws BusinessConnectionException{
         IntegrantDAO integrantDAO = new IntegrantDAO();
-        Integrant integrant = integrantDAO.getIntegrantByInstitutionalMail(tfEmail.getText());
+        this.integrant = integrantDAO.getIntegrantByInstitutionalMail(tfEmail.getText());
         return integrant;
     }
     

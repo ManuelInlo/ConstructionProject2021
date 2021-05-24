@@ -27,6 +27,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.ReceptionWorkDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
+import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.ReceptionWork;
 
 /**
@@ -74,7 +75,9 @@ public class WindowMemberProductionController implements Initializable {
     private TableColumn<?, ?> columnImpactCAChapterBook;
     @FXML
     private TableColumn<?, ?> columnNameChapterBook;
-
+    
+    private Integrant integrant;
+    
     private enum TypeError{
         EMPTYFIELD, INVALIDSTRING;
     }
@@ -88,6 +91,10 @@ public class WindowMemberProductionController implements Initializable {
         }
         openReceptionWorkData();
     } 
+    
+    public void setIntegrant(Integrant integrant){
+        this.integrant = integrant;
+    }
     
     private void recoverEvidences() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
