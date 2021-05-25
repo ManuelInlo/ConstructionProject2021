@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -63,6 +64,46 @@ public class WindowNewMeetingController implements Initializable {
     private TableColumn<MeetingAssistant, String> columnTimeTaker;
     @FXML
     private TableColumn<MeetingAssistant, String> columnSecretary;
+    @FXML
+    private TableView<?> tbPrerequisites;
+    @FXML
+    private TableColumn<?, ?> columnDescription;
+    @FXML
+    private TableColumn<?, ?> tfPrerequisiteManager;
+    @FXML
+    private TextField tfDescription;
+    @FXML
+    private ComboBox<?> cbPrerequisiteManager;
+    @FXML
+    private Button btnAddPrerequisite;
+    @FXML
+    private Button btnDeletePrerequisite;
+    @FXML
+    private TextField tfHourStart;
+    @FXML
+    private TextField tfMinuteStart;
+    @FXML
+    private TextField tfHourEnd;
+    @FXML
+    private TextField tfMinuteEnd;
+    @FXML
+    private TextField tfTopic;
+    @FXML
+    private ComboBox<?> cbLeaderDiscussion;
+    @FXML
+    private Button btnAddAgendaPoint;
+    @FXML
+    private TableView<?> tbAgendaPoints;
+    @FXML
+    private TableColumn<?, ?> columnTimeStart;
+    @FXML
+    private TableColumn<?, ?> columnTimeEnd;
+    @FXML
+    private TableColumn<?, ?> columnTopic;
+    @FXML
+    private TableColumn<?, ?> columnLeaderDiscussion;
+    @FXML
+    private Button btnDeleteAgendaPoint;
   
     private enum TypeError{
         EMPTYFIELDS, INVALIDSTRINGS, MISSINGMEETINGTIME, MISSINGDATE, MEETINGAFFAIRDUPLICATE, DATEANDTIMEDUPLICATE,
@@ -191,7 +232,6 @@ public class WindowNewMeetingController implements Initializable {
         return missingDate;
     }
     
-    @FXML
     private boolean existsIncorretDate(){
         boolean incorretDate = false;
         int meetingDay = dpMeetingDate.getValue().getDayOfMonth();
