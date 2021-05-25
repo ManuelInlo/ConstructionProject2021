@@ -1,9 +1,11 @@
 package mx.fei.ca.businesslogic;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.dataaccess.DataBaseConnection;
 import mx.fei.ca.domain.WorkPlan;
@@ -62,5 +64,29 @@ public class WorkPlanDAO implements IWorkPlanDAO{
         }
         return updateResult;
     }
-    
+
+    @Override
+    public ArrayList<WorkPlan> findAllWorkPlans() throws BusinessConnectionException {
+        String sql = "SELECT * FROM WorkPlan";
+        ArrayList<WorkPlan> workPlans = new ArrayList<>();
+        try {
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                WorkPlan workPlan;
+                int keyCodePlan = resultSet.getInt("keyCodePlan");
+                String curp = resultSet.getString("curp");
+                Date startDate = resultSet.getDate("startDate");
+                Date endDate = resultSet.getDate("endDate");
+                workPlan = new WorkPlan(keyCodePlan, curp, startDate, endDate);
+                workPlans.add(workPlan);             
+            }
+        } catch (SQLException e) {
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", e);
+        } finally{
+            dataBaseConnection.closeConnection();
+        }        
+        return workPlans;
+    }    
 }
