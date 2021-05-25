@@ -26,16 +26,8 @@ public class AgreementTest {
     @Test
     public void testInsertAgreement() throws BusinessConnectionException{
         AgreementDAO agreementDAO = new AgreementDAO();
-        String date = "01-07-2021";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        java.sql.Date dateAgreement = null;
-        try {
-            dateAgreement = new java.sql.Date(simpleDateFormat.parse(date).getTime());
-        } catch (ParseException ex) {
-            Logger.getLogger(AgreementTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        Agreement agreement = new Agreement(2, "Revisar pendientes del CA", dateAgreement, "Juan Carlos Pérez"
+        String date = "Mayo-2021";
+        Agreement agreement = new Agreement("Revisar pendientes del CA", date, "Juan Carlos Pérez"
                                             + "Arriaga");
         boolean saveResult = agreementDAO.savedAgreement(agreement, 3);
         assertTrue("Prueba guardar acuerdo", saveResult);
@@ -44,16 +36,8 @@ public class AgreementTest {
     @Test
     public void testUpdatedAgreement() throws BusinessConnectionException{
         AgreementDAO agreementDAO = new AgreementDAO();
-        String date = "01-08-2021";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        java.sql.Date dateAgreement = null;
-        try {
-            dateAgreement = new java.sql.Date(simpleDateFormat.parse(date).getTime());
-        } catch (ParseException ex) {
-            Logger.getLogger(MeetingTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        Agreement agreement = new Agreement(1, "Revisar pendientes de metas del CA", dateAgreement, "Juan Carlos Pérez Arriaga");
+        String date = "Junio-2021";  
+        Agreement agreement = new Agreement("Revisar pendientes de metas del CA", date, "Juan Carlos Pérez Arriaga");
         boolean updateResult = agreementDAO.updatedAgreement(agreement, 5, 1);
         assertTrue("Prueba modificar acuerdo", updateResult);
     }

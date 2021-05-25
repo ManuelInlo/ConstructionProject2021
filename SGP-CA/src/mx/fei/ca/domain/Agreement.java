@@ -1,17 +1,14 @@
 
 package mx.fei.ca.domain;
 
-import java.sql.Date;
 
 public class Agreement {
     private int idAgreement;
-    private int number;
     private String description;
-    private Date dateAgreement;
+    private String dateAgreement;
     private String responsible;
 
-    public Agreement(int number, String description, Date dateAgreement, String responsible) {
-        this.number = number;
+    public Agreement(String description, String dateAgreement, String responsible) {
         this.description = description;
         this.dateAgreement = dateAgreement;
         this.responsible = responsible;
@@ -20,16 +17,12 @@ public class Agreement {
     public int getIdAgreement() {
         return idAgreement;
     }
-
-    public int getNumber() {
-        return number;
-    }
-
+    
     public String getDescription() {
         return description;
     }
 
-    public Date getDateAgreement() {
+    public String getDateAgreement() {
         return dateAgreement;
     }
 
@@ -41,15 +34,11 @@ public class Agreement {
         this.idAgreement = idAgreement;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public void setDateAgreement(Date dateAgreement) {
+    public void setDateAgreement(String dateAgreement) {
         this.dateAgreement = dateAgreement;
     }
 
