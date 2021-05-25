@@ -38,35 +38,36 @@ public class AgreementTest {
         AgreementDAO agreementDAO = new AgreementDAO();
         String date = "Junio-2021";  
         Agreement agreement = new Agreement("Revisar pendientes de metas del CA", date, "Juan Carlos Pérez Arriaga");
-        boolean updateResult = agreementDAO.updatedAgreement(agreement, 5, 1);
+        boolean updateResult = agreementDAO.updatedAgreement(agreement, 12, 3);
         assertTrue("Prueba modificar acuerdo", updateResult);
     }
     
     @Test
     public void testDeletedAgreementById() throws BusinessConnectionException{
         AgreementDAO agreementDAO = new AgreementDAO();
-        boolean deleteResult = agreementDAO.deletedAgreementById(4);
+        boolean deleteResult = agreementDAO.deletedAgreementById(11);
         assertTrue("Prueba borrar acuerdo", deleteResult);
     }
     
     @Test
     public void testFindAgreementsByIdMemorandum() throws BusinessConnectionException, BusinessDataException{
         AgreementDAO agreementDAO = new AgreementDAO();
-        ArrayList<Agreement> agreements = agreementDAO.findAgreementsByIdMemorandum(1);
-        assertEquals("Prueba correcta",agreements.size(), 3);
+        ArrayList<Agreement> agreements = agreementDAO.findAgreementsByIdMemorandum(3);
+        assertEquals("Prueba correcta",agreements.size(), 1);
     }
     
     @Test 
     public void testExistsAgreementDescription() throws BusinessConnectionException{
         AgreementDAO agreementDAO = new AgreementDAO();
-       boolean exists = agreementDAO.existsAgreementDescription("Revisar pendientes del CA", 3);
+       boolean exists = agreementDAO.existsAgreementDescription("Revisar pendientes de metas del CA", 3);
        assertTrue("Prueba mandar a validar una descripción que ya existe en la minuta", exists);
     }
     
     @Test 
     public void testExistsAgreementDescriptionForUpdate() throws BusinessConnectionException{
         AgreementDAO agreementDAO = new AgreementDAO();
-       boolean exists = agreementDAO.existsAgreementDescriptionForUpdate("Revisar acuerdos de la reunión pasada del CA", 11, 3);
+       boolean exists = agreementDAO.existsAgreementDescriptionForUpdate("Revisar acuerdos de la reunión pasada del CA",
+                                                                          12, 3);
        assertFalse("Prueba mandar a validar una descripción modificada que no existe en la minuta", exists);
     }
 }

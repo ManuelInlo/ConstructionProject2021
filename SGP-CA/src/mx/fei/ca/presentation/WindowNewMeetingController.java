@@ -28,12 +28,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.MeetingDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
+import mx.fei.ca.domain.AgendaPoint;
 import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.Meeting;
 import mx.fei.ca.domain.MeetingAssistant;
+import mx.fei.ca.domain.Prerequisite;
 
 /**
  * FXML Controller class
@@ -65,11 +68,11 @@ public class WindowNewMeetingController implements Initializable {
     @FXML
     private TableColumn<MeetingAssistant, String> columnSecretary;
     @FXML
-    private TableView<?> tbPrerequisites;
+    private TableView<Prerequisite> tbPrerequisites;
     @FXML
-    private TableColumn<?, ?> columnDescription;
+    private TableColumn<Prerequisite, String> columnDescription;
     @FXML
-    private TableColumn<?, ?> tfPrerequisiteManager;
+    private TableColumn<Prerequisite, String> tfPrerequisiteManager;
     @FXML
     private TextField tfDescription;
     @FXML
@@ -93,17 +96,33 @@ public class WindowNewMeetingController implements Initializable {
     @FXML
     private Button btnAddAgendaPoint;
     @FXML
-    private TableView<?> tbAgendaPoints;
+    private TableView<AgendaPoint> tbAgendaPoints;
     @FXML
-    private TableColumn<?, ?> columnTimeStart;
+    private TableColumn<AgendaPoint, Time> columnTimeStart;
     @FXML
-    private TableColumn<?, ?> columnTimeEnd;
+    private TableColumn<AgendaPoint, Time> columnTimeEnd;
     @FXML
-    private TableColumn<?, ?> columnTopic;
+    private TableColumn<AgendaPoint, String> columnTopic;
     @FXML
-    private TableColumn<?, ?> columnLeaderDiscussion;
+    private TableColumn<AgendaPoint, String> columnLeaderDiscussion;
     @FXML
     private Button btnDeleteAgendaPoint;
+
+    @FXML
+    private void addPrerequisite(ActionEvent event) {
+    }
+
+    @FXML
+    private void deleteAgendaPoint(MouseEvent event) {
+    }
+
+    @FXML
+    private void deletePrerequisite(ActionEvent event) {
+    }
+
+    @FXML
+    private void addAgendaPoint(ActionEvent event) {
+    }
   
     private enum TypeError{
         EMPTYFIELDS, INVALIDSTRINGS, MISSINGMEETINGTIME, MISSINGDATE, MEETINGAFFAIRDUPLICATE, DATEANDTIMEDUPLICATE,
@@ -137,9 +156,8 @@ public class WindowNewMeetingController implements Initializable {
     }
     
     private void fillComboBoxHours(){
-        ObservableList<String> listHours = FXCollections.observableArrayList("01","02","03","04","05","06","07","08","09","10",
-                                                                             "11","12","13","14","15","16","17","18","19",
-                                                                             "20","21","22","23","24");
+        ObservableList<String> listHours = FXCollections.observableArrayList("07","08","09","10", "11","12","13","14","15","16","17",
+                                                                             "18","19","20");                                    
         cbHours.setItems(listHours);
     }
     
@@ -192,36 +210,35 @@ public class WindowNewMeetingController implements Initializable {
     }
     private boolean existsInvalidFields() throws BusinessConnectionException{
         boolean invalidFields = false;
-        if(existsEmptyFields() || existsInvalidStrings() || existsMissingDate() || existsIncorretDate() 
-           || existsMissingMeetingTime() || existsInvalidRoleSelection()){
+        if(existsEmptyFields(tfProjectName.getText()) || existsEmptyFields(tfMeetingPlace.getText()) || existsEmptyFields(tfAffair.getText())){
             invalidFields = true;
-        }else if(existsDuplicateValues()){
+        }
+        
+        if(invalidFields || existsInvalidCharactersForName(tfProjectName.getText()) || existsInvalidCharacters(tfMeetingPlace.getText()) || 
+            existsInvalidCharacters(tfAffair.getText())){
+            invalidFields = true;
+        }
+        
+        if(invalidFields || existsMissingDate() || existsIncorretDate() || existsMissingMeetingTime() || existsInvalidRoleSelection()){
+            invalidFields = true;
+        }
+  
+        if(invalidFields || existsDuplicateValues()){
             invalidFields = true;
         }
         return invalidFields;
     }
     
-    private boolean existsEmptyFields(){
+    private boolean existsEmptyFields(String textToValidate){
         boolean emptyFields = false;
-        if(tfProjectName.getText().isEmpty() || tfMeetingPlace.getText().isEmpty() || tfAffair.getText().isEmpty()){
+        if(textToValidate.isEmpty()){
             emptyFields = true;
             TypeError typeError = TypeError.EMPTYFIELDS;
             showInvalidFieldAlert(typeError);     
         }
         return emptyFields;
     }
-    
-    private boolean existsInvalidStrings(){
-        boolean invalidStrings = false;
-        if(existsInvalidCharactersForName(tfProjectName.getText()) || existsInvalidCharacters(tfMeetingPlace.getText()) || 
-           existsInvalidCharacters(tfAffair.getText())){
-            invalidStrings = true;
-            TypeError typeError = TypeError.INVALIDSTRINGS;
-            showInvalidFieldAlert(typeError);
-        }
-        return invalidStrings;
-    }
-    
+     
     private boolean existsMissingDate(){
         boolean missingDate = false;
         if(dpMeetingDate.getValue() == null){
@@ -242,9 +259,6 @@ public class WindowNewMeetingController implements Initializable {
         int currentDay = currentDate.get(Calendar.DATE);
         int currentMonth = currentDate.get(Calendar.MONTH);
         int currentYear = currentDate.get(Calendar.YEAR);
-        System.out.println("ANYO: "+currentYear);
-        System.out.println("MES: "+currentMonth);
-        System.out.println("DIA: "+currentDay);
       
         if(currentDay > meetingDay && currentMonth+1 >= meetingMonth && currentYear >= meetingYear){
             incorretDate = true;
@@ -270,6 +284,8 @@ public class WindowNewMeetingController implements Initializable {
         Matcher matcher = pattern.matcher(textToValidate);
         if(!matcher.find()){
            invalidCharactersForName = true; 
+           TypeError typeError = TypeError.INVALIDSTRINGS;
+           showInvalidFieldAlert(typeError);
         }
         return invalidCharactersForName;
     }
@@ -280,6 +296,8 @@ public class WindowNewMeetingController implements Initializable {
         Matcher matcher = pattern.matcher(textToValidate);
         if(!matcher.find()){
            invalidCharacters = true; 
+           TypeError typeError = TypeError.INVALIDSTRINGS;
+           showInvalidFieldAlert(typeError);
         }
         return invalidCharacters;
     }
