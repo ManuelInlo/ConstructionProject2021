@@ -40,7 +40,7 @@ public class PreliminaryProjectDAO implements IPreliminaryProjectDAO{
             preparedStatement.setString(8, preliminaryproject.getPreliminaryProjectDescription());
             preparedStatement.setDate(9, preliminaryproject.getStartDate());
             preparedStatement.executeUpdate();
-            preparedStatement = null;
+            //preparedStatement = null;
             saveResult = true;          
         } catch (SQLException e) {
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", e);
