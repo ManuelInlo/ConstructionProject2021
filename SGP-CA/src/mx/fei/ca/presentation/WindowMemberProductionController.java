@@ -16,6 +16,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -88,6 +89,8 @@ public class WindowMemberProductionController implements Initializable {
             recoverEvidences();
         } catch (BusinessConnectionException ex) {
             showLostConnectionAlert();
+            ActionEvent event = null;
+            closeMemberProduction(event);
         }
         openReceptionWorkData();
     } 
@@ -98,7 +101,7 @@ public class WindowMemberProductionController implements Initializable {
     
     private void recoverEvidences() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
-        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findLastTwoReceptionWorksByCurpIntegrant("JCPA940514RDTREOP1"); //En realidad debe pasar la curp del integrante que está loggeado
+        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findLastTwoReceptionWorksByCurpIntegrant("JCPA940514RDTREOP1"); // En realidad debe pasar la curp del integrante que está loggeado
         fillReceptionWorkTable(receptionWorks);
     }
     
@@ -139,6 +142,7 @@ public class WindowMemberProductionController implements Initializable {
                 }
             } catch (BusinessConnectionException ex) {
                 showLostConnectionAlert();
+                closeMemberProduction(event);
             }
   
         }
@@ -149,7 +153,7 @@ public class WindowMemberProductionController implements Initializable {
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         String titleReceptionWork = tfEvidenceName.getText();
         ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorkByInitialesOfTitle(titleReceptionWork, "JCPA940514RDTREOP1"); //Acá debe pasar la curp del que está loggeado
-        if(receptionWorks.size() > 0){
+        if(!receptionWorks.isEmpty()){
             fillReceptionWorkTable(receptionWorks);
         }
         return receptionWorks;
@@ -178,7 +182,8 @@ public class WindowMemberProductionController implements Initializable {
 
     @FXML
     private void closeMemberProduction(ActionEvent event){
-        Stage stage = (Stage) this.btnExit.getScene().getWindow();
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
     

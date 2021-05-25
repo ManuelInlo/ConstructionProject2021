@@ -51,8 +51,8 @@ public class ReceptionWorkTest {
         IntegrantDAO integrantDAO = new IntegrantDAO();
         Integrant integrant = integrantDAO.findIntegrantByCurp("JCPA940514RDTREOP1");
         
-        ReceptionWork receptionWork = new ReceptionWork("SI", "Impacto de la IA en el diseño de software",
-                                                        "Prueba, falta ruta", 
+        ReceptionWork receptionWork = new ReceptionWork("SI", "Inteligencia artificial con Prolog",
+                                                        "Prueba, falta ruta de arhivo 2", 
                                                         startDateReceptionWork, endDateReceptionWork, "Licenciatura", "Tesis", "Terminado");
         
         receptionWork.setCollaborator(collaborator);

@@ -2,7 +2,6 @@
 package mx.fei.ca.businesslogic;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,17 +24,16 @@ public class AgreementDAO implements IAgreementDAO{
     
     @Override
     public boolean savedAgreement(Agreement agreement, int idMemorandum) throws BusinessConnectionException{
-        String sql = "INSERT INTO agreement (number, description, dateAgreement, responsible, idMemorandum) "
-                     + "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO agreement (description, dateAgreement, responsible, idMemorandum) "
+                     + "VALUES (?, ?, ?, ?)";
         boolean saveResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, agreement.getNumber());
-            preparedStatement.setString(2, agreement.getDescription());
-            preparedStatement.setDate(3, agreement.getDateAgreement());
-            preparedStatement.setString(4, agreement.getResponsible());
-            preparedStatement.setInt(5, idMemorandum);
+            preparedStatement.setString(1, agreement.getDescription());
+            preparedStatement.setString(2, agreement.getDateAgreement());
+            preparedStatement.setString(3, agreement.getResponsible());
+            preparedStatement.setInt(4, idMemorandum);
             preparedStatement.executeUpdate();
             saveResult = true;
         }catch(SQLException ex){
@@ -57,11 +55,10 @@ public class AgreementDAO implements IAgreementDAO{
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 int idAgreement = resultSet.getInt("idAgreement");
-                int number = resultSet.getInt("number");
                 String description = resultSet.getString("description");
-                Date dateAgreement = resultSet.getDate("dateAgreement");
+                String dateAgreement = resultSet.getString("dateAgreement");
                 String responsible = resultSet.getString("responsible");
-                Agreement agreement = new Agreement(number, description, dateAgreement, responsible);
+                Agreement agreement = new Agreement(description, dateAgreement, responsible);
                 agreement.setIdAgreement(idAgreement);
                 agreements.add(agreement);
             }
@@ -93,18 +90,17 @@ public class AgreementDAO implements IAgreementDAO{
     
     @Override
     public boolean updatedAgreement(Agreement agreement, int idAgreement, int idMemorandum) throws BusinessConnectionException{
-        String sql = "UPDATE agreement SET number = ?, description = ?, dateAgreement = ?, responsible = ?, idMemorandum = ?"
+        String sql = "UPDATE agreement SET description = ?, dateAgreement = ?, responsible = ?, idMemorandum = ?"
                      + " WHERE idAgreement = ?";
         boolean updateResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, agreement.getNumber());
-            preparedStatement.setString(2, agreement.getDescription());
-            preparedStatement.setDate(3, agreement.getDateAgreement());
-            preparedStatement.setString(4, agreement.getResponsible());
-            preparedStatement.setInt(5, idMemorandum);
-            preparedStatement.setInt(6, idAgreement);
+            preparedStatement.setString(1, agreement.getDescription());
+            preparedStatement.setString(2, agreement.getDateAgreement());
+            preparedStatement.setString(3, agreement.getResponsible());
+            preparedStatement.setInt(4, idMemorandum);
+            preparedStatement.setInt(5, idAgreement);
             preparedStatement.executeUpdate();
             updateResult = true;
         }catch(SQLException ex){

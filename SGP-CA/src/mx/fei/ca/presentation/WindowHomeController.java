@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -43,9 +44,6 @@ public class WindowHomeController implements Initializable {
         lbUser.setText(this.integrant.getNameIntegrant());
     }
     
-    public Integrant getIntegrant(){
-        return integrant;
-    }
  
     @FXML
     private void clickProjects(MouseEvent event) {
@@ -67,17 +65,13 @@ public class WindowHomeController implements Initializable {
     }
 
     @FXML
-    private void clickEvidences(MouseEvent event) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMemberProduction.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load());
-        } catch (IOException ex) {
-            Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.show();
+    private void clickEvidences(MouseEvent event) throws IOException {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMemberProduction.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.showAndWait();
     }
 
     @FXML

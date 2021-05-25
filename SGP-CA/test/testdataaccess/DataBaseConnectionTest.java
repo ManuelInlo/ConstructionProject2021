@@ -1,9 +1,8 @@
 
 package testdataaccess;
 
-import com.mysql.jdbc.Connection;
+import java.sql.Connection;
 import java.sql.SQLException;
-
 import mx.fei.ca.dataaccess.DataBaseConnection;
 import org.junit.Assert;
 import org.junit.Test;
