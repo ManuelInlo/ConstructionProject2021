@@ -48,6 +48,30 @@ public class StrategyDAO implements IStrategyDAO{
     
     @Override
     public boolean updateStrategy(Strategy strategy, int idTarget, int idStrategy) throws BusinessConnectionException, BusinessDataException {
+        String sql = "UPDATE strategy SET idTarget = ?, StrategyNumber = ?, strategyDescription = ?, goal = ?"
+                + ", strategyAction = ?, result = ? WHERE idStrategy = ?";
+        boolean updateResult = false;
+        try {
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);               
+            preparedStatement.setInt(1, idTarget);
+            preparedStatement.setInt(2, strategy.getStrategyNumber());
+            preparedStatement.setString(3, strategy.getStrategyDescription());
+            preparedStatement.setString(4, strategy.getGoal());
+            preparedStatement.setString(5, strategy.getStrategyAction());
+            preparedStatement.setString(6, strategy.getResult());
+            preparedStatement.setInt(7, strategy.getIdStrategy());
+            preparedStatement.executeUpdate();
+            preparedStatement = null;
+        } catch (SQLException e) {
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", e);
+        } finally{
+            dataBaseConnection.closeConnection();
+        }
+        return updateResult;
+    }
+    /*
+    public boolean updateStrategy(Strategy strategy, int idTarget, int idStrategy) throws BusinessConnectionException, BusinessDataException {
         String sql = "UPDATE strategy SET idStrategy = ?, idTarget = ?, StrategyNumber = ?, strategyDescription = ?, goal = ?"
                 + ", strategyAction = ?, result = ? WHERE idStrategy = ?";
         boolean updateResult = false;
@@ -69,5 +93,6 @@ public class StrategyDAO implements IStrategyDAO{
             dataBaseConnection.closeConnection();
         }
         return updateResult;
-    }  
+    }
+    */
 }
