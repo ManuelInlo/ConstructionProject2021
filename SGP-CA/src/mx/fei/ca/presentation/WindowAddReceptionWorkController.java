@@ -153,9 +153,16 @@ public class WindowAddReceptionWorkController implements Initializable {
                 receptionWork.setIntegrant(integrant);
                 ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
                 boolean saveResult = receptionWorkDAO.savedReceptionWork(receptionWork);
-                showConfirmationAlert(saveResult);
+                if(saveResult){
+                    showConfirmationAlert();
+                    closeReceptionWorkRegistration(event);
+                }else{
+                   showLostConnectionAlert(); 
+                   closeReceptionWorkRegistration(event);
+                }
             }else{
                 showLostConnectionAlert();
+                closeReceptionWorkRegistration(event);
             }
         }
     }
@@ -363,17 +370,12 @@ public class WindowAddReceptionWorkController implements Initializable {
     }
     
     @FXML
-    private void showConfirmationAlert(boolean saveResult){
-        if(saveResult){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(null);
-            alert.setTitle("Confirmación de guardado");
-            alert.setContentText("La información fue guardada con éxito");
-            alert.showAndWait();
-        }else{
-            showLostConnectionAlert();
-        }
-        
+    private void showConfirmationAlert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Confirmación de guardado");
+        alert.setContentText("La información fue guardada con éxito");
+        alert.showAndWait();
     }
     
     @FXML
