@@ -15,9 +15,11 @@ import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -26,6 +28,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.MeetingDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
@@ -60,19 +63,22 @@ public class WindowMeetingHistoryController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
-        columnProject.setCellValueFactory(new PropertyValueFactory("projectName"));
-        columnDate.setCellValueFactory(new PropertyValueFactory("meetingDate"));
-        columnTime.setCellValueFactory(new PropertyValueFactory("meetingTime"));
         try{
             MeetingDAO meetingDAO = new MeetingDAO();
             ArrayList<Meeting> listMeetings = meetingDAO.findLastFiveMeetings();
             fillMeetingHistory(listMeetings);
         } catch (BusinessConnectionException ex) {
-            Logger.getLogger(WindowMeetingHistoryController.class.getName()).log(Level.SEVERE, null, ex);
+            showLostConnectionAlert();
+            ActionEvent event = null;
+            exitMeetingHistory(event);
         }
+        openMeetingAgenda();
     }  
     
     private void fillMeetingHistory(ArrayList<Meeting> listMeetings) throws BusinessConnectionException{
+        columnProject.setCellValueFactory(new PropertyValueFactory("projectName"));
+        columnDate.setCellValueFactory(new PropertyValueFactory("meetingDate"));
+        columnTime.setCellValueFactory(new PropertyValueFactory("meetingTime"));
         ObservableList<Meeting> meetings = FXCollections.observableArrayList(listMeetings);
         tbMeetingHistory.setItems(meetings);
     }
@@ -97,6 +103,23 @@ public class WindowMeetingHistoryController implements Initializable {
         }
     }
     
+    public void openMeetingAgenda(){
+        tbMeetingHistory.setOnMouseClicked((MouseEvent event) -> {
+            Meeting meeting = tbMeetingHistory.getItems().get(tbMeetingHistory.getSelectionModel().getSelectedIndex());
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMeetingAgenda.fxml"));
+            Scene scene = null;
+            try {
+                scene = new Scene(fxmlLoader.load());
+            } catch (IOException ex) {
+                Logger.getLogger(WindowMeetingHistoryController.class.getName()).log(Level.SEVERE, null, ex);
+            }   Stage stage = new Stage();
+            stage.setScene(scene);
+            WindowMeetingAgendaController windowMeetingAgendaController = (WindowMeetingAgendaController) fxmlLoader.getController();
+            windowMeetingAgendaController.showMeetingData(meeting);
+            stage.show();
+        });
+    }
+    
     private java.sql.Date parseToSqlDate(java.util.Date date){
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         return sqlDate;
@@ -113,7 +136,8 @@ public class WindowMeetingHistoryController implements Initializable {
 
     @FXML
     private void exitMeetingHistory(ActionEvent event){
-        Stage stage = (Stage) this.btnExit.getScene().getWindow();
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
     
@@ -171,6 +195,14 @@ public class WindowMeetingHistoryController implements Initializable {
     private void cleanFields(){
         tfMeetingProject.clear();
         dpMeetingDate.getEditor().clear();
+    }
+    
+    private void showLostConnectionAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setTitle("Perdida de conexión");
+        alert.setContentText("Perdida de conexión con la base de datos, no se pudo guardar. Intente más tarde");
+        alert.showAndWait();
     }
     
 }

@@ -111,9 +111,9 @@
                   </TableView>
                   <Label layoutX="14.0" layoutY="344.0" text="Descripción:" />
                   <Label layoutX="14.0" layoutY="385.0" text="Quién:" />
-                  <TextField fx:id="tfDescription" layoutX="14.0" layoutY="360.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="292.0" />
-                  <ComboBox fx:id="cbPrerequisiteManager" layoutX="14.0" layoutY="402.0" minHeight="-Infinity" prefHeight="20.0" prefWidth="292.0" style="-fx-background-color: #FFFFFF;" />
-                  <Button fx:id="btnAddPrerequisite" layoutX="255.0" layoutY="429.0" mnemonicParsing="false" onAction="#addPrerequisite" text="Añadir" />
+                  <TextField fx:id="tfDescription" layoutX="14.0" layoutY="360.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="292.0" />
+                  <ComboBox fx:id="cbPrerequisiteManager" layoutX="14.0" layoutY="402.0" minHeight="-Infinity" prefHeight="23.0" prefWidth="292.0" style="-fx-background-color: #FFFFFF;" />
+                  <Button fx:id="btnAddPrerequisite" layoutX="255.0" layoutY="435.0" mnemonicParsing="false" onAction="#addPrerequisite" text="Añadir" />
                   <Button fx:id="btnDeletePrerequisite" layoutX="904.0" layoutY="319.0" mnemonicParsing="false" onAction="#deletePrerequisite" onDragDetected="#deleteAgendaPoint" prefHeight="25.0" prefWidth="71.0" text="Eliminar" />
                   <Label layoutX="14.0" layoutY="467.0" text="Agenda">
                      <font>
@@ -134,9 +134,9 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="tfTopic" layoutX="14.0" layoutY="572.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="292.0" />
-                  <ComboBox fx:id="cbLeaderDiscussion" layoutX="14.0" layoutY="612.0" minHeight="-Infinity" prefHeight="20.0" prefWidth="292.0" style="-fx-background-color: #FFFFFF;" />
-                  <Button fx:id="btnAddAgendaPoint" layoutX="255.0" layoutY="640.0" mnemonicParsing="false" onAction="#addAgendaPoint" text="Añadir" />
+                  <TextField fx:id="tfTopic" layoutX="14.0" layoutY="572.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="292.0" />
+                  <ComboBox fx:id="cbLeaderDiscussion" layoutX="14.0" layoutY="612.0" minHeight="-Infinity" prefHeight="23.0" prefWidth="292.0" style="-fx-background-color: #FFFFFF;" />
+                  <Button fx:id="btnAddAgendaPoint" layoutX="255.0" layoutY="645.0" mnemonicParsing="false" onAction="#addAgendaPoint" text="Añadir" />
                   <TableView fx:id="tbAgendaPoints" layoutX="314.0" layoutY="480.0" prefHeight="149.0" prefWidth="584.0">
                     <columns>
                       <TableColumn fx:id="columnTimeStart" prefWidth="75.0" text="Hora inicio" />

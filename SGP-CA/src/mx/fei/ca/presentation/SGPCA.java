@@ -16,7 +16,7 @@ public class SGPCA extends Application {
     @Override
     public void start(Stage stage) throws IOException, BusinessConnectionException {
        
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMeeting.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMeetingHistory.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.setResizable(false);

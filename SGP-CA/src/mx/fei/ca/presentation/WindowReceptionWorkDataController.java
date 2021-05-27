@@ -71,16 +71,16 @@ public class WindowReceptionWorkDataController implements Initializable {
         lbActualState.setText(receptionWork.getActualState());
         lbAuthor.setText(receptionWork.getCollaborator().getName());
         lbPositionAuthor.setText(receptionWork.getCollaborator().getPosition());
-        lbStartDate.setText(convertToString(receptionWork.getStartDate()));
+        lbStartDate.setText(convertDateToString(receptionWork.getStartDate()));
         lbGrade.setText(receptionWork.getGrade());
         //lbInvestigationProject.setText(receptionWork.getInvestigationProject().getName());
         lbFileRoute.setText(receptionWork.getFileRoute());
         if(receptionWork.getEndDate() != null){
-            lbEndDate.setText(convertToString(receptionWork.getEndDate()));
+            lbEndDate.setText(convertDateToString(receptionWork.getEndDate()));
         }
     }
     
-    private String convertToString(Date date){
+    private String convertDateToString(Date date){
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String stringDate = dateFormat.format(date);
         return stringDate;
