@@ -101,7 +101,7 @@ public class WindowMemberProductionController implements Initializable {
     
     private void recoverEvidences() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
-        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findLastTwoReceptionWorksByCurpIntegrant("JCPA940514RDTREOP1"); // En realidad debe pasar la curp del integrante que está loggeado
+        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findLastTwoReceptionWorksByCurpIntegrant(integrant.getCurp()); // En realidad debe pasar la curp del integrante que está loggeado
         fillReceptionWorkTable(receptionWorks);
     }
     

@@ -68,6 +68,8 @@ public class WindowHomeController implements Initializable {
     private void clickEvidences(MouseEvent event) throws IOException {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMemberProduction.fxml"));
             Parent root = fxmlLoader.load();
+            WindowMemberProductionController windowMemberProductionController = fxmlLoader.getController();
+            windowMemberProductionController.setIntegrant(integrant);
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
