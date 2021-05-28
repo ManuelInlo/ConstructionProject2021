@@ -57,7 +57,7 @@ public class MeetingDAO implements IMeetingDAO{
     @Override
     public ArrayList<Meeting> findLastFiveMeetings() throws BusinessConnectionException {
         ArrayList<Meeting> meetings = new ArrayList<>();
-        String sql = "Select * from meeting;";
+        String sql = "Select * from meeting order by idMeeting DESC LIMIT 5;";
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -66,8 +66,7 @@ public class MeetingDAO implements IMeetingDAO{
             MemorandumDAO  memorandumDAO = new MemorandumDAO();
             PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
             MeetingAssistantDAO meetingAssistantDAO = new MeetingAssistantDAO();
-            int meetingCounter = 0;
-            while(resultSet.next() && meetingCounter < 5){
+            while(resultSet.next()){
                 int idMeeting = resultSet.getInt("idMeeting");
                 Date meetingDate = resultSet.getDate("meetingDate");
                 Time meetingTime = resultSet.getTime("meetingTime");
@@ -86,7 +85,6 @@ public class MeetingDAO implements IMeetingDAO{
                 meeting.setAssistants(assistants);
                 meeting.setMemorandum(memorandum);
                 meetings.add(meeting);
-                meetingCounter++;
             }
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);

@@ -1,17 +1,24 @@
 
 package mx.fei.ca.presentation;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.fei.ca.domain.ReceptionWork;
 
@@ -54,16 +61,13 @@ public class WindowReceptionWorkDataController implements Initializable {
     @FXML
     private Button btnModify;
     
-    public void setReceptionWork(ReceptionWork receptionWork){
-        this.receptionWork = receptionWork;
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //showReceptionWorkData(receptionWork);
+        
     }   
     
     public void showReceptionWorkData(ReceptionWork receptionWork){
+        this.receptionWork = receptionWork;
         lbTypeEvidence.setText("Trabajo recepcional");
         lbTitleEvidence.setText(receptionWork.getTitleReceptionWork());
         lbImpactCA.setText(receptionWork.getImpactCA());
@@ -73,7 +77,7 @@ public class WindowReceptionWorkDataController implements Initializable {
         lbPositionAuthor.setText(receptionWork.getCollaborator().getPosition());
         lbStartDate.setText(convertDateToString(receptionWork.getStartDate()));
         lbGrade.setText(receptionWork.getGrade());
-        //lbInvestigationProject.setText(receptionWork.getInvestigationProject().getName());
+        lbInvestigationProject.setText(receptionWork.getInvestigationProject().getTittleProject());
         lbFileRoute.setText(receptionWork.getFileRoute());
         if(receptionWork.getEndDate() != null){
             lbEndDate.setText(convertDateToString(receptionWork.getEndDate()));
@@ -87,7 +91,21 @@ public class WindowReceptionWorkDataController implements Initializable {
     }
 
     @FXML
-    private void modifyReceptionWork(ActionEvent event) {
+    private void modifyReceptionWork(ActionEvent event){
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowModifyReceptionWork.fxml"));
+            Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(WindowReceptionWorkDataController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        WindowModifyReceptionWorkController windowModifyReceptionWorkController = fxmlLoader.getController();
+        windowModifyReceptionWorkController.fillFieldsReceptionWork(receptionWork);
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.showAndWait();
+        closeReceptionWorkData(event);
     }
 
     @FXML

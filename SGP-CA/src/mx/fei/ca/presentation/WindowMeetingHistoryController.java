@@ -47,8 +47,6 @@ public class WindowMeetingHistoryController implements Initializable {
     @FXML
     private DatePicker dpMeetingDate;
     @FXML
-    private Button btnExit;
-    @FXML
     private TableView<Meeting> tbMeetingHistory;
     @FXML
     private TableColumn<Meeting, String> columnProject;

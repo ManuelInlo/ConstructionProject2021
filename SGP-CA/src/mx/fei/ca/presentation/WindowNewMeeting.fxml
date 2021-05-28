@@ -106,7 +106,7 @@
                   <TableView fx:id="tbPrerequisites" layoutX="314.0" layoutY="319.0" prefHeight="135.0" prefWidth="583.0">
                     <columns>
                       <TableColumn fx:id="columnDescription" prefWidth="344.0" text="Descripción" />
-                      <TableColumn fx:id="tfPrerequisiteManager" prefWidth="238.0" text="Quién" />
+                      <TableColumn fx:id="columnPrerequisiteManager" prefWidth="238.0" text="Quién" />
                     </columns>
                   </TableView>
                   <Label layoutX="14.0" layoutY="344.0" text="Descripción:" />
@@ -114,7 +114,7 @@
                   <TextField fx:id="tfDescription" layoutX="14.0" layoutY="360.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="292.0" />
                   <ComboBox fx:id="cbPrerequisiteManager" layoutX="14.0" layoutY="402.0" minHeight="-Infinity" prefHeight="23.0" prefWidth="292.0" style="-fx-background-color: #FFFFFF;" />
                   <Button fx:id="btnAddPrerequisite" layoutX="255.0" layoutY="435.0" mnemonicParsing="false" onAction="#addPrerequisite" text="Añadir" />
-                  <Button fx:id="btnDeletePrerequisite" layoutX="904.0" layoutY="319.0" mnemonicParsing="false" onAction="#deletePrerequisite" onDragDetected="#deleteAgendaPoint" prefHeight="25.0" prefWidth="71.0" text="Eliminar" />
+                  <Button fx:id="btnDeletePrerequisite" layoutX="904.0" layoutY="319.0" mnemonicParsing="false" onAction="#deletePrerequisite" prefHeight="25.0" prefWidth="71.0" text="Eliminar" />
                   <Label layoutX="14.0" layoutY="467.0" text="Agenda">
                      <font>
                         <Font name="System Bold" size="16.0" />
@@ -145,7 +145,7 @@
                         <TableColumn fx:id="columnLeaderDiscussion" prefWidth="228.0" text="Líder de discusión" />
                     </columns>
                   </TableView>
-                  <Button fx:id="btnDeleteAgendaPoint" layoutX="904.0" layoutY="480.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="71.0" text="Eliminar" />
+                  <Button fx:id="btnDeleteAgendaPoint" layoutX="904.0" layoutY="480.0" mnemonicParsing="false" onAction="#deleteAgendaPoint" prefHeight="25.0" prefWidth="71.0" text="Eliminar" />
                   <ComboBox fx:id="cbHourStart" layoutX="80.0" layoutY="499.0" minHeight="-Infinity" prefHeight="21.0" prefWidth="60.0" promptText="hh" style="-fx-background-color: #FFFFFF;" />
                   <ComboBox fx:id="cbMinuteStart" layoutX="160.0" layoutY="499.0" minHeight="-Infinity" prefHeight="21.0" prefWidth="63.0" promptText="mm" style="-fx-background-color: #FFFFFF;" />
                   <ComboBox fx:id="cbHourEnd" layoutX="80.0" layoutY="528.0" minHeight="-Infinity" prefHeight="21.0" prefWidth="60.0" promptText="hh" style="-fx-background-color: #FFFFFF;" />

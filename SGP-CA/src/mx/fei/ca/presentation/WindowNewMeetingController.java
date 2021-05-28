@@ -26,10 +26,12 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.AgendaPointDAO;
 import mx.fei.ca.businesslogic.MeetingDAO;
+import mx.fei.ca.businesslogic.PrerequisiteDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.AgendaPoint;
 import mx.fei.ca.domain.Integrant;
@@ -71,21 +73,15 @@ public class WindowNewMeetingController implements Initializable {
     @FXML
     private TableColumn<Prerequisite, String> columnDescription;
     @FXML
-    private TableColumn<Prerequisite, String> tfPrerequisiteManager;
+    private TableColumn<Prerequisite, String> columnPrerequisiteManager;
     @FXML
     private TextField tfDescription;
     @FXML
     private ComboBox cbPrerequisiteManager;
     @FXML
-    private Button btnAddPrerequisite;
-    @FXML
-    private Button btnDeletePrerequisite;
-    @FXML
     private TextField tfTopic;
     @FXML
     private ComboBox cbLeaderDiscussion;
-    @FXML
-    private Button btnAddAgendaPoint;
     @FXML
     private TableView<AgendaPoint> tbAgendaPoints;
     @FXML
@@ -97,8 +93,6 @@ public class WindowNewMeetingController implements Initializable {
     @FXML
     private TableColumn<AgendaPoint, String> columnLeaderDiscussion;
     @FXML
-    private Button btnDeleteAgendaPoint;
-    @FXML
     private ComboBox cbHourStart;
     @FXML
     private ComboBox cbMinuteStart;
@@ -106,34 +100,84 @@ public class WindowNewMeetingController implements Initializable {
     private ComboBox cbHourEnd;
     @FXML
     private ComboBox cbMinuteEnd;
+    
+    private ObservableList<Prerequisite> prerequisites;
+    private ObservableList<AgendaPoint> agendaPoints;
+    int idMeeting;
+    @FXML
+    private Button btnAddPrerequisite;
+    @FXML
+    private Button btnDeletePrerequisite;
+    @FXML
+    private Button btnAddAgendaPoint;
+    @FXML
+    private Button btnDeleteAgendaPoint;
+
+    
+    
+    private enum TypeError{
+        EMPTYFIELDS, INVALIDSTRINGS, MISSINGMEETINGTIME, MISSINGDATE, MEETINGAFFAIRDUPLICATE, DATEANDTIMEDUPLICATE,
+        MANYROLES, DUPLICATEROLE, INCORRETDATE, MISSINGSELECTION, MINORHOUR, BUSYTIME, WRONGTIMEAGENDAPOINT, COLUMNMISSINGSELECTION,
+        EMPTYTABLE, MISSINGROLE;
+    }
+    
 
     @FXML
     private void addPrerequisite(ActionEvent event){
         if(!existsInvalidFieldsForPrerequisites()){
-            
+            columnDescription.setCellValueFactory(new PropertyValueFactory("description"));
+            columnPrerequisiteManager.setCellValueFactory(new PropertyValueFactory("prerequisiteManager"));
+            String description = tfDescription.getText();
+            String prerequisiteManager = cbPrerequisiteManager.getSelectionModel().getSelectedItem().toString();
+            Prerequisite prerequisite = new Prerequisite(description, prerequisiteManager);
+            prerequisites.add(prerequisite);
+            tbPrerequisites.setItems(prerequisites);
+            cleanFieldsPrerequisite();
         }
     }
 
     @FXML
-    private void deleteAgendaPoint(MouseEvent event) {
-    }
-
-    @FXML
-    private void deletePrerequisite(ActionEvent event) {
+    private void deletePrerequisite(ActionEvent event){
+        Prerequisite prerequisite = tbPrerequisites.getSelectionModel().getSelectedItem();
+        if(prerequisite == null){
+            TypeError typeError = TypeError.COLUMNMISSINGSELECTION;
+            showInvalidFieldAlert(typeError);
+        }else{
+            prerequisites.remove(prerequisite);
+            tbPrerequisites.refresh();
+        }
     }
 
     @FXML
     private void addAgendaPoint(ActionEvent event){
         if(!existsInvalidFieldsForAgendaPoint()){
-            
+            columnTimeStart.setCellValueFactory(new PropertyValueFactory("startTime"));
+            columnTimeEnd.setCellValueFactory(new PropertyValueFactory("endTime"));
+            columnTopic.setCellValueFactory(new PropertyValueFactory("topic"));
+            columnLeaderDiscussion.setCellValueFactory(new PropertyValueFactory("leader"));
+            Time startTime = parseToSqlTime(cbHourStart.getSelectionModel().getSelectedItem().toString(), cbMinuteStart.getSelectionModel().getSelectedItem().toString());
+            Time endTime = parseToSqlTime(cbHourEnd.getSelectionModel().getSelectedItem().toString(), cbMinuteEnd.getSelectionModel().getSelectedItem().toString());
+            String topic = tfTopic.getText();
+            String leader = cbLeaderDiscussion.getSelectionModel().getSelectedItem().toString();
+            AgendaPoint agendaPoint = new AgendaPoint(startTime, endTime, topic, leader);
+            agendaPoints.add(agendaPoint);
+            tbAgendaPoints.setItems(agendaPoints);
+            cleanFieldsAgendaPoint();
         }
     }
-  
-    private enum TypeError{
-        EMPTYFIELDS, INVALIDSTRINGS, MISSINGMEETINGTIME, MISSINGDATE, MEETINGAFFAIRDUPLICATE, DATEANDTIMEDUPLICATE,
-        MANYROLES, DUPLICATEROLE, INCORRETDATE, MISSINGSELECTION, MINORHOUR, BUSYTIME, WRONGTIMEAGENDAPOINT;
-    }
     
+    @FXML
+    private void deleteAgendaPoint(ActionEvent event){
+        AgendaPoint agendaPoint = tbAgendaPoints.getSelectionModel().getSelectedItem();
+        if(agendaPoint == null){
+            TypeError typeError = TypeError.COLUMNMISSINGSELECTION;
+            showInvalidFieldAlert(typeError);
+        }else{
+            agendaPoints.remove(agendaPoint);
+            tbAgendaPoints.refresh();
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         fillComboBoxHours(cbHours);
@@ -144,6 +188,8 @@ public class WindowNewMeetingController implements Initializable {
         fillComboBoxMinutes(cbMinuteEnd);
         fillComboBoxForIntegrants(cbPrerequisiteManager);
         fillComboBoxForIntegrants(cbLeaderDiscussion);
+        prerequisites = FXCollections.observableArrayList();
+        agendaPoints = FXCollections.observableArrayList();
         
        // fillIntegrantsTable();
     }   
@@ -156,11 +202,41 @@ public class WindowNewMeetingController implements Initializable {
             String affair = tfAffair.getText();
             Date meetingDate = parseToSqlDate(java.util.Date.from(dpMeetingDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
             Time meetingTime = parseToSqlTime(cbHours.getSelectionModel().getSelectedItem().toString(), cbMinutes.getSelectionModel().getSelectedItem().toString());
-            //Manda a guardar reunión y regresa id
-            //Manda a llamar un método que recorra la tabla y guarde elemento por elemento de tabla integrantes
-            //Manda a llamar un método que recorra la tabla y guarde elemento por elemento de tabla prerequisito
-            //Manda a llamar un método que recorra la tabla y guarde elemento por elemento de tabla puntoagenda
+            Meeting meeting = new Meeting(meetingDate, meetingTime,meetingPlace, affair, projectName, "Registrada");     
+            MeetingDAO meetingDAO = new MeetingDAO();
+            idMeeting = meetingDAO.saveAndReturnIdNewMeeting(meeting, "JCPA940514RDTREOP1");  //La curp es de prueba
+            if(idMeeting != 0 && savedPrerequisites() && savedAgendaPoints()){  //falta mandar a guardar asistente reunion
+                showConfirmationAlert();
+            }else{
+                showLostConnectionAlert(); 
+            }
         }
+    }
+    
+    private boolean savedPrerequisites() throws BusinessConnectionException{
+        boolean savedPrerequisite = true;
+        PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
+        for (Prerequisite prerequisite: tbPrerequisites.getItems()){
+            savedPrerequisite = prerequisiteDAO.savedPrerequisite(prerequisite, idMeeting);
+            if(!savedPrerequisite){
+                savedPrerequisite = false;
+                break;
+            }
+        }
+        return savedPrerequisite;
+    }
+    
+    private boolean savedAgendaPoints() throws BusinessConnectionException{
+        boolean savedAgendaPoint = true;
+        AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
+        for (AgendaPoint agendaPoint: tbAgendaPoints.getItems()){
+            savedAgendaPoint = agendaPointDAO.savedAgendaPoint(agendaPoint, idMeeting);
+            if(!savedAgendaPoint){
+                savedAgendaPoint = false;
+                break;
+            }
+        }
+        return savedAgendaPoint;
     }
     
     @FXML
@@ -220,7 +296,7 @@ public class WindowNewMeetingController implements Initializable {
     }
     
     private java.sql.Time parseToSqlTime(String hours, String minutes){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         java.sql.Time meetingTime = null;
         try {
             meetingTime = new java.sql.Time(simpleDateFormat.parse(hours+":"+minutes).getTime());
@@ -245,10 +321,22 @@ public class WindowNewMeetingController implements Initializable {
             invalidFields = true;  
         }
   
-        if(invalidFields || existsDuplicateValuesForMeeting()){
+        if(invalidFields || existsDuplicateValuesForMeeting() || existsEmptyTable()){
             invalidFields = true;
         }
         return invalidFields;
+    }
+    
+    private boolean existsEmptyTable(){
+        boolean emptyTable = false;
+        ObservableList<Prerequisite> listPrerequisites = tbPrerequisites.getItems();
+        ObservableList<AgendaPoint> listAgendaPoints = tbAgendaPoints.getItems();
+        if(listPrerequisites.isEmpty() || listAgendaPoints.isEmpty()){
+            emptyTable = true;
+            TypeError typeError = TypeError.EMPTYTABLE;
+            showInvalidFieldAlert(typeError);
+        }
+        return emptyTable;
     }
     
     private boolean existsEmptyFields(String textToValidate){
@@ -334,8 +422,8 @@ public class WindowNewMeetingController implements Initializable {
     
     private boolean existsIntegrantWithManyRoles(){
         boolean existsIntegrant = false;
-        for (MeetingAssistant item : tbIntegrants.getItems()) {
-            if((item.getRbLeaderRole().isSelected() && item.getRbSecretaryRole().isSelected()) || (item.getRbLeaderRole().isSelected() && item.getRbTimeTakerRole().isSelected()) || (item.getRbSecretaryRole().isSelected() && item.getRbTimeTakerRole().isSelected())){
+        for (MeetingAssistant meetingAssistant : tbIntegrants.getItems()) {
+            if((meetingAssistant.getRbLeaderRole().isSelected() && meetingAssistant.getRbSecretaryRole().isSelected()) || (meetingAssistant.getRbLeaderRole().isSelected() && meetingAssistant.getRbTimeTakerRole().isSelected()) || (meetingAssistant.getRbSecretaryRole().isSelected() && meetingAssistant.getRbTimeTakerRole().isSelected())){
                 existsIntegrant = true; 
                 TypeError typeError = TypeError.MANYROLES;
                 showInvalidFieldAlert(typeError);
@@ -380,6 +468,30 @@ public class WindowNewMeetingController implements Initializable {
             
         }
         return duplicateRole;
+    }
+    
+    private boolean existsMissingRole(){
+        boolean missingRole = false;
+        boolean leaderSelected = false;
+        boolean secretarySelected = false;
+        boolean timeTakerSelected = false;
+        for(MeetingAssistant meetingAssistant: tbIntegrants.getItems()){
+            if(meetingAssistant.getRbLeaderRole().isSelected()){
+                leaderSelected = true;
+            }
+            if(!leaderSelected && meetingAssistant.getRbSecretaryRole().isSelected()){
+                secretarySelected = true;
+            }
+            if(!secretarySelected && meetingAssistant.getRbTimeTakerRole().isSelected()){
+                timeTakerSelected = true;
+            }
+        }
+        if(!leaderSelected || !secretarySelected || !timeTakerSelected){
+            missingRole = true;
+            TypeError typeError = TypeError.MISSINGROLE;
+            showInvalidFieldAlert(typeError);
+        }
+        return missingRole;
     }
     
     private boolean existsDuplicateValuesForMeeting() throws BusinessConnectionException{
@@ -481,6 +593,20 @@ public class WindowNewMeetingController implements Initializable {
         return exists;
     }
     
+    private void cleanFieldsPrerequisite(){
+        tfDescription.clear();
+        cbPrerequisiteManager.getSelectionModel().clearSelection();
+    }
+    
+    private void cleanFieldsAgendaPoint(){
+        cbHourStart.getSelectionModel().clearSelection();
+        cbMinuteStart.getSelectionModel().clearSelection();
+        cbHourEnd.getSelectionModel().clearSelection();
+        cbMinuteEnd.getSelectionModel().clearSelection();
+        tfAffair.clear();
+        cbLeaderDiscussion.getSelectionModel().clearSelection();
+    }
+    
     private void showInvalidFieldAlert(TypeError typeError){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
@@ -536,18 +662,39 @@ public class WindowNewMeetingController implements Initializable {
         if(typeError == TypeError.WRONGTIMEAGENDAPOINT){
             alert.setContentText("La hora de fin no puede ser menor o igual a la hora de inicio de un punto de agenda. Corrije para poder añadir");
         }
+        
+        if(typeError == TypeError.COLUMNMISSINGSELECTION){
+            alert.setContentText("Selección de columna faltante. Selecciona una columna para poder eliminar");
+        }
+        
+        if(typeError == TypeError.EMPTYTABLE){
+            alert.setContentText("La reunión debe tener por lo menos un punto de agenda y un prerequisito. Añade para poder guardar");
+        }
+        
+        if(typeError == TypeError.MISSINGROLE){
+            alert.setContentText("Falta asignar rol, por favor asigna el rol a un integrante para poder guardar");
+        }
         alert.showAndWait();
     }
     
-    private void showConfirmationAlert(boolean saveResult){
-        if(saveResult){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(null);
-            alert.setTitle("Confirmación de guardado");
-            alert.setContentText("La información fue guardada con éxito");
-            alert.showAndWait();
-        }
-        
+    private void showConfirmationAlert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Confirmación de guardado");
+        alert.setContentText("La información fue guardada con éxito");
+        alert.showAndWait();
+        //ActionEvent event =;
+        //closeNewMeeting(event);
+    }
+    
+    private void showLostConnectionAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setTitle("Perdida de conexión");
+        alert.setContentText("Perdida de conexión con la base de datos, no se pudo guardar. Intente más tarde");
+        alert.showAndWait();
+        ActionEvent event = null;
+        closeNewMeeting(event);
     }
   
 }
