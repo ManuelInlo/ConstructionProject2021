@@ -18,7 +18,7 @@ public class PreliminaryProjectDAO implements IPreliminaryProjectDAO{
     private PreparedStatement preparedStatement;
     private ResultSet resultSet; 
     
-    public PreliminaryProjectDAO(){
+    public PreliminaryProjectDAO() throws ClassNotFoundException{
         dataBaseConnection = new DataBaseConnection();
     }
 

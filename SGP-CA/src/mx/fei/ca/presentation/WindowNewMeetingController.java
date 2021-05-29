@@ -104,15 +104,6 @@ public class WindowNewMeetingController implements Initializable {
     private ObservableList<Prerequisite> prerequisites;
     private ObservableList<AgendaPoint> agendaPoints;
     int idMeeting;
-    @FXML
-    private Button btnAddPrerequisite;
-    @FXML
-    private Button btnDeletePrerequisite;
-    @FXML
-    private Button btnAddAgendaPoint;
-    @FXML
-    private Button btnDeleteAgendaPoint;
-
     
     
     private enum TypeError{

@@ -66,7 +66,6 @@ public class WindowModifyReceptionWorkController implements Initializable {
     
     private int idReceptionWorkToModify;
     private int idCollaboratorToModify;
-    private ReceptionWork updatedReceptionWork;
 
     /**
      * Initializes the controller class.

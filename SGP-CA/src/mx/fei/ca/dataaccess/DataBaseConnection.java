@@ -14,7 +14,7 @@ public class DataBaseConnection {
     private final String user;
     private final String password;
     
-    public DataBaseConnection() throws ClassNotFoundException{
+    public DataBaseConnection(){
        this.url = PropertyUtil.getProperties("dates.url") + "?useSSL=false";
        this.user = PropertyUtil.getProperties("dates.user");
        this.password = PropertyUtil.getProperties("dates.password");
