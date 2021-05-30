@@ -61,17 +61,19 @@ public class WindowMeetingHistoryController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
+        recoverMeetings();
+        openMeetingAgenda();
+    }  
+    
+    private void recoverMeetings(){
         try{
             MeetingDAO meetingDAO = new MeetingDAO();
             ArrayList<Meeting> listMeetings = meetingDAO.findLastFiveMeetings();
             fillMeetingHistory(listMeetings);
         } catch (BusinessConnectionException ex) {
             showLostConnectionAlert();
-            ActionEvent event = null;
-            exitMeetingHistory(event);
         }
-        openMeetingAgenda();
-    }  
+    }
     
     private void fillMeetingHistory(ArrayList<Meeting> listMeetings) throws BusinessConnectionException{
         columnProject.setCellValueFactory(new PropertyValueFactory("projectName"));
@@ -115,6 +117,7 @@ public class WindowMeetingHistoryController implements Initializable {
             WindowMeetingAgendaController windowMeetingAgendaController = (WindowMeetingAgendaController) fxmlLoader.getController();
             windowMeetingAgendaController.showMeetingData(meeting);
             stage.show();
+            recoverMeetings();
         });
     }
     

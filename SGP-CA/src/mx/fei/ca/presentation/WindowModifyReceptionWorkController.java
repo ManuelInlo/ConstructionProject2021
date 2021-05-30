@@ -67,10 +67,6 @@ public class WindowModifyReceptionWorkController implements Initializable {
     private int idReceptionWorkToModify;
     private int idCollaboratorToModify;
 
-    /**
-     * Initializes the controller class.
-     */
-    
     private enum TypeError{
         EMPTYFIELD, INVALIDSTRING, MISSINGSELECTION, MISSINGDATE, OVERDATE, INCONSISTENTDATE, TITLEDUPLICATE, 
         FILEROUTEDUPLICATE, COLLABORATORDUPLICATE;

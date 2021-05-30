@@ -56,11 +56,6 @@ public class WindowReceptionWorkDataController implements Initializable {
     
     private ReceptionWork receptionWork;
     
-    @FXML
-    private Button btnExit;
-    @FXML
-    private Button btnModify;
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         

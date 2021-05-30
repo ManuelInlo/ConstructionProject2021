@@ -1,6 +1,7 @@
 
 package mx.fei.ca.presentation;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.Time;
@@ -14,8 +15,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -77,6 +81,7 @@ public class WindowMeetingAgendaController implements Initializable {
     @FXML
     private Label lbState;
     
+    private Meeting meeting;
    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -99,10 +104,12 @@ public class WindowMeetingAgendaController implements Initializable {
             ArrayList<AgendaPoint> agendaPoints = agendaPointDAO.findAgendaPointsByIdMeeting(meeting.getIdMeeting());
             fillPrerequisitesTable(prerequisites);
             fillAgendaPointsTable(agendaPoints);
+            meeting.setPrerequisites(prerequisites);
+            meeting.setAgendaPoints(agendaPoints);
         } catch (BusinessConnectionException ex) {
             showLostConnectionAlert();
         }
-        
+        this.meeting = meeting;   
     }
     
     private void fillPrerequisitesTable(ArrayList<Prerequisite> prerequisites){
@@ -120,6 +127,7 @@ public class WindowMeetingAgendaController implements Initializable {
         ObservableList<AgendaPoint> listAgendaPoints = FXCollections.observableArrayList(agendaPoints);
         tbAgendaPoints.setItems(listAgendaPoints);
     }
+    
     private String convertDateToString(Date date){
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String stringDate = dateFormat.format(date);
@@ -133,15 +141,30 @@ public class WindowMeetingAgendaController implements Initializable {
     }
 
     @FXML
-    private void openModifyMeeting(ActionEvent event) {
+    private void openModifyMeeting(ActionEvent event){
+        //ACA DEBE VERIFICAR QUE EL RESPONSABLE DE LA REUNIÓN ES EL MISMO QUE QUIERE MODIFICAR
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowModifyAgenda.fxml"));
+            Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(WindowMeetingAgendaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        WindowModifyAgendaController windowModifyAgendaController = fxmlLoader.getController();
+        windowModifyAgendaController.fillMeetingData(meeting);
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.showAndWait();
+        closeMeetingAgenda(event);
     }
 
     @FXML
-    private void openMemorandum(ActionEvent event) {
+    private void openMemorandum(ActionEvent event){
     }
 
     @FXML
-    private void openStartMeeting(ActionEvent event) {
+    private void openStartMeeting(ActionEvent event){
     }
     
     @FXML
