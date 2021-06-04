@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="561.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowAddIntegrantController">
+<AnchorPane id="AnchorPane" prefHeight="561.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowAddIntegrantController">
    <children>
       <Pane layoutY="521.0" prefHeight="40.0" prefWidth="600.0" style="-fx-background-color: #60ABE0;">
          <children>

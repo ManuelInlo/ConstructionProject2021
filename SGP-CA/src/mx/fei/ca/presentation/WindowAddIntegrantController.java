@@ -120,6 +120,7 @@ public class WindowAddIntegrantController implements Initializable {
         }
     }
 
+    @FXML
     private void closeRegistrationIntegrant(ActionEvent event){
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
