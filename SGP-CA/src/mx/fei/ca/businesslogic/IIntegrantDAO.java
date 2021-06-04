@@ -9,6 +9,7 @@ public interface IIntegrantDAO {
     public boolean savedIntegrant(Integrant integrant) throws BusinessConnectionException;
     public boolean updatedIntegrant(Integrant integrant, String curp) throws BusinessConnectionException; 
     public Integrant findIntegrantByCurp(String curp) throws BusinessConnectionException;
+    public ArrayList<Integrant> findAllIntegrants() throws BusinessConnectionException;    
     public boolean deleteIntegrantByCurp(String curp) throws BusinessConnectionException;
     
     public boolean changedPasswordIntegrant(String password, String curp) throws BusinessConnectionException;

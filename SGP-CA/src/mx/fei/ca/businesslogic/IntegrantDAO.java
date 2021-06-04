@@ -244,4 +244,38 @@ public class IntegrantDAO implements IIntegrantDAO{
         }
         return integrant;
     }
+    
+    @Override
+    public ArrayList<Integrant> findAllIntegrants() throws BusinessConnectionException {
+        String sql = "SELECT * FROM integrant";
+        ArrayList<Integrant> integrants = new ArrayList<>();
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Integrant integrant;
+                String curp = resultSet.getString("curp");
+                String role = resultSet.getString("role");
+                String nameIntegrant = resultSet.getString("nameIntegrant");
+                String studyDegree = resultSet.getString("studyDegree");
+                String studyDiscipline = resultSet.getString("studyDiscipline");
+                String prodepParticipation = resultSet.getString("prodepParticipation");
+                String typeTeaching = resultSet.getString("typeTeaching");
+                String eisStudyDegree = resultSet.getString("eisStudyDegree");
+                String institutionalMail = resultSet.getString("institutionalMail");
+                String numberPhone = resultSet.getString("numberPhone");
+                Date dateBirthday = resultSet.getDate("dateBirthday");
+                String statusIntegrant = resultSet.getString("statusIntegrant");
+                integrant = new Integrant(curp, role, nameIntegrant, studyDegree, studyDiscipline, prodepParticipation, typeTeaching,
+                                          eisStudyDegree, institutionalMail, numberPhone, dateBirthday, statusIntegrant);
+                integrants.add(integrant);
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return integrants;
+    }    
 }

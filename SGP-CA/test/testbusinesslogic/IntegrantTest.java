@@ -3,6 +3,7 @@ package testbusinesslogic;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mx.fei.ca.businesslogic.IntegrantDAO;
@@ -44,16 +45,16 @@ public class IntegrantTest {
         } catch (ParseException ex) {
             Logger.getLogger(IntegrantTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Integrant integrant = new Integrant("MCUD940585RDTRER22", "Responsable", "Alicia Ruiz", "Doctorado", "Ingeniería de software",
+        Integrant integrant = new Integrant("MCUD940585RDTRER28", "Responsable", "Alicia Ruiz", "Doctorado", "Ingeniería de software",
                     "Inactivo", "PTC", "Universidad Veracruzana", "hasgret@uv.mx", "2251214658", birthdayDate, "Activo");
-        boolean updateResult = integrantDAO.updatedIntegrant(integrant, "MCUD940585RDTRER22");
+        boolean updateResult = integrantDAO.updatedIntegrant(integrant, "MCUD940585RDTRER28");
         assertEquals("Prueba correcta, si actualizo", updateResult, true);
     }    
     
     @Test    
     public void testDeleteIntegrantByCurp() throws BusinessConnectionException{
         IntegrantDAO integrantDAO = new IntegrantDAO();
-        boolean deleteResult = integrantDAO.deleteIntegrantByCurp("MCUD940585RDTRER23");
+        boolean deleteResult = integrantDAO.deleteIntegrantByCurp("MCUD940585RDTRER28");
         assertEquals("Prueba correcta, se elimino integrante", deleteResult, true);       
     }    
     
@@ -79,6 +80,13 @@ public class IntegrantTest {
         Integrant integrant = integrantDAO.findIntegrantByCurp("JCPA940514RDTREOP1");
         String nameIntegrantExpected = "Juan Carlos Pérez Arriaga";
         assertEquals("Prueba encontrar integrante por curp", nameIntegrantExpected, integrant.getNameIntegrant());
+    }
+    
+    @Test
+    public void testFindAllIntegrants() throws BusinessConnectionException{
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        ArrayList<Integrant> integrants = integrantDAO.findAllIntegrants();
+        assertEquals("Prueba busqueda de todos los integrantes", integrants.size(), 6);
     }
           
 }

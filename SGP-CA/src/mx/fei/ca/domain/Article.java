@@ -6,7 +6,7 @@ import java.sql.Date;
 public class Article extends Evidence{
    private String ISSN;
    private String fileRoute;
-   private int homepage;
+   private int homePage;
    private int endPage;
    private String actualState;
    private String magazineName;
@@ -18,13 +18,13 @@ public class Article extends Evidence{
    private int idProject;
    private String curp;
    
-   public Article(Evidence evidence, String ISSN, String fileRoute, int homepage,
+   public Article(Evidence evidence, String ISSN, String fileRoute, int homePage,
                   int endPage, String actualState, String magazineName, String country, Date publicationDate, int volume, 
                   String editorial, String description, int idProject, String curp){
        super(evidence.getImpactCA(), evidence.getTitleEvidence(), evidence.getAuthor());
        this.ISSN = ISSN;
        this.fileRoute = fileRoute;
-       this.homepage = homepage;
+       this.homePage = homePage;
        this.endPage = endPage;
        this.actualState = actualState;
        this.magazineName = magazineName;
@@ -46,7 +46,7 @@ public class Article extends Evidence{
     }
 
     public int getHomepage() {
-        return homepage;
+        return homePage;
     }
 
     public int getEndPage() {
@@ -98,7 +98,7 @@ public class Article extends Evidence{
     }
 
     public void setHomepage(int homepage) {
-        this.homepage = homepage;
+        this.homePage = homepage;
     }
 
     public void setEndPage(int endPage) {

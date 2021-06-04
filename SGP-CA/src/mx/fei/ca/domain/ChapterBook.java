@@ -3,7 +3,7 @@ package mx.fei.ca.domain;
 
 public class ChapterBook extends Evidence{
     private int chapterNumber;
-    private int homepage;
+    private int homePage;
     private int endPage;
     private String ISBN;
     private int idProject; 
@@ -12,7 +12,7 @@ public class ChapterBook extends Evidence{
     public ChapterBook(Evidence evidence, int chapterNumber, int homepage, int endPage, String ISBN, int idProject, String curp){
         super(evidence.getImpactCA(), evidence.getTitleEvidence(), evidence.getAuthor());
         this.chapterNumber = chapterNumber;
-        this.homepage = homepage;
+        this.homePage = homepage;
         this.endPage = endPage;
         this.ISBN = ISBN;
         this.idProject = idProject;
@@ -24,7 +24,7 @@ public class ChapterBook extends Evidence{
     }
    
     public int getHomepage() {
-        return homepage;
+        return homePage;
     }
 
     public int getEndPage() {
@@ -48,7 +48,7 @@ public class ChapterBook extends Evidence{
     }
 
     public void setHomepage(int homepage) {
-        this.homepage = homepage;
+        this.homePage = homepage;
     }
 
     public void setEndPage(int endPage) {
