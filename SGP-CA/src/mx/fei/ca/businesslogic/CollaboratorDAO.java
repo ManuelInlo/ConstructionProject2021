@@ -44,7 +44,7 @@ public class CollaboratorDAO implements ICollaboratorDAO{
     
     @Override
     public boolean updatedCollaboratorByIdCollaborator(Collaborator collaborator, int idCollaborator) throws BusinessConnectionException{
-        String sql = "UPDATE collaborator SET nameCollaborator = ?, position = ? WHERE id = ?";
+        String sql = "UPDATE collaborator SET nameCollaborator = ?, position = ? WHERE idCollaborator = ?";
         boolean updateResult = false;
         try{
             connection = dataBaseConnection.getConnection();

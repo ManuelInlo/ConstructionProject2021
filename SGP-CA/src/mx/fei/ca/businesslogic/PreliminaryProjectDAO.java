@@ -43,7 +43,7 @@ public class PreliminaryProjectDAO implements IPreliminaryProjectDAO{
             //preparedStatement = null;
             saveResult = true;          
         } catch (SQLException e) {
-            throw new BusinessConnectionException("Perdida de conexion con la base de datos", e);
+            throw new BusinessConnectionException(e.getSQLState(), e);
         } finally{
             dataBaseConnection.closeConnection();
         }

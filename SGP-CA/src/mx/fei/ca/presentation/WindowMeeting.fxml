@@ -8,109 +8,101 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowMeetingController">
+<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowMeetingController">
    <children>
-      <Pane prefHeight="66.0" prefWidth="750.0" style="-fx-background-color: #60ABE0;">
+      <Pane layoutY="60.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="900.0" style="-fx-background-color: #60ABE0;">
          <children>
-            <Label layoutX="14.0" layoutY="27.0" text="Sistema Gestor de Cuerpo Académico">
+            <Label layoutX="14.0" layoutY="14.0" text="REUNIÓN">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="62.0" text="Agenda">
                <font>
                   <Font name="System Bold" size="15.0" />
-               </font></Label>
-            <Label layoutX="622.0" layoutY="27.0" text="UserXXXX">
+               </font>
+            </Label>
+            <TableView fx:id="tbAgenda" layoutX="14.0" layoutY="85.0" prefHeight="200.0" prefWidth="337.0">
+              <columns>
+                <TableColumn fx:id="columnTopic" prefWidth="211.0" text="Tema" />
+                <TableColumn fx:id="columnHourStart" prefWidth="73.0" text="Hora inicio" />
+                  <TableColumn fx:id="columnHourEnd" prefWidth="52.0" text="Hora fin" />
+              </columns>
+            </TableView>
+            <Label layoutX="394.0" layoutY="62.0" text="Acuerdos">
                <font>
                   <Font name="System Bold" size="15.0" />
-               </font></Label>
-            <Separator layoutY="62.0" prefHeight="8.0" prefWidth="750.0" />
-            <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="420.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+               </font>
+            </Label>
+            <TableView fx:id="tbAgreements" layoutX="409.0" layoutY="212.0" prefHeight="147.0" prefWidth="477.0">
+              <columns>
+                <TableColumn fx:id="columnAgreement" prefWidth="226.0" text="Acuerdo" />
+                <TableColumn fx:id="columnIntegrant" prefWidth="158.0" text="Quién" />
+                  <TableColumn fx:id="columnDate" prefWidth="92.0" text="Cuándo" />
+              </columns>
+            </TableView>
+            <Label layoutX="393.0" layoutY="95.0" text="Acuerdo:">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="393.0" layoutY="140.0" text="Quién:">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="667.0" layoutY="140.0" text="Cuándo:">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="21.0" layoutY="387.0" text="Notas:">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="412.0" layoutY="387.0" text="Pendientes:">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tfAgreement" layoutX="454.0" layoutY="91.0" prefHeight="25.0" prefWidth="433.0" />
+            <ComboBox fx:id="cbIntegrants" layoutX="455.0" layoutY="136.0" prefHeight="25.0" prefWidth="204.0" style="-fx-background-color: #FFFFFF;" />
+            <ComboBox fx:id="cbMonth" layoutX="724.0" layoutY="136.0" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: #FFFFFF;" />
+            <Button layoutX="806.0" layoutY="173.0" mnemonicParsing="false" onAction="#addAgreement" prefHeight="25.0" prefWidth="79.0" text="Añadir" />
+            <Button layoutX="809.0" layoutY="362.0" mnemonicParsing="false" onAction="#deleteAgreement" prefHeight="25.0" prefWidth="79.0" text="Eliminar" />
+            <TextArea fx:id="taNotes" layoutX="21.0" layoutY="414.0" prefHeight="90.0" prefWidth="337.0" promptText="Escribe..." />
+            <TextArea fx:id="taPendings" layoutX="409.0" layoutY="414.0" prefHeight="90.0" prefWidth="388.0" promptText="Escribe..." />
+            <Button layoutX="718.0" layoutY="515.0" mnemonicParsing="false" onAction="#concludeMeeting" prefHeight="25.0" prefWidth="79.0" text="Concluir" />
+            <Button layoutX="805.0" layoutY="515.0" mnemonicParsing="false" onAction="#closeMeeting" prefHeight="25.0" prefWidth="79.0" text="Salir" />
+            <TextField fx:id="tfYear" layoutX="813.0" layoutY="137.0" prefHeight="25.0" prefWidth="78.0" promptText="2021" />
+         </children>
+      </Pane>
+      <Pane layoutY="609.0" prefHeight="41.0" prefWidth="900.0" style="-fx-background-color: #60ABE0;">
+         <children>
+            <Separator prefWidth="900.0" />
+            <Label layoutX="281.0" layoutY="12.0" text="Facultad de Estadistica e Informática - Universidad  Veracruzana" />
+         </children>
+      </Pane>
+      <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="900.0" style="-fx-background-color: #60ABE0;">
+         <children>
+            <Separator layoutY="59.0" prefWidth="900.0" />
+            <Label layoutX="14.0" layoutY="22.0" text="Sistema Gestor Productividad de Cuerpo Académico">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="723.0" layoutY="23.0" text="User XXXXX">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="55.0" fitWidth="55.0" layoutX="423.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/CentralIcon.png" />
                </image>
             </ImageView>
          </children>
       </Pane>
-      <Pane layoutY="671.0" prefHeight="30.0" prefWidth="750.0" style="-fx-background-color: #60ABE0;">
-         <children>
-            <Label layoutX="220.0" layoutY="6.0" text="Facultad de Estadistica e Informática - Universidad  Veracruzana">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font></Label>
-            <Separator layoutY="-3.0" prefHeight="8.0" prefWidth="750.0" />
-         </children>
-      </Pane>
-      <ScrollPane hbarPolicy="NEVER" layoutY="66.0" prefHeight="581.0" prefWidth="750.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="687.0" prefWidth="750.0" style="-fx-background-color: #60ABE0;">
-               <children>
-                  <Label layoutX="14.0" layoutY="14.0" text="REUNIÓN">
-                     <font>
-                        <Font name="System Bold" size="17.0" />
-                     </font></Label>
-                  <Label layoutX="14.0" layoutY="50.0" text="Nombre del proyecto:">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font></Label>
-                  <Label layoutX="14.0" layoutY="80.0" text="Lugar de la reunión:">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font></Label>
-                  <Label layoutX="14.0" layoutY="111.0" text="Asunto:">
-                  </Label>
-                  <Label layoutX="356.0" layoutY="51.0" text="Fecha de la reunión:">
-                     <font>
-                        <Font name="System Bold" size="11.0" />
-                     </font></Label>
-                  <Label layoutX="359.0" layoutY="80.0" text="Hora de la reunión:">
-                  </Label>
-                  <TableView fx:id="tbIntegrants" layoutX="60.0" layoutY="165.0" prefHeight="127.0" prefWidth="617.0">
-                    <columns>
-                      <TableColumn fx:id="columnIntegrant" prefWidth="326.0" text="Integrante del CA" />
-                      <TableColumn fx:id="columnLeader" prefWidth="82.0" text="Líder" />
-                        <TableColumn fx:id="columnTimeTaker" prefWidth="125.0" text="Tomador de tiempo" />
-                        <TableColumn fx:id="columnSecretary" prefWidth="83.0" text="Secretario" />
-                    </columns>
-                  </TableView>
-                  <Label layoutX="14.0" layoutY="144.0" text="Integrantes">
-                     <font>
-                        <Font name="System Bold" size="15.0" />
-                     </font></Label>
-                  <Label layoutX="14.0" layoutY="310.0" text="Prerequisitos">
-                     <font>
-                        <Font name="System Bold" size="15.0" />
-                     </font></Label>
-                  <TableView fx:id="tbPrerequisites" layoutX="60.0" layoutY="330.0" prefHeight="135.0" prefWidth="615.0">
-                    <columns>
-                      <TableColumn fx:id="columnDescription" prefWidth="344.0" text="Descripción" />
-                      <TableColumn fx:id="tfPrerequisiteManager" prefWidth="270.0" text="Quién" />
-                    </columns>
-                  </TableView>
-                  <Label layoutX="14.0" layoutY="477.0" text="Agenda">
-                     <font>
-                        
-                     </font>
-                  </Label>
-                  <TableView fx:id="tbAgendaPoints" layoutX="60.0" layoutY="500.0" prefHeight="149.0" prefWidth="615.0">
-                    <columns>
-                      <TableColumn fx:id="columnTimeStart" prefWidth="75.0" text="Hora inicio" />
-                      <TableColumn fx:id="columnTimeEnd" prefWidth="75.0" text="Hora fin" />
-                        <TableColumn fx:id="columnTopic" prefWidth="205.0" text="Punto a tratar" />
-                        <TableColumn fx:id="columnLeaderDiscussion" prefWidth="259.0" text="Líder de discusión" />
-                    </columns>
-                  </TableView>
-                  <Label fx:id="lbNameProject" layoutX="148.0" layoutY="51.0" />
-                  <Label fx:id="lbMeetingPlace" layoutX="148.0" layoutY="81.0" />
-                  <Label fx:id="lbAffair" layoutX="71.0" layoutY="111.0" />
-                  <Label fx:id="lbMeetingDate" layoutX="515.0" layoutY="51.0" />
-                  <Label fx:id="lbMeetingTime" layoutX="515.0" layoutY="81.0" />
-                  <Button layoutX="632.0" layoutY="28.0" mnemonicParsing="false" onAction="#openModifyMeeting" prefHeight="25.0" prefWidth="86.0" text="Modificar" />
-                  <Button layoutX="632.0" layoutY="58.0" mnemonicParsing="false" onAction="#openMemorandum" prefHeight="25.0" prefWidth="86.0" text="Ver minuta" />
-                  <Button layoutX="632.0" layoutY="90.0" mnemonicParsing="false" onAction="#openStartMeeting" prefHeight="25.0" prefWidth="86.0" text="Iniciar" />
-               </children>
-            </AnchorPane>
-        </content>
-      </ScrollPane>
-      <Pane layoutY="641.0" prefHeight="30.0" prefWidth="750.0" style="-fx-background-color: #60ABE0;">
-         <children>
-            <Button layoutX="664.0" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="71.0" text="Salir" />
-         </children></Pane>
    </children>
 </AnchorPane>

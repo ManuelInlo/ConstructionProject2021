@@ -69,8 +69,8 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
             preparedStatement.setString(7, receptionWork.getWorkType());
             preparedStatement.setString(8, receptionWork.getActualState());
             preparedStatement.setInt(9, receptionWork.getInvestigationProject().getIdProject());
-            preparedStatement.setInt(11, receptionWork.getCollaborator().getIdCollaborator());
-            preparedStatement.setInt(12, id);
+            preparedStatement.setInt(10, receptionWork.getCollaborator().getIdCollaborator());
+            preparedStatement.setInt(11, id);
             preparedStatement.executeUpdate();
             updateResult = true;
         }catch(SQLException ex){
@@ -118,15 +118,14 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
 
     @Override
     public ArrayList<ReceptionWork> findLastTwoReceptionWorksByCurpIntegrant(String curp) throws BusinessConnectionException {
-        String sql = "SELECT * FROM receptionWork WHERE curp = ?";
+        String sql = "SELECT * FROM receptionWork WHERE curp = ? ORDER by id DESC LIMIT 2";
         ArrayList<ReceptionWork> receptionWorks = new ArrayList<>();
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, curp);
             resultSet = preparedStatement.executeQuery();
-            int receptionWorksCounter = 0;
-            while(resultSet.next() && receptionWorksCounter < 2){
+            while(resultSet.next()){
                 ReceptionWork receptionWork;
                 int id = resultSet.getInt("id");
                 String impactCA = resultSet.getString("impactCA");
@@ -152,7 +151,6 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
                 receptionWork.setInvestigationProject(investigationProject);
                 receptionWork.setCollaborator(collaborator);
                 receptionWorks.add(receptionWork);
-                receptionWorksCounter++;
             }
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);

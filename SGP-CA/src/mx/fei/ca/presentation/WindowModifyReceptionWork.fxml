@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowModifyReceptionWorkController">
+    <children>
+      <VBox prefHeight="500.0" prefWidth="700.0">
+         <children>
+            <Pane prefHeight="69.0" prefWidth="600.0" style="-fx-background-color: #60ABE0;">
+               <children>
+                  <Label layoutX="14.0" layoutY="25.0" text="Sistema Gestor de Cuerpo Académico">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font></Label>
+                  <Label layoutX="650.0" layoutY="26.0" text="USER XXXX">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font></Label>
+                  <Separator layoutX="1.0" layoutY="66.0" prefHeight="3.0" prefWidth="800.0" />
+                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="371.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/CentralIcon.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="416.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">
+               <children>
+                  <TextField fx:id="tfTitleReceptionWork" layoutX="226.0" layoutY="135.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="313.0" />
+                  <Label layoutX="15.0" layoutY="14.0" text="MODIFICAR TRABAJO RECEPCIONAL">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font></Label>
+                  <Label layoutX="14.0" layoutY="62.0" text="Impacto al CA:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="345.0" layoutY="63.0" text="Proyecto de investigación:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="15.0" layoutY="117.0" text="Tipo:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="226.0" layoutY="117.0" text="Título del trabajo:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="568.0" layoutY="117.0" text="Estado actual:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="15.0" layoutY="190.0" text="Fecha inicio:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="228.0" layoutY="190.0" text="Fecha fin:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="568.0" layoutY="190.0" text="Grado:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="15.0" layoutY="317.0" text="Ruta del archivo:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="228.0" layoutY="251.0" text="Autor:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <Label layoutX="15.0" layoutY="251.0" text="Cargo del autor:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+                  <TextField fx:id="tfFileRoute" layoutX="15.0" layoutY="334.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="378.0" />
+                  <TextField fx:id="tfAuthor" layoutX="228.0" layoutY="268.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="313.0" />
+                  <ComboBox fx:id="cbImpactCA" layoutX="107.0" layoutY="60.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="161.0" style="-fx-background-color: #FFFFFF;" />
+                  <ComboBox fx:id="cbInvestigationProject" layoutX="513.0" layoutY="60.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="257.0" style="-fx-background-color: #FFFFFF;" />
+                  <ComboBox fx:id="cbType" layoutX="15.0" layoutY="135.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="172.0" style="-fx-background-color: #FFFFFF;" />
+                  <ComboBox fx:id="cbActualState" layoutX="568.0" layoutY="134.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="196.0" style="-fx-background-color: #FFFFFF;" />
+                  <DatePicker fx:id="dpStartDate" layoutX="15.0" layoutY="206.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="172.0" />
+                  <DatePicker fx:id="dpEndDate" layoutX="228.0" layoutY="206.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" />
+                  <ComboBox fx:id="cbGrade" layoutX="568.0" layoutY="206.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="196.0" style="-fx-background-color: #FFFFFF;" />
+                  <ComboBox fx:id="cbPositionAuthor" layoutX="14.0" layoutY="268.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="172.0" style="-fx-background-color: #FFFFFF;" />
+                  <Button layoutX="566.0" layoutY="377.0" mnemonicParsing="false" onAction="#modifyReceptionWork" prefHeight="28.0" prefWidth="103.0" text="Guardar" />
+                  <Button layoutX="683.0" layoutY="377.0" mnemonicParsing="false" onAction="#closeReceptionWorkModify" prefHeight="28.0" prefWidth="103.0" text="Cancelar" />
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+      <Pane layoutY="485.0" prefHeight="30.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">
+         <children>
+            <Label layoutX="235.0" layoutY="8.0" text="Facultad de Estadistica e Informática - Universidad  Veracruzana">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <Separator layoutY="-6.0" prefHeight="3.0" prefWidth="800.0" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

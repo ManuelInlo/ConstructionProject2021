@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,6 +24,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.ReceptionWorkDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
@@ -87,21 +87,20 @@ public class WindowMemberProductionController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {  
             recoverEvidences();
+            openReceptionWorkData();
         } catch (BusinessConnectionException ex) {
             showLostConnectionAlert();
-            ActionEvent event = null;
-            closeMemberProduction(event);
         }
-        openReceptionWorkData();
+        
     } 
     
     public void setIntegrant(Integrant integrant){
         this.integrant = integrant;
     }
     
-    private void recoverEvidences() throws BusinessConnectionException{
+    public void recoverEvidences() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
-        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findLastTwoReceptionWorksByCurpIntegrant(integrant.getCurp()); // En realidad debe pasar la curp del integrante que está loggeado
+        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findLastTwoReceptionWorksByCurpIntegrant("JCPA940514RDTREOP1"); // En realidad debe pasar la curp del integrante que está loggeado
         fillReceptionWorkTable(receptionWorks);
     }
     
@@ -112,7 +111,7 @@ public class WindowMemberProductionController implements Initializable {
         tbReceptionWorks.setItems(listReceptionWorks);
     }
     
-    public void openReceptionWorkData(){
+    public void openReceptionWorkData() throws BusinessConnectionException{
         tbReceptionWorks.setOnMouseClicked((MouseEvent event) -> {
             ReceptionWork receptionWork = tbReceptionWorks.getItems().get(tbReceptionWorks.getSelectionModel().getSelectedIndex());
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowReceptionWorkData.fxml"));
@@ -126,8 +125,15 @@ public class WindowMemberProductionController implements Initializable {
             stage.setScene(scene);
             WindowReceptionWorkDataController windowReceptionWorkDataController = (WindowReceptionWorkDataController) fxmlLoader.getController();
             windowReceptionWorkDataController.showReceptionWorkData(receptionWork);
-            stage.show();
+            stage.showAndWait();
+            try {
+                recoverEvidences();
+            } catch (BusinessConnectionException ex) {
+                Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
+        
+        
     }
 
     @FXML
