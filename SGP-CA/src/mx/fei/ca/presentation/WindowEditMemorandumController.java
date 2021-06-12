@@ -1,11 +1,7 @@
-
 package mx.fei.ca.presentation;
 
 import java.net.URL;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,18 +14,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.AgreementDAO;
 import mx.fei.ca.businesslogic.MemorandumDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
-import mx.fei.ca.domain.AgendaPoint;
 import mx.fei.ca.domain.Agreement;
 import mx.fei.ca.domain.Memorandum;
 
@@ -38,18 +33,16 @@ import mx.fei.ca.domain.Memorandum;
  *
  * @author david
  */
-public class WindowMeetingController implements Initializable {
+public class WindowEditMemorandumController implements Initializable {
 
     @FXML
-    private TableView<AgendaPoint> tbAgenda;
+    private TableView<Agreement> tbAgreements;
     @FXML
-    private TableColumn<AgendaPoint, String> columnTopic;
+    private TableColumn<Agreement, String> columnAgreement;
     @FXML
-    private TableColumn<AgendaPoint, Time> columnHourStart;
+    private TableColumn<Agreement, String> columnIntegrant;
     @FXML
-    private TableColumn<AgendaPoint, Time> columnHourEnd;
-    @FXML
-    private TextArea taPendings;
+    private TableColumn<Agreement, String> columnDate;
     @FXML
     private TextField tfAgreement;
     @FXML
@@ -59,38 +52,30 @@ public class WindowMeetingController implements Initializable {
     @FXML
     private TextArea taNotes;
     @FXML
+    private TextArea taPendings;
+    @FXML
     private TextField tfYear;
-    @FXML
-    private TableView<Agreement> tbAgreements;
-    @FXML
-    private TableColumn<Agreement, String> columnAgreement;
-    @FXML
-    private TableColumn<Agreement, String> columnIntegrant;
-    @FXML
-    private TableColumn<Agreement, String> columnDate;
     
-    private ObservableList<Agreement> agreements;
     private int idMemorandum;
-    private int idMeeting;
-    
+    private ObservableList<Agreement> agreements;
+
     public enum TypeError{
         EMPTYFIELDS, MISSINGSELECTION, INVALIDYEAR, EMPTYTABLE, COLUMNMISSINGSELECTION, INVALIDSTRING, DUPLICATEVALUE;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        fillComboBoxMonth();
-        fillComboBoxIntegrants();
+        columnAgreement.setCellValueFactory(new PropertyValueFactory("description"));
+        columnIntegrant.setCellValueFactory(new PropertyValueFactory("responsible"));
+        columnDate.setCellValueFactory(new PropertyValueFactory("dateAgreement"));
         agreements = FXCollections.observableArrayList();
-    } 
+    }    
     
-    public void showAgendaPoints(ArrayList<AgendaPoint> agendaPoints, int idMeeting){
-        this.idMeeting = idMeeting;
-        columnTopic.setCellValueFactory(new PropertyValueFactory("topic"));
-        columnHourStart.setCellValueFactory(new PropertyValueFactory("startTime"));
-        columnHourEnd.setCellValueFactory(new PropertyValueFactory("endTime"));
-        ObservableList<AgendaPoint> listAgendaPoints = FXCollections.observableArrayList(agendaPoints);
-        tbAgenda.setItems(listAgendaPoints);
+    public void fillMemorandumData(Memorandum memorandum){
+        this.idMemorandum = memorandum.getIdMemorandum();
+        taNotes.setText(memorandum.getNote());
+        taPendings.setText(memorandum.getPending());
+        //fillAgreementsTable(memorandum.getAgreements());
     }
     
     private void fillComboBoxMonth(){
@@ -105,79 +90,127 @@ public class WindowMeetingController implements Initializable {
         cbIntegrants.setItems(listIntegrants);
     }
     
+    private void fillAgreementsTable(ArrayList<Agreement> agreements){
+        ObservableList<Agreement> listAgreements = FXCollections.observableArrayList(agreements);
+        tbAgreements.setItems(listAgreements);
+    }
+
     @FXML
-    private void addAgreement(ActionEvent event){
-        if(!existsInvalidFieldsForAgreement()){
-            columnAgreement.setCellValueFactory(new PropertyValueFactory("description"));
-            columnIntegrant.setCellValueFactory(new PropertyValueFactory("responsible"));
-            columnDate.setCellValueFactory(new PropertyValueFactory("dateAgreement"));
+    private void addAgreement(ActionEvent event) throws BusinessConnectionException{
+        if(!existsInvalidFieldsForAgreement() && !existsDuplicateValueForAddAgreement()){
+            AgreementDAO agreementDAO = new AgreementDAO();
             String description = tfAgreement.getText();
             String dateAgreement = cbMonth.getSelectionModel().getSelectedItem().toString() + "-" + tfYear.getText();
             String responsible = cbIntegrants.getSelectionModel().getSelectedItem().toString();
             Agreement agreement = new Agreement(description, dateAgreement, responsible);
-            agreements.add(agreement);
-            tbAgreements.setItems(agreements);
-            cleanFieldsAgreement();
-        }
-    }
-
-    @FXML
-    private void deleteAgreement(ActionEvent event){
-        Agreement agreement = tbAgreements.getSelectionModel().getSelectedItem();
-        if(agreement != null){
-            agreements.remove(agreement);
-            tbAgreements.refresh();
-        }else{
-            TypeError typeError = TypeError.COLUMNMISSINGSELECTION;
-            showInvalidFieldAlert(typeError);
-        }
-    }
-
-    @FXML
-    private void concludeMeeting(ActionEvent event){
-        Optional<ButtonType> action = showConfirmationAlert();
-        if (action.get() == ButtonType.OK){
-            if(!existsInvalidFieldsForMemorandum()){
-                String pending = taPendings.getText();
-                String note = taNotes.getText();
-                Memorandum memorandum = new Memorandum(pending, note, "Por aprobar");
-                MemorandumDAO memorandumDAO = new MemorandumDAO();
-                try {
-                    idMemorandum = memorandumDAO.saveAndReturnIdMemorandum(memorandum, this.idMeeting);  //idMeeting, la otra solo es prueba
-                    if (idMemorandum != 0 && savedAgreements()) {
-                        showConfirmationSaveAlert();
-                        closeMeeting(event);
-                    }
-                } catch (BusinessConnectionException ex) {
-                    showLostConnectionAlert();
-                }  
+            boolean savedAgreement = agreementDAO.savedAgreement(agreement, idMemorandum);
+            if(savedAgreement){
+                agreements.add(agreement);
+                cleanFieldsAgreement();
+            }else{
+                showLostConnectionAlert();
             }
         }
     }
 
     @FXML
-    private void closeMeeting(ActionEvent event){
+    private void deleteAgreement(ActionEvent event) throws BusinessConnectionException{
+        Agreement agreement = tbAgreements.getSelectionModel().getSelectedItem();
+        if(agreement == null){
+            TypeError typeError = TypeError.COLUMNMISSINGSELECTION;
+            showInvalidFieldAlert(typeError);
+        }else{
+            AgreementDAO agreementDAO = new AgreementDAO();
+            boolean deletedAgreement = agreementDAO.deletedAgreementById(agreement.getIdAgreement());
+            if(deletedAgreement){
+                agreements.remove(agreement);
+                tbAgreements.refresh();
+            }else{
+                showLostConnectionAlert();
+            }
+        }
+    }
+    
+    @FXML
+    private void fillAgreementFields(MouseEvent event){
+        Agreement agreement = tbAgreements.getSelectionModel().getSelectedItem();
+        if(agreement != null){
+            tfAgreement.setText(agreement.getDateAgreement());
+            cbIntegrants.getSelectionModel().select(agreement.getResponsible());
+            cbMonth.getSelectionModel().select(takeMonth(agreement.getDateAgreement()));
+            tfYear.setText(takeYear(agreement.getDateAgreement()));
+        }
+    }
+    
+    @FXML
+    private void updateAgreement(ActionEvent event) throws BusinessConnectionException{
+        Agreement agreement = tbAgreements.getSelectionModel().getSelectedItem();
+        if(agreement == null){
+            TypeError typeError = TypeError.COLUMNMISSINGSELECTION;
+            showInvalidFieldAlert(typeError);
+        }else if(!existsInvalidFieldsForAgreement() && !existsDuplicateValueForUpdateAgreement(agreement.getIdAgreement())){
+            String description = tfAgreement.getText();
+            String dateAgreement = cbMonth.getSelectionModel().getSelectedItem().toString() + "-" + tfYear.getText();
+            String responsible = cbIntegrants.getSelectionModel().getSelectedItem().toString();
+            Agreement modifiedAgreement = new Agreement(description, dateAgreement, responsible);
+            AgreementDAO agreementDAO = new AgreementDAO();
+            boolean updatedAgreement = agreementDAO.updatedAgreement(modifiedAgreement, agreement.getIdAgreement(), idMemorandum);
+            if(updatedAgreement){
+                agreement.setDateAgreement(modifiedAgreement.getDateAgreement());
+                agreement.setDescription(modifiedAgreement.getDescription());
+                agreement.setResponsible(modifiedAgreement.getResponsible());
+                tbAgreements.refresh();
+                cleanFieldsAgreement();
+            }else{
+                showLostConnectionAlert();
+            }
+            
+        }
+    }
+    
+    @FXML
+    private void editMemorandum(ActionEvent event){
+        if(!existsInvalidFieldsForMemorandum()){
+            String pending = taPendings.getText();
+            String note = taNotes.getText();
+            Memorandum memorandum = new Memorandum(pending, note, "Por aprobar");
+            MemorandumDAO memorandumDAO = new MemorandumDAO();
+            boolean updatedMemorandum;
+            try {
+                updatedMemorandum = memorandumDAO.updatedMemorandum(memorandum, idMemorandum, idMemorandum);
+                if(updatedMemorandum){
+                    showConfirmationSaveAlert();
+                    closeEditMemorandum(event);
+                }
+            } catch (BusinessConnectionException ex) {
+                showLostConnectionAlert();
+            }
+        }
+    }
+    
+    @FXML
+    private void closeEditMemorandum(ActionEvent event){
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
     
-    private boolean savedAgreements() throws BusinessConnectionException{
-        boolean savedAgreement = true;
-        AgreementDAO agreementDAO = new AgreementDAO();
-        for (Agreement agreement: tbAgreements.getItems()){
-            savedAgreement = agreementDAO.savedAgreement(agreement, idMemorandum);
-            if(!savedAgreement){
-                break;
-            }
-        }
-        return savedAgreement;
+    private String takeMonth(String dateToSeparate){
+        String[] partsDate = dateToSeparate.split("-");
+        String agreementMonth = partsDate[0];
+        return agreementMonth;
+    }
+    
+    private String takeYear(String dateToSeparate){
+        String[] partsDate = dateToSeparate.split("-");
+        String agreementYear = partsDate[1];
+        return agreementYear;
     }
     
     private boolean existsInvalidFieldsForAgreement(){
         boolean invalidFields = false;
         if(existsEmptyFields(tfAgreement.getText()) || existsInvalidCharacters(tfAgreement.getText()) || existsMissingSelection() ||
-           existsEmptyFields(tfYear.getText()) || existsInvalidCharactersForYear(tfYear.getText()) || existsDuplicateValueForAgreement()){
+           existsEmptyFields(tfYear.getText()) || existsInvalidCharactersForYear(tfYear.getText())){
             invalidFields = true;
         }
         return invalidFields;
@@ -204,7 +237,7 @@ public class WindowMeetingController implements Initializable {
     
     private boolean existsMissingSelection(){
         boolean missingSelection = false;
-        if(cbMonth.getSelectionModel().getSelectedIndex() < 0 || cbIntegrants.getSelectionModel().getSelectedIndex() < 0){
+        if(cbMonth.getSelectionModel().getSelectedItem().equals("")|| cbIntegrants.getSelectionModel().getSelectedItem().equals("")){ //Cambiar acá debe ser a null porque selecciona integrantes
             missingSelection = true;
             TypeError typeError = TypeError.MISSINGSELECTION;
             showInvalidFieldAlert(typeError);
@@ -268,15 +301,8 @@ public class WindowMeetingController implements Initializable {
         }
         return emptyTable;
     }
-    
-    private void cleanFieldsAgreement(){
-        tfAgreement.clear();
-        cbIntegrants.getSelectionModel().clearSelection();
-        cbMonth.getSelectionModel().clearSelection();
-        tfYear.clear();
-    }
-    
-    private boolean existsDuplicateValueForAgreement(){
+        
+    private boolean existsDuplicateValueForAddAgreement(){
         boolean duplicateValue = false;
         for(Agreement agreement: tbAgreements.getItems()){
             if(agreement.getDescription().equals(tfAgreement.getText())){
@@ -288,12 +314,31 @@ public class WindowMeetingController implements Initializable {
         return duplicateValue;
     }
     
+    private boolean existsDuplicateValueForUpdateAgreement(int idAgreement){
+        boolean duplicateValue = false;
+        for(Agreement agreement: tbAgreements.getItems()){
+            if(agreement.getIdAgreement() != idAgreement && agreement.getDescription().equals(tfAgreement.getText())){
+                duplicateValue = true;
+                TypeError typeError = TypeError.DUPLICATEVALUE;
+                showInvalidFieldAlert(typeError);
+            }
+        }
+        return duplicateValue;
+    }
+    
+    private void cleanFieldsAgreement(){
+        tfAgreement.clear();
+        cbIntegrants.getSelectionModel().clearSelection();
+        cbMonth.getSelectionModel().clearSelection();
+        tfYear.clear();
+    }
+    
     private void showInvalidFieldAlert(TypeError typeError){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
         alert.setTitle("Campo inválido");
         if(typeError == TypeError.EMPTYFIELDS){
-          alert.setContentText("Existen campos vacíos, llena los campos para poder guardar");  
+          alert.setContentText("Existen campos vacíos, llena los campos para poder modificar");  
         }
         
         if(typeError == TypeError.MISSINGSELECTION){
@@ -305,11 +350,11 @@ public class WindowMeetingController implements Initializable {
         }
         
         if(typeError == TypeError.EMPTYTABLE){
-            alert.setContentText("La reunión debe tener por lo menos un acuerdo, llena la tabla acuerdos para poder guardar");
+            alert.setContentText("La reunión debe tener por lo menos un acuerdo, llena la tabla acuerdos para poder modificar");
         }
         
         if(typeError == TypeError.COLUMNMISSINGSELECTION){
-            alert.setContentText("Selección de columna faltante. Selecciona una columna para poder eliminar");
+            alert.setContentText("Selección de columna faltante. Selecciona una columna para poder eliminar o modificar");
         }
         
         if(typeError == TypeError.INVALIDSTRING){
@@ -322,15 +367,6 @@ public class WindowMeetingController implements Initializable {
         
         alert.showAndWait();
     }
-    
-    private Optional<ButtonType> showConfirmationAlert(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setHeaderText(null);
-        alert.setTitle("Confirmación");
-        alert.setContentText("¿Deseas concluir la reunión?");
-        Optional<ButtonType> action = alert.showAndWait();
-        return action;
-    } 
     
     private void showLostConnectionAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -347,4 +383,5 @@ public class WindowMeetingController implements Initializable {
         alert.setContentText("La información fue guardada con éxito");
         alert.showAndWait();
     }
+
 }

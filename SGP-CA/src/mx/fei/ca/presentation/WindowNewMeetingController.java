@@ -198,6 +198,7 @@ public class WindowNewMeetingController implements Initializable {
             idMeeting = meetingDAO.saveAndReturnIdNewMeeting(meeting, "JCPA940514RDTREOP1");  //La curp es de prueba
             if(idMeeting != 0 && savedPrerequisites() && savedAgendaPoints()){  //falta mandar a guardar asistente reunion
                 showConfirmationAlert();
+                closeNewMeeting(event);
             }else{
                 showLostConnectionAlert(); 
             }

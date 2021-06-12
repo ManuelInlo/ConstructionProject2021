@@ -165,6 +165,21 @@ public class WindowMeetingAgendaController implements Initializable {
 
     @FXML
     private void openStartMeeting(ActionEvent event){
+        //ACA DEBE VERIFICAR QUE EL RESPONSABLE DE LA REUNIÓN ES EL MISMO QUE QUIERE MODIFICAR
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMeeting.fxml"));
+            Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(WindowMeetingAgendaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        WindowMeetingController windowMeetingController = fxmlLoader.getController();
+        windowMeetingController.showAgendaPoints(this.meeting.getAgendaPoints(), this.meeting.getIdMeeting());
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.showAndWait();
+        closeMeetingAgenda(event);
     }
     
     @FXML

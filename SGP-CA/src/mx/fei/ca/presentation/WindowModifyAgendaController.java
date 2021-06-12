@@ -129,12 +129,12 @@ public class WindowModifyAgendaController implements Initializable {
     @FXML
     private void addPrerequisite(ActionEvent event) throws BusinessConnectionException{
         if(!existsInvalidFieldsForPrerequisites() && !existsDuplicateValueForAddPrerequisite()){
-            PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
             columnDescription.setCellValueFactory(new PropertyValueFactory("description"));
             columnPrerequisiteManager.setCellValueFactory(new PropertyValueFactory("prerequisiteManager"));
             String description = tfDescription.getText();
             String prerequisiteManager = cbPrerequisiteManager.getSelectionModel().getSelectedItem().toString();
             Prerequisite prerequisite = new Prerequisite(description, prerequisiteManager);
+            PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
             boolean savedPrerequisite = prerequisiteDAO.savedPrerequisite(prerequisite, idMeeting);
             if(savedPrerequisite){
                 prerequisites.add(prerequisite);
@@ -202,7 +202,6 @@ public class WindowModifyAgendaController implements Initializable {
     @FXML
     private void addAgendaPoint(ActionEvent event) throws BusinessConnectionException{
         if(!existsInvalidFieldsForAgendaPoint() && !existsDuplicateValueForAddAgendaPoint()){
-            AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
             columnTimeStart.setCellValueFactory(new PropertyValueFactory("startTime"));
             columnTimeEnd.setCellValueFactory(new PropertyValueFactory("endTime"));
             columnTopic.setCellValueFactory(new PropertyValueFactory("topic"));
@@ -212,10 +211,13 @@ public class WindowModifyAgendaController implements Initializable {
             String topic = tfTopic.getText();
             String leader = cbLeaderDiscussion.getSelectionModel().getSelectedItem().toString();
             AgendaPoint agendaPoint = new AgendaPoint(startTime, endTime, topic, leader);
+            AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
             boolean savedAgendaPoint = agendaPointDAO.savedAgendaPoint(agendaPoint, idMeeting);
             if(savedAgendaPoint){
                 agendaPoints.add(agendaPoint);
                 tbAgendaPoints.setItems(agendaPoints);
+            }else{
+                showLostConnectionAlert();
             }
             cleanFieldsAgendaPoint();
         }
@@ -259,7 +261,6 @@ public class WindowModifyAgendaController implements Initializable {
             TypeError typeError = TypeError.COLUMNMISSINGSELECTION;
             showInvalidFieldAlert(typeError);
         }else if(!existsInvalidFieldsForAgendaPoint() && !existsDuplicateValueForUpdateAgendaPoint(agendaPoint.getIdAgendaPoint())){
-            AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
             columnTimeStart.setCellValueFactory(new PropertyValueFactory("startTime"));
             columnTimeEnd.setCellValueFactory(new PropertyValueFactory("endTime"));
             columnTopic.setCellValueFactory(new PropertyValueFactory("topic"));
@@ -269,6 +270,7 @@ public class WindowModifyAgendaController implements Initializable {
             String topic = tfTopic.getText();
             String leader = cbLeaderDiscussion.getSelectionModel().getSelectedItem().toString();
             AgendaPoint modifiedAgendaPoint = new AgendaPoint(startTime, endTime, topic, leader);
+            AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
             boolean updatedAgendaPoint = agendaPointDAO.updatedAgendaPoint(modifiedAgendaPoint, agendaPoint.getIdAgendaPoint(), idMeeting);
             if(updatedAgendaPoint){
                 agendaPoint.setStartTime(modifiedAgendaPoint.getStartTime());
@@ -287,7 +289,7 @@ public class WindowModifyAgendaController implements Initializable {
     @FXML
     private void updateMeeting(ActionEvent event) throws BusinessConnectionException{
         if(!existsInvalidFieldsForMeeting()){
-             String projectName = tfProjectName.getText();
+            String projectName = tfProjectName.getText();
             String meetingPlace = tfMeetingPlace.getText();
             String affair = tfAffair.getText();
             Date meetingDate = parseToSqlDate(java.util.Date.from(dpMeetingDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
