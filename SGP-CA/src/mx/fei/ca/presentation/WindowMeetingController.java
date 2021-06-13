@@ -27,10 +27,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.AgreementDAO;
+import mx.fei.ca.businesslogic.IntegrantDAO;
 import mx.fei.ca.businesslogic.MemorandumDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.AgendaPoint;
 import mx.fei.ca.domain.Agreement;
+import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.Memorandum;
 
 /**
@@ -100,8 +102,14 @@ public class WindowMeetingController implements Initializable {
     }
     
     private void fillComboBoxIntegrants(){
-        //Debe recuperar y llenar con los nombres de los integrantes
-        ObservableList<String> listIntegrants = FXCollections.observableArrayList("Juan carlos, es prueba");
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        ArrayList<Integrant> integrants = null;
+        try {
+            integrants = integrantDAO.findAllIntegrants();
+        } catch (BusinessConnectionException ex) {
+            showLostConnectionAlert();
+        }
+        ObservableList<Integrant> listIntegrants = FXCollections.observableArrayList(integrants);
         cbIntegrants.setItems(listIntegrants);
     }
     

@@ -1,7 +1,10 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package mx.fei.ca.presentation;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.Time;
@@ -16,26 +19,29 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import mx.fei.ca.businesslogic.AgendaPointDAO;
-import mx.fei.ca.businesslogic.MeetingAssistantDAO;
-import mx.fei.ca.businesslogic.PrerequisiteDAO;
+import mx.fei.ca.businesslogic.AgreementDAO;
+import mx.fei.ca.businesslogic.MemorandumApproverDAO;
+import mx.fei.ca.businesslogic.MemorandumDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
+import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
 import mx.fei.ca.domain.AgendaPoint;
+import mx.fei.ca.domain.Agreement;
 import mx.fei.ca.domain.Meeting;
 import mx.fei.ca.domain.MeetingAssistant;
+import mx.fei.ca.domain.Memorandum;
+import mx.fei.ca.domain.MemorandumApprover;
 import mx.fei.ca.domain.Prerequisite;
 
 /**
@@ -43,7 +49,7 @@ import mx.fei.ca.domain.Prerequisite;
  *
  * @author david
  */
-public class WindowMeetingAgendaController implements Initializable {
+public class WindowMemorandumController implements Initializable {
 
     @FXML
     private TableView<MeetingAssistant> tbIntegrants;
@@ -79,40 +85,54 @@ public class WindowMeetingAgendaController implements Initializable {
     private Label lbMeetingTime;
     @FXML
     private Label lbState;
+    @FXML
+    private TableView<Agreement> tbAgreements;
+    @FXML
+    private TableColumn<Agreement, String> columnAgreement;
+    @FXML
+    private TableColumn<Agreement, String> columnDate;
+    @FXML
+    private TextArea taNotes;
+    @FXML
+    private TextArea taPendings;
+    @FXML
+    private Label lbProjectName;
+    @FXML
+    private ListView<MemorandumApprover> listMemorandumApprovers;
+    @FXML
+    private CheckBox checkBoxApprove;
     
-    private Meeting meeting;
+    private Memorandum memorandum;
     
-   
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-    }  
+        // TODO
+    }    
     
-    public void showMeetingData(Meeting meeting){
+    private void showMeetingData(Meeting meeting){
         lbNameProject.setText(meeting.getProjectName());
         lbMeetingPlace.setText(meeting.getMeetingPlace());
         lbAffair.setText(meeting.getAffair());
         lbMeetingDate.setText(convertDateToString(meeting.getMeetingDate()));
         lbMeetingTime.setText(convertTimeToString(meeting.getMeetingTime()));
         lbState.setText(meeting.getState());
-        
+        fillMeetingAssistantsTable(meeting.getAssistants());
+        fillPrerequisitesTable(meeting.getPrerequisites());
+        fillAgendaPointsTable(meeting.getAgendaPoints());
+        MemorandumDAO memorandumDAO = new MemorandumDAO();
+        Memorandum memorandum = null;
         try {
-            MeetingAssistantDAO meetingAssistantDAO = new MeetingAssistantDAO();
-            ArrayList<MeetingAssistant> meetingAssistants = meetingAssistantDAO.findMeetingAssistantsByIdMeeting(meeting.getIdMeeting());
-            PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
-            ArrayList<Prerequisite> prerequisites = prerequisiteDAO.findPrerequisitesByIdMeeting(meeting.getIdMeeting());
-            AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
-            ArrayList<AgendaPoint> agendaPoints = agendaPointDAO.findAgendaPointsByIdMeeting(meeting.getIdMeeting());
-            fillMeetingAssistantsTable(meetingAssistants);
-            fillPrerequisitesTable(prerequisites);
-            fillAgendaPointsTable(agendaPoints);
-            meeting.setAssistants(meetingAssistants);
-            meeting.setPrerequisites(prerequisites);
-            meeting.setAgendaPoints(agendaPoints);
+            memorandum = memorandumDAO.findMemorandumByIdMeeting(meeting.getIdMeeting());
+            AgreementDAO agreementDAO = new AgreementDAO();
+            ArrayList<Agreement> agreements = agreementDAO.findAgreementsByIdMemorandum(memorandum.getIdMemorandum());
+            fillAgreementsTable(agreements);
+            MemorandumApproverDAO memorandumApproverDAO = new MemorandumApproverDAO();
+            ArrayList<MemorandumApprover> memorandumApprovers = memorandumApproverDAO.findMemorandumApproversByIdMemorandum(memorandum.getIdMemorandum());
         } catch (BusinessConnectionException ex) {
             showLostConnectionAlert();
         }
-        this.meeting = meeting;   
+        this.memorandum = memorandum;
     }
     
     private void fillMeetingAssistantsTable(ArrayList<MeetingAssistant> meetingAssistants){
@@ -138,6 +158,36 @@ public class WindowMeetingAgendaController implements Initializable {
         tbAgendaPoints.setItems(listAgendaPoints);
     }
     
+    private void fillAgreementsTable(ArrayList<Agreement> agreements){
+        columnAgreement.setCellValueFactory(new PropertyValueFactory("description"));
+        columnIntegrant.setCellValueFactory(new PropertyValueFactory("responsible"));
+        columnDate.setCellValueFactory(new PropertyValueFactory("dateAgreement"));
+        ObservableList<Agreement> listAgreements = FXCollections.observableArrayList(agreements);
+        tbAgreements.setItems(listAgreements);
+    }
+    
+    @FXML
+    private void closeMemorandum(ActionEvent event){
+        if(checkBoxApprove.isSelected()){
+            savedMemorandumApprover();
+            Node source = (Node) event.getSource();
+            Stage stage = (Stage) source.getScene().getWindow();
+            stage.close();
+        }else{
+            Optional<ButtonType> action = showMissingApprovalAlert();
+            if(action.get() == ButtonType.OK){
+               Node source = (Node) event.getSource();
+               Stage stage = (Stage) source.getScene().getWindow();
+               stage.close();
+            }
+        }
+        
+    }
+    
+    private void savedMemorandumApprover(){
+        
+    }
+    
     private String convertDateToString(Date date){
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String stringDate = dateFormat.format(date);
@@ -149,55 +199,16 @@ public class WindowMeetingAgendaController implements Initializable {
         String stringTime = simpleDateFormat.format(time);
         return stringTime;
     }
-
-    @FXML
-    private void openModifyMeeting(ActionEvent event){
-        //ACA DEBE VERIFICAR QUE EL RESPONSABLE DE LA REUNIÓN ES EL MISMO QUE QUIERE MODIFICAR
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowModifyAgenda.fxml"));
-            Parent root = null;
-        try {
-            root = fxmlLoader.load();
-        } catch (IOException ex) {
-            Logger.getLogger(WindowMeetingAgendaController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        WindowModifyAgendaController windowModifyAgendaController = fxmlLoader.getController();
-        windowModifyAgendaController.fillMeetingData(meeting);
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.showAndWait();
-        closeMeetingAgenda(event);
-    }
-
-    @FXML
-    private void openMemorandum(ActionEvent event){
-    }
-
-    @FXML
-    private void openStartMeeting(ActionEvent event){
-        //ACA DEBE VERIFICAR QUE EL RESPONSABLE DE LA REUNIÓN ES EL MISMO QUE QUIERE MODIFICAR
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMeeting.fxml"));
-            Parent root = null;
-        try {
-            root = fxmlLoader.load();
-        } catch (IOException ex) {
-            Logger.getLogger(WindowMeetingAgendaController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        WindowMeetingController windowMeetingController = fxmlLoader.getController();
-        windowMeetingController.showAgendaPoints(this.meeting.getAgendaPoints(), this.meeting.getIdMeeting());
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.showAndWait();
-        closeMeetingAgenda(event);
+    
+    private Optional<ButtonType> showMissingApprovalAlert(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Advertencia aprobación");
+        alert.setContentText("¿Estas seguro que no deseas aprobar la minuta?");
+        Optional<ButtonType> action = alert.showAndWait();
+        return action;
     }
     
-    @FXML
-    private void closeMeetingAgenda(ActionEvent event) {
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
-    }
     
     private void showLostConnectionAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -206,4 +217,5 @@ public class WindowMeetingAgendaController implements Initializable {
         alert.setContentText("Perdida de conexión con la base de datos, no se pudo guardar. Intente más tarde");
         alert.showAndWait();
     }
+    
 }

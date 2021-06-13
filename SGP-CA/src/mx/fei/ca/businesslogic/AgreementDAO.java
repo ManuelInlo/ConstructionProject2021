@@ -45,7 +45,7 @@ public class AgreementDAO implements IAgreementDAO{
     }
     
     @Override
-    public ArrayList<Agreement> findAgreementsByIdMemorandum(int idMemorandum)throws BusinessConnectionException, BusinessDataException{
+    public ArrayList<Agreement> findAgreementsByIdMemorandum(int idMemorandum)throws BusinessConnectionException{
         ArrayList<Agreement> agreements = new ArrayList<>();
         String sql = "Select * from agreement where idMemorandum = ?";
         try{

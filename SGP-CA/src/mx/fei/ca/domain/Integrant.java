@@ -139,6 +139,6 @@ public class Integrant {
     }
     
     public String toString(){
-        return "";
+        return nameIntegrant;
     }
 }

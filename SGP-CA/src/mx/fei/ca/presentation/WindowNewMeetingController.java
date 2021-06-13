@@ -7,6 +7,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -30,6 +31,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.AgendaPointDAO;
+import mx.fei.ca.businesslogic.IntegrantDAO;
 import mx.fei.ca.businesslogic.MeetingDAO;
 import mx.fei.ca.businesslogic.PrerequisiteDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
@@ -103,6 +105,7 @@ public class WindowNewMeetingController implements Initializable {
     
     private ObservableList<Prerequisite> prerequisites;
     private ObservableList<AgendaPoint> agendaPoints;
+    private ArrayList<Integrant> integrants;
     int idMeeting;
     
     
@@ -171,6 +174,12 @@ public class WindowNewMeetingController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        try {
+            this.integrants = integrantDAO.findAllIntegrants();
+        } catch (BusinessConnectionException ex) {
+            showLostConnectionAlert();
+        }
         fillComboBoxHours(cbHours);
         fillComboBoxMinutes(cbMinutes);
         fillComboBoxHours(cbHourStart);
@@ -253,8 +262,7 @@ public class WindowNewMeetingController implements Initializable {
     }
     
     private void fillComboBoxForIntegrants(ComboBox cbToFill){
-        //Debe recuperar y llenar con los nombres de los integrantes
-        ObservableList<String> listIntegrants = FXCollections.observableArrayList("Juan carlos, es prueba");
+        ObservableList<Integrant> listIntegrants = FXCollections.observableArrayList(this.integrants);
         cbToFill.setItems(listIntegrants);
     }
     
@@ -701,8 +709,6 @@ public class WindowNewMeetingController implements Initializable {
         alert.setTitle("Confirmación de guardado");
         alert.setContentText("La información fue guardada con éxito");
         alert.showAndWait();
-        //ActionEvent event =;
-        //closeNewMeeting(event);
     }
     
     private void showLostConnectionAlert(){

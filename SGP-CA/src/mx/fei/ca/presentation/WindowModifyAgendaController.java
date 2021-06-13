@@ -34,10 +34,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.AgendaPointDAO;
+import mx.fei.ca.businesslogic.IntegrantDAO;
 import mx.fei.ca.businesslogic.MeetingDAO;
 import mx.fei.ca.businesslogic.PrerequisiteDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.AgendaPoint;
+import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.Meeting;
 import mx.fei.ca.domain.MeetingAssistant;
 import mx.fei.ca.domain.Prerequisite;
@@ -107,6 +109,7 @@ public class WindowModifyAgendaController implements Initializable {
     private int idMeeting;
     private ObservableList<Prerequisite> prerequisites;
     private ObservableList<AgendaPoint> agendaPoints;
+    private ArrayList<Integrant> integrants;
 
     private enum TypeError{
         EMPTYFIELDS, INVALIDSTRINGS, MISSINGMEETINGTIME, MISSINGDATE, MEETINGAFFAIRDUPLICATE, DATEANDTIMEDUPLICATE,
@@ -116,12 +119,20 @@ public class WindowModifyAgendaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        try {
+            this.integrants = integrantDAO.findAllIntegrants();
+        } catch (BusinessConnectionException ex) {
+            showLostConnectionAlert();
+        }
         fillComboBoxHours(cbHours);
         fillComboBoxMinutes(cbMinutes);
         fillComboBoxHours(cbHourStart);
         fillComboBoxMinutes(cbMinuteStart);
         fillComboBoxHours(cbHourEnd);
         fillComboBoxMinutes(cbMinuteEnd);
+        fillComboBoxForIntegrants(cbPrerequisiteManager);
+        fillComboBoxForIntegrants(cbLeaderDiscussion);
         prerequisites = FXCollections.observableArrayList();
         agendaPoints = FXCollections.observableArrayList();
     }    
@@ -341,6 +352,11 @@ public class WindowModifyAgendaController implements Initializable {
                                                                              "40","41","42","43","44","45","46","47","48","49",
                                                                              "50","51","52","53","54","55","56","57","58","59");
         cbToFill.setItems(listMinutes);
+    }
+    
+    private void fillComboBoxForIntegrants(ComboBox cbToFill){
+        ObservableList<Integrant> listIntegrants = FXCollections.observableArrayList(this.integrants);
+        cbToFill.setItems(listIntegrants);
     }
     
     private String takeHours(Time timeToSeparate){
