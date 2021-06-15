@@ -19,7 +19,7 @@ public class PrerequisiteTest {
     @Test
     public void testInsertPrerequisite() throws BusinessConnectionException{
         PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
-        Prerequisite prerequisite = new Prerequisite("Contemplar las evidencias a tratar", "Juan Carlos Pérez Arriaga");
+        Prerequisite prerequisite = new Prerequisite("Llevar informe de la reunión antepasada", "Juan Carlos Pérez Arriaga");
         boolean saveResult = prerequisiteDAO.savedPrerequisite(prerequisite, 5);
         assertTrue("Prueba insertar prerequisito", saveResult);
     }
@@ -27,37 +27,23 @@ public class PrerequisiteTest {
     @Test
     public void testUpdatePrerequisite() throws BusinessConnectionException{
         PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
-        Prerequisite prerequisite = new Prerequisite("Contemplar los artículos a tratar", "Juan Carlos Pérez Arriaga");
-        boolean updateResult = prerequisiteDAO.updatedPrerequisite(prerequisite, 3, 2);
+        Prerequisite prerequisite = new Prerequisite("Llevar informe de la reunión pasada", "Juan Carlos Pérez Arriaga");
+        boolean updateResult = prerequisiteDAO.updatedPrerequisite(prerequisite, 8, 5);
         assertTrue("Prueba modificar prerequisito", updateResult);
     }
     
     @Test
     public void testDeletePrerequisiteById() throws BusinessConnectionException{
         PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
-        boolean deleteResult = prerequisiteDAO.deletedPrerequisiteById(3);
+        boolean deleteResult = prerequisiteDAO.deletedPrerequisiteById(8);
         assertTrue("Prueba borrar prerequisito", deleteResult);
     }
     
     @Test
     public void testFindPrerequisitesByIdMeeting() throws BusinessConnectionException{
         PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
-        ArrayList<Prerequisite> prerequisites = prerequisiteDAO.findPrerequisitesByIdMeeting(2);
+        ArrayList<Prerequisite> prerequisites = prerequisiteDAO.findPrerequisitesByIdMeeting(5);
         assertEquals("Prueba corerecta", prerequisites.size(), 1);
-    }
-    
-    @Test
-    public void testExistsPrerequisiteDescription() throws BusinessConnectionException{
-        PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
-        boolean exists = prerequisiteDAO.existsPrerequisiteDescription("Contemplar las evidencias a tratar", 5);
-        assertTrue("Prueba mandar a validar la descripción ya existente de un prerequisito", exists);
-    }
-    
-    @Test
-    public void testExistsPrerequisiteDescriptionForUpdate() throws BusinessConnectionException{
-        PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
-        boolean exists = prerequisiteDAO.existsPrerequisiteDescriptionForUpdate("Contemplar anteproyectos",5,4);
-        assertFalse("Prueba mandar a validar la descripción modificada que no existente de un prerequisito", exists);
     }
     
 }

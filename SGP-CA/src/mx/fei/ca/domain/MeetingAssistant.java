@@ -14,15 +14,11 @@ public class MeetingAssistant {
     public MeetingAssistant(Integrant integrant){
         this.integrant = integrant;
         this.nameAssistant = integrant.getNameIntegrant();
-    }
-    
-    public MeetingAssistant() {
-        this.nameAssistant = integrant.getNameIntegrant();
         this.rbLeaderRole = new RadioButton();
         this.rbTimeTakerRole = new RadioButton();
         this.rbSecretaryRole = new RadioButton();
     }
-
+    
     public Integrant getIntegrant() {
         return integrant;
     }
@@ -66,7 +62,5 @@ public class MeetingAssistant {
     public void setRbSecretaryRole(RadioButton rbSecretaryRole) {
         this.rbSecretaryRole = rbSecretaryRole;
     }
-    
-
 }
 

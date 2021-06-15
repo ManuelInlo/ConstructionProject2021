@@ -18,8 +18,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.CollaboratorDAO;
@@ -61,7 +63,9 @@ public class WindowAddReceptionWorkController implements Initializable {
     private ComboBox cbGrade;
     @FXML
     private ComboBox cbPositionAuthor;
-    
+    @FXML
+    private Label lbUser;
+    private Integrant integrant;
     
     private enum TypeError{
         EMPTYFIELD, INVALIDSTRING, MISSINGSELECTION, MISSINGDATE, OVERDATE, INCONSISTENTDATE, TITLEDUPLICATE, 
@@ -82,38 +86,37 @@ public class WindowAddReceptionWorkController implements Initializable {
         }
     }  
     
-    @FXML
+    public void setIntegrant(Integrant integrant){
+        this.integrant = integrant;
+        lbUser.setText(integrant.getNameIntegrant());
+    }
+    
     private void fillComboBoxImpactCA(){
         ObservableList<String> listImpactCA = FXCollections.observableArrayList("SI","NO");
         cbImpactCA.setItems(listImpactCA);
     }
     
-    @FXML
     private void fillComboBoxGrade(){
         ObservableList<String> listImpactCA = FXCollections.observableArrayList("Licenciatura");
         cbGrade.setItems(listImpactCA);
     }
     
-    @FXML
     private void fillComboBoxActualState(){
         ObservableList<String> listActualState = FXCollections.observableArrayList("En proceso","Terminado");
         cbActualState.setItems(listActualState);
     }
     
-    @FXML
     private void fillComboBoxType(){
         ObservableList<String> listType = FXCollections.observableArrayList("Tesis","Monografía", "Práctico");
         cbType.setItems(listType);
         
     }
     
-    @FXML
     private void fillComboBoxPositionAuthor(){
         ObservableList<String> listPositionAuthor = FXCollections.observableArrayList("Estudiante");
         cbPositionAuthor.setItems(listPositionAuthor);
     }
     
-    @FXML
     private void fillComboBoxInvestigationProject() throws BusinessConnectionException{
         InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
         ArrayList<InvestigationProject> investigationProjects = investigationProjectDAO.findAllInvestigationProjects();
@@ -147,9 +150,7 @@ public class WindowAddReceptionWorkController implements Initializable {
                 ReceptionWork receptionWork = new ReceptionWork(impactCA, titleReceptionWork, fileRoute, startDate, endDate, grade,
                                                         workType, actualState);
                 receptionWork.setCollaborator(collaborator);
-                receptionWork.setInvestigationProject(investigationProject);
-                IntegrantDAO integrantDAO = new IntegrantDAO();
-                Integrant integrant = integrantDAO.findIntegrantByCurp("JCPA940514RDTREOP1"); //La curp es de prueba, checar como recuperar la del loggeado
+                receptionWork.setInvestigationProject(investigationProject); 
                 receptionWork.setIntegrant(integrant);
                 ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
                 boolean saveResult = receptionWorkDAO.savedReceptionWork(receptionWork);
@@ -189,7 +190,6 @@ public class WindowAddReceptionWorkController implements Initializable {
         return invalidFields;
     }
     
-    @FXML
     private boolean existsEmptyFields(){
         boolean emptyFields = false;
         if(tfTitleReceptionWork.getText().isEmpty() || tfFileRoute.getText().isEmpty() || tfAuthor.getText().isEmpty()){
@@ -200,7 +200,6 @@ public class WindowAddReceptionWorkController implements Initializable {
         return emptyFields;
     }
     
-    @FXML
     private boolean existsInvalidStrings(){
         boolean invalidStrings = false;
         if(existsInvalidCharactersForTitle(tfTitleReceptionWork.getText()) || existsInvalidCharactersForAuthor(tfAuthor.getText())){
@@ -293,7 +292,6 @@ public class WindowAddReceptionWorkController implements Initializable {
         return inconsistentDates;
     }
     
-    @FXML
     private boolean existsDuplicateValues() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
@@ -326,7 +324,6 @@ public class WindowAddReceptionWorkController implements Initializable {
         return duplicateValues;
     }
     
-    @FXML 
     private void showInvalidFieldAlert(TypeError typeError){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
@@ -369,7 +366,6 @@ public class WindowAddReceptionWorkController implements Initializable {
         alert.showAndWait();    
     }
     
-    @FXML
     private void showConfirmationAlert(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
@@ -378,7 +374,6 @@ public class WindowAddReceptionWorkController implements Initializable {
         alert.showAndWait();
     }
     
-    @FXML
     private void showLostConnectionAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);

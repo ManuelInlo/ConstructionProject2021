@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mx.fei.ca.domain.Integrant;
+import mx.fei.ca.domain.UserSession;
 
 /**
  * FXML Controller class
@@ -36,15 +37,14 @@ public class WindowHomeController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-    }    
-
+      
+    }     
+    
     public void setIntegrant(Integrant integrant){
         this.integrant = integrant;
-        lbUser.setText(this.integrant.getNameIntegrant());
+        lbUser.setText(integrant.getNameIntegrant());
     }
     
- 
     @FXML
     private void clickProjects(MouseEvent event) {
         
@@ -52,20 +52,23 @@ public class WindowHomeController implements Initializable {
 
     @FXML
     private void clickMettings(MouseEvent event) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMeetingHistory.fxml"));
-        Scene scene = null;
         try {
-            scene = new Scene(fxmlLoader.load());
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMeetingHistory.fxml"));
+            Parent root = fxmlLoader.load();
+            WindowMeetingHistoryController windowMeetingHistoryController = fxmlLoader.getController();
+            windowMeetingHistoryController.setIntegrant(integrant);
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.showAndWait();
         } catch (IOException ex) {
-            Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WindowHomeController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.show();
     }
 
     @FXML
-    private void clickEvidences(MouseEvent event) throws IOException {
+    private void clickEvidences(MouseEvent event){
+        try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMemberProduction.fxml"));
             Parent root = fxmlLoader.load();
             WindowMemberProductionController windowMemberProductionController = fxmlLoader.getController();
@@ -74,6 +77,9 @@ public class WindowHomeController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(WindowHomeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML

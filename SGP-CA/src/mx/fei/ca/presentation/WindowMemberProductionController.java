@@ -16,15 +16,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.ReceptionWorkDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
@@ -40,18 +40,6 @@ public class WindowMemberProductionController implements Initializable {
 
     @FXML
     private TextField tfEvidenceName;
-    @FXML
-    private Button btnSearch;
-    @FXML
-    private Button btnAddArticle;
-    @FXML
-    private Button btnAddBook;
-    @FXML
-    private Button btnAddChapterBook;
-    @FXML
-    private Button btnAddReceptionWork;
-    @FXML
-    private Button btnExit;
     @FXML
     private TableView<ReceptionWork> tbReceptionWorks;
     @FXML
@@ -76,8 +64,10 @@ public class WindowMemberProductionController implements Initializable {
     private TableColumn<?, ?> columnImpactCAChapterBook;
     @FXML
     private TableColumn<?, ?> columnNameChapterBook;
-    
+    @FXML
+    private Label lbUser;
     private Integrant integrant;
+    
     
     private enum TypeError{
         EMPTYFIELD, INVALIDSTRING;
@@ -85,22 +75,26 @@ public class WindowMemberProductionController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {  
-            recoverEvidences();
+        try {
             openReceptionWorkData();
         } catch (BusinessConnectionException ex) {
             showLostConnectionAlert();
         }
-        
     } 
     
     public void setIntegrant(Integrant integrant){
         this.integrant = integrant;
+        lbUser.setText(integrant.getNameIntegrant());
+        try {  
+            recoverEvidences();
+        } catch (BusinessConnectionException ex) {
+            showLostConnectionAlert();
+        }    
     }
     
     public void recoverEvidences() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
-        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findLastTwoReceptionWorksByCurpIntegrant("JCPA940514RDTREOP1"); // En realidad debe pasar la curp del integrante que está loggeado
+        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findLastTwoReceptionWorksByCurpIntegrant(integrant.getCurp()); 
         fillReceptionWorkTable(receptionWorks);
     }
     
@@ -124,6 +118,7 @@ public class WindowMemberProductionController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(scene);
             WindowReceptionWorkDataController windowReceptionWorkDataController = (WindowReceptionWorkDataController) fxmlLoader.getController();
+            windowReceptionWorkDataController.setIntegrant(integrant);
             windowReceptionWorkDataController.showReceptionWorkData(receptionWork);
             stage.showAndWait();
             try {
@@ -131,9 +126,7 @@ public class WindowMemberProductionController implements Initializable {
             } catch (BusinessConnectionException ex) {
                 Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        });
-        
-        
+        });      
     }
 
     @FXML
@@ -154,11 +147,10 @@ public class WindowMemberProductionController implements Initializable {
         }
     }
     
-    @FXML
     private ArrayList<ReceptionWork> recoverReceptionWorks() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         String titleReceptionWork = tfEvidenceName.getText();
-        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorkByInitialesOfTitle(titleReceptionWork, "JCPA940514RDTREOP1"); //Acá debe pasar la curp del que está loggeado
+        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorkByInitialesOfTitle(titleReceptionWork, integrant.getCurp()); //Acá debe pasar la curp del que está loggeado
         if(!receptionWorks.isEmpty()){
             fillReceptionWorkTable(receptionWorks);
         }
@@ -180,10 +172,13 @@ public class WindowMemberProductionController implements Initializable {
     @FXML
     private void openReceptionWorkRegistration(ActionEvent event) throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddReceptionWork.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+        Parent root = fxmlLoader.load();
+        WindowAddReceptionWorkController windowAddReceptionWorkController = fxmlLoader.getController();
+        windowAddReceptionWorkController.setIntegrant(integrant);
+        Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setScene(scene);
-        stage.show();
+        stage.showAndWait();
     }
 
     @FXML
@@ -236,7 +231,6 @@ public class WindowMemberProductionController implements Initializable {
         alert.showAndWait();
     }
     
-    @FXML
     private void showLostConnectionAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
@@ -245,7 +239,6 @@ public class WindowMemberProductionController implements Initializable {
         alert.showAndWait();
     }
     
-    @FXML
     private void showNoMatchAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);

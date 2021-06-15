@@ -64,4 +64,25 @@ public class MemorandumApproverDAO implements IMemorandumApproverDAO{
         }
         return memorandumApprovers;
     }
+    
+    @Override
+    public boolean existsMemorandumApproverByCurp(String curp, int idMemorandum) throws BusinessConnectionException{
+        String sql = "SELECT 1 FROM memorandumApprover WHERE curp = ? AND idMemorandum = ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, curp);
+            preparedStatement.setInt(2, idMemorandum);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }
 }

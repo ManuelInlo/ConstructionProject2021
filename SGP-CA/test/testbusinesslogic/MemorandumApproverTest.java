@@ -34,4 +34,11 @@ public class MemorandumApproverTest {
         assertEquals("Prueba encontrar aprobadores de una minuta", memorandumApprovers.size(), 3);
     }
     
+    @Test
+    public void testExistsMemorandumApproverByCurp() throws BusinessConnectionException{
+        MemorandumApproverDAO memorandumApproverDAO = new MemorandumApproverDAO();
+        boolean existsMemorandumApprover = memorandumApproverDAO.existsMemorandumApproverByCurp("JCPA940514RDTREOP1", 3);
+        assertTrue("Prueba validar si el integrante ya aprobó la minuta", existsMemorandumApprover);
+    }
+    
 }

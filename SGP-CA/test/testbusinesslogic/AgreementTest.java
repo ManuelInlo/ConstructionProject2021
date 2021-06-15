@@ -55,19 +55,5 @@ public class AgreementTest {
         ArrayList<Agreement> agreements = agreementDAO.findAgreementsByIdMemorandum(3);
         assertEquals("Prueba correcta",agreements.size(), 1);
     }
-    
-    @Test 
-    public void testExistsAgreementDescription() throws BusinessConnectionException{
-        AgreementDAO agreementDAO = new AgreementDAO();
-       boolean exists = agreementDAO.existsAgreementDescription("Revisar pendientes de metas del CA", 3);
-       assertTrue("Prueba mandar a validar una descripción que ya existe en la minuta", exists);
-    }
-    
-    @Test 
-    public void testExistsAgreementDescriptionForUpdate() throws BusinessConnectionException{
-        AgreementDAO agreementDAO = new AgreementDAO();
-       boolean exists = agreementDAO.existsAgreementDescriptionForUpdate("Revisar acuerdos de la reunión pasada del CA",
-                                                                          12, 3);
-       assertFalse("Prueba mandar a validar una descripción modificada que no existe en la minuta", exists);
-    }
+
 }

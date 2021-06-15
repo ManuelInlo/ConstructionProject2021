@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package mx.fei.ca.presentation;
 
 import java.net.URL;
@@ -27,6 +23,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -35,6 +33,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.AgendaPointDAO;
 import mx.fei.ca.businesslogic.IntegrantDAO;
+import mx.fei.ca.businesslogic.MeetingAssistantDAO;
 import mx.fei.ca.businesslogic.MeetingDAO;
 import mx.fei.ca.businesslogic.PrerequisiteDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
@@ -105,7 +104,8 @@ public class WindowModifyAgendaController implements Initializable {
     private ComboBox cbHourEnd;
     @FXML
     private ComboBox cbMinuteEnd;
-    
+    @FXML
+    private Label lbUser;
     private int idMeeting;
     private ObservableList<Prerequisite> prerequisites;
     private ObservableList<AgendaPoint> agendaPoints;
@@ -136,7 +136,11 @@ public class WindowModifyAgendaController implements Initializable {
         prerequisites = FXCollections.observableArrayList();
         agendaPoints = FXCollections.observableArrayList();
     }    
-
+    
+    public void setIntegrant(Integrant integrant){
+        lbUser.setText(integrant.getNameIntegrant());
+    }
+    
     @FXML
     private void addPrerequisite(ActionEvent event) throws BusinessConnectionException{
         if(!existsInvalidFieldsForPrerequisites() && !existsDuplicateValueForAddPrerequisite()){
@@ -308,7 +312,7 @@ public class WindowModifyAgendaController implements Initializable {
             Meeting meeting = new Meeting(meetingDate, meetingTime,meetingPlace, affair, projectName, "Pendiente");     
             MeetingDAO meetingDAO = new MeetingDAO();
             boolean updatedMeeting = meetingDAO.updatedMeeting(meeting, idMeeting);
-            if(updatedMeeting){
+            if(updatedMeeting && updatedMeetingAssistants()){
                 showConfirmationAlert();
                 closeModifyAgenda(event);
             }else{
@@ -335,7 +339,7 @@ public class WindowModifyAgendaController implements Initializable {
         cbMinutes.getSelectionModel().select(takeMinutes(meeting.getMeetingTime()));
         fillPrerequisitesTable(meeting.getPrerequisites());
         fillAgendaPointsTable(meeting.getAgendaPoints());
-        //FALTA LLENAR LA TABLA DE ASISTENTES
+        fillMeetingAssistantsTable(meeting.getAssistants());
     }
     
     private void fillComboBoxHours(ComboBox cbToFill){
@@ -391,6 +395,69 @@ public class WindowModifyAgendaController implements Initializable {
         tbAgendaPoints.setItems(listAgendaPoints);
     }
     
+    private void fillMeetingAssistantsTable(ArrayList<MeetingAssistant> meetingAssistants){
+        for(int i = 0; i < meetingAssistants.size(); i++){
+            RadioButton rbLeaderRole = new RadioButton();
+            RadioButton rbTimeTakerRole = new RadioButton();
+            RadioButton rbSecretaryRole = new RadioButton();
+            switch (meetingAssistants.get(i).getRole()) {
+                case "Lider":
+                    rbLeaderRole.setSelected(true);
+                    rbTimeTakerRole.setSelected(false);
+                    rbSecretaryRole.setSelected(false);
+                    meetingAssistants.get(i).setRbLeaderRole(rbLeaderRole);
+                    meetingAssistants.get(i).setRbTimeTakerRole(rbTimeTakerRole);
+                    meetingAssistants.get(i).setRbSecretaryRole(rbSecretaryRole);
+                    break;
+                case "Tomador de tiempo":
+                    rbLeaderRole.setSelected(false);
+                    rbTimeTakerRole.setSelected(true);
+                    rbSecretaryRole.setSelected(false);
+                    meetingAssistants.get(i).setRbLeaderRole(rbLeaderRole);
+                    meetingAssistants.get(i).setRbTimeTakerRole(rbTimeTakerRole);
+                    meetingAssistants.get(i).setRbSecretaryRole(rbSecretaryRole);
+                    break;
+                case "Secretario":
+                    rbLeaderRole.setSelected(false);
+                    rbTimeTakerRole.setSelected(false);
+                    rbSecretaryRole.setSelected(true);
+                    meetingAssistants.get(i).setRbLeaderRole(rbLeaderRole);
+                    meetingAssistants.get(i).setRbTimeTakerRole(rbTimeTakerRole);
+                    meetingAssistants.get(i).setRbSecretaryRole(rbSecretaryRole);
+                    break;
+                default:
+                    break;
+            }
+        }
+        ObservableList<MeetingAssistant> listMeetingAssistants = FXCollections.observableArrayList(meetingAssistants);
+        columnIntegrant.setCellValueFactory(new PropertyValueFactory("nameAssistant"));
+        columnLeader.setCellValueFactory(new PropertyValueFactory("rbLeaderRole"));
+        columnTimeTaker.setCellValueFactory(new PropertyValueFactory("rbTimeTakerRole"));
+        columnSecretary.setCellValueFactory(new PropertyValueFactory("rbSecretaryRole"));
+        tbIntegrants.setItems(listMeetingAssistants);
+    }
+    
+    private boolean updatedMeetingAssistants() throws BusinessConnectionException{
+        boolean updatedMeetingAssistant = true;
+        MeetingAssistantDAO meetingAssistantDAO = new MeetingAssistantDAO();
+        for (MeetingAssistant meetingAssistant: tbIntegrants.getItems()){
+            if(meetingAssistant.getRbLeaderRole().isSelected()){
+                meetingAssistant.setRole("Lider");
+            }else if(meetingAssistant.getRbSecretaryRole().isSelected()){
+                meetingAssistant.setRole("Secretario");
+            }else if(meetingAssistant.getRbTimeTakerRole().isSelected()){
+                meetingAssistant.setRole("Tomador de tiempo");
+            }else{
+                meetingAssistant.setRole("");
+            }
+            updatedMeetingAssistant = meetingAssistantDAO.updatedRoleOfMeetingAssistant(meetingAssistant, idMeeting);
+            if(!updatedMeetingAssistant){
+                break;
+            }
+        }
+        return updatedMeetingAssistant;
+    }
+    
     private java.sql.Date parseToSqlDate(java.util.Date date){
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         return sqlDate;
@@ -419,7 +486,7 @@ public class WindowModifyAgendaController implements Initializable {
         }
         
         if(invalidFields || existsMissingDate() || existsIncorretDate() || existsMissingTime(cbHours) || existsMissingTime(cbMinutes) ||
-           existsInvalidRoleSelection()){
+           existsInvalidRoleSelection() || existsMissingRole()){
             invalidFields = true;  
         }
   
@@ -586,11 +653,9 @@ public class WindowModifyAgendaController implements Initializable {
         for(MeetingAssistant meetingAssistant: tbIntegrants.getItems()){
             if(meetingAssistant.getRbLeaderRole().isSelected()){
                 leaderSelected = true;
-            }
-            if(!leaderSelected && meetingAssistant.getRbSecretaryRole().isSelected()){
+            }else if(meetingAssistant.getRbSecretaryRole().isSelected()){
                 secretarySelected = true;
-            }
-            if(!secretarySelected && meetingAssistant.getRbTimeTakerRole().isSelected()){
+            }else if(meetingAssistant.getRbTimeTakerRole().isSelected()){
                 timeTakerSelected = true;
             }
         }
@@ -629,7 +694,7 @@ public class WindowModifyAgendaController implements Initializable {
     
     private boolean existsMissingSelection(ComboBox cbToValidate){
         boolean missingSelection = false;
-        if(cbToValidate.getSelectionModel().getSelectedItem().equals("")){
+        if(cbToValidate.getSelectionModel().getSelectedItem() == null){
             missingSelection = true;
             TypeError typeError = TypeError.MISSINGSELECTION;
             showInvalidFieldAlert(typeError);
@@ -781,7 +846,7 @@ public class WindowModifyAgendaController implements Initializable {
             alert.setContentText("El asunto de la reunión ya se encuentra registrado en otra reunión");
         }
         
-        if(typeError == TypeError.MEETINGAFFAIRDUPLICATE){
+        if(typeError == TypeError.DATEANDTIMEDUPLICATE){
             alert.setContentText("La fecha y hora de la reunión no se encuentran disponibles debido a que ya existe una reunión registrada con dicha fecha y hora");
         }
         

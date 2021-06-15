@@ -24,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -53,7 +54,10 @@ public class WindowMeetingHistoryController implements Initializable {
     @FXML
     private TableColumn<Meeting, Date> columnDate;
     @FXML
-    private TableColumn<Meeting, Time> columnTime;
+    private TableColumn<Meeting, Time> columnTime;   
+    @FXML
+    private Label lbUser;
+    private Integrant integrant;
     
     private enum TypeError{
         EMPTYFIELD, INVALIDSTRING;
@@ -64,6 +68,11 @@ public class WindowMeetingHistoryController implements Initializable {
         recoverMeetings();
         openMeetingAgenda();
     }  
+    
+    public void setIntegrant(Integrant integrant){
+        this.integrant = integrant;
+        lbUser.setText(integrant.getNameIntegrant());
+    }
     
     private void recoverMeetings(){
         try{
@@ -115,6 +124,7 @@ public class WindowMeetingHistoryController implements Initializable {
             }   Stage stage = new Stage();
             stage.setScene(scene);
             WindowMeetingAgendaController windowMeetingAgendaController = (WindowMeetingAgendaController) fxmlLoader.getController();
+            windowMeetingAgendaController.setIntegrant(integrant);
             windowMeetingAgendaController.showMeetingData(meeting);
             stage.show();
             recoverMeetings();
@@ -127,12 +137,18 @@ public class WindowMeetingHistoryController implements Initializable {
     }
 
     @FXML
-    private void scheduleMeeting(ActionEvent event) throws IOException{
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowNewMeeting.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.show();
+    private void scheduleMeeting(ActionEvent event){
+         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowNewMeeting.fxml"));
+            Scene scene = null;
+            try {
+                scene = new Scene(fxmlLoader.load());
+            } catch (IOException ex) {
+                Logger.getLogger(WindowMeetingHistoryController.class.getName()).log(Level.SEVERE, null, ex);
+            }   Stage stage = new Stage();
+            stage.setScene(scene);
+            WindowNewMeetingController windowNewMeetingController = (WindowNewMeetingController) fxmlLoader.getController();
+            windowNewMeetingController.setIntegrant(integrant);
+            stage.show();
     }
 
     @FXML

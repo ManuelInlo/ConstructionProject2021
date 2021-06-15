@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -57,9 +58,11 @@ public class WindowEditMemorandumController implements Initializable {
     private TextArea taPendings;
     @FXML
     private TextField tfYear;
-    
+    @FXML
+    private Label lbUser;
     private int idMemorandum;
     private ObservableList<Agreement> agreements;
+    private Integrant integrant;
 
     public enum TypeError{
         EMPTYFIELDS, MISSINGSELECTION, INVALIDYEAR, EMPTYTABLE, COLUMNMISSINGSELECTION, INVALIDSTRING, DUPLICATEVALUE;
@@ -74,6 +77,11 @@ public class WindowEditMemorandumController implements Initializable {
         columnDate.setCellValueFactory(new PropertyValueFactory("dateAgreement"));
         agreements = FXCollections.observableArrayList();
     }    
+    
+    public void setIntegrant(Integrant integrant){
+        this.integrant = integrant;
+        lbUser.setText(integrant.getNameIntegrant());
+    }
     
     public void fillMemorandumData(Memorandum memorandum){
         this.idMemorandum = memorandum.getIdMemorandum();
@@ -173,8 +181,7 @@ public class WindowEditMemorandumController implements Initializable {
                 cleanFieldsAgreement();
             }else{
                 showLostConnectionAlert();
-            }
-            
+            }  
         }
     }
     

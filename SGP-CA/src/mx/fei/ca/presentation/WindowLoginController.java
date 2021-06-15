@@ -1,13 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package mx.fei.ca.presentation;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
@@ -24,12 +22,8 @@ import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.IntegrantDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Integrant;
+import mx.fei.ca.domain.UserSession;
 
-/**
- * FXML Controller class
- *
- * @author david
- */
 public class WindowLoginController implements Initializable {
 
     @FXML
@@ -58,8 +52,8 @@ public class WindowLoginController implements Initializable {
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
-            closeWindowLogin(event);
             stage.showAndWait();
+            closeWindowLogin(event);
         }
     }
 
@@ -110,6 +104,7 @@ public class WindowLoginController implements Initializable {
     private Integrant getIntegrantByEmail() throws BusinessConnectionException{
         IntegrantDAO integrantDAO = new IntegrantDAO();
         this.integrant = integrantDAO.getIntegrantByInstitutionalMail(tfEmail.getText());
+        UserSession userSession = UserSession.getUserSession(integrant);
         return integrant;
     }
     

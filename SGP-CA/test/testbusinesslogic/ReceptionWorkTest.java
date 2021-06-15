@@ -51,8 +51,8 @@ public class ReceptionWorkTest {
         IntegrantDAO integrantDAO = new IntegrantDAO();
         Integrant integrant = integrantDAO.findIntegrantByCurp("JCPA940514RDTREOP1");
         
-        ReceptionWork receptionWork = new ReceptionWork("SI", "Inteligencia artificial con Prolog",
-                                                        "Prueba, falta ruta de arhivo 2", 
+        ReceptionWork receptionWork = new ReceptionWork("SI", "La IA en las pruebas de software",
+                                                        "C:\\Users\\david\\Documents\\La IA en las pruebas de software.pdf", 
                                                         startDateReceptionWork, endDateReceptionWork, "Licenciatura", "Tesis", "Terminado");
         
         receptionWork.setCollaborator(collaborator);
@@ -87,15 +87,15 @@ public class ReceptionWorkTest {
         IntegrantDAO integrantDAO = new IntegrantDAO();
         Integrant integrant = integrantDAO.findIntegrantByCurp("JCPA940514RDTREOP1");
         
-        ReceptionWork receptionWork = new ReceptionWork("SI", "Impacto de la Inteligencia Artificial en el diseño de software",
-                                                        "Prueba, falta ruta", 
+        ReceptionWork receptionWork = new ReceptionWork("NO", "La IA en las pruebas de software",
+                                                        "C:\\Users\\david\\Documents\\La IA en las pruebas de software.pdf", 
                                                         startDateReceptionWork, endDateReceptionWork, "Licenciatura", "Tesis", "Terminado");
         
         receptionWork.setCollaborator(collaborator);
         receptionWork.setIntegrant(integrant);
         receptionWork.setInvestigationProject(investigationProject);
         
-        boolean updateResult = receptionWorkDAO.updatedReceptionWorkById(receptionWork, 1);
+        boolean updateResult = receptionWorkDAO.updatedReceptionWorkById(receptionWork, 11);
         assertTrue("Prueba modificar trabajo recepcional", updateResult);
     }
     
@@ -103,14 +103,14 @@ public class ReceptionWorkTest {
     public void testFindReceptionWorksByPositiveImpactCA() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorksByPositiveImpactCA();
-        assertEquals("Prueba busqueda de trabajos recepcionales por su impacto al ca", receptionWorks.size(), 1);
+        assertEquals("Prueba busqueda de trabajos recepcionales por su impacto al ca", receptionWorks.size(), 7);
     }
     
     @Test
     public void testFindReceptionWorksByCurpIntegrant() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findLastTwoReceptionWorksByCurpIntegrant("JCPA940514RDTREOP1");
-        assertEquals("Prueba busqueda de trabajos recepcionales de un integrante por curp", receptionWorks.size(), 1);
+        assertEquals("Prueba busqueda de trabajos recepcionales de un integrante por curp", receptionWorks.size(), 2);
     }
     
     @Test
@@ -130,7 +130,7 @@ public class ReceptionWorkTest {
     @Test
     public void testExistsReceptionWorkFileRoute() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
-        boolean exists = receptionWorkDAO.existsReceptionWorkFileRoute("Prueba, falta ruta");
+        boolean exists = receptionWorkDAO.existsReceptionWorkFileRoute("C:\\Users\\david\\Documents\\La IA en las pruebas de software.pdf");
         assertTrue("Prueba mandar a validar una ruta de archivo que ya existe en un trabajo recepcional", exists);
     }  
     
@@ -144,7 +144,7 @@ public class ReceptionWorkTest {
     @Test
     public void testExistsReceptionWorkFileRouteForUpdate() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
-        boolean exists = receptionWorkDAO.existsReceptionWorkFileRouteForUpdate("Esto es una prueba, falta ruta", 1);
+        boolean exists = receptionWorkDAO.existsReceptionWorkFileRouteForUpdate("C:\\Users\\david\\Documents\\La IA en la IS.pdf", 1);
         assertFalse("Prueba mandar a validar una ruta de archivo modificada que no existe en un trabajo recepcional", exists);
     } 
 }

@@ -166,4 +166,11 @@ public class MeetingTest {
         boolean available = meetingDAO.existsDateAndTimeAvailableForUpdate(meetingDate, meetingTime, 5);
         assertFalse("Prueba mandar fecha y hora modificadas que ya están registradas", available);
     }
+    
+    @Test
+    public void testUpdatedStateOfMeeting() throws BusinessConnectionException{
+        MeetingDAO meetingDAO = new MeetingDAO();
+        boolean updatedResult = meetingDAO.updatedStateOfMeeting("Pendiente", 21);
+        assertTrue("Prueba modificar estado de una reunión", updatedResult);
+    }
 }

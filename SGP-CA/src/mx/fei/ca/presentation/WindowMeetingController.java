@@ -20,6 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -28,6 +29,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.AgreementDAO;
 import mx.fei.ca.businesslogic.IntegrantDAO;
+import mx.fei.ca.businesslogic.MeetingDAO;
 import mx.fei.ca.businesslogic.MemorandumDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.AgendaPoint;
@@ -70,7 +72,8 @@ public class WindowMeetingController implements Initializable {
     private TableColumn<Agreement, String> columnIntegrant;
     @FXML
     private TableColumn<Agreement, String> columnDate;
-    
+    @FXML
+    private Label lbUser;
     private ObservableList<Agreement> agreements;
     private int idMemorandum;
     private int idMeeting;
@@ -85,6 +88,10 @@ public class WindowMeetingController implements Initializable {
         fillComboBoxIntegrants();
         agreements = FXCollections.observableArrayList();
     } 
+    
+    public void setIntegrant(Integrant integrant){
+        lbUser.setText(integrant.getNameIntegrant());
+    }
     
     public void showAgendaPoints(ArrayList<AgendaPoint> agendaPoints, int idMeeting){
         this.idMeeting = idMeeting;
@@ -150,9 +157,10 @@ public class WindowMeetingController implements Initializable {
                 String note = taNotes.getText();
                 Memorandum memorandum = new Memorandum(pending, note, "Por aprobar");
                 MemorandumDAO memorandumDAO = new MemorandumDAO();
+                MeetingDAO meetingDAO = new MeetingDAO();
                 try {
-                    idMemorandum = memorandumDAO.saveAndReturnIdMemorandum(memorandum, this.idMeeting);  //idMeeting, la otra solo es prueba
-                    if (idMemorandum != 0 && savedAgreements()) {
+                    idMemorandum = memorandumDAO.saveAndReturnIdMemorandum(memorandum, this.idMeeting);
+                    if (idMemorandum != 0 && savedAgreements() && meetingDAO.updatedStateOfMeeting("Finalizada", idMeeting)) {
                         showConfirmationSaveAlert();
                         closeMeeting(event);
                     }

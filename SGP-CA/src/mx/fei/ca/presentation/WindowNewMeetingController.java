@@ -24,6 +24,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -32,6 +34,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.AgendaPointDAO;
 import mx.fei.ca.businesslogic.IntegrantDAO;
+import mx.fei.ca.businesslogic.MeetingAssistantDAO;
 import mx.fei.ca.businesslogic.MeetingDAO;
 import mx.fei.ca.businesslogic.PrerequisiteDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
@@ -102,12 +105,13 @@ public class WindowNewMeetingController implements Initializable {
     private ComboBox cbHourEnd;
     @FXML
     private ComboBox cbMinuteEnd;
-    
+    @FXML
+    private Label lbUser;
     private ObservableList<Prerequisite> prerequisites;
     private ObservableList<AgendaPoint> agendaPoints;
     private ArrayList<Integrant> integrants;
+    private Integrant integrant;
     int idMeeting;
-    
     
     private enum TypeError{
         EMPTYFIELDS, INVALIDSTRINGS, MISSINGMEETINGTIME, MISSINGDATE, MEETINGAFFAIRDUPLICATE, DATEANDTIMEDUPLICATE,
@@ -115,6 +119,10 @@ public class WindowNewMeetingController implements Initializable {
         EMPTYTABLE, MISSINGROLE, DUPLICATEVALUE;
     }
     
+    public void setIntegrant(Integrant integrant){
+        this.integrant = integrant;
+        lbUser.setText(integrant.getNameIntegrant());
+    }
 
     @FXML
     private void addPrerequisite(ActionEvent event){
@@ -190,8 +198,7 @@ public class WindowNewMeetingController implements Initializable {
         fillComboBoxForIntegrants(cbLeaderDiscussion);
         prerequisites = FXCollections.observableArrayList();
         agendaPoints = FXCollections.observableArrayList();
-        
-       // fillIntegrantsTable();
+        fillIntegrantsTable();
     }   
 
     @FXML
@@ -204,8 +211,8 @@ public class WindowNewMeetingController implements Initializable {
             Time meetingTime = parseToSqlTime(cbHours.getSelectionModel().getSelectedItem().toString(), cbMinutes.getSelectionModel().getSelectedItem().toString());
             Meeting meeting = new Meeting(meetingDate, meetingTime,meetingPlace, affair, projectName, "Pendiente");     
             MeetingDAO meetingDAO = new MeetingDAO();
-            idMeeting = meetingDAO.saveAndReturnIdNewMeeting(meeting, "JCPA940514RDTREOP1");  //La curp es de prueba
-            if(idMeeting != 0 && savedPrerequisites() && savedAgendaPoints()){  //falta mandar a guardar asistente reunion
+            idMeeting = meetingDAO.saveAndReturnIdNewMeeting(meeting, integrant.getCurp()); 
+            if(idMeeting != 0 && savedPrerequisites() && savedAgendaPoints() && savedMeetingAssistants()){  
                 showConfirmationAlert();
                 closeNewMeeting(event);
             }else{
@@ -238,6 +245,25 @@ public class WindowNewMeetingController implements Initializable {
         return savedAgendaPoint;
     }
     
+    private boolean savedMeetingAssistants() throws BusinessConnectionException{
+        boolean savedMeetingAssistant = true;
+        MeetingAssistantDAO meetingAssistantDAO = new MeetingAssistantDAO();
+        for (MeetingAssistant meetingAssistant: tbIntegrants.getItems()){
+            if(meetingAssistant.getRbLeaderRole().isSelected()){
+                meetingAssistant.setRole("Lider");
+            }else if(meetingAssistant.getRbSecretaryRole().isSelected()){
+                meetingAssistant.setRole("Secretario");
+            }else if(meetingAssistant.getRbTimeTakerRole().isSelected()){
+                meetingAssistant.setRole("Tomador de tiempo");
+            }
+            savedMeetingAssistant = meetingAssistantDAO.savedMeetingAssistant(meetingAssistant, idMeeting);
+            if(!savedMeetingAssistant){
+                break;
+            }
+        }
+        return savedMeetingAssistant;
+    }
+    
     @FXML
     private void closeNewMeeting(ActionEvent event){
         Node source = (Node) event.getSource();
@@ -266,26 +292,19 @@ public class WindowNewMeetingController implements Initializable {
         cbToFill.setItems(listIntegrants);
     }
     
-   /*@FXML
     private void fillIntegrantsTable(){
-        //Prueba, en realidad debe mandar a recuperar todos los integrantes y con eso crear los meetingAssistant
-        Integrant integrant = new Integrant("JCPA940514RDTREOP1");
-        Integrant integrant2 = new Integrant("COLE940987RDTREOP1");
-        integrant.setName("Jose juan");
-        integrant2.setName("Carlos León");
-        
-        ObservableList<MeetingAssistant> meetingAssistants = FXCollections.observableArrayList(
-            new MeetingAssistant(integrant),
-            new MeetingAssistant(integrant2)
-        );
-        
-        
+        ArrayList<MeetingAssistant> meetingAssistants = new ArrayList<>();
+        for(int i = 0; i < this.integrants.size(); i++){
+            MeetingAssistant meetingAssistant = new MeetingAssistant(integrants.get(i));
+            meetingAssistants.add(meetingAssistant);
+        }
+        ObservableList<MeetingAssistant> listMeetingAssistants = FXCollections.observableArrayList(meetingAssistants);
         columnIntegrant.setCellValueFactory(new PropertyValueFactory("nameAssistant"));
         columnLeader.setCellValueFactory(new PropertyValueFactory("rbLeaderRole"));
         columnTimeTaker.setCellValueFactory(new PropertyValueFactory("rbTimeTakerRole"));
         columnSecretary.setCellValueFactory(new PropertyValueFactory("rbSecretaryRole"));
-        tbIntegrants.setItems(meetingAssistants);
-    }*/
+        tbIntegrants.setItems(listMeetingAssistants);
+    }
    
     private java.sql.Date parseToSqlDate(java.util.Date date){
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
@@ -315,7 +334,7 @@ public class WindowNewMeetingController implements Initializable {
         }
         
         if(invalidFields || existsMissingDate() || existsIncorretDate() || existsMissingTime(cbHours) || existsMissingTime(cbMinutes) ||
-           existsInvalidRoleSelection()){
+           existsInvalidRoleSelection() || existsMissingRole()){
             invalidFields = true;  
         }
   
@@ -476,11 +495,9 @@ public class WindowNewMeetingController implements Initializable {
         for(MeetingAssistant meetingAssistant: tbIntegrants.getItems()){
             if(meetingAssistant.getRbLeaderRole().isSelected()){
                 leaderSelected = true;
-            }
-            if(!leaderSelected && meetingAssistant.getRbSecretaryRole().isSelected()){
+            }else if(meetingAssistant.getRbSecretaryRole().isSelected()){
                 secretarySelected = true;
-            }
-            if(!secretarySelected && meetingAssistant.getRbTimeTakerRole().isSelected()){
+            }else if(meetingAssistant.getRbTimeTakerRole().isSelected()){
                 timeTakerSelected = true;
             }
         }
@@ -653,7 +670,7 @@ public class WindowNewMeetingController implements Initializable {
             alert.setContentText("El asunto de la reunión ya se encuentra registrado en otra reunión");
         }
         
-        if(typeError == TypeError.MEETINGAFFAIRDUPLICATE){
+        if(typeError == TypeError.DATEANDTIMEDUPLICATE){
             alert.setContentText("La fecha y hora de la reunión no se encuentran disponibles debido a que ya existe una reunión registrada con dicha fecha y hora");
         }
         

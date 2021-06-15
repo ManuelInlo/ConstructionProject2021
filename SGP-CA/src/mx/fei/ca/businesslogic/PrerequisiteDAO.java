@@ -105,48 +105,5 @@ public class PrerequisiteDAO implements IPrerequisiteDAO{
         }
         return prerequisites;
     }
-
-    @Override
-    public boolean existsPrerequisiteDescription(String description, int idMeeting) throws BusinessConnectionException {
-        String sql = "SELECT 1 FROM prerequisite WHERE idMeeting = ? AND description = ?";
-        boolean exists = false;
-        try{
-            connection = dataBaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, idMeeting);
-            preparedStatement.setString(2, description);
-            resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                exists = true;
-            }
-        }catch(SQLException ex){
-            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
-        }finally{
-            dataBaseConnection.closeConnection();
-        }
-        return exists;
-    }
-
-    @Override
-    public boolean existsPrerequisiteDescriptionForUpdate(String description, int idMeeting, int idPrerequiste) throws BusinessConnectionException {
-        String sql = "SELECT 1 FROM prerequisite WHERE idMeeting = ? AND description = ? AND idPrerequisite <> ?";
-        boolean exists = false;
-        try{
-            connection = dataBaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, idMeeting);
-            preparedStatement.setString(2, description);
-            preparedStatement.setInt(3, idPrerequiste);
-            resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                exists = true;
-            }
-        }catch(SQLException ex){
-            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
-        }finally{
-            dataBaseConnection.closeConnection();
-        }
-        return exists;
-    }
 }
 

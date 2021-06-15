@@ -20,6 +20,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
+import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.ReceptionWork;
 
 /**
@@ -52,14 +54,21 @@ public class WindowReceptionWorkDataController implements Initializable {
     @FXML
     private Label lbTypeEvidence;
     @FXML
+    private Label lbUser;
+    @FXML
     private Label lbImpactCA;
-    
+    private Integrant integrant;
     private ReceptionWork receptionWork;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
     }   
+    
+    public void setIntegrant(Integrant integrant){
+        this.integrant = integrant;
+        lbUser.setText(integrant.getNameIntegrant());  
+    }
     
     public void showReceptionWorkData(ReceptionWork receptionWork){
         this.receptionWork = receptionWork;
@@ -95,6 +104,7 @@ public class WindowReceptionWorkDataController implements Initializable {
             Logger.getLogger(WindowReceptionWorkDataController.class.getName()).log(Level.SEVERE, null, ex);
         }
         WindowModifyReceptionWorkController windowModifyReceptionWorkController = fxmlLoader.getController();
+        windowModifyReceptionWorkController.setIntegrant(integrant);
         windowModifyReceptionWorkController.fillFieldsReceptionWork(receptionWork);
         Scene scene = new Scene(root);
         Stage stage = new Stage();

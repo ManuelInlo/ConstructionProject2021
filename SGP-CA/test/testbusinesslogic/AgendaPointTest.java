@@ -75,60 +75,6 @@ public class AgendaPointTest {
         ArrayList<AgendaPoint> agendaPoints = agendaPointDAO.findAgendaPointsByIdMeeting(5);
         assertEquals("Prueba correcta", agendaPoints.size(), 1);
     }
-    
-    @Test 
-    public void testExistsAgendaPointTopic() throws BusinessConnectionException{
-        AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
-        boolean exists = agendaPointDAO.existsAgendaPointTopic("Introducción reunión", 5);
-        assertTrue("Prueba mandar a validar un tema que ya existe en un punto de agenda", exists);
-    }
-    
-    @Test
-    public void testExistsAvailableHoursForAgendaPoint() throws BusinessConnectionException{
-        AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
-        SimpleDateFormat simpleDateFormatTime = new SimpleDateFormat("hh:mm");
-        java.sql.Time startTime = null;
-        java.sql.Time endTime = null;
-        try {
-            startTime = new java.sql.Time(simpleDateFormatTime.parse("13:30").getTime());
-        } catch (ParseException ex) {
-            Logger.getLogger(AgendaPointTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try{
-            endTime = new java.sql.Time(simpleDateFormatTime.parse("13:45").getTime());
-        }catch (ParseException ex){
-            Logger.getLogger(AgendaPointTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        boolean hoursAvailable = agendaPointDAO.existsAvailableHoursForAgendaPoint(startTime, endTime, 5);
-        assertFalse("Prueba mandar a validar horas que ya están en un punto de agenda", hoursAvailable);
-    }
-    
-    @Test 
-    public void testExistsAgendaPointTopicForUpdate() throws BusinessConnectionException{
-        AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
-        boolean exists = agendaPointDAO.existsAgendaPointTopicForUpdate("Introducción plan de trabajo", 2 ,5);
-        assertFalse("Prueba mandar a validar un tema modificado que no existe en un punto de agenda", exists);
-    }
-    
-    @Test
-    public void testExistsAvailableHoursForAgendaPointForUpdate() throws BusinessConnectionException{
-        AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
-        SimpleDateFormat simpleDateFormatTime = new SimpleDateFormat("hh:mm");
-        java.sql.Time startTime = null;
-        java.sql.Time endTime = null;
-        try {
-            startTime = new java.sql.Time(simpleDateFormatTime.parse("15:30").getTime());
-        } catch (ParseException ex) {
-            Logger.getLogger(AgendaPointTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try{
-            endTime = new java.sql.Time(simpleDateFormatTime.parse("15:45").getTime());
-        }catch (ParseException ex){
-            Logger.getLogger(AgendaPointTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        AgendaPoint agendaPoint = new AgendaPoint(startTime, endTime);
-        boolean hoursAvailable = agendaPointDAO.existsAvailableHoursForAgendaPointForUpdate(agendaPoint, 2, 5);
-        assertTrue("Prueba mandar a validar horas modificadas que no están en un punto de agenda", hoursAvailable);
-    }
-    
+   
 }
+  

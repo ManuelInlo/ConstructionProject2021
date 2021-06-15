@@ -31,9 +31,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.AgendaPointDAO;
 import mx.fei.ca.businesslogic.MeetingAssistantDAO;
+import mx.fei.ca.businesslogic.MeetingDAO;
 import mx.fei.ca.businesslogic.PrerequisiteDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.AgendaPoint;
+import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.Meeting;
 import mx.fei.ca.domain.MeetingAssistant;
 import mx.fei.ca.domain.Prerequisite;
@@ -79,15 +81,21 @@ public class WindowMeetingAgendaController implements Initializable {
     private Label lbMeetingTime;
     @FXML
     private Label lbState;
-    
+    @FXML
+    private Label lbUser;
     private Meeting meeting;
-    
+    private Integrant integrant;
    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
     }  
     
+    public void setIntegrant(Integrant integrant){
+        this.integrant = integrant;
+        lbUser.setText(integrant.getNameIntegrant());
+    }
+   
     public void showMeetingData(Meeting meeting){
         lbNameProject.setText(meeting.getProjectName());
         lbMeetingPlace.setText(meeting.getMeetingPlace());
@@ -95,7 +103,6 @@ public class WindowMeetingAgendaController implements Initializable {
         lbMeetingDate.setText(convertDateToString(meeting.getMeetingDate()));
         lbMeetingTime.setText(convertTimeToString(meeting.getMeetingTime()));
         lbState.setText(meeting.getState());
-        
         try {
             MeetingAssistantDAO meetingAssistantDAO = new MeetingAssistantDAO();
             ArrayList<MeetingAssistant> meetingAssistants = meetingAssistantDAO.findMeetingAssistantsByIdMeeting(meeting.getIdMeeting());
@@ -151,45 +158,86 @@ public class WindowMeetingAgendaController implements Initializable {
     }
 
     @FXML
-    private void openModifyMeeting(ActionEvent event){
-        //ACA DEBE VERIFICAR QUE EL RESPONSABLE DE LA REUNIÓN ES EL MISMO QUE QUIERE MODIFICAR
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowModifyAgenda.fxml"));
+    private void openModifyMeeting(ActionEvent event) throws BusinessConnectionException{
+        MeetingDAO meetingDAO = new MeetingDAO();
+        if(this.meeting.getState().equals("Pendiente") && meetingDAO.getCurpOfResponsibleMeeting(this.meeting.getIdMeeting()).equals(integrant.getCurp())){ 
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowModifyAgenda.fxml"));
             Parent root = null;
-        try {
-            root = fxmlLoader.load();
-        } catch (IOException ex) {
-            Logger.getLogger(WindowMeetingAgendaController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        WindowModifyAgendaController windowModifyAgendaController = fxmlLoader.getController();
-        windowModifyAgendaController.fillMeetingData(meeting);
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.showAndWait();
-        closeMeetingAgenda(event);
+            try {
+                root = fxmlLoader.load();
+            } catch (IOException ex) {
+                Logger.getLogger(WindowMeetingAgendaController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            WindowModifyAgendaController windowModifyAgendaController = fxmlLoader.getController();
+            windowModifyAgendaController.setIntegrant(integrant);
+            windowModifyAgendaController.fillMeetingData(meeting);
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.showAndWait();
+            closeMeetingAgenda(event);
+        }else{
+            showInvalidActionAlert();
+        }       
     }
 
     @FXML
     private void openMemorandum(ActionEvent event){
-    }
-
-    @FXML
-    private void openStartMeeting(ActionEvent event){
-        //ACA DEBE VERIFICAR QUE EL RESPONSABLE DE LA REUNIÓN ES EL MISMO QUE QUIERE MODIFICAR
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMeeting.fxml"));
+        if(endedMeeting()){
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMemorandum.fxml"));
             Parent root = null;
-        try {
-            root = fxmlLoader.load();
-        } catch (IOException ex) {
-            Logger.getLogger(WindowMeetingAgendaController.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                root = fxmlLoader.load();
+            } catch (IOException ex) {
+                Logger.getLogger(WindowMeetingAgendaController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            WindowMemorandumController windowMemorandumController = fxmlLoader.getController();
+            windowMemorandumController.setIntegrant(integrant);
+            windowMemorandumController.showMeetingData(meeting);
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.showAndWait();
+            closeMeetingAgenda(event);
         }
-        WindowMeetingController windowMeetingController = fxmlLoader.getController();
-        windowMeetingController.showAgendaPoints(this.meeting.getAgendaPoints(), this.meeting.getIdMeeting());
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.showAndWait();
-        closeMeetingAgenda(event);
+    }
+    
+    private boolean endedMeeting(){
+        boolean endedMeeting = false;
+        if(this.meeting.getState().equals("Finalizada")){
+            endedMeeting = true;
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setTitle("Acción inválida");
+            alert.setContentText("Verifica que el estado de la reunión sea FINALIZADA, de lo contrario no podrás ver la minuta");
+            alert.showAndWait();
+        }
+        return endedMeeting;
+    }
+    
+    @FXML
+    private void openStartMeeting(ActionEvent event) throws BusinessConnectionException{
+        MeetingDAO meetingDAO = new MeetingDAO();
+        if (this.meeting.getState().equals("Pendiente") && meetingDAO.getCurpOfResponsibleMeeting(this.meeting.getIdMeeting()).equals(integrant.getCurp())){ 
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMeeting.fxml"));
+            Parent root = null;
+            try {
+                root = fxmlLoader.load();
+            } catch (IOException ex) {
+                Logger.getLogger(WindowMeetingAgendaController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            WindowMeetingController windowMeetingController = fxmlLoader.getController();
+            windowMeetingController.setIntegrant(integrant);
+            windowMeetingController.showAgendaPoints(this.meeting.getAgendaPoints(), this.meeting.getIdMeeting());
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.showAndWait();
+            closeMeetingAgenda(event);
+        }else{
+            showInvalidActionAlert();
+        } 
     }
     
     @FXML
@@ -204,6 +252,15 @@ public class WindowMeetingAgendaController implements Initializable {
         alert.setHeaderText(null);
         alert.setTitle("Perdida de conexión");
         alert.setContentText("Perdida de conexión con la base de datos, no se pudo guardar. Intente más tarde");
+        alert.showAndWait();
+    }
+    
+    private void showInvalidActionAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setTitle("Acción inválida");
+        alert.setContentText("Verifica que el estado de la reunión sea PENDIENTE y verifica que eres la persona que agendó la reunión, de lo contrario"
+                            + "no podrás realizar la acción correspondiente");
         alert.showAndWait();
     }
 }
