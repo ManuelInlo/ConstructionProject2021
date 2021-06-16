@@ -21,7 +21,7 @@ public class ChapterBookDAO implements IChapterBookDAO{
     } 
     
     @Override
-    public boolean saveChapterBook (ChapterBook chapterBook) throws BusinessConnectionException{
+    public boolean savedChapterBook (ChapterBook chapterBook) throws BusinessConnectionException{
        String sql = "INSERT INTO chapterbook (impactCA, titleEvidence, author, homepage, endPage, ISBN, idProject, curp, chapterNumber)"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         boolean saveResult = false;
@@ -48,7 +48,7 @@ public class ChapterBookDAO implements IChapterBookDAO{
     }
     
     @Override
-    public boolean updateChapterBook (ChapterBook chapterBook, int chapterNumber) throws BusinessConnectionException{
+    public boolean updatedChapterBook (ChapterBook chapterBook, int chapterNumber) throws BusinessConnectionException{
        String sql = "UPDATE chapterBook SET impactCA = ?, titleEvidence = ?, author = ?, homepage =?, endPage = ?, ISBN = ?, idProject = ?, curp = ? "
                + " WHERE chapterNumber = ? ";
         boolean updateResult = false;

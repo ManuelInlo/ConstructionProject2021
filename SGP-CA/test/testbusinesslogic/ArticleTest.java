@@ -29,8 +29,9 @@ public class ArticleTest {
             Logger.getLogger(ArticleTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         Evidence evidence = new Evidence("SI", "Importancia de la Ingeniería de Software", "Alicia Ruiz");
-        Article article = new Article(evidence, "7487-0984", "C:\\usuarios\\alicia\\arc1.fil", 95, 110,
-                    "Publicado", "UVserva", "México", publicationDate, 300, "CUO", "El desarrollo de la educación y la ingeniería de software", 1, "MCUD940585RDTRER10");
+        Article article = new Article(evidence, "7487-0985", "C:\\usuarios\\alicia\\arc1.fil", 95, 110,
+                    "Publicado", "UVserva", "México", publicationDate, 300, "CUO", "El desarrollo de la educación "
+                    + "y la ingeniería de software", 1, "MCUD940585RDTRER10");
         boolean saveResult = articleDAO.saveArticle(article);
         assertEquals("Prueba correcta, si guardó", saveResult, true);
     }
@@ -48,7 +49,8 @@ public class ArticleTest {
         }
         Evidence evidence = new Evidence("NO", "Importancia de la Ingeniería de Software", "Alicia Ruiz");
         Article article = new Article(evidence, "7000-0982", "C:\\usuarios\\alicia\\arc1.fil", 80, 110,
-                    "Publicado", "UVserva", "México", publicationDate, 8, "CUO", "El desarrollo de la educación y la ingeniería de software", 1, "MCUD940585RDTRER10");
+                    "Publicado", "UVserva", "México", publicationDate, 8, "CUO", "El desarrollo de la educación y "
+                    + "la ingeniería de software", 1, "MCUD940585RDTRER10");
         boolean updateResult = articleDAO.updateArticle(article,"7485-0952");
         assertEquals("Prueba correcta, si actualizo", updateResult, true);
     }    

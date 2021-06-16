@@ -134,7 +134,8 @@ public class IntegrantDAO implements IIntegrantDAO{
             byte[] buf = cipher.doFinal(plainTextBytes);
             byte[] base64Bytes = Base64.encodeBase64(buf);
             encryptedPassword = new String(base64Bytes);
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | UnsupportedEncodingException | IllegalBlockSizeException | BadPaddingException ex) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | 
+                 UnsupportedEncodingException | IllegalBlockSizeException | BadPaddingException ex) {
             Logger.getLogger(IntegrantDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return encryptedPassword;
@@ -154,7 +155,8 @@ public class IntegrantDAO implements IIntegrantDAO{
             decipher.init(Cipher.DECRYPT_MODE, secretKey);
             byte[] plainText = decipher.doFinal(message);
             decryptedPassword = new String(plainText, "UTF-8");
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | NoSuchPaddingException | 
+                 InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
             Logger.getLogger(IntegrantDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return decryptedPassword;
