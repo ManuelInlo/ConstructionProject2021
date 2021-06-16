@@ -35,7 +35,6 @@ import mx.fei.ca.businesslogic.MeetingDAO;
 import mx.fei.ca.businesslogic.MemorandumApproverDAO;
 import mx.fei.ca.businesslogic.MemorandumDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
-import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
 import mx.fei.ca.domain.AgendaPoint;
 import mx.fei.ca.domain.Agreement;
 import mx.fei.ca.domain.Integrant;
@@ -97,14 +96,11 @@ public class WindowMemorandumController implements Initializable {
     @FXML
     private TextArea taPendings;
     @FXML
-    private Label lbProjectName;
     private ListView<MemorandumApprover> listViewMemorandumApprovers;
     @FXML
     private CheckBox checkBoxApprove;
     @FXML
     private Label lbUser;
-    @FXML
-    private ListView<MemorandumApprover> listMemorandumApprovers;
     private Integrant integrant;
     private Memorandum memorandum;
     private Meeting meeting;
@@ -143,14 +139,25 @@ public class WindowMemorandumController implements Initializable {
             fillListMemorandumApprovers(memorandumApprovers);
             this.memorandum.setAgreements(agreements);
             this.memorandum.setApprovers(memorandumApprovers);
-            //Mandar a verificar si se encuentra en la lista de aprobadores y si si, que se desactive el checkbox
+            if(checkMemorandumApproverExistence()){
+                checkBoxApprove.setDisable(true);
+            }
         } catch (BusinessConnectionException ex) {
             showLostConnectionAlert();
         }
-        this.memorandum = memorandum;
+        taNotes.setText(this.memorandum.getNote());
+        taPendings.setText(this.memorandum.getPending());
+        taNotes.setDisable(true);
+        taPendings.setDisable(true);
     }
     
-    private void fillMeetingAssistantsTable(ArrayList<MeetingAssistant> meetingAssistants){
+    private boolean checkMemorandumApproverExistence() throws BusinessConnectionException{
+        MemorandumApproverDAO memorandumApproverDAO = new MemorandumApproverDAO();
+        boolean exists = memorandumApproverDAO.existsMemorandumApproverByCurp(integrant.getCurp(), memorandum.getIdMemorandum());
+        return exists;
+    }
+    
+     private void fillMeetingAssistantsTable(ArrayList<MeetingAssistant> meetingAssistants){
         columnIntegrant.setCellValueFactory(new PropertyValueFactory("nameAssistant"));
         columnRole.setCellValueFactory(new PropertyValueFactory("role"));
         ObservableList<MeetingAssistant> listMeetingAssistants = FXCollections.observableArrayList(meetingAssistants);
@@ -188,7 +195,11 @@ public class WindowMemorandumController implements Initializable {
     
     @FXML
     private void closeMemorandum(ActionEvent event) throws BusinessConnectionException{
-        if(checkBoxApprove.isSelected()){
+        if(checkMemorandumApproverExistence()){
+            Node source = (Node) event.getSource();
+            Stage stage = (Stage) source.getScene().getWindow();
+            stage.close();  
+        }else if(checkBoxApprove.isSelected()){
             savedMemorandumApprover();
             Node source = (Node) event.getSource();
             Stage stage = (Stage) source.getScene().getWindow();

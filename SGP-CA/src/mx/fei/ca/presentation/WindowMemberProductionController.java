@@ -158,15 +158,43 @@ public class WindowMemberProductionController implements Initializable {
     }
 
     @FXML
-    private void openArticleRegistration(ActionEvent event) {
+    private void openArticleRegistration(ActionEvent event){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddArticle.fxml"));
+            Parent root = fxmlLoader.load();
+            WindowAddArticleController windowAddArticleController = fxmlLoader.getController();
+            //windowAddArticleController.setIntegrant(integrant);
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
-    private void openBookRegistration(ActionEvent event) {
+    private void openBookRegistration(ActionEvent event) throws IOException{
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddBook.fxml"));
+        Parent root = fxmlLoader.load();
+        WindowAddBookController windowAddBookController = fxmlLoader.getController();
+        //windowAddBookController.setIntegrant(integrant);
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.showAndWait();
     }
 
     @FXML
-    private void openChapterBookRegistration(ActionEvent event) {
+    private void openChapterBookRegistration(ActionEvent event) throws IOException{
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddChapterBook.fxml"));
+        Parent root = fxmlLoader.load();
+        WindowAddChapterBookController windowAddChapterBookController = fxmlLoader.getController();
+        //windowAddChapterBookController.setIntegrant(integrant);
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.showAndWait();
     }
 
     @FXML

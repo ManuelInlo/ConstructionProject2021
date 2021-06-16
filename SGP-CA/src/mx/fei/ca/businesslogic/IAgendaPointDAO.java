@@ -11,4 +11,5 @@ public interface IAgendaPointDAO {
     public boolean updatedAgendaPoint(AgendaPoint agendaPoint, int idAgendaPoint, int idMeeting) throws BusinessConnectionException;
     public boolean deletedAgendaPointById(int idAgendaPoint) throws BusinessConnectionException;
     public ArrayList<AgendaPoint> findAgendaPointsByIdMeeting(int idMeeting) throws BusinessConnectionException;
+    public int getIdAgendaPointByTopic(String topic) throws BusinessConnectionException;
 }

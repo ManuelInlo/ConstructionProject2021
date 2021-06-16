@@ -107,8 +107,8 @@ public class WindowModifyAgendaController implements Initializable {
     @FXML
     private Label lbUser;
     private int idMeeting;
-    private ObservableList<Prerequisite> prerequisites;
-    private ObservableList<AgendaPoint> agendaPoints;
+    private ObservableList<Prerequisite> listPrerequisites;
+    private ObservableList<AgendaPoint> listAgendaPoints;
     private ArrayList<Integrant> integrants;
 
     private enum TypeError{
@@ -119,6 +119,12 @@ public class WindowModifyAgendaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        columnDescription.setCellValueFactory(new PropertyValueFactory("description"));
+        columnPrerequisiteManager.setCellValueFactory(new PropertyValueFactory("prerequisiteManager"));
+        columnTimeStart.setCellValueFactory(new PropertyValueFactory("startTime"));
+        columnTimeEnd.setCellValueFactory(new PropertyValueFactory("endTime"));
+        columnTopic.setCellValueFactory(new PropertyValueFactory("topic"));
+        columnLeaderDiscussion.setCellValueFactory(new PropertyValueFactory("leader"));
         IntegrantDAO integrantDAO = new IntegrantDAO();
         try {
             this.integrants = integrantDAO.findAllIntegrants();
@@ -133,8 +139,8 @@ public class WindowModifyAgendaController implements Initializable {
         fillComboBoxMinutes(cbMinuteEnd);
         fillComboBoxForIntegrants(cbPrerequisiteManager);
         fillComboBoxForIntegrants(cbLeaderDiscussion);
-        prerequisites = FXCollections.observableArrayList();
-        agendaPoints = FXCollections.observableArrayList();
+        listPrerequisites = FXCollections.observableArrayList();
+        listAgendaPoints = FXCollections.observableArrayList();
     }    
     
     public void setIntegrant(Integrant integrant){
@@ -144,22 +150,21 @@ public class WindowModifyAgendaController implements Initializable {
     @FXML
     private void addPrerequisite(ActionEvent event) throws BusinessConnectionException{
         if(!existsInvalidFieldsForPrerequisites() && !existsDuplicateValueForAddPrerequisite()){
-            columnDescription.setCellValueFactory(new PropertyValueFactory("description"));
-            columnPrerequisiteManager.setCellValueFactory(new PropertyValueFactory("prerequisiteManager"));
             String description = tfDescription.getText();
             String prerequisiteManager = cbPrerequisiteManager.getSelectionModel().getSelectedItem().toString();
             Prerequisite prerequisite = new Prerequisite(description, prerequisiteManager);
             PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
             boolean savedPrerequisite = prerequisiteDAO.savedPrerequisite(prerequisite, idMeeting);
-            if(savedPrerequisite){
-                prerequisites.add(prerequisite);
-                tbPrerequisites.setItems(prerequisites);
+            int idPrerequisite = prerequisiteDAO.getIdPrerequisiteByDescription(prerequisite.getDescription());
+            if(savedPrerequisite && idPrerequisite != 0){
+                prerequisite.setIdPrerequisite(idPrerequisite);
+                listPrerequisites.add(prerequisite);
+                tbPrerequisites.setItems(listPrerequisites);
             }else{
                 showLostConnectionAlert();
             }
             cleanFieldsPrerequisite();
         }
-        
     }
     
     @FXML
@@ -172,11 +177,12 @@ public class WindowModifyAgendaController implements Initializable {
             PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
             boolean deletedPrerequisite = prerequisiteDAO.deletedPrerequisiteById(prerequisite.getIdPrerequisite());
             if(deletedPrerequisite){
-                prerequisites.remove(prerequisite);
+                listPrerequisites.remove(prerequisite);
                 tbPrerequisites.refresh();
             }else{
                 showLostConnectionAlert();
             }  
+            cleanFieldsPrerequisite();
         }
     }
     
@@ -197,8 +203,6 @@ public class WindowModifyAgendaController implements Initializable {
             showInvalidFieldAlert(typeError);
         }else if(!existsInvalidFieldsForPrerequisites() && !existsDuplicateValueForUpdatePrerequisite(prerequisite.getIdPrerequisite())){ 
             PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
-            columnDescription.setCellValueFactory(new PropertyValueFactory("description"));
-            columnPrerequisiteManager.setCellValueFactory(new PropertyValueFactory("prerequisiteManager"));
             String description = tfDescription.getText();
             String prerequisiteManager = cbPrerequisiteManager.getSelectionModel().getSelectedItem().toString();
             Prerequisite modifiedPrerequisite = new Prerequisite(description, prerequisiteManager);
@@ -207,20 +211,16 @@ public class WindowModifyAgendaController implements Initializable {
                 prerequisite.setDescription(modifiedPrerequisite.getDescription());
                 prerequisite.setPrerequisiteManager(modifiedPrerequisite.getPrerequisiteManager());
                 tbPrerequisites.refresh();
-                cleanFieldsPrerequisite();
             }else{
                 showLostConnectionAlert();
-            } 
+            }
+            cleanFieldsPrerequisite();
         }      
     }
 
     @FXML
     private void addAgendaPoint(ActionEvent event) throws BusinessConnectionException{
         if(!existsInvalidFieldsForAgendaPoint() && !existsDuplicateValueForAddAgendaPoint()){
-            columnTimeStart.setCellValueFactory(new PropertyValueFactory("startTime"));
-            columnTimeEnd.setCellValueFactory(new PropertyValueFactory("endTime"));
-            columnTopic.setCellValueFactory(new PropertyValueFactory("topic"));
-            columnLeaderDiscussion.setCellValueFactory(new PropertyValueFactory("leader"));
             Time startTime = parseToSqlTime(cbHourStart.getSelectionModel().getSelectedItem().toString(), cbMinuteStart.getSelectionModel().getSelectedItem().toString());
             Time endTime = parseToSqlTime(cbHourEnd.getSelectionModel().getSelectedItem().toString(), cbMinuteEnd.getSelectionModel().getSelectedItem().toString());
             String topic = tfTopic.getText();
@@ -228,9 +228,11 @@ public class WindowModifyAgendaController implements Initializable {
             AgendaPoint agendaPoint = new AgendaPoint(startTime, endTime, topic, leader);
             AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
             boolean savedAgendaPoint = agendaPointDAO.savedAgendaPoint(agendaPoint, idMeeting);
-            if(savedAgendaPoint){
-                agendaPoints.add(agendaPoint);
-                tbAgendaPoints.setItems(agendaPoints);
+            int idAgendaPoint = agendaPointDAO.getIdAgendaPointByTopic(agendaPoint.getTopic());
+            if(savedAgendaPoint && idAgendaPoint != 0){
+                agendaPoint.setIdAgendaPoint(idAgendaPoint);
+                listAgendaPoints.add(agendaPoint);
+                tbAgendaPoints.setItems(listAgendaPoints);
             }else{
                 showLostConnectionAlert();
             }
@@ -248,12 +250,13 @@ public class WindowModifyAgendaController implements Initializable {
             AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
             boolean deletedAgendaPoint = agendaPointDAO.deletedAgendaPointById(agendaPoint.getIdAgendaPoint());
             if(deletedAgendaPoint){
-                agendaPoints.remove(agendaPoint);
+                listAgendaPoints.remove(agendaPoint);
                 tbAgendaPoints.refresh();
             }else{
                 showLostConnectionAlert();
             }
-        }
+            cleanFieldsAgendaPoint();
+        } 
     }
     
     @FXML
@@ -276,10 +279,6 @@ public class WindowModifyAgendaController implements Initializable {
             TypeError typeError = TypeError.COLUMNMISSINGSELECTION;
             showInvalidFieldAlert(typeError);
         }else if(!existsInvalidFieldsForAgendaPoint() && !existsDuplicateValueForUpdateAgendaPoint(agendaPoint.getIdAgendaPoint())){
-            columnTimeStart.setCellValueFactory(new PropertyValueFactory("startTime"));
-            columnTimeEnd.setCellValueFactory(new PropertyValueFactory("endTime"));
-            columnTopic.setCellValueFactory(new PropertyValueFactory("topic"));
-            columnLeaderDiscussion.setCellValueFactory(new PropertyValueFactory("leader"));
             Time startTime = parseToSqlTime(cbHourStart.getSelectionModel().getSelectedItem().toString(), cbMinuteStart.getSelectionModel().getSelectedItem().toString());
             Time endTime = parseToSqlTime(cbHourEnd.getSelectionModel().getSelectedItem().toString(), cbMinuteEnd.getSelectionModel().getSelectedItem().toString());
             String topic = tfTopic.getText();
@@ -293,10 +292,10 @@ public class WindowModifyAgendaController implements Initializable {
                 agendaPoint.setTopic(modifiedAgendaPoint.getTopic());
                 agendaPoint.setLeader(modifiedAgendaPoint.getLeader());
                 tbAgendaPoints.refresh();
-                cleanFieldsAgendaPoint();
             }else{
                 showLostConnectionAlert();
             }
+            cleanFieldsAgendaPoint();
         }
         
     }
@@ -380,18 +379,12 @@ public class WindowModifyAgendaController implements Initializable {
     }
     
     private void fillPrerequisitesTable(ArrayList<Prerequisite> prerequisites){
-        columnDescription.setCellValueFactory(new PropertyValueFactory("description"));
-        columnPrerequisiteManager.setCellValueFactory(new PropertyValueFactory("prerequisiteManager"));
-        ObservableList<Prerequisite> listPrerequisites = FXCollections.observableArrayList(prerequisites);
+        listPrerequisites = FXCollections.observableArrayList(prerequisites);
         tbPrerequisites.setItems(listPrerequisites);
     }
     
     private void fillAgendaPointsTable(ArrayList<AgendaPoint> agendaPoints){
-        columnTimeStart.setCellValueFactory(new PropertyValueFactory("startTime"));
-        columnTimeEnd.setCellValueFactory(new PropertyValueFactory("endTime"));
-        columnTopic.setCellValueFactory(new PropertyValueFactory("topic"));
-        columnLeaderDiscussion.setCellValueFactory(new PropertyValueFactory("leader"));
-        ObservableList<AgendaPoint> listAgendaPoints = FXCollections.observableArrayList(agendaPoints);
+        listAgendaPoints = FXCollections.observableArrayList(agendaPoints);
         tbAgendaPoints.setItems(listAgendaPoints);
     }
     
@@ -725,27 +718,8 @@ public class WindowModifyAgendaController implements Initializable {
                 TypeError typeError = TypeError.WRONGTIMEAGENDAPOINT;
                 showInvalidFieldAlert(typeError);
             }
-        }
-        
-        if(!invalidHours && existsBusyTimeForAgendaPoint()){
-            invalidHours = true;
-        }
-        
+        }     
         return invalidHours;
-    }
-    
-    private boolean existsBusyTimeForAgendaPoint(){
-        boolean exists = false;
-        Time hourStart = parseToSqlTime(cbHourStart.getSelectionModel().getSelectedItem().toString(), cbMinuteStart.getSelectionModel().getSelectedItem().toString());
-        Time hourEnd = parseToSqlTime(cbHourEnd.getSelectionModel().getSelectedItem().toString(), cbMinuteEnd.getSelectionModel().getSelectedItem().toString());
-        for(AgendaPoint agendaPoint: tbAgendaPoints.getItems()){ 
-            if(agendaPoint.getStartTime().equals(hourStart) || agendaPoint.getEndTime().equals(hourEnd)){
-                exists = true;
-                TypeError typeError = TypeError.BUSYTIME;
-                showInvalidFieldAlert(typeError);
-            }
-        }
-        return exists;
     }
     
     private boolean existsDuplicateValueForAddPrerequisite(){
@@ -767,6 +741,15 @@ public class WindowModifyAgendaController implements Initializable {
                 duplicateValue = true;
                 TypeError typeError = TypeError.DUPLICATEVALUE;
                 showInvalidFieldAlert(typeError);
+            }
+            if(!duplicateValue){
+                Time hourStart = parseToSqlTime(cbHourStart.getSelectionModel().getSelectedItem().toString(), cbMinuteStart.getSelectionModel().getSelectedItem().toString());
+                Time hourEnd = parseToSqlTime(cbHourEnd.getSelectionModel().getSelectedItem().toString(), cbMinuteEnd.getSelectionModel().getSelectedItem().toString());
+                if(agendaPoint.getStartTime().equals(hourStart) || agendaPoint.getEndTime().equals(hourEnd)){
+                    duplicateValue = true;
+                    TypeError typeError = TypeError.BUSYTIME;
+                    showInvalidFieldAlert(typeError);
+                }
             }
         }
         return duplicateValue;
@@ -791,6 +774,15 @@ public class WindowModifyAgendaController implements Initializable {
                 duplicateValue = true;
                 TypeError typeError = TypeError.DUPLICATEVALUE;
                 showInvalidFieldAlert(typeError);
+            }
+            if(!duplicateValue){
+                Time hourStart = parseToSqlTime(cbHourStart.getSelectionModel().getSelectedItem().toString(), cbMinuteStart.getSelectionModel().getSelectedItem().toString());
+                Time hourEnd = parseToSqlTime(cbHourEnd.getSelectionModel().getSelectedItem().toString(), cbMinuteEnd.getSelectionModel().getSelectedItem().toString());
+                if((agendaPoint.getIdAgendaPoint() != idAgendaPoint) && (agendaPoint.getStartTime().equals(hourStart) || agendaPoint.getEndTime().equals(hourEnd))){
+                    duplicateValue = true;
+                    TypeError typeError = TypeError.BUSYTIME;
+                    showInvalidFieldAlert(typeError);
+                } 
             }
         }
         return duplicateValue;

@@ -3,8 +3,6 @@ package mx.fei.ca.presentation;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
@@ -61,9 +59,9 @@ public class WindowEditMemorandumController implements Initializable {
     @FXML
     private Label lbUser;
     private int idMemorandum;
-    private ObservableList<Agreement> agreements;
+    private ObservableList<Agreement> listAgreements;
     private Integrant integrant;
-
+    
     public enum TypeError{
         EMPTYFIELDS, MISSINGSELECTION, INVALIDYEAR, EMPTYTABLE, COLUMNMISSINGSELECTION, INVALIDSTRING, DUPLICATEVALUE;
     }
@@ -75,7 +73,7 @@ public class WindowEditMemorandumController implements Initializable {
         columnAgreement.setCellValueFactory(new PropertyValueFactory("description"));
         columnIntegrant.setCellValueFactory(new PropertyValueFactory("responsible"));
         columnDate.setCellValueFactory(new PropertyValueFactory("dateAgreement"));
-        agreements = FXCollections.observableArrayList();
+        listAgreements = FXCollections.observableArrayList();
     }    
     
     public void setIntegrant(Integrant integrant){
@@ -87,7 +85,7 @@ public class WindowEditMemorandumController implements Initializable {
         this.idMemorandum = memorandum.getIdMemorandum();
         taNotes.setText(memorandum.getNote());
         taPendings.setText(memorandum.getPending());
-        //fillAgreementsTable(memorandum.getAgreements());
+        fillAgreementsTable(memorandum.getAgreements());
     }
     
     private void fillComboBoxMonth(){
@@ -109,7 +107,7 @@ public class WindowEditMemorandumController implements Initializable {
     }
     
     private void fillAgreementsTable(ArrayList<Agreement> agreements){
-        ObservableList<Agreement> listAgreements = FXCollections.observableArrayList(agreements);
+        listAgreements = FXCollections.observableArrayList(agreements);
         tbAgreements.setItems(listAgreements);
     }
 
@@ -122,8 +120,11 @@ public class WindowEditMemorandumController implements Initializable {
             String responsible = cbIntegrants.getSelectionModel().getSelectedItem().toString();
             Agreement agreement = new Agreement(description, dateAgreement, responsible);
             boolean savedAgreement = agreementDAO.savedAgreement(agreement, idMemorandum);
-            if(savedAgreement){
-                agreements.add(agreement);
+            int idAgreement = agreementDAO.getIdAgreementByDescription(agreement.getDescription());
+            if(savedAgreement && idAgreement != 0){
+                agreement.setIdAgreement(idAgreement);
+                listAgreements.add(agreement);
+                tbAgreements.setItems(listAgreements);
                 cleanFieldsAgreement();
             }else{
                 showLostConnectionAlert();
@@ -141,19 +142,20 @@ public class WindowEditMemorandumController implements Initializable {
             AgreementDAO agreementDAO = new AgreementDAO();
             boolean deletedAgreement = agreementDAO.deletedAgreementById(agreement.getIdAgreement());
             if(deletedAgreement){
-                agreements.remove(agreement);
+                listAgreements.remove(agreement);
                 tbAgreements.refresh();
             }else{
                 showLostConnectionAlert();
             }
         }
+        cleanFieldsAgreement();
     }
     
     @FXML
     private void fillAgreementFields(MouseEvent event){
         Agreement agreement = tbAgreements.getSelectionModel().getSelectedItem();
         if(agreement != null){
-            tfAgreement.setText(agreement.getDateAgreement());
+            tfAgreement.setText(agreement.getDescription());
             cbIntegrants.getSelectionModel().select(agreement.getResponsible());
             cbMonth.getSelectionModel().select(takeMonth(agreement.getDateAgreement()));
             tfYear.setText(takeYear(agreement.getDateAgreement()));
@@ -178,10 +180,11 @@ public class WindowEditMemorandumController implements Initializable {
                 agreement.setDescription(modifiedAgreement.getDescription());
                 agreement.setResponsible(modifiedAgreement.getResponsible());
                 tbAgreements.refresh();
-                cleanFieldsAgreement();
+                
             }else{
                 showLostConnectionAlert();
-            }  
+            } 
+            cleanFieldsAgreement();
         }
     }
     
@@ -190,11 +193,11 @@ public class WindowEditMemorandumController implements Initializable {
         if(!existsInvalidFieldsForMemorandum()){
             String pending = taPendings.getText();
             String note = taNotes.getText();
-            Memorandum memorandum = new Memorandum(pending, note, "Por aprobar");
+            Memorandum memorandum = new Memorandum(pending, note);
             MemorandumDAO memorandumDAO = new MemorandumDAO();
             boolean updatedMemorandum;
             try {
-                updatedMemorandum = memorandumDAO.updatedMemorandum(memorandum, idMemorandum, idMemorandum);
+                updatedMemorandum = memorandumDAO.updatedMemorandum(memorandum, idMemorandum);
                 if(updatedMemorandum){
                     showConfirmationSaveAlert();
                     closeEditMemorandum(event);

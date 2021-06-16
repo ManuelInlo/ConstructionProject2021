@@ -8,14 +8,12 @@ public class Memorandum {
     private int idMemorandum;
     private String pending;
     private String note;
-    private String state;
     private ArrayList<Agreement> agreements;
     private ArrayList<MemorandumApprover> approvers;
 
-    public Memorandum(String pending, String note, String state) {
+    public Memorandum(String pending, String note) {
         this.pending = pending;
         this.note = note;
-        this.state = state;
     }
 
     public int getIdMemorandum() {
@@ -28,10 +26,6 @@ public class Memorandum {
 
     public String getNote() {
         return note;
-    }
-
-    public String getState() {
-        return state;
     }
 
     public ArrayList<Agreement> getAgreements() {
@@ -56,10 +50,6 @@ public class Memorandum {
 
     public void setApprovers(ArrayList<MemorandumApprover> approvers) {
         this.approvers = approvers;
-    }
-
-    public void setState(String state) {
-        this.state = state;
     }
 
     public void setAgreements(ArrayList<Agreement> agreements) {

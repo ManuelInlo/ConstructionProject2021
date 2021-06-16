@@ -112,4 +112,24 @@ public class AgendaPointDAO implements IAgendaPointDAO{
         }
         return agendaPoints;
     }
+    
+    @Override
+    public int getIdAgendaPointByTopic(String topic) throws BusinessConnectionException{
+        int idAgendaPoint = 0;
+        String sql = "SELECT idAgendaPoint FROM agendaPoint WHERE topic = ?";
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, topic);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                idAgendaPoint = resultSet.getInt("idAgendaPoint");
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return idAgendaPoint;
+    }
 }

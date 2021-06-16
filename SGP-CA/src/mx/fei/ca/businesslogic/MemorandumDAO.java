@@ -22,7 +22,7 @@ public class MemorandumDAO implements IMemorandumDAO{
     
     @Override
     public int saveAndReturnIdMemorandum(Memorandum memorandum, int idMeeting) throws BusinessConnectionException{
-        String sql = "INSERT INTO memorandum (pending, note, idMeeting, state) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO memorandum (pending, note, idMeeting) VALUES (?, ?, ?)";
         int idMemorandumResult = 0;
         try{
             connection = dataBaseConnection.getConnection();
@@ -30,7 +30,6 @@ public class MemorandumDAO implements IMemorandumDAO{
             preparedStatement.setString(1,memorandum.getPending());
             preparedStatement.setString(2, memorandum.getNote());
             preparedStatement.setInt(3, idMeeting);
-            preparedStatement.setString(4, memorandum.getState());
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
             if(resultSet.next()){
@@ -45,16 +44,15 @@ public class MemorandumDAO implements IMemorandumDAO{
     }
     
     @Override
-    public boolean updatedMemorandum(Memorandum memorandum, int idMemorandum, int idMeeting) throws BusinessConnectionException{
-        String sql = "UPDATE memorandum SET pending = ?, note = ?, idMeeting = ? WHERE idMemorandum = ?";
+    public boolean updatedMemorandum(Memorandum memorandum, int idMemorandum) throws BusinessConnectionException{
+        String sql = "UPDATE memorandum SET pending = ?, note = ? WHERE idMemorandum = ?";
         boolean updateResult = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, memorandum.getPending());
             preparedStatement.setString(2, memorandum.getNote());
-            preparedStatement.setInt(3, idMeeting);
-            preparedStatement.setInt(4, idMemorandum);
+            preparedStatement.setInt(3, idMemorandum);
             preparedStatement.executeUpdate();
             updateResult = true;
         }catch(SQLException ex){
@@ -78,8 +76,7 @@ public class MemorandumDAO implements IMemorandumDAO{
                 int idMemorandum = resultSet.getInt("idMemorandum");
                 String pending = resultSet.getString("pending");
                 String note = resultSet.getString("note");
-                String state = resultSet.getString("state");
-                memorandum = new Memorandum(pending, note, state);
+                memorandum = new Memorandum(pending, note);
                 memorandum.setIdMemorandum(idMemorandum);
             }
         }catch(SQLException ex){

@@ -46,4 +46,12 @@ public class PrerequisiteTest {
         assertEquals("Prueba corerecta", prerequisites.size(), 1);
     }
     
+    @Test
+    public void testGetIdPrerequisiteByDescription() throws BusinessConnectionException{
+        PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
+        int idPrerequisiteExpected = 15;
+        int idPrerequisiteResult = prerequisiteDAO.getIdPrerequisiteByDescription("Llevar trabajos recepcionales");
+        assertEquals("Prueba recuperar id de prerrequisito", idPrerequisiteExpected, idPrerequisiteResult);
+    }
+    
 }

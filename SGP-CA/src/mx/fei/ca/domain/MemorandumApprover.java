@@ -17,4 +17,9 @@ public class MemorandumApprover {
         this.integrant = integrant;
     }
     
+    @Override
+    public String toString(){
+        return this.integrant.getNameIntegrant();
+    }
+    
 }

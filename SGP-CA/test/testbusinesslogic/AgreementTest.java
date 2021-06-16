@@ -1,18 +1,12 @@
 
 package testbusinesslogic;
 
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import mx.fei.ca.businesslogic.AgreementDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
 import mx.fei.ca.domain.Agreement;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
@@ -50,10 +44,15 @@ public class AgreementTest {
     }
     
     @Test
-    public void testFindAgreementsByIdMemorandum() throws BusinessConnectionException, BusinessDataException{
+    public void testFindAgreementsByIdMemorandum() throws BusinessConnectionException{
         AgreementDAO agreementDAO = new AgreementDAO();
         ArrayList<Agreement> agreements = agreementDAO.findAgreementsByIdMemorandum(3);
         assertEquals("Prueba correcta",agreements.size(), 1);
+    }
+    
+    @Test
+    public void testGetIdAgreementByDescription() throws BusinessConnectionException{
+        AgreementDAO agreementDAO = new AgreementDAO();
     }
 
 }

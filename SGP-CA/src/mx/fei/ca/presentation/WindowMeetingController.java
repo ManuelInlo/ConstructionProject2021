@@ -4,11 +4,8 @@ package mx.fei.ca.presentation;
 import java.net.URL;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
@@ -149,16 +146,16 @@ public class WindowMeetingController implements Initializable {
     }
 
     @FXML
-    private void concludeMeeting(ActionEvent event){
+    private void concludeMeeting(ActionEvent event) throws BusinessConnectionException{
         Optional<ButtonType> action = showConfirmationAlert();
         if (action.get() == ButtonType.OK){
             if(!existsInvalidFieldsForMemorandum()){
                 String pending = taPendings.getText();
                 String note = taNotes.getText();
-                Memorandum memorandum = new Memorandum(pending, note, "Por aprobar");
+                Memorandum memorandum = new Memorandum(pending, note);
                 MemorandumDAO memorandumDAO = new MemorandumDAO();
                 MeetingDAO meetingDAO = new MeetingDAO();
-                try {
+                try{
                     idMemorandum = memorandumDAO.saveAndReturnIdMemorandum(memorandum, this.idMeeting);
                     if (idMemorandum != 0 && savedAgreements() && meetingDAO.updatedStateOfMeeting("Finalizada", idMeeting)) {
                         showConfirmationSaveAlert();

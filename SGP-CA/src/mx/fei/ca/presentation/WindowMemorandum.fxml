@@ -107,7 +107,7 @@
                         <Font name="System Bold" size="13.0" />
                      </font></Label>
                   <Label fx:id="lbState" layoutX="71.0" layoutY="128.0" />
-                  <ListView fx:id="listMemorandumApprovers" layoutX="699.0" layoutY="167.0" prefHeight="216.0" prefWidth="230.0" />
+                  <ListView fx:id="listViewMemorandumApprovers" layoutX="699.0" layoutY="167.0" prefHeight="216.0" prefWidth="230.0" />
                   <TableView fx:id="tbAgreements" layoutX="60.0" layoutY="680.0" prefHeight="142.0" prefWidth="618.0">
                     <columns>
                       <TableColumn fx:id="columnAgreement" prefWidth="236.0" text="Acuerdo" />
@@ -135,9 +135,9 @@
                   <Label fx:id="lbProjectName" layoutX="161.0" layoutY="46.0" />
                   <Label layoutX="149.0" layoutY="75.0" />
                   <Label fx:id="lbAffair" layoutX="81.0" layoutY="103.0" />
-                  <Label fx:id="lbState" layoutX="81.0" layoutY="129.0" />
                   <Label fx:id="lbMeetingDate" layoutX="699.0" layoutY="54.0" />
                   <Label fx:id="lbMeetingTime" layoutX="699.0" layoutY="76.0" />
+                  <Label fx:id="lbState" layoutX="81.0" layoutY="129.0" />
                   <Label layoutX="699.0" layoutY="139.0" text="Aprobador por:">
                      <font>
                         <Font name="System Bold" size="15.0" />

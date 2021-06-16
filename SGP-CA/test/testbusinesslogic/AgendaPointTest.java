@@ -75,6 +75,14 @@ public class AgendaPointTest {
         ArrayList<AgendaPoint> agendaPoints = agendaPointDAO.findAgendaPointsByIdMeeting(5);
         assertEquals("Prueba correcta", agendaPoints.size(), 1);
     }
+    
+    @Test
+    public void testGetIdAgendaPointByTopic() throws BusinessConnectionException{
+        AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
+        int idAgendaPointExpected = 19;
+        int idAgendaPointResult = agendaPointDAO.getIdAgendaPointByTopic("lista");
+        assertEquals("Prueba recuperar id de punto de agenda", idAgendaPointExpected, idAgendaPointResult);
+    }
    
 }
   
