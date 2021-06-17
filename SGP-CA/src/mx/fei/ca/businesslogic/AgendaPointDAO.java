@@ -154,20 +154,22 @@ public class AgendaPointDAO implements IAgendaPointDAO{
     }
     
     /**
-     * Método que devuelve el identificador de un punto de agenda de acuerdo a su tema
+     * Método que devuelve el identificador de un punto de agenda de acuerdo a su tema e identificador de reunión
      * @param topic Define el tema del punto de agenda a buscar
+     * @param idMeeting Define el indentificador de la reunión a la cual pertenece dicho punto de agenda
      * @return Entero con el identificador del punto de agenda de una reunión que coincide con el tema. Devuelve 0 si no encotró coincidencias
      * @throws BusinessConnectionException 
      */
     
     @Override
-    public int getIdAgendaPointByTopic(String topic) throws BusinessConnectionException{
+    public int getIdAgendaPointByTopic(String topic, int idMeeting) throws BusinessConnectionException{
         int idAgendaPoint = 0;
-        String sql = "SELECT idAgendaPoint FROM agendaPoint WHERE topic = ?";
+        String sql = "SELECT idAgendaPoint FROM agendaPoint WHERE topic = ? AND idMeeting = ?";
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, topic);
+            preparedStatement.setInt(2, idMeeting);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 idAgendaPoint = resultSet.getInt("idAgendaPoint");

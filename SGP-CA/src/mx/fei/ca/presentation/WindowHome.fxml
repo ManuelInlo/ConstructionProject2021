@@ -40,7 +40,7 @@
                   </Text>
                </children>
             </Pane>
-            <Pane layoutX="36.0" layoutY="209.0" onMouseClicked="#clickEvidences" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
+            <Pane layoutX="191.0" layoutY="209.0" onMouseClicked="#clickEvidences" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
                <children>
                   <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="159.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -48,20 +48,6 @@
                      </image>
                   </ImageView>
                   <Text layoutX="14.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Evidencias">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Text>
-               </children>
-            </Pane>
-            <Pane layoutX="340.0" layoutY="209.0" onMouseClicked="#clickWorkPlan" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
-               <children>
-                  <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="159.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/book.png" />
-                     </image>
-                  </ImageView>
-                  <Text layoutX="24.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Plan de trabajo">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -82,7 +68,7 @@
                   <Image url="@images/man%20(1).png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="48.0" fitWidth="45.0" layoutX="553.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imgLogOut" fitHeight="48.0" fitWidth="45.0" layoutX="553.0" layoutY="14.0" onMouseClicked="#signOff" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/logout.png" />
                </image>

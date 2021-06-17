@@ -152,7 +152,7 @@ public class WindowEditMemorandumController implements Initializable {
             String responsible = cbIntegrants.getSelectionModel().getSelectedItem().toString();
             Agreement agreement = new Agreement(description, dateAgreement, responsible);
             boolean savedAgreement = agreementDAO.savedAgreement(agreement, idMemorandum);
-            int idAgreement = agreementDAO.getIdAgreementByDescription(agreement.getDescription());
+            int idAgreement = agreementDAO.getIdAgreementByDescription(agreement.getDescription(), idMemorandum);
             if(savedAgreement && idAgreement != 0){
                 agreement.setIdAgreement(idAgreement);
                 listAgreements.add(agreement);

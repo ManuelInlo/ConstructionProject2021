@@ -170,7 +170,7 @@ public class WindowModifyAgendaController implements Initializable {
             Prerequisite prerequisite = new Prerequisite(description, prerequisiteManager);
             PrerequisiteDAO prerequisiteDAO = new PrerequisiteDAO();
             boolean savedPrerequisite = prerequisiteDAO.savedPrerequisite(prerequisite, idMeeting);
-            int idPrerequisite = prerequisiteDAO.getIdPrerequisiteByDescription(prerequisite.getDescription());
+            int idPrerequisite = prerequisiteDAO.getIdPrerequisiteByDescription(prerequisite.getDescription(), idMeeting);
             if(savedPrerequisite && idPrerequisite != 0){
                 prerequisite.setIdPrerequisite(idPrerequisite);
                 listPrerequisites.add(prerequisite);
@@ -266,7 +266,7 @@ public class WindowModifyAgendaController implements Initializable {
             AgendaPoint agendaPoint = new AgendaPoint(startTime, endTime, topic, leader);
             AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
             boolean savedAgendaPoint = agendaPointDAO.savedAgendaPoint(agendaPoint, idMeeting);
-            int idAgendaPoint = agendaPointDAO.getIdAgendaPointByTopic(agendaPoint.getTopic());
+            int idAgendaPoint = agendaPointDAO.getIdAgendaPointByTopic(agendaPoint.getTopic(), idMeeting);
             if(savedAgendaPoint && idAgendaPoint != 0){
                 agendaPoint.setIdAgendaPoint(idAgendaPoint);
                 listAgendaPoints.add(agendaPoint);

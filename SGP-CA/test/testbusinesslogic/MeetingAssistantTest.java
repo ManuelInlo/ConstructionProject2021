@@ -11,10 +11,26 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
+/**
+ * Clase para representar los test de la clase MeetingAssistantDAO 
+ * @author David Alexander Mijangos Paredes
+ * @version 17-06-2021
+ */
+
 public class MeetingAssistantTest {
+    
+    /**
+     * Constructor para la creación de un MeetingAssistantTest
+     */
+    
     public MeetingAssistantTest(){
         
     }
+    
+    /**
+     * Método que realiza test para la inserción de un nuevo asistente de reunión en la base de datos
+     * @throws BusinessConnectionException 
+     */
     
     @Test
     public void testInsertMeetingAssistant() throws BusinessConnectionException{
@@ -27,6 +43,11 @@ public class MeetingAssistantTest {
         assertTrue("Prueba insertar asistente de reunión", saveResult);
     }
     
+    /**
+     * Método que realiza test para la modificación del rol de un asistente de reunión específico
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testUpdateRoleOfMeetingAssistant() throws BusinessConnectionException{
         MeetingAssistantDAO meetingAssistantDAO = new MeetingAssistantDAO();
@@ -37,6 +58,11 @@ public class MeetingAssistantTest {
         boolean updateResult = meetingAssistantDAO.updatedRoleOfMeetingAssistant(meetingAssistant, 5);
         assertTrue("Prueba modificar rol de asistente de reunión", updateResult);
     }
+    
+    /**
+     * Método para la obtención de los asistentes de una reunión de acuerdo al identificador de la reunión
+     * @throws BusinessConnectionException 
+     */
     
     @Test
     public void testFindMeetingAssistantsByIdMeeting() throws BusinessConnectionException{

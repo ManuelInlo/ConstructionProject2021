@@ -23,6 +23,12 @@ import mx.fei.ca.businesslogic.IntegrantDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Integrant;
 
+/**
+ * Clase para representar el controlador del FXML WindowLoginController
+ * @author David Alexander Mijangos Paredes
+ * @version 17-06-2021
+ */
+
 public class WindowLoginController implements Initializable {
 
     @FXML
@@ -32,29 +38,49 @@ public class WindowLoginController implements Initializable {
     
     private Integrant integrant;
     
+    /**
+     * Enumerado que representa los tipos de errores específicos al iniciar sesión
+     */
+    
     private enum TypeError{
         EMPTYFIELD, INVALIDEMAIL, NONEXISTENINTEGRANT;
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+ 
     }    
+    
+    /**
+     * Método que manda a abrir la ventana de home 
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException
+     * @throws IOException 
+     */
 
     @FXML
-    private void openHomePage(ActionEvent event) throws BusinessConnectionException, IOException {
-        if(!existsInvalidFields()){
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowHome.fxml"));
-            Parent root = fxmlLoader.load();
-            WindowHomeController windowHomeController = fxmlLoader.getController();
-            windowHomeController.setIntegrant(integrant);
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.showAndWait();
-            closeWindowLogin(event);
+    private void openHomePage(ActionEvent event){
+        try {
+            if(!existsInvalidFields()){
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowHome.fxml"));
+                Parent root = fxmlLoader.load();
+                WindowHomeController windowHomeController = fxmlLoader.getController();
+                windowHomeController.setIntegrant(integrant);
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.showAndWait();
+                closeWindowLogin(event);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(WindowLoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /**
+     * Método que cierra la ventana actual "Incio de sesión"
+     * @param event Define el evento generado
+     */
 
     @FXML
     private void closeWindowLogin(ActionEvent event) {
@@ -63,14 +89,30 @@ public class WindowLoginController implements Initializable {
         stage.close();
     }
     
+    /**
+     * Método que verifica si existen campos inválidos en la GUI. El método invoca a otros métodos con validaciones más específicas
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+    
     @FXML
-    private boolean existsInvalidFields() throws BusinessConnectionException{
+    private boolean existsInvalidFields(){
         boolean invalidField = false;
-        if(existsEmptyFields() || existsInvalidEmail()|| !existsEmailAndPassword()){
-            invalidField = true;
+        try {
+            if(existsEmptyFields() || existsInvalidEmail()|| !existsEmailAndPassword()){
+                invalidField = true;
+            }
+            
+        } catch (BusinessConnectionException ex) {
+            showLostConnectionAlert();
         }
         return invalidField;
     }
+    
+    /**
+     * Método que verifica si existen campos vacíos en la GUI
+     * @return Booleano con el resultado de verificación, devuelve true si existen vacíos, de lo contrario, devuelve false
+     */
     
     @FXML
     private boolean existsEmptyFields(){
@@ -82,6 +124,12 @@ public class WindowLoginController implements Initializable {
         }
         return emptyFields;
     }
+    
+    /**
+     * Método que manda a verificar si el correo y contraseña ingresados existen en la base de datos
+     * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
     
     @FXML
     private boolean existsEmailAndPassword() throws BusinessConnectionException{
@@ -99,12 +147,27 @@ public class WindowLoginController implements Initializable {
         return exists;
     }
     
+    /**
+     * Método que devuelve el integrante que tenga el correo ingresado
+     * @return Objeto integrante
+     * @throws BusinessConnectionException 
+     */
+    
     @FXML
-    private Integrant getIntegrantByEmail() throws BusinessConnectionException{
-        IntegrantDAO integrantDAO = new IntegrantDAO();
-        this.integrant = integrantDAO.getIntegrantByInstitutionalMail(tfEmail.getText());
+    private Integrant getIntegrantByEmail(){
+        try {
+            IntegrantDAO integrantDAO = new IntegrantDAO();
+            this.integrant = integrantDAO.getIntegrantByInstitutionalMail(tfEmail.getText());
+        } catch (BusinessConnectionException ex) {
+            showLostConnectionAlert();
+        }
         return integrant;
     }
+    
+    /**
+     * Método que verifica si existen caracteres en el correo electrónico que sean inválidos
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     */
     
     @FXML
     private boolean existsInvalidEmail(){
@@ -119,6 +182,11 @@ public class WindowLoginController implements Initializable {
         
         return invalidEmail;
     }
+    
+    /**
+     * Método que muestra alerta de campo inválido de acuerdo al tipo de error
+     * @param typeError Define el tipo de error que encontró
+     */
     
     @FXML 
     private void showInvalidFieldAlert(TypeError typeError){
@@ -140,5 +208,16 @@ public class WindowLoginController implements Initializable {
         alert.showAndWait();
     }
     
+    /**
+     * Método que muestra alerta de perdida de conexión con la base de datos
+     */
+    
+    private void showLostConnectionAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setTitle("Perdida de conexión");
+        alert.setContentText("Perdida de conexión con la base de datos, no se pudo guardar. Intente más tarde");
+        alert.showAndWait();
+    }
     
 }
