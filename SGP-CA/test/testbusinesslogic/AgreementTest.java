@@ -4,7 +4,6 @@ package testbusinesslogic;
 import java.util.ArrayList;
 import mx.fei.ca.businesslogic.AgreementDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
-import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
 import mx.fei.ca.domain.Agreement;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

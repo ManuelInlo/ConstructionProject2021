@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
-import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
 import mx.fei.ca.dataaccess.DataBaseConnection;
 import mx.fei.ca.domain.PreliminaryProject;
 
@@ -23,7 +22,7 @@ public class PreliminaryProjectDAO implements IPreliminaryProjectDAO{
     }
 
     @Override
-    public boolean savedPreliminaryProject(PreliminaryProject preliminaryproject, int idProject, int idCollaborator) throws BusinessConnectionException, BusinessDataException {
+    public boolean savedPreliminaryProject(PreliminaryProject preliminaryproject, int idProject, int idCollaborator) throws BusinessConnectionException {
        String sql = "INSERT INTO preliminaryProject (idPreliminaryproject, idProject, idCollaborator, tittlePreliminaryProject, \n" +
                     "preliminaryProjectCondition, duration, modality, preliminaryProjectDescription, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";  
        boolean saveResult = false;
@@ -51,7 +50,7 @@ public class PreliminaryProjectDAO implements IPreliminaryProjectDAO{
     }
     
     @Override
-    public boolean updatePreliminaryProject(PreliminaryProject preliminaryproject, int idProject, int idCollaborator) throws BusinessConnectionException, BusinessDataException {
+    public boolean updatePreliminaryProject(PreliminaryProject preliminaryproject, int idProject, int idCollaborator) throws BusinessConnectionException {
         String sql = "UPDATE preliminaryproject SET idPreliminaryproject = ?, idProject = ?, idCollaborator = ?, tittlePreliminaryProject = ?, \n"
                 + "preliminaryProjectCondition = ?, duration = ?, modality = ?, preliminaryProjectDescription = ?, startDate = ?"
                 + "WHERE idPreliminaryProject = ?";

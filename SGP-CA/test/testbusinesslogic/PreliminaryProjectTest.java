@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import mx.fei.ca.businesslogic.PreliminaryProjectDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
-import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
 import mx.fei.ca.domain.PreliminaryProject;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -17,7 +16,7 @@ public class PreliminaryProjectTest {
     }
     
     @Test
-    public void testAddPreliminaryProject() throws BusinessConnectionException, BusinessDataException{
+    public void testAddPreliminaryProject() throws BusinessConnectionException{
         PreliminaryProjectDAO preliminaryProjectDAO = new PreliminaryProjectDAO();
         String date = "25-05-2021";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");

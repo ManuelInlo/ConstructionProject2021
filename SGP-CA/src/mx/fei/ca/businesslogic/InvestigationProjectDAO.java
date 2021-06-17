@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
-import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
 import mx.fei.ca.dataaccess.DataBaseConnection;
 import mx.fei.ca.domain.InvestigationProject;
 
@@ -23,7 +22,7 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO {
     }
 
     @Override
-    public boolean savedInvestigationProject(mx.fei.ca.domain.InvestigationProject investigationproject, int keycode) throws BusinessConnectionException, BusinessDataException {
+    public boolean savedInvestigationProject(mx.fei.ca.domain.InvestigationProject investigationproject, int keycode) throws BusinessConnectionException {
         String sql = "INSERT INTO investigationProject (idProject, keyCode, endDate, startDate, tittleProject, description)"
                 + " VALUES (?, ?, ?, ?, ?, ?)";
         boolean saveResult = false;
@@ -48,7 +47,7 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO {
     }
     
     @Override
-    public boolean updateInvestigationproject(InvestigationProject investigationproject, int keycode) throws BusinessConnectionException, BusinessDataException {
+    public boolean updateInvestigationproject(InvestigationProject investigationproject, int keycode) throws BusinessConnectionException {
         String sql = "UPDATE investigationProject SET idProject = ?, keyCode = ?, endDate = ?, startDate = ?, tittleProject = ?, "
                 + "description = ? WHERE idProject = ?";
         boolean updateResult = false;

@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
-import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
 import mx.fei.ca.dataaccess.DataBaseConnection;
 import mx.fei.ca.domain.Strategy;
 
@@ -22,7 +21,7 @@ public class StrategyDAO implements IStrategyDAO{
     }
 
     @Override
-    public boolean saveStrategy(Strategy strategy, int idTarget) throws BusinessConnectionException, BusinessDataException {
+    public boolean saveStrategy(Strategy strategy, int idTarget) throws BusinessConnectionException {
         String sql = "INSERT INTO strategy (idStrategy, idTarget, StrategyNumber, strategyDescription, goal, strategyAction, result)";
         boolean saveResult = false;
         try {
@@ -47,7 +46,7 @@ public class StrategyDAO implements IStrategyDAO{
     }
     
     @Override
-    public boolean updateStrategy(Strategy strategy, int idTarget, int idStrategy) throws BusinessConnectionException, BusinessDataException {
+    public boolean updateStrategy(Strategy strategy, int idTarget, int idStrategy) throws BusinessConnectionException {
         String sql = "UPDATE strategy SET idTarget = ?, StrategyNumber = ?, strategyDescription = ?, goal = ?"
                 + ", strategyAction = ?, result = ? WHERE idStrategy = ?";
         boolean updateResult = false;

@@ -25,7 +25,6 @@ import javax.crypto.spec.SecretKeySpec;
 import mx.fei.ca.dataaccess.DataBaseConnection;
 import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
-import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
 import org.apache.commons.codec.binary.Base64;
 
 public class IntegrantDAO implements IIntegrantDAO{
