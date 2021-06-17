@@ -77,7 +77,6 @@
                <font>
                   <Font name="System Bold" size="13.0" />
                </font></Label>
-            <TextField fx:id="tfParticipationType" layoutX="27.0" layoutY="167.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
             <Label layoutX="554.0" layoutY="149.0" text="País">
                <font>
                   <Font name="System Bold" size="13.0" />
@@ -87,7 +86,7 @@
                   <Font name="System Bold" size="13.0" />
                </font></Label>
             <TextField fx:id="tfCountry" layoutX="554.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
-            <Label layoutX="28.0" layoutY="149.0" text="Tipo de participación">
+            <Label layoutX="28.0" layoutY="254.0" text="Cargo del autor">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font></Label>
@@ -101,22 +100,22 @@
                <font>
                   <Font name="System Bold" size="13.0" />
                </font></Label>
-            <Label layoutX="28.0" layoutY="255.0" text="Ruta del archivo">
+            <Label layoutX="553.0" layoutY="254.0" text="Ruta del archivo">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font></Label>
-            <TextField fx:id="tfFileRoute" layoutX="28.0" layoutY="272.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
+            <TextField fx:id="tfFileRoute" layoutX="553.0" layoutY="271.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
             <DatePicker fx:id="dpPublicationDate" layoutX="27.0" layoutY="220.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
             <ComboBox fx:id="cbActualState" layoutX="289.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
             <Label layoutX="29.0" layoutY="47.0" text="Impacto al CA:">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font></Label>
-            <Label layoutX="555.0" layoutY="255.0" text="Título del libro">
+            <Label layoutX="28.0" layoutY="149.0" text="Título del libro">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font></Label>
-            <TextField fx:id="tfTitleEvidence" layoutX="554.0" layoutY="272.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
+            <TextField fx:id="tfTitleEvidence" layoutX="27.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
             <Label layoutX="290.0" layoutY="255.0" text="Autor">
                <font>
                   <Font name="System Bold" size="13.0" />
@@ -129,6 +128,7 @@
                </font>
             </Label>
             <ComboBox fx:id="cbInvestigationProject" layoutX="555.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="241.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
+            <ComboBox fx:id="cbParticipationType" layoutX="27.0" layoutY="272.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
          </children>
       </Pane>
    </children>

@@ -88,7 +88,7 @@ public class WindowAddIntegrantController implements Initializable {
     
     private void fillComboBoxStudyDegree() {
         ObservableList<String> listStudyDegree = FXCollections.observableArrayList("Licenciatura", "Maestría", "Doctorado");
-        cbStatusIntegrant.setItems(listStudyDegree);
+        cbStudyDegree.setItems(listStudyDegree);
     }
         
     @FXML
@@ -131,7 +131,7 @@ public class WindowAddIntegrantController implements Initializable {
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         return sqlDate;
     }  
-    
+       
     private boolean existsInvalidFields() throws BusinessConnectionException{
         boolean invalidFields = false;
         if(existsEmptyFields() || existsInvalidStrings() || existsMissingSelection() || existsInvalidDates()){
@@ -139,7 +139,8 @@ public class WindowAddIntegrantController implements Initializable {
         }
         return invalidFields;
     }
-    
+
+    @FXML     
     private boolean existsEmptyFields(){
         boolean emptyFields = false;
         if(tfNameIntegrant.getText().isEmpty() || tfStudyDiscipline.getText().isEmpty() || tfTypeTeaching.getText().isEmpty() || tfIesStudyDegree.getText().isEmpty() 
@@ -150,7 +151,8 @@ public class WindowAddIntegrantController implements Initializable {
         }
         return emptyFields;
     }
-    
+ 
+    @FXML     
     private boolean existsInvalidStrings(){
         boolean invalidStrings = false;
         if(existsInvalidCharacters(tfNameIntegrant.getText()) || existsInvalidCharactersForCurp(tfCurp.getText()) || existsInvalidCharacters(tfStudyDiscipline.getText())
@@ -249,7 +251,8 @@ public class WindowAddIntegrantController implements Initializable {
         }
         return inconsistentDates;
     }
-    
+ 
+    @FXML     
     private void showInvalidFieldAlert(TypeError typeError){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
@@ -271,7 +274,8 @@ public class WindowAddIntegrantController implements Initializable {
         }
         alert.showAndWait();    
     }
-    
+
+    @FXML     
     private void showConfirmationAlert(boolean saveResult){
         if(saveResult){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -281,7 +285,8 @@ public class WindowAddIntegrantController implements Initializable {
             alert.showAndWait();
         }       
     }   
-    
+ 
+    @FXML     
     private void showLostConnectionAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);

@@ -29,12 +29,12 @@ public class BookTest {
             Logger.getLogger(BookTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         Evidence evidence = new Evidence("SI", "Procesos de la ingeniería de software", "Alicia Ruiz");
-        Book book = new Book(evidence, "978-3-16-148410-2", 1, 95, "Responsable", "Publicado",
-                    "México", publicationDate, "CUO", "Quinta edición", "C:\\usuarios\\alicia\\arc1.fil", 1, "MCUD940585RDTRER10");
-        boolean saveResult = bookDAO.saveBook(book);
+        Book book = new Book(evidence, "978-3-16-148410-4", 1, 95, "Responsable", "Publicado", "México", 
+                publicationDate, "CUO", "Quinta edición", "C:\\usuarios\\alicia\\arc1.fil", 1, "MCUD940585RDTRER10");
+        boolean saveResult = bookDAO.savedBook(book);
         assertEquals("Prueba correcta, si guardó", saveResult, true);
     }
-    
+   
     @Test
     public void testUpdateBook() throws BusinessConnectionException{
         BookDAO bookDAO = new BookDAO();
@@ -47,9 +47,9 @@ public class BookTest {
             Logger.getLogger(BookTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         Evidence evidence = new Evidence("SI", "Procesos de la ingeniería de software", "Alicia Ruiz");
-        Book book = new Book(evidence, "978-3-16-148410-2", 1, 95, "Responsable", "Publicado",
-                    "México", publicationDate, "CUO", "Sexta edición", "C:\\usuarios\\alicia\\arc1.fil", 1, "MCUD940585RDTRER10");
-        boolean updateResult = bookDAO.updateBook(book, "978-3-16-148410-2");
+        Book book = new Book(evidence, "978-3-16-148410-2", 1, 95, "Responsable", "Publicado", "México", 
+                publicationDate, "CUO", "Sexta edición", "C:\\usuarios\\alicia\\arc1.fil", 1, "MCUD940585RDTRER10");
+        boolean updateResult = bookDAO.updatedBook(book, "978-3-16-148410-2");
         assertEquals("Prueba correcta, si actualizó", updateResult, true);
     }
 }

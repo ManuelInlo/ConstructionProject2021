@@ -21,7 +21,7 @@ public class BookDAO implements IBookDAO{
     }  
     
     @Override
-    public boolean saveBook (Book book) throws BusinessConnectionException{
+    public boolean savedBook (Book book) throws BusinessConnectionException{
        String sql = "INSERT INTO book (impactCA, titleEvidence, ISBN, printing, numPages, participationType, actualState, country, author, publicationDate, editorial, edition, fileRoute, idProject, curp)"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         boolean saveResult = false;
@@ -54,7 +54,7 @@ public class BookDAO implements IBookDAO{
     }
     
     @Override
-    public boolean updateBook (Book book, String ISBN) throws BusinessConnectionException{
+    public boolean updatedBook (Book book, String ISBN) throws BusinessConnectionException{
        String sql = "UPDATE book SET impactCA = ?, titleEvidence = ?, ISBN = ?, printing = ?, numPages = ?, participationType = ?, "
                + " actualState = ?, country = ?, author = ?, publicationDate = ?, editorial = ?, edition = ?, fileRoute = ?, idProject = ?, curp = ? "
                + " WHERE ISBN = ? ";

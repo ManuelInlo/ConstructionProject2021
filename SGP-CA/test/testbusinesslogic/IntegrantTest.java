@@ -86,7 +86,7 @@ public class IntegrantTest {
     public void testFindAllIntegrants() throws BusinessConnectionException{
         IntegrantDAO integrantDAO = new IntegrantDAO();
         ArrayList<Integrant> integrants = integrantDAO.findAllIntegrants();
-        assertEquals("Prueba busqueda de todos los integrantes", integrants.size(), 6);
+        assertEquals("Prueba busqueda de todos los integrantes", integrants.size(), 9);
     }
           
 }
