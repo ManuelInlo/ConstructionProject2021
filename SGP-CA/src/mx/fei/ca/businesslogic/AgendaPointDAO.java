@@ -31,10 +31,10 @@ public class AgendaPointDAO implements IAgendaPointDAO{
     }
     
     /**
-     * 
-     * @param agendaPoint
-     * @param idMeeting
-     * @return
+     * Método que guarda un punto de agenda de una reunión en la base de datos
+     * @param agendaPoint Define el punto de agenda a guardar
+     * @param idMeeting Define el identificador de la reunión de la cual se guardará el punto de agenda
+     * @return Booleano con el resultado de guardado, devuelve true si guardó, de lo contrario, devuelve false
      * @throws BusinessConnectionException 
      */
     
@@ -61,6 +61,15 @@ public class AgendaPointDAO implements IAgendaPointDAO{
         return saveResult;
     }
     
+    /**
+     * Método que modifica un punto de agenda de una reunión existente en la base de datos
+     * @param agendaPoint Define el punto de agenda modificado
+     * @param idAgendaPoint Define el identificador del punto de agenda a modificar
+     * @param idMeeting Define el identificador de la reunión que contiene el punto de agenda a modificar
+     * @return Booleano con el resultado de modificación, devuelve true si guardó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+    
     @Override
     public boolean updatedAgendaPoint(AgendaPoint agendaPoint, int idAgendaPoint, int idMeeting) throws BusinessConnectionException{
         String sql = "UPDATE agendaPoint SET startTime = ?, endTime = ?, topic =?, leader = ?, idMeeting = ? "
@@ -85,6 +94,13 @@ public class AgendaPointDAO implements IAgendaPointDAO{
         return updateResult;
     }
     
+    /**
+     * Método para eliminar un punto de agenda de una reunión existente en la base de datos
+     * @param idAgendaPoint Define el identificador del punto de agenda a eliminar
+     * @return booleano con el resultado de la eliminación, devuelve true si eliminó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+    
     @Override
     public boolean deletedAgendaPointById(int idAgendaPoint) throws BusinessConnectionException{
         String sql = "DELETE FROM agendapoint WHERE idAgendaPoint = ?";
@@ -102,6 +118,13 @@ public class AgendaPointDAO implements IAgendaPointDAO{
         }
         return deleteResult;
     }
+    
+    /**
+     * Método que recupera los puntos de agenda de una reunión
+     * @param idMeeting Define el identificador de la reunión de la cual se quiere recuperar los puntos de agenda
+     * @return Un ArrayList con los puntos de agenda de la reunión
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public ArrayList<AgendaPoint> findAgendaPointsByIdMeeting(int idMeeting) throws BusinessConnectionException{
@@ -129,6 +152,13 @@ public class AgendaPointDAO implements IAgendaPointDAO{
         }
         return agendaPoints;
     }
+    
+    /**
+     * Método que devuelve el identificador de un punto de agenda de acuerdo a su tema
+     * @param topic Define el tema del punto de agenda a buscar
+     * @return Entero con el identificador del punto de agenda de una reunión que coincide con el tema. Devuelve 0 si no encotró coincidencias
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public int getIdAgendaPointByTopic(String topic) throws BusinessConnectionException{

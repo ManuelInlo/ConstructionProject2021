@@ -10,6 +10,11 @@ import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.dataaccess.DataBaseConnection;
 import mx.fei.ca.domain.Prerequisite;
 
+/**
+ * Clase para representar el Objeto de acceso a datos de un prerequisito
+ * @author David Alexander Mijangos Paredes
+ * @version 16-06-2021
+ */
 
 public class PrerequisiteDAO implements IPrerequisiteDAO{
     private final DataBaseConnection dataBaseConnection;
@@ -17,9 +22,21 @@ public class PrerequisiteDAO implements IPrerequisiteDAO{
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     
+    /**
+     * Constructor para la creación de un PrerequisiteDAO, permitiendo también la obtención de la conexión a la base de datos 
+     */
+    
     public PrerequisiteDAO(){
         dataBaseConnection = new DataBaseConnection();
     }
+    
+    /**
+     * Método que guarda un nuevo prerequisito de reunión en la base de datos
+     * @param prerequisite Define el prerequisito a guardar en la base de datos
+     * @param idMeeting Define el identificador de la reunión de la cual se quiere guardar el prerequisito
+     * @return Boolean con el resultado de guardado, devuelve true si guardó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public boolean savedPrerequisite(Prerequisite prerequisite, int idMeeting) throws BusinessConnectionException{
@@ -40,6 +57,15 @@ public class PrerequisiteDAO implements IPrerequisiteDAO{
         }
         return saveResult;
     }
+    
+    /**
+     * Método que modifica un prerequisito de reunión existente en la base de datos
+     * @param prerequisite Define el prerequisito modificado
+     * @param idPrerequisite Define el identificador del prerequisito a modificar
+     * @param idMeeting Define el identificador de la reunión a la cual pertenece el prequisito a modificar
+     * @return Booleano con el resultado de modificación, devuelve true si modificó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public boolean updatedPrerequisite(Prerequisite prerequisite, int idPrerequisite, int idMeeting) throws BusinessConnectionException{
@@ -63,6 +89,13 @@ public class PrerequisiteDAO implements IPrerequisiteDAO{
         return updateResult;
     }
     
+    /**
+     * Método que elimina un prerequisito específico de la base de datos
+     * @param idPrerequisite Define el identificador del prerequisito a eliminar
+     * @return Booleano con el resultado de eliminación, devuelve true si eliminó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+    
     @Override
     public boolean deletedPrerequisiteById(int idPrerequisite) throws BusinessConnectionException{
         String sql = "DELETE FROM prerequisite WHERE idPrerequisite = ?";
@@ -80,6 +113,13 @@ public class PrerequisiteDAO implements IPrerequisiteDAO{
         }
         return deleteResult;
     }
+    
+    /**
+     * Método que recupera los prerequisitos de una reunión específica
+     * @param idMeeting Define el identificador de la reunión de la cual se quiere recuperar los prerequisitos
+     * @return ArrayList con los prerequisitos recuperados
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public ArrayList<Prerequisite> findPrerequisitesByIdMeeting(int idMeeting) throws BusinessConnectionException{
@@ -105,6 +145,13 @@ public class PrerequisiteDAO implements IPrerequisiteDAO{
         }
         return prerequisites;
     }
+    
+    /**
+     * Método que devuelve el identificador de un prerequisito de acuerdo a su descripción
+     * @param description Define la descripción del prerequisito a buscar
+     * @return Entero con el identificador del prerequisito 
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public int getIdPrerequisiteByDescription(String description) throws BusinessConnectionException {

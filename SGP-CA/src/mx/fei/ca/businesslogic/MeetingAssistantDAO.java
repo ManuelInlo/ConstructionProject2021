@@ -1,4 +1,3 @@
-
 package mx.fei.ca.businesslogic;
 
 import java.sql.Connection;
@@ -11,15 +10,33 @@ import mx.fei.ca.dataaccess.DataBaseConnection;
 import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.MeetingAssistant;
 
+/**
+ * Clase para representar el Objeto de acceso a datos de un asistente de reunión
+ * @author David Alexander Mijangos Paredes
+ * @version 16-06-2021
+ */
+
 public class MeetingAssistantDAO implements IMeetingAssistantDAO {
     private final DataBaseConnection dataBaseConnection;
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     
+    /**
+     * Constructor para la creación de un MeetingAssistantDAO, permitiendo también la obtención de la conexión a la base de datos 
+     */
+    
     public MeetingAssistantDAO(){
         dataBaseConnection = new DataBaseConnection();
     }
+    
+    /**
+     * Método que guarda un nuevo asistente de reunión en la base de datos
+     * @param meetingAssistant Define el asistente de reunión a guardar en la base de datos
+     * @param idMeeting Define el identificador de la reunión de la cual se guardará el asistente de reunión
+     * @return Booleano con el resultado de guardado, devuelve true si guardó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public boolean savedMeetingAssistant(MeetingAssistant meetingAssistant, int idMeeting) throws BusinessConnectionException{
@@ -41,6 +58,14 @@ public class MeetingAssistantDAO implements IMeetingAssistantDAO {
         return saveResult;
     }
     
+    /**
+     * Método que modifica el rol de un asistente de reunión existente en la base de datos
+     * @param meetingAssistant Define el asistente de reunión con el rol modificado
+     * @param idMeeting Define el identificador de la reunión que contiene el asistente de reunión a modificar su rol
+     * @return Booleano con el resultado de modificación, devuelve true si modificó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+    
     @Override 
     public boolean updatedRoleOfMeetingAssistant(MeetingAssistant meetingAssistant, int idMeeting) throws BusinessConnectionException{
         String sql = "UPDATE meetingAssistant SET role = ? WHERE curp = ? and idMeeting = ?";
@@ -60,6 +85,13 @@ public class MeetingAssistantDAO implements IMeetingAssistantDAO {
         }
         return updateResult;
     }
+    
+    /**
+     * Método que recupera los asistentes de una reunión determinada
+     * @param idMeeting Define el identificador de la reunión de la cual se quiere recuperar los asistentes
+     * @return Un ArrayList con los asistentes de reunión
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public ArrayList<MeetingAssistant> findMeetingAssistantsByIdMeeting(int idMeeting) throws BusinessConnectionException {

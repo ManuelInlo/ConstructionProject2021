@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Meeting;
 
+/**
+ * Interface del objeto de acceso a datos de reunión
+ * @author David Alexander Mijangos Paredes
+ * @version 16-06-2021
+ */
+
 public interface IMeetingDAO {
     public int saveAndReturnIdNewMeeting(Meeting meeting, String curp) throws BusinessConnectionException;
     public ArrayList<Meeting> findMeetingsByProjectName(String projectName) throws BusinessConnectionException;

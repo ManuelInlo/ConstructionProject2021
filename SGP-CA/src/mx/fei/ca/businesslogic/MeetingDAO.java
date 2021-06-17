@@ -1,4 +1,3 @@
-
 package mx.fei.ca.businesslogic;
 
 import java.sql.Connection;
@@ -16,15 +15,33 @@ import mx.fei.ca.domain.MeetingAssistant;
 import mx.fei.ca.domain.Memorandum;
 import mx.fei.ca.domain.Prerequisite;
 
+/**
+ * Clase para representar el Objeto de acceso a datos de una reunión
+ * @author David Alexander Mijangos Paredes
+ * @version 16-06-2021
+ */
+
 public class MeetingDAO implements IMeetingDAO{
     private final DataBaseConnection dataBaseConnection;
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     
+    /**
+     * Constructor para la creación de un MeetingDAO, permitiendo también la obtención de la conexión a la base de datos
+     */
+    
     public MeetingDAO(){
         dataBaseConnection = new DataBaseConnection();
     }
+    
+    /**
+     * Método que guarda una nueva reunión en la base de datos y retorna su identificador
+     * @param meeting Define la reunión a guardar en la base de datos
+     * @param curp Define la curp del integrante responsable de la reunión
+     * @return Entero con el identificador generado de la reunión guardada en la base de datos. Devuelve 0 si falló en el guardado
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public int saveAndReturnIdNewMeeting(Meeting meeting, String curp) throws BusinessConnectionException{
@@ -53,6 +70,12 @@ public class MeetingDAO implements IMeetingDAO{
         }
         return idMeetingResult;
     }
+    
+    /**
+     * Método que devuelve las útlimas 5 reuniones almacenadas en la base de datos
+     * @return Un ArrayList con 5 reuniones
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public ArrayList<Meeting> findLastFiveMeetings() throws BusinessConnectionException {
@@ -94,6 +117,13 @@ public class MeetingDAO implements IMeetingDAO{
         return meetings;
     }
     
+    /**
+     * Método que devuelve reuniones que coincidan con un nombre de proyecto
+     * @param projectName Define el nombre de proyecto de la o las reuniones a buscar
+     * @return Un ArrayList con la o las reuniones que coincidieron
+     * @throws BusinessConnectionException 
+     */
+    
     @Override 
     public ArrayList<Meeting> findMeetingsByProjectName(String projectName) throws BusinessConnectionException{
         ArrayList<Meeting> meetings = new ArrayList<>();
@@ -133,6 +163,14 @@ public class MeetingDAO implements IMeetingDAO{
         }
         return meetings;
     }
+    
+    /**
+     * Método que devuelve reuniones que coincidan con un nombre de proyecto y una fecha determinada
+     * @param projectName Define el nombre del proyecto de la o las reuniones a buscar
+     * @param meetingDate Defina la fecha de la o las reuniones a buscar
+     * @return Un ArrayList con la o las reuniones que coincidieron 
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public ArrayList<Meeting> findMeetingsByProjectNameAndDate(String projectName, Date meetingDate) throws BusinessConnectionException{
@@ -174,6 +212,14 @@ public class MeetingDAO implements IMeetingDAO{
         return meetings;
     }
     
+    /**
+     * Método que modifica una reunión existente en la base de datos
+     * @param meeting Define la reunión modificada
+     * @param idMeeting Define el identificador de la reunión a modificar
+     * @return Booleano con el resultado de modificación, devuelve true si modificó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+    
     @Override
     public boolean updatedMeeting(Meeting meeting, int idMeeting)throws BusinessConnectionException{
         String sql = "UPDATE meeting SET meetingDate = ?, meetingTime = ?, meetingPlace = ?, affair = ?, projectName = ?"
@@ -198,6 +244,14 @@ public class MeetingDAO implements IMeetingDAO{
         return updateResult;
     }
     
+    /**
+     * Método que modifica el estado de una reunión existente en la base de datos
+     * @param state Define el estado modificado de la reunión
+     * @param idMeeting Define el identificador de la reunión a la cual se modificará el estado
+     * @return Booleano con el resultado de modificación, devuelve true si modificó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+    
     @Override 
     public boolean updatedStateOfMeeting(String state, int idMeeting)throws BusinessConnectionException{
         String sql = "UPDATE meeting SET state = ? WHERE idMeeting = ?";
@@ -216,6 +270,13 @@ public class MeetingDAO implements IMeetingDAO{
         }
         return updateStateResult;
     }
+    
+    /**
+     * Método que devuelve la curp del integrante responsable de la reunión 
+     * @param idMeeting Define el identificador de la reunión de la cual se quiere recuperar la curp del responsable
+     * @return String con la curp del integrante responsable de la reunión
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public String getCurpOfResponsibleMeeting(int idMeeting) throws BusinessConnectionException {
@@ -236,6 +297,13 @@ public class MeetingDAO implements IMeetingDAO{
         }
         return resultingCurp;
     }
+    
+    /**
+     * Método que verifica la existencia de un asunto de reunión en la base de datos
+     * @param meetingAffair Define el asunto de reunión a verificar existencia
+     * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public boolean existsMeetingAffair(String meetingAffair) throws BusinessConnectionException {
@@ -256,6 +324,14 @@ public class MeetingDAO implements IMeetingDAO{
         }
         return exists;
     }
+    
+    /**
+     * Método que verifica en la base de datos fecha y hora disponible para una nueva reunión
+     * @param meetingDate Define la fecha de la reunión a verificar disponibilidad
+     * @param meetingTime Define la hora de la reunión a verificar disponibilidad
+     * @return Booleano con el resultado de verificación, devuelve true si están disponibles, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public boolean existsDateAndTimeAvailable(Date meetingDate, Time meetingTime) throws BusinessConnectionException {
@@ -277,6 +353,15 @@ public class MeetingDAO implements IMeetingDAO{
         }
         return available;
     }
+    
+    /**
+     * Método que verifica la existencia de un asunto de reunión en la base de datos para modificación
+     * Se implementa el método porque verifica con todas las reuniones excepto la reunión que se está modificando
+     * @param meetingAffair Define el asunto de reunión a verificar existencia
+     * @param idMeeting Define el identificador de la reunión que se está modificando
+     * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public boolean existsMeetingAffairForUpdate(String meetingAffair, int idMeeting) throws BusinessConnectionException {
@@ -298,6 +383,16 @@ public class MeetingDAO implements IMeetingDAO{
         }
         return exists;
     }
+    
+    /**
+     * Método que verifica en la base de datos fecha y hora disponible para modificación de reunión
+     * Se implementa el método porque verifica con todas las reuniones excepto la reunión que se está modificando
+     * @param meetingDate Define la fecha de la reunión a verificar disponibilidad
+     * @param meetingTime Define la hora de la reunión a verificar disponibilidad
+     * @param idMeeting Define el identificador de la reunión que se está modificando
+     * @return Booleano con el resultado de la verificación, devuelve true si están disponibles, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public boolean existsDateAndTimeAvailableForUpdate(Date meetingDate, Time meetingTime, int idMeeting) throws BusinessConnectionException {

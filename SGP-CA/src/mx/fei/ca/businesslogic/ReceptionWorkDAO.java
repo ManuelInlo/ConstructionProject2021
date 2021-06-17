@@ -1,4 +1,3 @@
-
 package mx.fei.ca.businesslogic;
 
 import java.sql.Connection;
@@ -13,15 +12,32 @@ import mx.fei.ca.domain.Collaborator;
 import mx.fei.ca.domain.InvestigationProject;
 import mx.fei.ca.domain.ReceptionWork;
 
+/**
+ * Clase para representar el Objeto de acceso a datos de un trabajo recepcional
+ * @author David Alexander Mijangos Paredes
+ * @version 16-06-2021
+ */
+
 public class ReceptionWorkDAO implements IReceptionWorkDAO{
     private final DataBaseConnection dataBaseConnection;
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     
+    /**
+     * Constructor para la creación de un ReceptionWorkDAO, permitiendo también la obtención de la conexión a la base de datos 
+     */
+    
     public ReceptionWorkDAO(){
         dataBaseConnection = new DataBaseConnection();
     }
+    
+    /**
+     * Método que guarda un nuevo trabajo recepcional en la base de datos
+     * @param receptionWork Define el trabajo recepcional a guardar en la base de datos
+     * @return Booleano con el resultado de guardado, devuelve true si guardó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public boolean savedReceptionWork(ReceptionWork receptionWork) throws BusinessConnectionException{
@@ -51,6 +67,14 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
         }
         return saveResult;
     }
+    
+    /**
+     * Método que modifica un trabajo recepcional específico existente en la base de datos
+     * @param receptionWork Define el trabajo recepcional modificado
+     * @param id Define el identificador del trabajo recepcional a modificar
+     * @return Booleano con el resultado de modificación, devuelve true si modificó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public boolean updatedReceptionWorkById(ReceptionWork receptionWork, int id) throws BusinessConnectionException {
@@ -80,6 +104,12 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
         }
         return updateResult;
     }
+    
+    /**
+     * Método que recupera de la base de datos los trabajos recepcionales que impactan al CA
+     * @return ArrayList con trabajos recepcionales que impactan al CA
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public ArrayList<ReceptionWork> findReceptionWorksByPositiveImpactCA() throws BusinessConnectionException {
@@ -115,6 +145,13 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
         }
         return receptionWorks;
     }
+    
+    /**
+     * Método que recupera de la base de datos los últimos dos trabajos recepcionales de un integrante
+     * @param curp Define la curp del integrante del cual se quieren recuperar los trabajos recepcionales
+     * @return ArrayList con máximo dos trabajos recepcionales
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public ArrayList<ReceptionWork> findLastTwoReceptionWorksByCurpIntegrant(String curp) throws BusinessConnectionException {
@@ -159,12 +196,19 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
         }
         return receptionWorks;
     }
+    
+    /**
+     * Método que recupera trabajos recepcionales de acuerdo a las iniciales del título
+     * @param InitialesTitleReceptionWork Define las iniciales del título del trabajo recepcional a recuperar
+     * @param curp Define la curp del integrante del cual se quiere recuperar los trabajos recepcionales
+     * @return ArrayList con trabajos recepcionales que coincidieron
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public ArrayList<ReceptionWork> findReceptionWorkByInitialesOfTitle(String InitialesTitleReceptionWork, String curp) throws BusinessConnectionException {
         String sql = "SELECT * FROM receptionWork WHERE titleReceptionWork LIKE CONCAT('%',?,'%') AND curp = ?";
         ArrayList<ReceptionWork> receptionWorks = new ArrayList<>();
-        
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -205,6 +249,13 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
         }
         return receptionWorks;
     }
+    
+    /**
+     * Método que verifica si existe el título de un trabajo recepcional en la base de datos
+     * @param titleReceptionWork Define el título a verificar existencia
+     * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public boolean existsReceptionWorkTitle(String titleReceptionWork) throws BusinessConnectionException {
@@ -225,6 +276,13 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
         }
         return exists;
     }
+    
+    /**
+     * Método que verifica si existe la ruta de archivo de un trabajo recepcional en la base de datos
+     * @param fileRoute Define la ruta del archivo a verificar existencia
+     * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public boolean existsReceptionWorkFileRoute(String fileRoute) throws BusinessConnectionException {
@@ -245,6 +303,15 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
         }
         return exists;
     }
+    
+    /**
+     * Método que verifica si existe el título de un trabajo recepcional en la base de datos para modificación
+     * Se implementa el método porque verifica todos los títulos de los trabajos recepcionales excepto del que se está moficando para no causar conflictos
+     * @param titleReceptionWork Define el título del trabajo recepcinal a verificar existencia
+     * @param id Define el identificador del trabajo recepcional a modificar
+     * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario devuelve false
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public boolean existsReceptionWorkTitleForUpdate(String titleReceptionWork, int id) throws BusinessConnectionException {
@@ -266,6 +333,15 @@ public class ReceptionWorkDAO implements IReceptionWorkDAO{
         }
         return exists;
     }
+    
+    /**
+     * Método que verifica si existe la ruta de archivo de un trabajo recepcional en la base de datos
+     * Se implementa el método porque verifica todas las rutas de archivo de los trabajos recepcionales excepto del que se está moficando para no causar conflictos
+     * @param fileRoute Define la ruta del archivo a verificar existencia
+     * @param id Define el identificador del trabajo recepcioanl a modificar
+     * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public boolean existsReceptionWorkFileRouteForUpdate(String fileRoute, int id) throws BusinessConnectionException {

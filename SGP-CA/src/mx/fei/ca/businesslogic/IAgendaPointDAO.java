@@ -1,10 +1,15 @@
 
 package mx.fei.ca.businesslogic;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.AgendaPoint;
+
+/**
+ * Interface del Objecto de acceso a datos de punto de agenda
+ * @author David Alexander Mijangos Paredes
+ * @version 16-06-2021
+ */
 
 public interface IAgendaPointDAO {
     public boolean savedAgendaPoint(AgendaPoint agendaPoint, int idMeeting) throws BusinessConnectionException;

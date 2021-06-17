@@ -9,16 +9,33 @@ import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.dataaccess.DataBaseConnection;
 import mx.fei.ca.domain.Agreement;
 
+/**
+ * Clase para representar el Objeto de acceso a datos de un acuerdo
+ * @author David Alexander Mijangos Paredes
+ * @version 16-06-2021
+ */
+
 public class AgreementDAO implements IAgreementDAO{
     private final DataBaseConnection dataBaseConnection;
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     
+    /**
+     * Constructor para la creación de un AgreementDAO, permitiendo también la obtención de la conexión a la base de datos
+     */
     
     public AgreementDAO(){
         dataBaseConnection = new DataBaseConnection();
     }
+    
+    /**
+     * Método que guarda un nuevo acuerdo de minuta en la base de datos
+     * @param agreement Define el acuerdo de minuta a guardar en la base de datos
+     * @param idMemorandum Define el identificador de la minuta de la cual se guardará el acuerdo
+     * @return Booleano con el resultado de guardado, devuelve true si guardó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public boolean savedAgreement(Agreement agreement, int idMemorandum) throws BusinessConnectionException{
@@ -41,6 +58,13 @@ public class AgreementDAO implements IAgreementDAO{
         }
         return saveResult;
     }
+    
+    /**
+     * Método que recupera los acuerdos de una minuta
+     * @param idMemorandum Define el identificador de la minuta de la cual se quieren recuperar los acuerdos
+     * @return Un ArrayList con los acuerdos de minuta
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public ArrayList<Agreement> findAgreementsByIdMemorandum(int idMemorandum)throws BusinessConnectionException{
@@ -68,6 +92,13 @@ public class AgreementDAO implements IAgreementDAO{
         return agreements;
     }
     
+    /**
+     * Método que elimina un acuerdo de minuta existente en la base de datos
+     * @param idAgreement Define el identificador del acuerdo a eliminar
+     * @return Booleano con el resultado de eliminación, devuelve true si eliminó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+    
     @Override
     public boolean deletedAgreementById(int idAgreement) throws BusinessConnectionException{
         String sql = "DELETE FROM agreement WHERE idAgreement = ?";
@@ -85,6 +116,15 @@ public class AgreementDAO implements IAgreementDAO{
         }
         return deleteResult;
     }
+    
+    /**
+     * Método que modifica un acuerdo de reunión existente en la base de datos
+     * @param agreement Define el acuerdo modificado
+     * @param idAgreement Define el identificador del acuerdo a modificar
+     * @param idMemorandum Define el identificador de la minuta que contiene el acuerdo a modificar
+     * @return Booleano con el resultado de modificación, devuelve true si modificó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public boolean updatedAgreement(Agreement agreement, int idAgreement, int idMemorandum) throws BusinessConnectionException{
@@ -108,6 +148,13 @@ public class AgreementDAO implements IAgreementDAO{
         }
         return updateResult;
     }
+    
+    /**
+     * Método que devuelve el identificador de un acuerdo de reunión de acuerdo a su descripción
+     * @param description Define la descripción del acuerdo a encontrar
+     * @return Entero con el identificador del acuerdo de minuta que coincide con la descripción. Devuelve 0 si no encotró coincidencias
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public int getIdAgreementByDescription(String description) throws BusinessConnectionException {
