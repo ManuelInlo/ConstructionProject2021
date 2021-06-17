@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mx.fei.ca.presentation;
 
 import java.net.URL;
@@ -16,7 +11,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -26,7 +20,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.CollaboratorDAO;
-import mx.fei.ca.businesslogic.IntegrantDAO;
 import mx.fei.ca.businesslogic.InvestigationProjectDAO;
 import mx.fei.ca.businesslogic.ReceptionWorkDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
@@ -36,10 +29,11 @@ import mx.fei.ca.domain.InvestigationProject;
 import mx.fei.ca.domain.ReceptionWork;
 
 /**
- * FXML Controller class
- *
- * @author david
+ * Clase para representar el controlador del FXML WindowModifyReceptionWork
+ * @author David Alexander Mijangos Paredes
+ * @version 16-06-2021
  */
+
 public class WindowModifyReceptionWorkController implements Initializable {
 
     @FXML
@@ -69,6 +63,10 @@ public class WindowModifyReceptionWorkController implements Initializable {
     private Integrant integrant;
     private int idReceptionWorkToModify;
     private int idCollaboratorToModify;
+    
+    /**
+     * Enumerado que representa los tipos de errores específicos de GUI al modificar un trabajo recepcional
+     */
 
     private enum TypeError{
         EMPTYFIELD, INVALIDSTRING, MISSINGSELECTION, MISSINGDATE, OVERDATE, INCONSISTENTDATE, TITLEDUPLICATE, 
@@ -89,25 +87,46 @@ public class WindowModifyReceptionWorkController implements Initializable {
         }
     }   
     
+    /**
+     * Método que establece el integrante loggeado al sistema, permitiendo proyectar su nombre en la GUI
+     * @param integrant Define el integrante a establecer en la GUI
+     */
+    
     public void setIntegrant(Integrant integrant){
         this.integrant = integrant;
         lbUser.setText(integrant.getNameIntegrant());  
     }
+    
+    /**
+     * Método que llena el ComboBox de impactoCA
+     */
     
     private void fillComboBoxImpactCA(){
         ObservableList<String> listImpactCA = FXCollections.observableArrayList("SI","NO");
         cbImpactCA.setItems(listImpactCA);
     }
     
+    /**
+     * Método que llena el ComboBox grado del trabajo recepcional
+     */
+    
     private void fillComboBoxGrade(){
         ObservableList<String> listImpactCA = FXCollections.observableArrayList("Licenciatura");
         cbGrade.setItems(listImpactCA);
     }
     
+    /**
+     * Método que llena el ComboBox estado actual del trabajo recepcional 
+     */
+    
     private void fillComboBoxActualState(){
         ObservableList<String> listActualState = FXCollections.observableArrayList("En proceso","Terminado");
         cbActualState.setItems(listActualState);
     }
+    
+    /**
+     * Método que llena el ComboBox tipo de trabajo recepcional
+     */
     
     private void fillComboBoxType(){
         ObservableList<String> listType = FXCollections.observableArrayList("Tesis","Monografía", "Práctico");
@@ -115,10 +134,19 @@ public class WindowModifyReceptionWorkController implements Initializable {
         
     }
     
+    /**
+     * Método que llena el ComboBox cargo del autor
+     */
+    
     private void fillComboBoxPositionAuthor(){
         ObservableList<String> listPositionAuthor = FXCollections.observableArrayList("Estudiante");
         cbPositionAuthor.setItems(listPositionAuthor);
     }
+    
+    /**
+     * Método que llena el ComboBox proyectos de investigación recuperando de la base de datos
+     * @throws BusinessConnectionException 
+     */
     
     private void fillComboBoxInvestigationProject() throws BusinessConnectionException{
         InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
@@ -126,6 +154,11 @@ public class WindowModifyReceptionWorkController implements Initializable {
         ObservableList<InvestigationProject> listInvestigationProject = FXCollections.observableArrayList(investigationProjects);
         cbInvestigationProject.setItems(listInvestigationProject);
     }
+    
+    /**
+     * Método que llena los campos de la GUI con la información del trabajo recepcional a modificar
+     * @param receptionWork Define el trabajo recepcional a modificar
+     */
     
     public void fillFieldsReceptionWork(ReceptionWork receptionWork){
         idReceptionWorkToModify = receptionWork.getId();
@@ -144,6 +177,12 @@ public class WindowModifyReceptionWorkController implements Initializable {
         cbGrade.getSelectionModel().select(receptionWork.getGrade());
         cbPositionAuthor.getSelectionModel().select(receptionWork.getCollaborator().getPosition());   
     }
+    
+    /**
+     * Método que manda a modificar el trabajo recepcional con la información obtenida de los campos de la GUI
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
 
     @FXML
     private void modifyReceptionWork(ActionEvent event) throws BusinessConnectionException{
@@ -188,6 +227,11 @@ public class WindowModifyReceptionWorkController implements Initializable {
         }  
     }
     
+    /**
+     * Método que cierra la ventana actual de modificar trabajo recepcional
+     * @param event Define el evento generado
+     */
+    
     @FXML
     private void closeReceptionWorkModify(ActionEvent event){
         Node source = (Node) event.getSource();
@@ -195,10 +239,23 @@ public class WindowModifyReceptionWorkController implements Initializable {
         stage.close();
     }
     
+    /**
+     * Método que cambia una variable util.Date a sql.Date porque se necesita para guardar en la base de datos
+     * @param date Define la variable de tipo util.Date obtenida de la GUI
+     * @return Variable de tipo sql.Date
+     */
+    
     private java.sql.Date parseToSqlDate(java.util.Date date){
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         return sqlDate;
     }
+    
+    /**
+     * Método que devuelve si existen o no campos inválidos
+     * Con la finalidad de no extender el método, se invoca a otros métodos especificos para verficación de campos inválidos en la modificación del trabajo recepcional
+     * @return Booleano con el resultado de la verificación, devuelve true si existen campos inválidos, de lo contrario devuelve false
+     * @throws BusinessConnectionException 
+     */
     
     private boolean existsInvalidFields() throws BusinessConnectionException{
         boolean invalidFields = false;
@@ -210,6 +267,11 @@ public class WindowModifyReceptionWorkController implements Initializable {
         return invalidFields;
     }
     
+    /**
+     * Método que verifica si existen campos de la GUI vacíos
+     * @return Boolean con el resultado de la verificación, devuelve true si existen campos vacíos, de lo contrario, devuelve false
+     */
+    
     private boolean existsEmptyFields(){
         boolean emptyFields = false;
         if(tfTitleReceptionWork.getText().isEmpty() || tfFileRoute.getText().isEmpty() || tfAuthor.getText().isEmpty()){
@@ -220,15 +282,27 @@ public class WindowModifyReceptionWorkController implements Initializable {
         return emptyFields;
     }
     
+    /**
+     * Método que verifica si existen cadenas inválidas
+     * @return Booleano con el resultado de la verificación, devuelve true si existen cadenas inválidas, de lo contrario, devuelve false
+     */
+    
     private boolean existsInvalidStrings(){
         boolean invalidStrings = false;
-        if(existsInvalidCharactersForTitle(tfTitleReceptionWork.getText()) || existsInvalidCharactersForAuthor(tfAuthor.getText())){
+        if(existsInvalidCharactersForTitle(tfTitleReceptionWork.getText()) || existsInvalidCharactersForAuthor(tfAuthor.getText()) ||
+           existsInvalidCharactersForFileRoute(tfFileRoute.getText())){
             invalidStrings = true;
             TypeError typeError = TypeError.INVALIDSTRING;
             showInvalidFieldAlert(typeError);
         }
         return invalidStrings;
     }
+    
+    /**
+     * Método que verifica si existen caracteres inválidos en el nombre del autor
+     * @param textToValidate Define el nombre del autor a validar 
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     */
     
     private boolean existsInvalidCharactersForAuthor(String textToValidate){
         boolean invalidCharacters = false;
@@ -240,6 +314,13 @@ public class WindowModifyReceptionWorkController implements Initializable {
         return invalidCharacters;
     }
     
+    /**
+     * Método que verifica si existen caracteres inválidos en el título del trabajo
+     * Se implementa el método porque un título puede tener ciertos caracteres válidos a diferencia de un nombre personal
+     * @param textToValidate Define el título del trabajo a validar
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     */
+    
     private boolean existsInvalidCharactersForTitle(String textToValidate){
         boolean invalidCharacters = false;
         Pattern pattern = Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s\\.,:]+$");
@@ -249,6 +330,27 @@ public class WindowModifyReceptionWorkController implements Initializable {
         }
         return invalidCharacters;
     }
+    
+    /**
+     * Método que verifica si existen caracteres inválidos para una ruta de archivo
+     * @param fileRoute Define la ruta de archivo a modificar
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     */
+    
+    private boolean existsInvalidCharactersForFileRoute(String fileRoute){
+        boolean invalidCharacters = false;
+        Pattern pattern = Pattern.compile("[!#$%&'*+=?^_`{|}~]");
+        Matcher mather = pattern.matcher(fileRoute);
+        if(mather.find()){  
+            invalidCharacters = true;
+        }   
+        return invalidCharacters;
+    }
+    
+    /**
+     * Método que verifica si existen selecciones de campos faltantes en la GUI
+     * @return Booleano con el resultado de verificación, devuelve true si existen faltantes, de lo contrario, devuelve false
+     */
     
     private boolean existsMissingSelection(){
         boolean missingSelection = false;
@@ -261,6 +363,12 @@ public class WindowModifyReceptionWorkController implements Initializable {
         }
         return missingSelection;
     }
+    
+    /**
+     * Método que verifica si existen fechas inválidas en los campos de la GUI
+     * Con la finalidad de no extender demasiado, el método invoca a otros métodos específicos
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     */
     
     private boolean existsInvalidDates(){
         boolean invalidDates = false;
@@ -276,6 +384,12 @@ public class WindowModifyReceptionWorkController implements Initializable {
         return invalidDates;
     }
     
+    /**
+     * Método que verifica si existe selección de fecha faltante de campo de tipo DatePicker
+     * @param datePicker Define la fecha seleccionada a verificar del campo de tipo DatePicker
+     * @return Booleano con el resultado de verificación, devuelve true si existe faltante, de lo contrario, devuelve false
+     */
+    
     private boolean existMissingDate(DatePicker datePicker){
         boolean missingDate = false;
         if(datePicker.getValue() == null){
@@ -286,6 +400,12 @@ public class WindowModifyReceptionWorkController implements Initializable {
         return missingDate;
     }
     
+    /**
+     * Método que verifica si existe una selección de fecha sobrante
+     * @param datePicker Define el valor del campo de tipo DatePicker a verificar
+     * @return Booleano con el valor de verificación, devuelve true si existe fecha sobrante, de lo contrario, devuelve false
+     */
+    
     private boolean existLeftOverDateSelection(DatePicker datePicker){
         boolean selection = false;
         if(datePicker.getValue() != null){
@@ -295,6 +415,11 @@ public class WindowModifyReceptionWorkController implements Initializable {
         }
         return selection;
     }
+    
+    /**
+     * Método que verifica si existen fechas incosistentes, o bien, fecha de inicio mayor a la fecha de fin
+     * @return Booleano con el resultado de verificación, devuelve true si existe incosistencia, de lo contrario, devuelve false
+     */
     
     private boolean existInconsistentDates(){
         boolean inconsistentDates = false;
@@ -311,6 +436,13 @@ public class WindowModifyReceptionWorkController implements Initializable {
         }
         return inconsistentDates;
     }
+    
+    /**
+     * Método que manda a verificar si valores obtenidos de la GUI que no pueden duplicarse ya existen en la base de datos
+     * El método manda a llamar a otros métodos que se encargan de la verificación en la capa lógica
+     * @return Booleano con el resultado de la verificación, devuelve true si existe valor duplicado, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
     
     private boolean existsDuplicateValues() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
@@ -343,6 +475,11 @@ public class WindowModifyReceptionWorkController implements Initializable {
         
         return duplicateValues;
     }
+    
+    /**
+     * Método que muestra alerta de campo inválido de acuerdo al tipo de error
+     * @param typeError Define el tipo de error que encontró 
+     */
 
     private void showInvalidFieldAlert(TypeError typeError){
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -386,6 +523,10 @@ public class WindowModifyReceptionWorkController implements Initializable {
         alert.showAndWait();    
     }
     
+    /**
+     * Método que muestra alerta de confirmación de guardado
+     */
+    
     private void showConfirmationAlert(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
@@ -393,6 +534,10 @@ public class WindowModifyReceptionWorkController implements Initializable {
         alert.setContentText("La información fue modificada con éxito");
         alert.showAndWait();
     }
+    
+    /**
+     * Método que muestra alerta de perdida de conexión con la base de datos
+     */
     
     private void showLostConnectionAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);

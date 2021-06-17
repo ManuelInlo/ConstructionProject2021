@@ -1,4 +1,3 @@
-
 package mx.fei.ca.presentation;
 
 import java.io.IOException;
@@ -16,19 +15,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.ReceptionWork;
 
 /**
- * FXML Controller class
- *
- * @author david
+ * Clase para representar el controlador del FXML WindowReceptionWorkData
+ * @author David Alexander Mijangos Paredes
+ * @version 17-06-2021
  */
+
 public class WindowReceptionWorkDataController implements Initializable {
 
     @FXML
@@ -65,10 +62,20 @@ public class WindowReceptionWorkDataController implements Initializable {
         
     }   
     
+    /**
+     * Método que establece el integrante loggeado al sistema, permitiendo proyectar su nombre en la GUI
+     * @param integrant Define el integrante a establecer en la GUI
+     */
+    
     public void setIntegrant(Integrant integrant){
         this.integrant = integrant;
         lbUser.setText(integrant.getNameIntegrant());  
     }
+    
+    /**
+     * Método que muestra la información del trabajo recepcional en la GUI
+     * @param receptionWork Define al trabajo recepcional con la información para mostrar
+     */
     
     public void showReceptionWorkData(ReceptionWork receptionWork){
         this.receptionWork = receptionWork;
@@ -88,11 +95,22 @@ public class WindowReceptionWorkDataController implements Initializable {
         }
     }
     
+    /**
+     * Método que convierte una variable de tipo Date a String con la finalidad de poder mostrar la fecha en la GUI
+     * @param date Define la fecha a convertir de Date a String
+     * @return String con la fecha convertida
+     */
+    
     private String convertDateToString(Date date){
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String stringDate = dateFormat.format(date);
         return stringDate;
     }
+    
+    /**
+     * Método que manda a abrir la ventana de modificación de trabajo recepcional
+     * @param event Define el evento generado
+     */
 
     @FXML
     private void modifyReceptionWork(ActionEvent event){
@@ -112,6 +130,11 @@ public class WindowReceptionWorkDataController implements Initializable {
         stage.showAndWait();
         closeReceptionWorkData(event);
     }
+    
+    /**
+     * Método que cierra la ventana actual datos del trabajo recepcional
+     * @param event Define el evento generado
+     */
 
     @FXML
     private void closeReceptionWorkData(ActionEvent event){

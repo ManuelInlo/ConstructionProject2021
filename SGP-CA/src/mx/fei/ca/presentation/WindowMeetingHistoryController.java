@@ -15,14 +15,12 @@ import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -37,10 +35,11 @@ import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.Meeting;
 
 /**
- * FXML Controller class
- *
- * @author david
+ * Clase para representar el controlador del FXML WindowMeetingHistory
+ * @author David Alexander Mijangos Paredes
+ * @version 17-06-2021
  */
+
 public class WindowMeetingHistoryController implements Initializable {
 
     @FXML
@@ -59,6 +58,10 @@ public class WindowMeetingHistoryController implements Initializable {
     private Label lbUser;
     private Integrant integrant;
     
+    /**
+     * Enumerado que representa los tipos de errores específicos al usar el campo de texto para buscar una reunión
+     */
+    
     private enum TypeError{
         EMPTYFIELD, INVALIDSTRING;
     }
@@ -69,10 +72,19 @@ public class WindowMeetingHistoryController implements Initializable {
         openMeetingAgenda();
     }  
     
+    /**
+     * Método que establece el integrante loggeado al sistema, permitiendo proyectar su nombre en la GUI
+     * @param integrant Define el integrante a establecer a la GUI
+     */
+    
     public void setIntegrant(Integrant integrant){
         this.integrant = integrant;
         lbUser.setText(integrant.getNameIntegrant());
     }
+    
+    /**
+     * Método que manda a recuperar las últimas 5 reuniones y las muestra en la GUI
+     */
     
     private void recoverMeetings(){
         try{
@@ -84,6 +96,12 @@ public class WindowMeetingHistoryController implements Initializable {
         }
     }
     
+    /**
+     * Método que llena la tabla de reuniones de la GUI
+     * @param listMeetings Define la lista de reuniones recuperadas que se mostrarán en la GUI
+     * @throws BusinessConnectionException 
+     */
+    
     private void fillMeetingHistory(ArrayList<Meeting> listMeetings) throws BusinessConnectionException{
         columnProject.setCellValueFactory(new PropertyValueFactory("projectName"));
         columnDate.setCellValueFactory(new PropertyValueFactory("meetingDate"));
@@ -91,6 +109,12 @@ public class WindowMeetingHistoryController implements Initializable {
         ObservableList<Meeting> meetings = FXCollections.observableArrayList(listMeetings);
         tbMeetingHistory.setItems(meetings);
     }
+    
+    /**
+     * Método que manda a buscar una reunión de acuerdo a su nombre de proyecto o nombre de proyecto y fecha
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
     
     @FXML
     private void searchMeeting(ActionEvent event) throws BusinessConnectionException{
@@ -112,6 +136,10 @@ public class WindowMeetingHistoryController implements Initializable {
         }
     }
     
+    /**
+     * Método que manda a abrir la ventana agenda de reunión de acuerdo a la reunión seleccionada de la tabla
+     */
+    
     public void openMeetingAgenda(){
         tbMeetingHistory.setOnMouseClicked((MouseEvent event) -> {
             Meeting meeting = tbMeetingHistory.getItems().get(tbMeetingHistory.getSelectionModel().getSelectedIndex());
@@ -131,10 +159,21 @@ public class WindowMeetingHistoryController implements Initializable {
         });
     }
     
+    /**
+     * Método que cambia una variable util.Date a sql.Date porque se necesita para mandar a buscar una reunión
+     * @param date Define la variable de tipo util.Date obtenida de la GUI
+     * @return Variable de tipo sql.Date
+     */
+    
     private java.sql.Date parseToSqlDate(java.util.Date date){
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         return sqlDate;
     }
+    
+    /**
+     * Método que manda a abrir la ventana para agendar una nueva reunión
+     * @param event Define el evento generado
+     */
 
     @FXML
     private void scheduleMeeting(ActionEvent event){
@@ -150,6 +189,11 @@ public class WindowMeetingHistoryController implements Initializable {
             windowNewMeetingController.setIntegrant(integrant);
             stage.show();
     }
+    
+    /**
+     * Metódo que cierra la ventana actual historial de reuniones
+     * @param event Define el evento generado
+     */
 
     @FXML
     private void exitMeetingHistory(ActionEvent event){
@@ -158,6 +202,11 @@ public class WindowMeetingHistoryController implements Initializable {
         stage.close();
     }
     
+    /** 
+     * Método que verifica si existen campos inválidos. Este método invoca a otros métodos de verificación más específicos
+     * @return con el resultado de la verificación, devuelve true si existen campos inválidos, de lo contrario, devuelve false
+     */
+    
     private boolean existsInvalidField(){
         boolean invalidField = false;
         if(existsEmptyField() || existsInvalidString()){
@@ -165,6 +214,11 @@ public class WindowMeetingHistoryController implements Initializable {
         }
         return invalidField;
     }
+    
+    /**
+     * Método que verifica si existen campos de la GUI que estén vacíos
+     * @return Booleano con el resultado de la verificación, devuelve true si existen vacíos, de lo contrario, devuelve false
+     */
     
     private boolean existsEmptyField(){
         boolean emptyField = false;
@@ -175,6 +229,11 @@ public class WindowMeetingHistoryController implements Initializable {
         }
         return emptyField;
     }
+    
+    /**
+     * Método que verifica si existe cadena inválida de acuerdo al texto obtenido de la GUI
+     * @return Booleano con el resultado de la verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     */
     
     private boolean existsInvalidString(){
         boolean invalidString = false;
@@ -187,6 +246,11 @@ public class WindowMeetingHistoryController implements Initializable {
         }
         return invalidString;
     }
+    
+    /**
+     * Método que muestra alerta de campo inválido de acuerdo al tipo de error
+     * @param typeError Define el tipo de error que encontró
+     */
     
     private void showInvalidFieldAlert(TypeError typeError){
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -201,6 +265,10 @@ public class WindowMeetingHistoryController implements Initializable {
         alert.showAndWait();
     }
     
+    /**
+     * Método que muestra alerta sin coincidencias
+     */
+    
     private void showNoMatchAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
@@ -209,10 +277,18 @@ public class WindowMeetingHistoryController implements Initializable {
         alert.showAndWait();
     }
     
+    /**
+     * Método que limpia los campos de buscado de reunión
+     */
+    
     private void cleanFields(){
         tfMeetingProject.clear();
         dpMeetingDate.getEditor().clear();
     }
+    
+    /**
+     * Método que muestra alerta de perdida de conexión con la base de datos
+     */
     
     private void showLostConnectionAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);

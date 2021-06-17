@@ -1,4 +1,3 @@
-
 package mx.fei.ca.presentation;
 
 import java.io.IOException;
@@ -28,14 +27,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.ReceptionWorkDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
+import mx.fei.ca.domain.Article;
+import mx.fei.ca.domain.Book;
+import mx.fei.ca.domain.ChapterBook;
 import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.ReceptionWork;
 
 /**
- * FXML Controller class
- *
- * @author david
+ * Clase para representar el controlador del FXML WindowMemberProduction
+ * @author David Alexander Mijangos Paredes
+ * @version 17-06-2021
  */
+
 public class WindowMemberProductionController implements Initializable {
 
     @FXML
@@ -68,6 +71,9 @@ public class WindowMemberProductionController implements Initializable {
     private Label lbUser;
     private Integrant integrant;
     
+    /**
+     * Enumerado que representa los tipos de errores específicos al usar el campo de texto para buscar una evidencia
+     */
     
     private enum TypeError{
         EMPTYFIELD, INVALIDSTRING;
@@ -82,6 +88,11 @@ public class WindowMemberProductionController implements Initializable {
         }
     } 
     
+    /**
+     * Método que establece el integrante loggeado al sistema, permitiendo proyectar su nombre en la GUI
+     * @param integrant Define el integrante a establecer en la GUI
+     */
+    
     public void setIntegrant(Integrant integrant){
         this.integrant = integrant;
         lbUser.setText(integrant.getNameIntegrant());
@@ -92,11 +103,22 @@ public class WindowMemberProductionController implements Initializable {
         }    
     }
     
+    /**
+     * Método que manda a recuperar las evidencias del integrante loggeado en el sistema y las muestra en la GUI
+     * El método invoca a otro clase y método de la capa lógica para la obtención de las evidencias en la base de datos
+     * @throws BusinessConnectionException 
+     */
+    
     public void recoverEvidences() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findLastTwoReceptionWorksByCurpIntegrant(integrant.getCurp()); 
         fillReceptionWorkTable(receptionWorks);
     }
+    
+    /**
+     * Método que llena la tabla de trabajos recepcionales del integrante
+     * @param receptionWorks Define la lista de trabajos recepcionales a mostrar en la GUI
+     */
     
     private void fillReceptionWorkTable(ArrayList<ReceptionWork> receptionWorks){
         columnImpactCAReceptionWork.setCellValueFactory(new PropertyValueFactory("impactCA"));
@@ -105,7 +127,39 @@ public class WindowMemberProductionController implements Initializable {
         tbReceptionWorks.setItems(listReceptionWorks);
     }
     
-    public void openReceptionWorkData() throws BusinessConnectionException{
+    /**
+     * Método que llena la tabla de artículos del integrante
+     * @param articles Define la lista de artículos a mostrar en la GUI
+     */
+    
+    private void fillArticlesTable(ArrayList<Article> articles){
+        
+    }
+    
+    /**
+     * Método que llena la tabla de libros del integrante
+     * @param books Define la lista de libros a mostrar en la GUI
+     */
+    
+    private void fillBooksTable(ArrayList<Book> books){
+        
+    }
+    
+    /**
+     * Método que llena la tabla de capítulos de libro del integrante
+     * @param chaptersBook Define la lista de capítulos de libro a mostrar en la GUI
+     */
+    
+    private void fillChaptersBookTable(ArrayList<ChapterBook> chaptersBook){
+        
+    }
+    
+    /**
+     * Método que manda a abrir la ventana datos de trabajo recepcional de acuerdo al trabajo recepcional seleccionado de la tabla
+     * @throws BusinessConnectionException 
+     */
+    
+    private void openReceptionWorkData() throws BusinessConnectionException{
         tbReceptionWorks.setOnMouseClicked((MouseEvent event) -> {
             ReceptionWork receptionWork = tbReceptionWorks.getItems().get(tbReceptionWorks.getSelectionModel().getSelectedIndex());
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowReceptionWorkData.fxml"));
@@ -124,10 +178,42 @@ public class WindowMemberProductionController implements Initializable {
             try {
                 recoverEvidences();
             } catch (BusinessConnectionException ex) {
-                Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
+                showLostConnectionAlert();
             }
         });      
     }
+    
+    /**
+     * Método que manda a abrir la ventana datos de artículo de acuerdo al artículo seleccionado de la tabla
+     * @throws BusinessConnectionException 
+     */
+    
+    private void openArticleData() throws BusinessConnectionException{
+        
+    }
+    
+    /**
+     * Método que manda a abrir la ventana datos de libro de acuerdo al libro seleccionado de la tabla
+     * @throws BusinessConnectionException 
+     */
+    
+    private void openBookData() throws BusinessConnectionException{
+        
+    }
+    
+    /**
+     * Método que manda a abrir la ventana datos de capítulo de libro de acuerdo al capítulo de libro seleccionado de la tabla
+     * @throws BusinessConnectionException 
+     */
+    
+    private void openChapterBookData() throws BusinessConnectionException{
+        
+    }
+    
+    /**
+     * Método que manda a buscar evidencia de acuerdo a las iniciales del título ingresado en el campo de la GUI
+     * @param event Define el evento generado
+     */
 
     @FXML
     private void searchEvidence(ActionEvent event){
@@ -147,6 +233,12 @@ public class WindowMemberProductionController implements Initializable {
         }
     }
     
+    /**
+     * Método que manda a recuperar específicamente los trabajos recepcionales de acuerdo a las iniciales del título ingresado en la GUI
+     * @return ArrayList con los trabajos recepcionales que coincidieron con el texto
+     * @throws BusinessConnectionException 
+     */
+    
     private ArrayList<ReceptionWork> recoverReceptionWorks() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         String titleReceptionWork = tfEvidenceName.getText();
@@ -156,6 +248,41 @@ public class WindowMemberProductionController implements Initializable {
         }
         return receptionWorks;
     }
+    
+    /**
+     * Método que manda a recuperar específicamente los artículos de acuerdo a las iniciales del título ingresado en la GUI
+     * @return ArrayList con los artículos que coincidieron con el texto
+     * @throws BusinessConnectionException 
+     */
+    
+    //private ArrayList<Article> recoverArticles() throws BusinessConnectionException{
+        
+    //}
+    
+    /**
+     * Método que manda a recuperar específicamente los libros de acuerdo a las iniciales del título ingresado en la GUI
+     * @return ArrayList con los libros que coincidieron con el texto
+     * @throws BusinessConnectionException 
+     */
+    
+   // private ArrayList<Book> recoverBooks() throws BusinessConnectionException{
+        
+   // }
+    
+    /**
+     * Método que manda a recuperar específicamente los capítulos de libro de acuerdo a las iniciales del título ingresado en la GUI
+     * @return ArrayList con los capítulos de libro que coincidieron con el texto
+     * @throws BusinessConnectionException 
+     */
+    
+   // private ArrayList<ChapterBook> chaptersBook() throws BusinessConnectionException{
+        
+   // }
+    
+    /**
+     * Método que manda a abrir la ventana para registrar un nuevo artículo
+     * @param event Define el evento generado
+     */
 
     @FXML
     private void openArticleRegistration(ActionEvent event){
@@ -172,6 +299,12 @@ public class WindowMemberProductionController implements Initializable {
             Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /**
+     * Método que manda a abrir la ventana para registrar un nuevo libro
+     * @param event Define el evento generado
+     * @throws IOException 
+     */
 
     @FXML
     private void openBookRegistration(ActionEvent event) throws IOException{
@@ -184,6 +317,12 @@ public class WindowMemberProductionController implements Initializable {
         stage.setScene(scene);
         stage.showAndWait();
     }
+    
+    /**
+     * Método que manda a abrir la ventana para registrar un nuevo capítulo de libro
+     * @param event Define el evento generado
+     * @throws IOException 
+     */
 
     @FXML
     private void openChapterBookRegistration(ActionEvent event) throws IOException{
@@ -196,6 +335,12 @@ public class WindowMemberProductionController implements Initializable {
         stage.setScene(scene);
         stage.showAndWait();
     }
+    
+    /**
+     * Método que manda a abrir la ventana para registrar un nuevo trabajo recepcional
+     * @param event Define el evento generado
+     * @throws IOException 
+     */
 
     @FXML
     private void openReceptionWorkRegistration(ActionEvent event) throws IOException{
@@ -208,6 +353,11 @@ public class WindowMemberProductionController implements Initializable {
         stage.setScene(scene);
         stage.showAndWait();
     }
+    
+    /**
+     * Método que cierra la ventana actual producción del integrante
+     * @param event 
+     */
 
     @FXML
     private void closeMemberProduction(ActionEvent event){
@@ -216,6 +366,12 @@ public class WindowMemberProductionController implements Initializable {
         stage.close();
     }
     
+    /**
+     * Método que verifica si existen campos inválidos
+     * Este método invoca a otros métodos de verificación más específicos
+     * @return Booleano con el resultado de la verificación, devuelve true si existen campos inválidos, de lo contrario, devuelve false
+     */
+    
     private boolean existsInvalidField(){
         boolean invalidField = false;
         if(existsEmptyField() || existsInvalidString()){
@@ -223,6 +379,11 @@ public class WindowMemberProductionController implements Initializable {
         }
         return invalidField;
     }
+    
+    /**
+     * Método que verifica si existen campos de la GUI que estén vacíos
+     * @return Booleano con el resultado de la verificación, devuelve true si existen vacíos, de lo contrario, devuelve false
+     */
     
     private boolean existsEmptyField(){
         boolean emptyField = false;
@@ -234,9 +395,14 @@ public class WindowMemberProductionController implements Initializable {
         return emptyField;
     }
     
+    /**
+     * Método que verifica si existen cadenas inválidas en el texto del campo de la GUI
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidas, de lo contrario, devuelve false
+     */
+    
     private boolean existsInvalidString(){
         boolean invalidString = false;
-        Pattern pattern = Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s]+$");
+        Pattern pattern = Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s\\.,:]+$");
         Matcher matcher = pattern.matcher(tfEvidenceName.getText());
         if(!matcher.find()){
            invalidString = true;
@@ -245,6 +411,11 @@ public class WindowMemberProductionController implements Initializable {
         }
         return invalidString;
     }
+    
+    /**
+     * Método que muestra alerta de campo inválido de acuerdo al tipo de error
+     * @param typeError Define el tipo de error que encontró
+     */
     
     private void showInvalidFieldAlert(TypeError typeError){
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -259,6 +430,10 @@ public class WindowMemberProductionController implements Initializable {
         alert.showAndWait();
     }
     
+    /**
+     * Método que muestra alerta de perdida de conexión con la base de datos
+     */
+    
     private void showLostConnectionAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
@@ -266,6 +441,10 @@ public class WindowMemberProductionController implements Initializable {
         alert.setContentText("Perdida de conexión con la base de datos, no se pudo guardar. Intente más tarde");
         alert.showAndWait();
     }
+    
+    /**
+     * Método que muestra alerta sin coincidencias
+     */
     
     private void showNoMatchAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);

@@ -30,10 +30,11 @@ import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.Memorandum;
 
 /**
- * FXML Controller class
- *
- * @author david
+ * Clase para representar el controlador del FXML WindowEditMemorandum
+ * @author David Alexander Mijangos Paredes
+ * @version 17-06-2021
  */
+
 public class WindowEditMemorandumController implements Initializable {
 
     @FXML
@@ -60,7 +61,10 @@ public class WindowEditMemorandumController implements Initializable {
     private Label lbUser;
     private int idMemorandum;
     private ObservableList<Agreement> listAgreements;
-    private Integrant integrant;
+    
+    /**
+     * Enumerado que representa los tipos de errores específicos al editar una minuta
+     */
     
     public enum TypeError{
         EMPTYFIELDS, MISSINGSELECTION, INVALIDYEAR, EMPTYTABLE, COLUMNMISSINGSELECTION, INVALIDSTRING, DUPLICATEVALUE;
@@ -74,12 +78,21 @@ public class WindowEditMemorandumController implements Initializable {
         columnIntegrant.setCellValueFactory(new PropertyValueFactory("responsible"));
         columnDate.setCellValueFactory(new PropertyValueFactory("dateAgreement"));
         listAgreements = FXCollections.observableArrayList();
-    }    
+    }  
+    
+    /**
+     * Método que establece el integrante loggeado, permitiendo proyectar su nombre en la GUI
+     * @param integrant Define el integrante a proyectar su nombre
+     */
     
     public void setIntegrant(Integrant integrant){
-        this.integrant = integrant;
         lbUser.setText(integrant.getNameIntegrant());
     }
+    
+    /**
+     * Método para llenar la información de la minuta en la GUI
+     * @param memorandum Define la minuta de la cual se quiere mostrar la información
+     */
     
     public void fillMemorandumData(Memorandum memorandum){
         this.idMemorandum = memorandum.getIdMemorandum();
@@ -88,11 +101,19 @@ public class WindowEditMemorandumController implements Initializable {
         fillAgreementsTable(memorandum.getAgreements());
     }
     
+    /**
+     * Método que llena el ComboBox de mes de la GUI
+     */
+    
     private void fillComboBoxMonth(){
         ObservableList<String> listHours = FXCollections.observableArrayList("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
                                                                              "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");                                    
         cbMonth.setItems(listHours);
     }
+    
+    /**
+     * Método que llena el ComboBox de integrantes del CA
+     */
     
     private void fillComboBoxIntegrants(){
         IntegrantDAO integrantDAO = new IntegrantDAO();
@@ -106,10 +127,21 @@ public class WindowEditMemorandumController implements Initializable {
         cbIntegrants.setItems(listIntegrants);
     }
     
+    /**
+     * Método que llena la tabla de acuerdos de la minuta 
+     * @param agreements Define la lista de acuerdos correspondientes a la minuta
+     */
+    
     private void fillAgreementsTable(ArrayList<Agreement> agreements){
         listAgreements = FXCollections.observableArrayList(agreements);
         tbAgreements.setItems(listAgreements);
     }
+    
+    /**
+     * Método que manda a agregar un nuevo acuerdo de minuta a la base de datos y la muestra en la tabla de acuerdos de la GUI
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
 
     @FXML
     private void addAgreement(ActionEvent event) throws BusinessConnectionException{
@@ -131,6 +163,12 @@ public class WindowEditMemorandumController implements Initializable {
             }
         }
     }
+    
+    /**
+     * Método que manda a eliminar un acuerdo de minuta de la base de datos y la elimina de la tabla de acuerdos de la GUI
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
 
     @FXML
     private void deleteAgreement(ActionEvent event) throws BusinessConnectionException{
@@ -151,6 +189,11 @@ public class WindowEditMemorandumController implements Initializable {
         cleanFieldsAgreement();
     }
     
+    /**
+     * Método que llena los campos de acuerdo de un acuerdo seleccionado de la tabla
+     * @param event Define el evento generado
+     */
+    
     @FXML
     private void fillAgreementFields(MouseEvent event){
         Agreement agreement = tbAgreements.getSelectionModel().getSelectedItem();
@@ -161,6 +204,12 @@ public class WindowEditMemorandumController implements Initializable {
             tfYear.setText(takeYear(agreement.getDateAgreement()));
         }
     }
+    
+    /**
+     * Método que manda a modificar un acuerdo en la base de datos y lo muestra modificado en la tabla de acuerdos de la GUI
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
     
     @FXML
     private void updateAgreement(ActionEvent event) throws BusinessConnectionException{
@@ -188,6 +237,11 @@ public class WindowEditMemorandumController implements Initializable {
         }
     }
     
+    /**
+     * Método que manda a modificar los campos de la minuta a la base de datos
+     * @param event Define el evento generado
+     */
+    
     @FXML
     private void editMemorandum(ActionEvent event){
         if(!existsInvalidFieldsForMemorandum()){
@@ -208,6 +262,11 @@ public class WindowEditMemorandumController implements Initializable {
         }
     }
     
+    /**
+     * Método que cierra la ventana actual "Editar minuta"
+     * @param event Define el evento generado
+     */
+    
     @FXML
     private void closeEditMemorandum(ActionEvent event){
         Node source = (Node) event.getSource();
@@ -215,17 +274,35 @@ public class WindowEditMemorandumController implements Initializable {
         stage.close();
     }
     
+    /**
+     * Método que toma el mes de una fecha obtenida de la GUI
+     * @param dateToSeparate Define la fecha a separar su mes
+     * @return String con el mes de la fecha
+     */
+    
     private String takeMonth(String dateToSeparate){
         String[] partsDate = dateToSeparate.split("-");
         String agreementMonth = partsDate[0];
         return agreementMonth;
     }
     
+    /**
+     * Método que toma el año de una fecha obtenida de la GUI
+     * @param dateToSeparate Define la fecha a separar su año
+     * @return String con el año de la fecha
+     */
+    
     private String takeYear(String dateToSeparate){
         String[] partsDate = dateToSeparate.split("-");
         String agreementYear = partsDate[1];
         return agreementYear;
     }
+    
+    /**
+     * Método que verifica si existen campos inválidos para un acuerdo
+     * El método invoca a otros métodos de validación específicos
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     */
     
     private boolean existsInvalidFieldsForAgreement(){
         boolean invalidFields = false;
@@ -236,6 +313,12 @@ public class WindowEditMemorandumController implements Initializable {
         return invalidFields;
     }
     
+    /**
+     * Método que verifica si existen campos inválidos para minuta
+     * El método invoca a otros métodos de validación específicos
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     */
+    
     private boolean existsInvalidFieldsForMemorandum(){
         boolean invalidFields = false;
         if(existsEmptyFields(taPendings.getText()) || existsEmptyFields(taNotes.getText()) || existsInvalidCharactersForMemorandum(taPendings.getText()) ||
@@ -244,6 +327,12 @@ public class WindowEditMemorandumController implements Initializable {
         }
         return invalidFields;
     }
+    
+    /**
+     * Método que verifica si existe campo de texto vacío
+     * @param fieldToValidate Define el texto a verificar si está vacío o no
+     * @return Booleano con el resultado de verificación, devuelve true si está vacío, de lo contrario, devuelve false
+     */
     
     private boolean existsEmptyFields(String fieldToValidate){
         boolean emptyField = false;
@@ -255,6 +344,11 @@ public class WindowEditMemorandumController implements Initializable {
         return emptyField;
     }
     
+    /**
+     * Método que verifica si existe selección de campo faltante en la GUI
+     * @return Booleano con el resultado de verificación, devuelve true si existe selección faltante, de lo contrario, devuelve false
+     */
+    
     private boolean existsMissingSelection(){
         boolean missingSelection = false;
         if(cbMonth.getSelectionModel().getSelectedItem().equals("")|| cbIntegrants.getSelectionModel().getSelectedItem().equals("")){ //Cambiar acá debe ser a null porque selecciona integrantes
@@ -264,6 +358,12 @@ public class WindowEditMemorandumController implements Initializable {
         }
         return missingSelection;
     }
+    
+    /**
+     * Método que verifica si un texto de la GUI contiene caracteres no permitidos
+     * @param textToValidate Define el texto a verificar
+     * @return Booleano con el resultado de verificación, devuelve true si existe inválidos, de lo contrario, devuelve false
+     */
     
     private boolean existsInvalidCharacters(String textToValidate){
         boolean invalidCharacters = false;
@@ -277,6 +377,13 @@ public class WindowEditMemorandumController implements Initializable {
         return invalidCharacters;
     }
     
+    /**
+     * Método que verifica si existe texto de los campos de minuta que cuenten con caracteres no permitidos
+     * Se implementa el método porque los campos de una minuta, los cuales son notas y pendientes, pueden tener más variedad de tipos de caracteres a comparación de los campos de acuerdo
+     * @param textToValidate Define texto del campo de minuta a verificar
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de los contrario, devuelve false
+     */
+    
     private boolean existsInvalidCharactersForMemorandum(String textToValidate){
         boolean invalidCharacters = false;
         Pattern pattern = Pattern.compile("^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ\\s.,:()]+$");
@@ -288,6 +395,13 @@ public class WindowEditMemorandumController implements Initializable {
         }
         return invalidCharacters;
     }
+    
+    /**
+     * Método que verifica si existe año inválido en la GUI
+     * Se implementa el método porque un año solo puede contener números y no debe ser menor al año actual
+     * @param yearToValidate Define el año recuperado de la GUI a validar
+     * @return Booleano con el resultado de verificación, devuelve true si existe inválido, de lo contario, devuelve false
+     */
     
     private boolean existsInvalidCharactersForYear(String yearToValidate){
         boolean invalidYear = false;
@@ -311,16 +425,27 @@ public class WindowEditMemorandumController implements Initializable {
         return invalidYear;
     }
     
+    /**
+     * Método que verifica si la tabla de acuerdos está vacía
+     * Se implementa el método porque una reunión debe tener por lo menos un acuerdo
+     * @return Booleano con el resultado de verificación, devuelve true si está vacía, de lo contrario, devuelve false
+     */
+    
     private boolean existsEmptyTable(){
         boolean emptyTable = false;
-        ObservableList<Agreement> listAgreements = tbAgreements.getItems();
-        if(listAgreements.isEmpty()){
+        ObservableList<Agreement> agreements = tbAgreements.getItems();
+        if(agreements.isEmpty()){
             emptyTable = true;
             TypeError typeError = TypeError.EMPTYTABLE;
             showInvalidFieldAlert(typeError);
         }
         return emptyTable;
     }
+    
+    /**
+     * Método que verifica si existen valores duplicados en un nuevo acuerdo a agregar
+     * @return Booleano con el resultado de verificación, devuelve true si existe duplicado, de lo contrario, devuelve false
+     */
         
     private boolean existsDuplicateValueForAddAgreement(){
         boolean duplicateValue = false;
@@ -334,6 +459,13 @@ public class WindowEditMemorandumController implements Initializable {
         return duplicateValue;
     }
     
+    /**
+     * Método que verifica si existen valores duplicados en un acuerdo a modificar
+     * Se implementa el método porque verifica con todos los acuerdos de la tabla excepto con el acuerdo a modificar
+     * @param idAgreement Define el identificador del acuerdo a modificar
+     * @return Booleano con el resultado de verificación, devuelve true si existe duplicado, de lo contrario, devuelve false
+     */
+    
     private boolean existsDuplicateValueForUpdateAgreement(int idAgreement){
         boolean duplicateValue = false;
         for(Agreement agreement: tbAgreements.getItems()){
@@ -346,12 +478,21 @@ public class WindowEditMemorandumController implements Initializable {
         return duplicateValue;
     }
     
+    /**
+     * Método que limpia los campos de acuerdo
+     */
+    
     private void cleanFieldsAgreement(){
         tfAgreement.clear();
         cbIntegrants.getSelectionModel().clearSelection();
         cbMonth.getSelectionModel().clearSelection();
         tfYear.clear();
     }
+    
+    /**
+     * Método que muestra alerta de campo inválido de acuerdo al tipo de error
+     * @param typeError Define el tipo de error que encontró
+     */
     
     private void showInvalidFieldAlert(TypeError typeError){
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -388,6 +529,10 @@ public class WindowEditMemorandumController implements Initializable {
         alert.showAndWait();
     }
     
+    /**
+     * Método que muestra alerta de perdida de conexión con la base de datos
+     */
+    
     private void showLostConnectionAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
@@ -395,6 +540,10 @@ public class WindowEditMemorandumController implements Initializable {
         alert.setContentText("Perdida de conexión con la base de datos, no se pudo guardar. Intente más tarde");
         alert.showAndWait();
     }
+    
+    /**
+     * Método que muestra alerta de confirmación de guardado en la base de datos
+     */
     
     private void showConfirmationSaveAlert(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
