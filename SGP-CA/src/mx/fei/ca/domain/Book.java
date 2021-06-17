@@ -3,6 +3,12 @@ package mx.fei.ca.domain;
 
 import java.sql.Date;
 
+/**
+ * Clase para representar una evidencia de tipo libro de un integrante del CA
+ * @author Gloria Mendoza González
+ * @version 16-06-2021
+ */
+
 public class Book extends Evidence{
    private String ISBN;
    private int printing;
@@ -16,6 +22,23 @@ public class Book extends Evidence{
    private String fileRoute;
    private int idProject;
    private String curp;
+   
+   /**
+    * Constructor para la creación de una evidencia de tipo libro
+    * @param evidence Define la clase padre de un libro que contiene los atributos de impacto al CA, nombre de la evidencia y autor
+    * @param ISBN Define la clave única del libro
+    * @param printing 
+    * @param numPages
+    * @param participationType
+    * @param actualState
+    * @param country
+    * @param publicationDate
+    * @param editorial
+    * @param edition
+    * @param fileRoute Define la ruta del libro
+    * @param idProject
+    * @param curp 
+    */
    
     public Book(Evidence evidence, String ISBN, int printing, int numPages, String participationType, String actualState, 
                 String country, Date publicationDate, String editorial, String edition, String fileRoute, int idProject, String curp){
