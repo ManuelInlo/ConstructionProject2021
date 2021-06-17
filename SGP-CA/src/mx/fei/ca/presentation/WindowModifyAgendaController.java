@@ -1,4 +1,3 @@
-
 package mx.fei.ca.presentation;
 
 import java.net.URL;
@@ -44,10 +43,11 @@ import mx.fei.ca.domain.MeetingAssistant;
 import mx.fei.ca.domain.Prerequisite;
 
 /**
- * FXML Controller class
- *
- * @author david
+ * Clase para representar el controlador del FXML WindowModifyAgenda
+ * @author David Alexander Mijangos Paredes
+ * @version 17-06-2021
  */
+
 public class WindowModifyAgendaController implements Initializable {
 
     @FXML
@@ -110,6 +110,10 @@ public class WindowModifyAgendaController implements Initializable {
     private ObservableList<Prerequisite> listPrerequisites;
     private ObservableList<AgendaPoint> listAgendaPoints;
     private ArrayList<Integrant> integrants;
+    
+    /**
+     *  Enumerado que representa los tipos de errores específicos al modificar una reunión
+     */
 
     private enum TypeError{
         EMPTYFIELDS, INVALIDSTRINGS, MISSINGMEETINGTIME, MISSINGDATE, MEETINGAFFAIRDUPLICATE, DATEANDTIMEDUPLICATE,
@@ -141,11 +145,22 @@ public class WindowModifyAgendaController implements Initializable {
         fillComboBoxForIntegrants(cbLeaderDiscussion);
         listPrerequisites = FXCollections.observableArrayList();
         listAgendaPoints = FXCollections.observableArrayList();
-    }    
+    }  
+    
+    /**
+     * Método que establece el integrante loggeado, permitiendo proyectar su nombre en la GUI
+     * @param integrant Define el integrante a proyectar su nombre
+     */
     
     public void setIntegrant(Integrant integrant){
         lbUser.setText(integrant.getNameIntegrant());
     }
+    
+    /**
+     * Método que manda a agregar un nuevo prerequisito de reunión a la base de datos y lo muestra en la tabla prerequisitos de la GUI
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
     
     @FXML
     private void addPrerequisite(ActionEvent event) throws BusinessConnectionException{
@@ -167,6 +182,12 @@ public class WindowModifyAgendaController implements Initializable {
         }
     }
     
+    /**
+     * Método que manda a eliminar un prerequisito seleccionado a la base de datos y lo elimina de la tabla prerequisitos de la GUI
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
+    
     @FXML
     private void deletePrerequisite(ActionEvent event) throws BusinessConnectionException{
         Prerequisite prerequisite = tbPrerequisites.getSelectionModel().getSelectedItem();
@@ -186,6 +207,11 @@ public class WindowModifyAgendaController implements Initializable {
         }
     }
     
+    /**
+     * Método que muestra en los campos de prerequisito la información del prerequisito seleccionado de la tabla
+     * @param event Define el evento generado
+     */
+    
     @FXML
     private void fillPrerequisiteFields(MouseEvent event){
         Prerequisite prerequisite = tbPrerequisites.getSelectionModel().getSelectedItem();
@@ -194,6 +220,12 @@ public class WindowModifyAgendaController implements Initializable {
             cbPrerequisiteManager.getSelectionModel().select(prerequisite.getPrerequisiteManager());
         }
     }
+    
+    /**
+     * Método que manda a modificar un prerequisito seleccionado a la base de datos y lo modifica en la tabla prerequisitos de la GUI
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
     
     @FXML
     private void updatePrerequisite(ActionEvent event) throws BusinessConnectionException{
@@ -217,6 +249,12 @@ public class WindowModifyAgendaController implements Initializable {
             cleanFieldsPrerequisite();
         }      
     }
+    
+    /**
+     * Método que manda a guardar un nuevo punto de agenda de reunión a la base de datos y lo muestra en la tabla agenda de la GUI
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
 
     @FXML
     private void addAgendaPoint(ActionEvent event) throws BusinessConnectionException{
@@ -239,6 +277,12 @@ public class WindowModifyAgendaController implements Initializable {
             cleanFieldsAgendaPoint();
         }
     }
+    
+    /**
+     * Método que manda a eliminar un punto de agenda seleccionado a la base de datos y lo elimina de la tabla agenda de la GUI
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
 
     @FXML
     private void deleteAgendaPoint(ActionEvent event) throws BusinessConnectionException{
@@ -259,6 +303,11 @@ public class WindowModifyAgendaController implements Initializable {
         } 
     }
     
+    /**
+     * Método que llena los campos de punto de agenda con la información de un punto de agenda seleccionado de la tabla
+     * @param event Define el evento generado
+     */
+    
     @FXML
     private void fillAgendaPointFields(MouseEvent event){
         AgendaPoint agendaPoint = tbAgendaPoints.getSelectionModel().getSelectedItem();
@@ -271,6 +320,12 @@ public class WindowModifyAgendaController implements Initializable {
             cbLeaderDiscussion.getSelectionModel().select(agendaPoint.getLeader());
         }
     }
+    
+    /**
+     * Método que manda a modificar un punto de agenda seleccionado a la base de datos y lo modifica en la tabla agenda de la GUI
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
       
     @FXML
     private void updateAgendaPoint(ActionEvent event) throws BusinessConnectionException{
@@ -296,9 +351,14 @@ public class WindowModifyAgendaController implements Initializable {
                 showLostConnectionAlert();
             }
             cleanFieldsAgendaPoint();
-        }
-        
+        }   
     }
+    
+    /**
+     * Método que manda a modificar los campos de la minuta a la base de datos
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
 
     @FXML
     private void updateMeeting(ActionEvent event) throws BusinessConnectionException{
@@ -320,6 +380,11 @@ public class WindowModifyAgendaController implements Initializable {
             }
         }
     }
+    
+    /**
+     * Método que cierra la ventana actual "Modificar agenda de reunión"
+     * @param event Define el evento generado
+     */
 
     @FXML
     private void closeModifyAgenda(ActionEvent event){
@@ -327,6 +392,11 @@ public class WindowModifyAgendaController implements Initializable {
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
+    
+    /**
+     * Método que muestra la información de la reunión en la GUI
+     * @param meeting Define la reunión de la cual se muestra su información
+     */
     
     public void fillMeetingData(Meeting meeting){
         this.idMeeting = meeting.getIdMeeting();
@@ -341,11 +411,21 @@ public class WindowModifyAgendaController implements Initializable {
         fillMeetingAssistantsTable(meeting.getAssistants());
     }
     
+    /**
+     * Método que llena los ComboBox que requieren horas
+     * @param cbToFill Define el ComboBox a llenar
+     */
+    
     private void fillComboBoxHours(ComboBox cbToFill){
         ObservableList<String> listHours = FXCollections.observableArrayList("07","08","09","10", "11","12","13","14","15","16","17",
                                                                              "18","19","20");                                    
         cbToFill.setItems(listHours);
     }
+    
+    /**
+     * Método que llena los ComboBox que requieren minutos
+     * @param cbToFill Define el ComboBox a llenar
+     */
     
     private void fillComboBoxMinutes(ComboBox cbToFill){
         ObservableList<String> listMinutes = FXCollections.observableArrayList("00","01","02","03","04","05","06","07","08","09","10",
@@ -357,10 +437,21 @@ public class WindowModifyAgendaController implements Initializable {
         cbToFill.setItems(listMinutes);
     }
     
+    /**
+     * Método que llena los ComboBox que requieren los integrantes del CA
+     * @param cbToFill Define el ComboBox a llenar
+     */
+    
     private void fillComboBoxForIntegrants(ComboBox cbToFill){
         ObservableList<Integrant> listIntegrants = FXCollections.observableArrayList(this.integrants);
         cbToFill.setItems(listIntegrants);
     }
+    
+    /**
+     * Método que toma el mes de una fecha obtenida de la GUI
+     * @param timeToSeparate Define la fecha a separar su mes
+     * @return String con el mes de la fecha
+     */
     
     private String takeHours(Time timeToSeparate){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
@@ -370,6 +461,12 @@ public class WindowModifyAgendaController implements Initializable {
         return stringHour;
     }
     
+    /**
+     * Método que toma el año de una fecha obtenida de la GUI
+     * @param timeToSeparate Define la fecha a separar su año
+     * @return String con el año de la fecha
+     */
+    
     private String takeMinutes(Time timeToSeparate){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         String stringTime = simpleDateFormat.format(timeToSeparate);
@@ -378,15 +475,30 @@ public class WindowModifyAgendaController implements Initializable {
         return stringMinute;
     }
     
+    /**
+     * Método que llena la tabla prerequisitos de la GUI
+     * @param prerequisites Define la lista con los prerequisitos de reunión a mostrar
+     */
+    
     private void fillPrerequisitesTable(ArrayList<Prerequisite> prerequisites){
         listPrerequisites = FXCollections.observableArrayList(prerequisites);
         tbPrerequisites.setItems(listPrerequisites);
     }
     
+    /**
+     * Método que llena la tabla agenda de la GUI
+     * @param agendaPoints Define la lista con los puntos de agenda de reunión a mostrar
+     */
+    
     private void fillAgendaPointsTable(ArrayList<AgendaPoint> agendaPoints){
         listAgendaPoints = FXCollections.observableArrayList(agendaPoints);
         tbAgendaPoints.setItems(listAgendaPoints);
     }
+    
+    /**
+     * Método que llena la tabla de asistentes de reunión de la GUI
+     * @param meetingAssistants Define la lista con los asistentes de reunión a mostrar
+     */
     
     private void fillMeetingAssistantsTable(ArrayList<MeetingAssistant> meetingAssistants){
         for(int i = 0; i < meetingAssistants.size(); i++){
@@ -430,6 +542,12 @@ public class WindowModifyAgendaController implements Initializable {
         tbIntegrants.setItems(listMeetingAssistants);
     }
     
+    /**
+     * Método que manda a modificar los roles de los asistentes de reunión a la base de datos
+     * @return Booleano con el resultado de guardado, devuelve true si guardó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+    
     private boolean updatedMeetingAssistants() throws BusinessConnectionException{
         boolean updatedMeetingAssistant = true;
         MeetingAssistantDAO meetingAssistantDAO = new MeetingAssistantDAO();
@@ -451,10 +569,23 @@ public class WindowModifyAgendaController implements Initializable {
         return updatedMeetingAssistant;
     }
     
+    /**
+     * Método que cambia una variable util.Date a sql.Date porque se necesita para modificar en la base de datos
+     * @param date Define la variable de tipo util.Data a cambiar
+     * @return Variable cambiada a tipo sql.Date
+     */
+    
     private java.sql.Date parseToSqlDate(java.util.Date date){
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         return sqlDate;
     }
+    
+    /**
+     * Método que cambia horas y minutos en cadena hacia una variable en formato sql.Time porque se necesita para modificar en la base de datos
+     * @param hours Define el String con la hora seleccionada
+     * @param minutes Define el String con minutos seleccionados
+     * @return Variable cambiada a tipo sql.Time
+     */
     
     private java.sql.Time parseToSqlTime(String hours, String minutes){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
@@ -466,6 +597,13 @@ public class WindowModifyAgendaController implements Initializable {
         }
         return meetingTime;
     }
+    
+    /**
+     * Método que verifica si existen campos inválidos de reunión en la GUI
+     * El método invoca a otros métodos con validaciones más específicas
+     * @return Booleano con el resultado de la verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
     
     private boolean existsInvalidFieldsForMeeting() throws BusinessConnectionException{
         boolean invalidFields = false;
@@ -489,6 +627,12 @@ public class WindowModifyAgendaController implements Initializable {
         return invalidFields;
     }
     
+    /**
+     * Método que verifica si existen campos inválidos para prerequisito
+     * El método invoca métodos de verificación más específicos
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contario, devuelve false
+     */
+    
     private boolean existsInvalidFieldsForPrerequisites(){
         boolean invalidFields = false;
         if(existsEmptyFields(tfDescription.getText()) || existsInvalidCharacters(tfDescription.getText()) 
@@ -497,6 +641,12 @@ public class WindowModifyAgendaController implements Initializable {
         }
         return invalidFields;
     }
+    
+    /**
+     * Método que verifica si existen campos inválidos para punto de agenda
+     * El método invoca métodos de verificación más específicos
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contario, devuelve false
+     */
     
     private boolean existsInvalidFieldsForAgendaPoint(){
         boolean invalidFields = false;
@@ -507,6 +657,12 @@ public class WindowModifyAgendaController implements Initializable {
         return invalidFields;
     }
     
+    /**
+     * Método que verifica si existe texto obtenido de la GUI que esté vacío
+     * @param textToValidate Define el texto a validar
+     * @return Booleano con el resultado de verificación, devuelve true si está vacío, de lo contrario, devuelve false
+     */
+    
     private boolean existsEmptyFields(String textToValidate){
         boolean emptyFields = false;
         if(textToValidate.isEmpty()){
@@ -516,6 +672,11 @@ public class WindowModifyAgendaController implements Initializable {
         }
         return emptyFields;
     }
+    
+    /**
+     * Método que verifica si existe selección de fecha faltante
+     * @return Booleano con el resultado de verificación, devuelve true si existe faltante, de lo contrario, devuelve false
+     */
      
     private boolean existsMissingDate(){
         boolean missingDate = false;
@@ -526,6 +687,12 @@ public class WindowModifyAgendaController implements Initializable {
         }
         return missingDate;
     }
+    
+    /**
+     * Método que verifica si existen fechas incorrectas
+     * Se implementa el método porque se necesita verificar que la fecha de la reunión no sea menor a la fecha actual
+     * @return Booleano con el resultado de verificación, devuelve true si existe fecha incorrecta, de lo contrario, devuelve true
+     */
     
     private boolean existsIncorretDate(){
         boolean incorretDate = false;
@@ -546,6 +713,12 @@ public class WindowModifyAgendaController implements Initializable {
         return incorretDate;
     }
     
+    /**
+     * Método que verifica si existe selección de hora o minutos faltante
+     * @param cbTimeToValidate Define el ComboBox a validar
+     * @return Booleano con el resultado de verificación, devuelve true si existe selección faltante, de lo contrario, devuelve false
+     */
+    
     private boolean existsMissingTime(ComboBox cbTimeToValidate){
         boolean missingMeetingTime = false;
         if(cbTimeToValidate.getSelectionModel().getSelectedItem().equals("")){
@@ -555,6 +728,13 @@ public class WindowModifyAgendaController implements Initializable {
         }
         return missingMeetingTime;
     }
+    
+    /**
+     * Método que verifica si un nombre tiene caracteres no permitidos
+     * Se implementa el método porque un nombre no puede tener ciertos caracteres a comparación de otros textos
+     * @param textToValidate Define el nombre a verificar 
+     * @return Booleano con el resultado de verificación, devuelve true si existe inválido, de lo contrario, devuelve false
+     */
     
     private boolean existsInvalidCharactersForName(String textToValidate){
         boolean invalidCharactersForName = false;
@@ -568,6 +748,12 @@ public class WindowModifyAgendaController implements Initializable {
         return invalidCharactersForName;
     }
     
+    /**
+     * Método que verifica si existen caracteres inválidos para el resto de campos de la GUI
+     * @param textToValidate Define el texto a validar
+     * @return Booleano con el resultado de verificación, devuelve true si existe inválido, de lo contrario, devuelve false
+     */
+    
     private boolean existsInvalidCharacters(String textToValidate){
         boolean invalidCharacters = false;
         Pattern pattern = Pattern.compile("^[0-9A-Za-zÁÉÍÓÚáéíóúñÑ\\s\\.,]+$");
@@ -580,6 +766,12 @@ public class WindowModifyAgendaController implements Initializable {
         return invalidCharacters;
     }
     
+    /**
+     * Método que verifica si existe selección inválida de rol en la tabla de integrantes
+     * El método invoca a otros métodos de verificación más específicos
+     * @return Booleano con el resultado de verificación, devuelve true si existe selección inválida, de lo contrario, devuelve false
+     */
+    
     private boolean existsInvalidRoleSelection(){
         boolean invalidRole = false;
         if(existsIntegrantWithManyRoles() || existsDuplicateRole()){
@@ -587,6 +779,11 @@ public class WindowModifyAgendaController implements Initializable {
         }
         return invalidRole;
     }
+    
+    /**
+     * Método que valida si un integrante cuenta con más de un rol seleccionado
+     * @return Booleano con el resultado de verificación, devuelve true si existe más de un rol en un integrante, de lo contrario, devuelve false
+     */
     
     private boolean existsIntegrantWithManyRoles(){
         boolean existsIntegrant = false;
@@ -600,6 +797,12 @@ public class WindowModifyAgendaController implements Initializable {
         }
         return existsIntegrant;
     }
+    
+    /**
+     * Método que verifica si existen roles duplicados
+     * Se implementa el método porque un rol solo puede estar asociado a un solo integrante
+     * @return Booleano con el resultado de verificación, devuelve true si existe rol duplicado, de lo contrario, devuelve false
+     */
     
     private boolean existsDuplicateRole(){
         boolean duplicateRole = false;
@@ -638,6 +841,11 @@ public class WindowModifyAgendaController implements Initializable {
         return duplicateRole;
     }
     
+    /**
+     * Método que verifica si falta asignar un rol
+     * @return Booleano con el resultado de verificación, devuelve true si existe asignación faltante, de lo contario, devuelve false
+     */
+    
     private boolean existsMissingRole(){
         boolean missingRole = false;
         boolean leaderSelected = false;
@@ -659,6 +867,12 @@ public class WindowModifyAgendaController implements Initializable {
         }
         return missingRole;
     }
+    
+    /**
+     * Método que manda a verificar en base de datos si ciertos campos de una reunión que no se pueden repetir, se encuentran o no registrados
+     * @return Booleano con el resultado de verificación, devuelve true si existe valor duplicado, de lo contario, devuelve false
+     * @throws BusinessConnectionException 
+     */
     
     private boolean existsDuplicateValuesForMeeting() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
@@ -685,6 +899,12 @@ public class WindowModifyAgendaController implements Initializable {
         return duplicateValues;
     }
     
+    /**
+     * Método que verifica si existe selección de ComboBox faltante en la GUI
+     * @param cbToValidate Define el ComboBox a validar
+     * @return Booleano con el resultado de la verificación, devuelve true si existe selección faltante, de lo contrario, devuelve false
+     */
+    
     private boolean existsMissingSelection(ComboBox cbToValidate){
         boolean missingSelection = false;
         if(cbToValidate.getSelectionModel().getSelectedItem() == null){
@@ -692,8 +912,15 @@ public class WindowModifyAgendaController implements Initializable {
             TypeError typeError = TypeError.MISSINGSELECTION;
             showInvalidFieldAlert(typeError);
         }
+        
         return missingSelection;
     }
+    
+    /**
+     * Método que verifica si existen horas inválidas
+     * Se implementa porque es necesario verificar que no existan selecciones faltantes así como horas de inicio mayores a la hora de fin 
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidas, de lo contrario, devuelve false
+     */
     
     private boolean existsInvalidHours(){
         boolean invalidHours = false;
@@ -722,6 +949,11 @@ public class WindowModifyAgendaController implements Initializable {
         return invalidHours;
     }
     
+    /**
+     * Método que verifica si la descripción de un prerequisito a agregar ya se encuentra en otro prerequisito
+     * @return Booleano con el resultado de verificación, devuelve true si está duplicado, de lo contrario, devuelve false
+     */
+    
     private boolean existsDuplicateValueForAddPrerequisite(){
         boolean duplicateValue = false;
         for(Prerequisite prerequisite: tbPrerequisites.getItems()){
@@ -733,6 +965,11 @@ public class WindowModifyAgendaController implements Initializable {
         }
         return duplicateValue;
     }
+    
+    /**
+     * Método que verifica si el tema de un punto de agenda a agregar ya se encuentra en otro punto de agenda
+     * @return Booleano con el resultado de verificación, devuelve true si está duplicado, de lo contrario, devuelve false
+     */
     
     private boolean existsDuplicateValueForAddAgendaPoint(){
         boolean duplicateValue = false;
@@ -755,6 +992,13 @@ public class WindowModifyAgendaController implements Initializable {
         return duplicateValue;
     }
     
+    /**
+     * Método que verifica si la descripción de un prerequisito a modificar ya se encuentra en otro prerequisito
+     * Se implementa el método porque se verifica con todos los prerequisitos de la tabla excepto el prerequisito que se está modificando
+     * @param idPrerequisite Define el identificador del prerequisito a modificar
+     * @return Booleano con el resultado de verificación, devuelve true si está duplicado, de lo contrario, devuelve false
+     */
+    
     private boolean existsDuplicateValueForUpdatePrerequisite(int idPrerequisite){
         boolean duplicateValue = false;
         for(Prerequisite prerequisite: tbPrerequisites.getItems()){
@@ -766,6 +1010,13 @@ public class WindowModifyAgendaController implements Initializable {
         }
         return duplicateValue;
     }
+    
+    /**
+     * Método que verifica si el tema de un punto de agenda a modificar ya se encuentra en otro punto de agenda
+     * Se implementa el método porque se verifica con todos los puntos de agenda de la tabla exceptio el punto de agenda que se está modificando
+     * @param idAgendaPoint Define el identificador del punto de agenda a modificar
+     * @return Booleano con el resultado de verificación, devuelve true si está duplicado, de lo contrario, devuelve false
+     */
     
     private boolean existsDuplicateValueForUpdateAgendaPoint(int idAgendaPoint){
         boolean duplicateValue = false;
@@ -788,22 +1039,36 @@ public class WindowModifyAgendaController implements Initializable {
         return duplicateValue;
     }
     
+    /**
+     * Método que verifica si existen tablas vacías en la GUI
+     * Se implementa el método porque una reunión debe tener por lo menos un prerequisito y un punto de agenda
+     * @return Booleano con el resultado de verificación, devuelve true si existen vacías, de lo contario, devuelve false
+     */
+    
      private boolean existsEmptyTable(){
         boolean emptyTable = false;
-        ObservableList<Prerequisite> listPrerequisites = tbPrerequisites.getItems();
-        ObservableList<AgendaPoint> listAgendaPoints = tbAgendaPoints.getItems();
-        if(listPrerequisites.isEmpty() || listAgendaPoints.isEmpty()){
+        ObservableList<Prerequisite> prerequisites = tbPrerequisites.getItems();
+        ObservableList<AgendaPoint> agendaPoints = tbAgendaPoints.getItems();
+        if(prerequisites.isEmpty() || agendaPoints.isEmpty()){
             emptyTable = true;
             TypeError typeError = TypeError.EMPTYTABLE;
             showInvalidFieldAlert(typeError);
         }
         return emptyTable;
     }
+     
+    /**
+     * Método que limpia los campos de prerequisito
+     */
     
     private void cleanFieldsPrerequisite(){
         tfDescription.clear();
         cbPrerequisiteManager.getSelectionModel().clearSelection();
     }
+    
+    /**
+     * Método que limpia los campos de punto de agenda
+     */
     
     private void cleanFieldsAgendaPoint(){
         cbHourStart.getSelectionModel().clearSelection();
@@ -813,6 +1078,11 @@ public class WindowModifyAgendaController implements Initializable {
         tfTopic.clear();
         cbLeaderDiscussion.getSelectionModel().clearSelection();
     }
+    
+    /**
+     * Método que muestra alerta de campo inválido de acuerdo al tipo de error
+     * @param typeError Define el tipo de error que encontró
+     */
     
     private void showInvalidFieldAlert(TypeError typeError){
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -892,6 +1162,10 @@ public class WindowModifyAgendaController implements Initializable {
         alert.showAndWait();
     }
     
+    /**
+     * Método que muestra alerta de confirmación de guardado en la base de datos
+     */
+    
     private void showConfirmationAlert(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
@@ -900,6 +1174,10 @@ public class WindowModifyAgendaController implements Initializable {
         alert.showAndWait();
     }
     
+    /**
+     * Método que muestra alerta de perdida de conexión con la base de datos
+     */
+    
     private void showLostConnectionAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
@@ -907,7 +1185,5 @@ public class WindowModifyAgendaController implements Initializable {
         alert.setContentText("Perdida de conexión con la base de datos, no se pudo guardar. Intente más tarde");
         alert.showAndWait();
     }
-    
-    
     
 }

@@ -1,4 +1,3 @@
-
 package mx.fei.ca.presentation;
 
 import java.net.URL;
@@ -35,10 +34,11 @@ import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.Memorandum;
 
 /**
- * FXML Controller class
- *
- * @author david
+ * Clase para representar el controlador del FXML WindowMeeting
+ * @author David Alexander Mijangos Paredes
+ * @version 17-06-2021
  */
+
 public class WindowMeetingController implements Initializable {
 
     @FXML
@@ -75,6 +75,10 @@ public class WindowMeetingController implements Initializable {
     private int idMemorandum;
     private int idMeeting;
     
+    /**
+     * Enumerado que representa los tipos de errores específicos al iniciar una reunión y crear la minuta
+     */
+    
     public enum TypeError{
         EMPTYFIELDS, MISSINGSELECTION, INVALIDYEAR, EMPTYTABLE, COLUMNMISSINGSELECTION, INVALIDSTRING, DUPLICATEVALUE;
     }
@@ -86,9 +90,20 @@ public class WindowMeetingController implements Initializable {
         agreements = FXCollections.observableArrayList();
     } 
     
+    /**
+     * Método que establece el integrante loggeado, permitiendo proyectar su nombre en la GUI
+     * @param integrant Define el integrante a proyectar su nombre
+     */
+    
     public void setIntegrant(Integrant integrant){
         lbUser.setText(integrant.getNameIntegrant());
     }
+    
+    /**
+     * Método que muestra los puntos de agenda de la reunión en una tabla de la GUI
+     * @param agendaPoints Define la lista de puntos de agenda de la reunión
+     * @param idMeeting Define el identificador de la reunión iniciada
+     */
     
     public void showAgendaPoints(ArrayList<AgendaPoint> agendaPoints, int idMeeting){
         this.idMeeting = idMeeting;
@@ -99,11 +114,19 @@ public class WindowMeetingController implements Initializable {
         tbAgenda.setItems(listAgendaPoints);
     }
     
+    /**
+     * Método que llena el ComboBox de mes de la GUI
+     */
+    
     private void fillComboBoxMonth(){
         ObservableList<String> listHours = FXCollections.observableArrayList("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
                                                                              "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");                                    
         cbMonth.setItems(listHours);
     }
+    
+    /**
+     * Método que llena el ComboBox de integrantes del CA
+     */
     
     private void fillComboBoxIntegrants(){
         IntegrantDAO integrantDAO = new IntegrantDAO();
@@ -116,6 +139,11 @@ public class WindowMeetingController implements Initializable {
         ObservableList<Integrant> listIntegrants = FXCollections.observableArrayList(integrants);
         cbIntegrants.setItems(listIntegrants);
     }
+    
+    /**
+     * Método que agrega un nuevo acuerdo a la tabla de acuerdos de la GUI
+     * @param event Define el evento generado
+     */
     
     @FXML
     private void addAgreement(ActionEvent event){
@@ -132,6 +160,11 @@ public class WindowMeetingController implements Initializable {
             cleanFieldsAgreement();
         }
     }
+    
+    /**
+     * Método que elimina un acuerdo seleccionado de la tabla de acuerdos de la GUI
+     * @param event Define el evento generado 
+     */
 
     @FXML
     private void deleteAgreement(ActionEvent event){
@@ -144,29 +177,38 @@ public class WindowMeetingController implements Initializable {
             showInvalidFieldAlert(typeError);
         }
     }
+    
+    /**
+     * Método que concluye la reunión, mandando a guardar la información de acuerdos y minuta
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
 
     @FXML
     private void concludeMeeting(ActionEvent event) throws BusinessConnectionException{
         Optional<ButtonType> action = showConfirmationAlert();
-        if (action.get() == ButtonType.OK){
-            if(!existsInvalidFieldsForMemorandum()){
-                String pending = taPendings.getText();
-                String note = taNotes.getText();
-                Memorandum memorandum = new Memorandum(pending, note);
-                MemorandumDAO memorandumDAO = new MemorandumDAO();
-                MeetingDAO meetingDAO = new MeetingDAO();
-                try{
-                    idMemorandum = memorandumDAO.saveAndReturnIdMemorandum(memorandum, this.idMeeting);
-                    if (idMemorandum != 0 && savedAgreements() && meetingDAO.updatedStateOfMeeting("Finalizada", idMeeting)) {
-                        showConfirmationSaveAlert();
-                        closeMeeting(event);
-                    }
-                } catch (BusinessConnectionException ex) {
-                    showLostConnectionAlert();
-                }  
+        if (action.get() == ButtonType.OK && !existsInvalidFieldsForMemorandum()){
+            String pending = taPendings.getText();
+            String note = taNotes.getText();
+            Memorandum memorandum = new Memorandum(pending, note);
+            MemorandumDAO memorandumDAO = new MemorandumDAO();
+            MeetingDAO meetingDAO = new MeetingDAO();
+            try{
+                idMemorandum = memorandumDAO.saveAndReturnIdMemorandum(memorandum, this.idMeeting);
+                if (idMemorandum != 0 && savedAgreements() && meetingDAO.updatedStateOfMeeting("Finalizada", idMeeting)) {
+                    showConfirmationSaveAlert();
+                    closeMeeting(event);
+                }    
+            } catch (BusinessConnectionException ex) {
+                showLostConnectionAlert();  
             }
         }
     }
+    
+    /**
+     * Método que cierra le ventana actual "Reunión"
+     * @param event Define el evento generado
+     */
 
     @FXML
     private void closeMeeting(ActionEvent event){
@@ -174,6 +216,12 @@ public class WindowMeetingController implements Initializable {
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
+    
+    /**
+     * Método que manda a guardar todos los acuerdos de la tabla de acuerdos de la GUI
+     * @return Booleano con el resultado de guardado, devuelve true si guardó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
     
     private boolean savedAgreements() throws BusinessConnectionException{
         boolean savedAgreement = true;
@@ -187,6 +235,12 @@ public class WindowMeetingController implements Initializable {
         return savedAgreement;
     }
     
+    /**
+     * Método que verifica si existen campos inválidos para un acuerdo
+     * El método invoca a otros métodos de validación específicos
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     */
+    
     private boolean existsInvalidFieldsForAgreement(){
         boolean invalidFields = false;
         if(existsEmptyFields(tfAgreement.getText()) || existsInvalidCharacters(tfAgreement.getText()) || existsMissingSelection() ||
@@ -196,6 +250,12 @@ public class WindowMeetingController implements Initializable {
         return invalidFields;
     }
     
+    /**
+     * Método que verifica si existen campos inválidos para minuta
+     * El método invoca a otros métodos de validación específicos
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     */
+    
     private boolean existsInvalidFieldsForMemorandum(){
         boolean invalidFields = false;
         if(existsEmptyFields(taPendings.getText()) || existsEmptyFields(taNotes.getText()) || existsInvalidCharactersForMemorandum(taPendings.getText()) ||
@@ -204,6 +264,12 @@ public class WindowMeetingController implements Initializable {
         }
         return invalidFields;
     }
+    
+    /**
+     * Método que verifica si existe campo de texto vacío
+     * @param fieldToValidate Define el texto a verificar si está vacío o no
+     * @return Booleano con el resultado de verificación, devuelve true si está vacío, de lo contrario, devuelve false
+     */
     
     private boolean existsEmptyFields(String fieldToValidate){
         boolean emptyField = false;
@@ -215,6 +281,11 @@ public class WindowMeetingController implements Initializable {
         return emptyField;
     }
     
+    /**
+     * Método que verifica si existe selección de campo faltante en la GUI
+     * @return Booleano con el resultado de verificación, devuelve true si existe selección faltante, de lo contrario, devuelve false
+     */
+    
     private boolean existsMissingSelection(){
         boolean missingSelection = false;
         if(cbMonth.getSelectionModel().getSelectedIndex() < 0 || cbIntegrants.getSelectionModel().getSelectedIndex() < 0){
@@ -224,6 +295,12 @@ public class WindowMeetingController implements Initializable {
         }
         return missingSelection;
     }
+    
+    /**
+     * Método que verifica si un texto de la GUI contiene caracteres no permitidos
+     * @param textToValidate Define el texto a verificar
+     * @return Booleano con el resultado de verificación, devuelve true si existe inválidos, de lo contrario, devuelve false
+     */
     
     private boolean existsInvalidCharacters(String textToValidate){
         boolean invalidCharacters = false;
@@ -237,6 +314,13 @@ public class WindowMeetingController implements Initializable {
         return invalidCharacters;
     }
     
+    /**
+     * Método que verifica si existe texto de los campos de minuta que cuenten con caracteres no permitidos
+     * Se implementa el método porque los campos de una minuta, los cuales son notas y pendientes, pueden tener más variedad de tipos de caracteres a comparación de los campos de acuerdo
+     * @param textToValidate Define texto del campo de minuta a verificar
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de los contrario, devuelve false
+     */
+    
     private boolean existsInvalidCharactersForMemorandum(String textToValidate){
         boolean invalidCharacters = false;
         Pattern pattern = Pattern.compile("^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ\\s.,:()]+$");
@@ -248,6 +332,13 @@ public class WindowMeetingController implements Initializable {
         }
         return invalidCharacters;
     }
+    
+    /**
+     * Método que verifica si existe año inválido en la GUI
+     * Se implementa el método porque un año solo puede contener números y no debe ser menor al año actual
+     * @param yearToValidate Define el año recuperado de la GUI a validar
+     * @return Booleano con el resultado de verificación, devuelve true si existe inválido, de lo contario, devuelve false
+     */
     
     private boolean existsInvalidCharactersForYear(String yearToValidate){
         boolean invalidYear = false;
@@ -271,6 +362,12 @@ public class WindowMeetingController implements Initializable {
         return invalidYear;
     }
     
+    /**
+     * Método que verifica si la tabla de acuerdos está vacía
+     * Se implementa el método porque una reunión debe tener por lo menos un acuerdo
+     * @return Booleano con el resultado de verificación, devuelve true si está vacía, de lo contrario, devuelve false
+     */
+    
     private boolean existsEmptyTable(){
         boolean emptyTable = false;
         ObservableList<Agreement> listAgreements = tbAgreements.getItems();
@@ -282,12 +379,21 @@ public class WindowMeetingController implements Initializable {
         return emptyTable;
     }
     
+    /**
+     * Método que limpia los campos de acuerdo
+     */
+    
     private void cleanFieldsAgreement(){
         tfAgreement.clear();
         cbIntegrants.getSelectionModel().clearSelection();
         cbMonth.getSelectionModel().clearSelection();
         tfYear.clear();
     }
+    
+    /**
+     * Método que verifica si existen valores duplicados en un nuevo acuerdo
+     * @return Booleano con el resultado de verificación, devuelve true si existe duplicado, de lo contrario, devuelve false
+     */
     
     private boolean existsDuplicateValueForAgreement(){
         boolean duplicateValue = false;
@@ -300,6 +406,11 @@ public class WindowMeetingController implements Initializable {
         }
         return duplicateValue;
     }
+    
+    /**
+     * Método que muestra alerta de campo inválido de acuerdo al tipo de error
+     * @param typeError Define el tipo de error que encontró
+     */
     
     private void showInvalidFieldAlert(TypeError typeError){
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -336,6 +447,11 @@ public class WindowMeetingController implements Initializable {
         alert.showAndWait();
     }
     
+    /**
+     * Método que muestra alerta de confirmación de conclusión de la reunión
+     * @return Devuelve el tipo de botón seleccionado por el usuario
+     */
+    
     private Optional<ButtonType> showConfirmationAlert(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText(null);
@@ -345,6 +461,10 @@ public class WindowMeetingController implements Initializable {
         return action;
     } 
     
+    /**
+     * Método que muestra alerta de perdida de conexión con la base de datos
+     */
+    
     private void showLostConnectionAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
@@ -352,6 +472,10 @@ public class WindowMeetingController implements Initializable {
         alert.setContentText("Perdida de conexión con la base de datos, no se pudo guardar. Intente más tarde");
         alert.showAndWait();
     }
+    
+    /**
+     * Método que muestra alerta de confirmación de guardado en la base de datos
+     */
     
     private void showConfirmationSaveAlert(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

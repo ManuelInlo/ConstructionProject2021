@@ -38,10 +38,11 @@ import mx.fei.ca.domain.MeetingAssistant;
 import mx.fei.ca.domain.Prerequisite;
 
 /**
- * FXML Controller class
- *
- * @author david
+ * Clase para representar el controlador del FXML WindowMeetingAgenda
+ * @author David Alexander Mijangos Paredes
+ * @version 17-06-2021
  */
+
 public class WindowMeetingAgendaController implements Initializable {
 
     @FXML
@@ -88,10 +89,20 @@ public class WindowMeetingAgendaController implements Initializable {
         
     }  
     
+    /**
+     * Método que establece el integrante loggeado al sistema, permitiendo proyectar su nombre en la GUI
+     * @param integrant Define el integrante a establecer a la GUI
+     */
+    
     public void setIntegrant(Integrant integrant){
         this.integrant = integrant;
         lbUser.setText(integrant.getNameIntegrant());
     }
+    
+    /**
+     * Método que muestra la información de la reunión en la GUI
+     * @param meeting Define la reunión de la cual se mostrará la información
+     */
    
     public void showMeetingData(Meeting meeting){
         lbNameProject.setText(meeting.getProjectName());
@@ -119,6 +130,11 @@ public class WindowMeetingAgendaController implements Initializable {
         this.meeting = meeting;   
     }
     
+    /**
+     * Método que llena la tabla de asistentes de reunión de la GUI
+     * @param meetingAssistants Define la lista de asistentes de reunión a mostrar
+     */
+    
     private void fillMeetingAssistantsTable(ArrayList<MeetingAssistant> meetingAssistants){
         columnIntegrant.setCellValueFactory(new PropertyValueFactory("nameAssistant"));
         columnRole.setCellValueFactory(new PropertyValueFactory("role"));
@@ -126,12 +142,22 @@ public class WindowMeetingAgendaController implements Initializable {
         tbIntegrants.setItems(listMeetingAssistants);
     }
     
+    /**
+     * Método que llena la tabla de prerequisitos de la GUI
+     * @param prerequisites Define la lista de prerequisitos a mostrar
+     */
+    
     private void fillPrerequisitesTable(ArrayList<Prerequisite> prerequisites){
         columnDescription.setCellValueFactory(new PropertyValueFactory("description"));
         columnPrerequisiteManager.setCellValueFactory(new PropertyValueFactory("prerequisiteManager"));
         ObservableList<Prerequisite> listPrerequisites = FXCollections.observableArrayList(prerequisites);
         tbPrerequisites.setItems(listPrerequisites);
     }
+    
+    /**
+     * Método que llena la tabla de puntos de agenda de la GUI
+     * @param agendaPoints Define la lista de puntos de agenda a mostrar
+     */
     
     private void fillAgendaPointsTable(ArrayList<AgendaPoint> agendaPoints){
         columnTimeStart.setCellValueFactory(new PropertyValueFactory("startTime"));
@@ -142,17 +168,35 @@ public class WindowMeetingAgendaController implements Initializable {
         tbAgendaPoints.setItems(listAgendaPoints);
     }
     
+    /**
+     * Método que convierte una variable de tipo Date hacia String
+     * @param date Define la fecha a converit de Date a String
+     * @return String con la fecha convertida
+     */
+    
     private String convertDateToString(Date date){
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String stringDate = dateFormat.format(date);
         return stringDate;
     }
     
+    /**
+     * Método que convierte una variable de tipo Time hacia String
+     * @param time Define la hora a convertir de Time a String
+     * @return String con la hora convertida
+     */
+    
     private String convertTimeToString(Time time){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         String stringTime = simpleDateFormat.format(time);
         return stringTime;
     }
+    
+    /**
+     * Método que manda a abrir la ventana de modificación de reunión
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
 
     @FXML
     private void openModifyMeeting(ActionEvent event) throws BusinessConnectionException{
@@ -177,6 +221,11 @@ public class WindowMeetingAgendaController implements Initializable {
             showInvalidActionAlert();
         }       
     }
+    
+    /**
+     * Método que manda a abrir la ventana de minuta de reunión
+     * @param event Define el evento generado
+     */
 
     @FXML
     private void openMemorandum(ActionEvent event){
@@ -199,6 +248,11 @@ public class WindowMeetingAgendaController implements Initializable {
         }
     }
     
+    /**
+     * Método que verifica si la reunión tiene estado de Finalizada
+     * @return Boolean con el resultado de la verificación, devuelve true si la verificación es correcta, de lo contrario, devuelve false
+     */
+    
     private boolean endedMeeting(){
         boolean endedMeeting = false;
         if(this.meeting.getState().equals("Finalizada")){
@@ -212,6 +266,12 @@ public class WindowMeetingAgendaController implements Initializable {
         }
         return endedMeeting;
     }
+    
+    /** 
+     * Método que manda a abrir la ventana de reunión para iniciar una reunión
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
     
     @FXML
     private void openStartMeeting(ActionEvent event) throws BusinessConnectionException{
@@ -237,12 +297,21 @@ public class WindowMeetingAgendaController implements Initializable {
         } 
     }
     
+    /**
+     * Método que cierra la ventana actual agenda de reunión
+     * @param event Define el evento generado
+     */
+    
     @FXML
     private void closeMeetingAgenda(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
+    
+    /**
+     * Método que muestra la alerta de perdida de conexión con la basde de datos
+     */
     
     private void showLostConnectionAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -251,6 +320,10 @@ public class WindowMeetingAgendaController implements Initializable {
         alert.setContentText("Perdida de conexión con la base de datos, no se pudo guardar. Intente más tarde");
         alert.showAndWait();
     }
+    
+    /**
+     * Método que muestra la alerta de acción inválida en la GUI
+     */
     
     private void showInvalidActionAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);

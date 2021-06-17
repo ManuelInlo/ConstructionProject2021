@@ -45,10 +45,11 @@ import mx.fei.ca.domain.MemorandumApprover;
 import mx.fei.ca.domain.Prerequisite;
 
 /**
- * FXML Controller class
- *
- * @author david
+ * Clase para representar el controlador del FXML WindowMemorandum
+ * @author David Alexander Mijangos Paredes
+ * @version 17-06-2021
  */
+
 public class WindowMemorandumController implements Initializable {
 
     @FXML
@@ -110,10 +111,20 @@ public class WindowMemorandumController implements Initializable {
         // TODO
     }    
     
+    /**
+     * Método que establece el integrante loggeado al sistema, permitiendo proyectar su nombre en la GUI
+     * @param integrant Define el integrante a establecer en la GUI
+     */
+    
     public void setIntegrant(Integrant integrant){
         this.integrant = integrant;
         lbUser.setText(integrant.getNameIntegrant());
     }
+    
+    /**
+     * Método que muestra la información de la reunión en la GUI. El método invoca a otros métodos para el lleano de otras secciones
+     * @param meeting Define la reunión de la cual se mostrará la información
+     */
     
     public void showMeetingData(Meeting meeting){
         this.meeting = meeting;
@@ -152,11 +163,22 @@ public class WindowMemorandumController implements Initializable {
         taPendings.setEditable(true);
     }
     
+    /** 
+     * Método que verifica si aprobador de minuta ya existe de acuerdo a la curp del integrante loggeado
+     * @return Booleano con el resultado de verificación, true si ya existe, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+    
     private boolean checkMemorandumApproverExistence() throws BusinessConnectionException{
         MemorandumApproverDAO memorandumApproverDAO = new MemorandumApproverDAO();
         boolean exists = memorandumApproverDAO.existsMemorandumApproverByCurp(integrant.getCurp(), memorandum.getIdMemorandum());
         return exists;
     }
+    
+    /**
+     * Método que llena la tabla de asistentes de reunión de la GUI
+     * @param meetingAssistants Define la lista de asistentes de reunión a mostrar
+     */
     
      private void fillMeetingAssistantsTable(ArrayList<MeetingAssistant> meetingAssistants){
         columnIntegrant.setCellValueFactory(new PropertyValueFactory("nameAssistant"));
@@ -164,6 +186,11 @@ public class WindowMemorandumController implements Initializable {
         ObservableList<MeetingAssistant> listMeetingAssistants = FXCollections.observableArrayList(meetingAssistants);
         tbIntegrants.setItems(listMeetingAssistants);
     }
+     
+    /**
+     * Método que llena la tabla de prerequisitos de la GUI
+     * @param prerequisites Define la lista de prerequisitos a mostrar
+     */
     
     private void fillPrerequisitesTable(ArrayList<Prerequisite> prerequisites){
         columnDescription.setCellValueFactory(new PropertyValueFactory("description"));
@@ -171,6 +198,11 @@ public class WindowMemorandumController implements Initializable {
         ObservableList<Prerequisite> listPrerequisites = FXCollections.observableArrayList(prerequisites);
         tbPrerequisites.setItems(listPrerequisites);
     }
+    
+    /**
+     * Método que llena la tabla de puntos de agenda de la GUI
+     * @param agendaPoints Define la lista de puntos de agenda a mostrar
+     */
     
     private void fillAgendaPointsTable(ArrayList<AgendaPoint> agendaPoints){
         columnTimeStart.setCellValueFactory(new PropertyValueFactory("startTime"));
@@ -181,6 +213,11 @@ public class WindowMemorandumController implements Initializable {
         tbAgendaPoints.setItems(listAgendaPoints);
     }
     
+    /**
+     * Método que llena la tabla de acuerdos de la GUI
+     * @param agreements Define la lista de acuerdos a mostrar
+     */
+    
     private void fillAgreementsTable(ArrayList<Agreement> agreements){
         columnAgreement.setCellValueFactory(new PropertyValueFactory("description"));
         columnIntegrant.setCellValueFactory(new PropertyValueFactory("responsible"));
@@ -189,10 +226,21 @@ public class WindowMemorandumController implements Initializable {
         tbAgreements.setItems(listAgreements);
     }
     
+    /**
+     * Método que llena una ListView con los aprobadores de minuta
+     * @param memorandumApprovers Define la lista de aprobadores de minuta a mostrar
+     */
+    
     private void fillListMemorandumApprovers(ArrayList<MemorandumApprover> memorandumApprovers){
         ObservableList<MemorandumApprover> listMemorandumApprovers = FXCollections.observableArrayList(memorandumApprovers);
         listViewMemorandumApprovers.setItems(listMemorandumApprovers);
     }
+    
+    /**
+     * Método que cierra la ventana actual minuta de acuerdo a ciertos criterios 
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
     
     @FXML
     private void closeMemorandum(ActionEvent event) throws BusinessConnectionException{
@@ -212,9 +260,14 @@ public class WindowMemorandumController implements Initializable {
                Stage stage = (Stage) source.getScene().getWindow();
                stage.close();
             }
-        }
-        
+        } 
     }
+    
+    /**
+     * Método que manda a abrir la ventana para editar la minuta de acuerdo a cierto criterio
+     * @param event Define el evento generado
+     * @throws BusinessConnectionException 
+     */
     
     @FXML
     private void editMemorandum(ActionEvent event) throws BusinessConnectionException{
@@ -243,6 +296,10 @@ public class WindowMemorandumController implements Initializable {
         }  
     }
     
+    /**
+     * Método que manda a guardar un nuevo aprobador de la minuta
+     * @throws BusinessConnectionException 
+     */
     
     private void savedMemorandumApprover() throws BusinessConnectionException{
         MemorandumApproverDAO memorandumApproverDAO = new MemorandumApproverDAO();
@@ -253,17 +310,34 @@ public class WindowMemorandumController implements Initializable {
         }
     }
     
+    /**
+     * Método que convierte una variable de tipo Date hacia String
+     * @param date Define la fecha a converit de Date a String
+     * @return String con la fecha convertida
+     */
+    
     private String convertDateToString(Date date){
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String stringDate = dateFormat.format(date);
         return stringDate;
     }
     
+    /**
+     * Método que convierte una variable de tipo Time hacia String
+     * @param time Define la hora a convertir de Time a String
+     * @return String con la hora convertida
+     */
+    
     private String convertTimeToString(Time time){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         String stringTime = simpleDateFormat.format(time);
         return stringTime;
     }
+    
+    /**
+     * Método que muestra la alerta de selección de CheckBox faltante
+     * @return El tipo de botón seleccionado por parte del usuario
+     */
     
     private Optional<ButtonType> showMissingApprovalAlert(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -274,6 +348,9 @@ public class WindowMemorandumController implements Initializable {
         return action;
     }
     
+    /**
+     * Método que muestra la alerta de perdida de conexión con la base de datos
+     */
     
     private void showLostConnectionAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
