@@ -1,10 +1,18 @@
 
 package mx.fei.ca.businesslogic;
 
+import java.util.ArrayList;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Article;
 
 public interface IArticleDAO {
-    public boolean saveArticle (Article article) throws BusinessConnectionException;    
-    public boolean updateArticle (Article article, String ISSN) throws BusinessConnectionException;    
+    public boolean savedArticle (Article article) throws BusinessConnectionException;    
+    public boolean updatedArticle (Article article, String issn) throws BusinessConnectionException;   
+    public ArrayList<Article> findArticlesByPositiveImpactCA() throws BusinessConnectionException; 
+    public ArrayList<Article> findLastTwoArticlesByCurpIntegrant(String curp) throws BusinessConnectionException;
+    public ArrayList<Article> findArticleByInitialesOfTitle(String InitialesTitleArticle, String curp) throws BusinessConnectionException; 
+    public boolean existsArticleTitle(String titleArticle) throws BusinessConnectionException;
+    public boolean existsArticleFileRoute(String fileRoute) throws BusinessConnectionException;
+    public boolean existsArticleTitleForUpdate(String titleArticle, String issn) throws BusinessConnectionException;
+    public boolean existsArticleFileRouteForUpdate(String fileRoute, String issn) throws BusinessConnectionException;
 }
