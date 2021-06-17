@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.IntegrantDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Integrant;
-import mx.fei.ca.domain.UserSession;
 
 public class WindowLoginController implements Initializable {
 
@@ -104,7 +103,6 @@ public class WindowLoginController implements Initializable {
     private Integrant getIntegrantByEmail() throws BusinessConnectionException{
         IntegrantDAO integrantDAO = new IntegrantDAO();
         this.integrant = integrantDAO.getIntegrantByInstitutionalMail(tfEmail.getText());
-        UserSession userSession = UserSession.getUserSession(integrant);
         return integrant;
     }
     

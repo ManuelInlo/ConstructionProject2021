@@ -53,6 +53,9 @@ public class AgreementTest {
     @Test
     public void testGetIdAgreementByDescription() throws BusinessConnectionException{
         AgreementDAO agreementDAO = new AgreementDAO();
+        int idAgreementExpected = 16;
+        int idAgreementResult = agreementDAO.getIdAgreementByDescription("Agendar reunión para revisar el trabajo de Juan");
+        assertEquals("Prueba obtener id de acuerdo por medio de su descripción",idAgreementExpected,idAgreementResult);
     }
 
 }

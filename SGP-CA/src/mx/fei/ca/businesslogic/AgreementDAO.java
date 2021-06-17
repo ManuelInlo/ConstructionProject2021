@@ -1,4 +1,3 @@
-
 package mx.fei.ca.businesslogic;
 
 import java.sql.Connection;
@@ -7,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
-import mx.fei.ca.businesslogic.exceptions.BusinessDataException;
 import mx.fei.ca.dataaccess.DataBaseConnection;
 import mx.fei.ca.domain.Agreement;
 

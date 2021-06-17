@@ -1,4 +1,3 @@
-
 package mx.fei.ca.businesslogic;
 
 import java.sql.Connection;
@@ -11,15 +10,33 @@ import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.dataaccess.DataBaseConnection;
 import mx.fei.ca.domain.AgendaPoint;
 
+/**
+ * Clase para representar el Objeto de acceso a datos de un punto de agenda 
+ * @author David Alexander Mijangos Paredes
+ * @version 16-06-2021
+ */
+
 public class AgendaPointDAO implements IAgendaPointDAO{
     private final DataBaseConnection dataBaseConnection;
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     
+    /**
+     * Constructor para la creación de un AgendaPointDAO permitiendo también la creación de la conexión a la base de datos
+     */
+    
     public AgendaPointDAO(){
         dataBaseConnection = new DataBaseConnection();
     }
+    
+    /**
+     * 
+     * @param agendaPoint
+     * @param idMeeting
+     * @return
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public boolean savedAgendaPoint(AgendaPoint agendaPoint, int idMeeting) throws BusinessConnectionException{

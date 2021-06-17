@@ -256,7 +256,7 @@ public class WindowMeetingAgendaController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
         alert.setTitle("Acción inválida");
-        alert.setContentText("Verifica que el estado de la reunión sea PENDIENTE y verifica que eres la persona que agendó la reunión, de lo contrario"
+        alert.setContentText("Verifica que el estado de la reunión sea PENDIENTE y verifica que eres la persona que agendó la reunión, de lo contrario "
                             + "no podrás realizar la acción correspondiente");
         alert.showAndWait();
     }

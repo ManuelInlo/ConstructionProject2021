@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package mx.fei.ca.presentation;
 
 import java.io.IOException;
@@ -20,7 +16,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mx.fei.ca.domain.Integrant;
-import mx.fei.ca.domain.UserSession;
 
 /**
  * FXML Controller class

@@ -140,6 +140,7 @@ public class WindowMemorandumController implements Initializable {
             this.memorandum.setAgreements(agreements);
             this.memorandum.setApprovers(memorandumApprovers);
             if(checkMemorandumApproverExistence()){
+                checkBoxApprove.setSelected(true);
                 checkBoxApprove.setDisable(true);
             }
         } catch (BusinessConnectionException ex) {
@@ -147,8 +148,8 @@ public class WindowMemorandumController implements Initializable {
         }
         taNotes.setText(this.memorandum.getNote());
         taPendings.setText(this.memorandum.getPending());
-        taNotes.setDisable(true);
-        taPendings.setDisable(true);
+        taNotes.setEditable(false);
+        taPendings.setEditable(true);
     }
     
     private boolean checkMemorandumApproverExistence() throws BusinessConnectionException{

@@ -62,7 +62,7 @@ public class IntegrantTest {
     public void testChangedPasswordIntegrant() throws BusinessConnectionException{
         IntegrantDAO integrantDAO = new IntegrantDAO();
         String newPassword = "password123";
-        boolean changedResult = integrantDAO.changedPasswordIntegrant(newPassword, "MCUD940585RDTRER23");
+        boolean changedResult = integrantDAO.changedPasswordIntegrant(newPassword, "OCHJ710514RDTREOP1");
         assertEquals("Prueba cambio contraseña", changedResult, true);
     }
     
