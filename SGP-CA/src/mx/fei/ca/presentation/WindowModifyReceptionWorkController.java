@@ -289,7 +289,8 @@ public class WindowModifyReceptionWorkController implements Initializable {
     
     private boolean existsInvalidStrings(){
         boolean invalidStrings = false;
-        if(existsInvalidCharactersForTitle(tfTitleReceptionWork.getText()) || existsInvalidCharactersForAuthor(tfAuthor.getText())){
+        if(existsInvalidCharactersForTitle(tfTitleReceptionWork.getText()) || existsInvalidCharactersForAuthor(tfAuthor.getText()) ||
+           existsInvalidCharactersForFileRoute(tfFileRoute.getText())){
             invalidStrings = true;
             TypeError typeError = TypeError.INVALIDSTRING;
             showInvalidFieldAlert(typeError);
@@ -327,6 +328,22 @@ public class WindowModifyReceptionWorkController implements Initializable {
         if(!matcher.find()){
            invalidCharacters = true; 
         }
+        return invalidCharacters;
+    }
+    
+    /**
+     * Método que verifica si existen caracteres inválidos para una ruta de archivo
+     * @param fileRoute Define la ruta de archivo a modificar
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     */
+    
+    private boolean existsInvalidCharactersForFileRoute(String fileRoute){
+        boolean invalidCharacters = false;
+        Pattern pattern = Pattern.compile("[!#$%&'*+=?^_`{|}~]");
+        Matcher mather = pattern.matcher(fileRoute);
+        if(mather.find()){  
+            invalidCharacters = true;
+        }   
         return invalidCharacters;
     }
     
