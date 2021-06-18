@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -18,10 +19,11 @@ import javafx.stage.Stage;
 import mx.fei.ca.domain.Integrant;
 
 /**
- * FXML Controller class
- *
- * @author inigu
+ * Clase para representar el controlador del FXML WindowHome
+ * @author David Alexander Mijangos Paredes
+ * @version 17-06-2021
  */
+
 public class WindowHomeController implements Initializable {
     private Integrant integrant;
     
@@ -30,7 +32,11 @@ public class WindowHomeController implements Initializable {
     @FXML
     private Text lbUser;
     @FXML
+<<<<<<< HEAD
     private Pane pnBtnProyectod1;
+=======
+    private ImageView imgLogOut;
+>>>>>>> 2516043ab8c6ca89a2b597bb3aae02617a5658e3
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -80,7 +86,7 @@ public class WindowHomeController implements Initializable {
     }
 
     @FXML
-    private void clickWorkPlan(MouseEvent event) {
+    private void signOff(MouseEvent event) {
         
     }
 

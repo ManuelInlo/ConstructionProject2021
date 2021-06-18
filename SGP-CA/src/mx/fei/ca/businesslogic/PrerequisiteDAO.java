@@ -147,20 +147,22 @@ public class PrerequisiteDAO implements IPrerequisiteDAO{
     }
     
     /**
-     * Método que devuelve el identificador de un prerequisito de acuerdo a su descripción
+     * Método que devuelve el identificador de un prerequisito de acuerdo a su descripción e identificador de reunión
      * @param description Define la descripción del prerequisito a buscar
+     * @param idMeeting Define el identificador de la reunión a la que pertence el prerequisito
      * @return Entero con el identificador del prerequisito 
      * @throws BusinessConnectionException 
      */
 
     @Override
-    public int getIdPrerequisiteByDescription(String description) throws BusinessConnectionException {
+    public int getIdPrerequisiteByDescription(String description, int idMeeting) throws BusinessConnectionException {
         int idPrerequisite = 0;
-        String sql = "SELECT idPrerequisite FROM Prerequisite WHERE description = ?";
+        String sql = "SELECT idPrerequisite FROM Prerequisite WHERE description = ? AND idMeeting = ?";
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, description);
+            preparedStatement.setInt(2, idMeeting);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 idPrerequisite = resultSet.getInt("idPrerequisite");

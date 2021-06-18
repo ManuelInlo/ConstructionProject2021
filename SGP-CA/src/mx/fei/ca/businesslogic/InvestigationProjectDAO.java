@@ -10,6 +10,11 @@ import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.dataaccess.DataBaseConnection;
 import mx.fei.ca.domain.InvestigationProject;
 
+/**
+ * Clase para representar el Objeto de acceso a datos de una proyecto de investigación
+ * @author David Alexander Mijangos Paredes
+ * @version 17-06-2021
+ */
 
 public class InvestigationProjectDAO implements IInvestigationProjectDAO {
     private final DataBaseConnection dataBaseConnection;
@@ -17,60 +22,21 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     
+    /**
+     * Constructor para la creación de un InvestigationProjectDAO, permitiendo también la obtención de la conexión a la base de datos 
+     */
+    
     public InvestigationProjectDAO(){
         dataBaseConnection = new DataBaseConnection();
     }
+    
+    /**
+     * Método que recupera un proyecto de investigación de la base de datos de acuerdo a su identificador
+     * @param idProject Define el identificador del proyecto de investigación a recuperar
+     * @return Objeto de tipo proyecto de investigación
+     * @throws BusinessConnectionException 
+     */
 
-    @Override
-    public boolean savedInvestigationProject(mx.fei.ca.domain.InvestigationProject investigationproject, int keycode) throws BusinessConnectionException {
-        String sql = "INSERT INTO investigationProject (idProject, keyCode, endDate, startDate, tittleProject, description)"
-                + " VALUES (?, ?, ?, ?, ?, ?)";
-        boolean saveResult = false;
-        try {
-            connection = dataBaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, investigationproject.getIdProject());
-            preparedStatement.setInt(2, keycode);
-            preparedStatement.setDate(3, investigationproject.getEndDate());
-            preparedStatement.setDate(4, investigationproject.getStartDate());
-            preparedStatement.setString(5, investigationproject.getTittleProject());
-            preparedStatement.setString(6, investigationproject.getDescription());  
-            preparedStatement.executeUpdate();
-            preparedStatement = null;
-            saveResult = true;
-        } catch (SQLException e) {
-            throw new BusinessConnectionException("Perdida de conexión con la base de datos", e);
-        } finally{
-            dataBaseConnection.closeConnection();
-        }
-       return saveResult;
-    }
-    
-    @Override
-    public boolean updateInvestigationproject(InvestigationProject investigationproject, int keycode) throws BusinessConnectionException {
-        String sql = "UPDATE investigationProject SET idProject = ?, keyCode = ?, endDate = ?, startDate = ?, tittleProject = ?, "
-                + "description = ? WHERE idProject = ?";
-        boolean updateResult = false;
-        try {
-            connection = dataBaseConnection.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, investigationproject.getIdProject());
-            preparedStatement.setInt(2, keycode);
-            preparedStatement.setDate(3, investigationproject.getEndDate());
-            preparedStatement.setDate(4, investigationproject.getStartDate());
-            preparedStatement.setString(5, investigationproject.getTittleProject());
-            preparedStatement.setString(6, investigationproject.getDescription());
-            preparedStatement.executeUpdate();
-            preparedStatement = null;
-            updateResult = true;
-        } catch (SQLException e) {
-            throw new BusinessConnectionException("Perdida de conexion con la base de datos", e);
-        } finally{
-            dataBaseConnection.closeConnection();
-        }
-        return updateResult;
-    }
-    
     @Override
     public InvestigationProject findInvestigationProjectById(int idProject) throws BusinessConnectionException {
         String sql = "SELECT * FROM investigationProject WHERE idProject = ?";
@@ -95,31 +61,12 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO {
         }
         return investigationProject;
     }
-
-    @Override
-    public InvestigationProject findInvestigationProjectByName(String tittleProject) throws BusinessConnectionException {
-        String sql = "SELECT * FROM investigationProject WHERE tittleProject = ?";
-        InvestigationProject investigationProject = null;
-        try {
-            connection = dataBaseConnection.getConnection();
-            preparedStatement = connection.prepareCall(sql);
-            preparedStatement.setString(1, tittleProject);
-            resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                int idProject = resultSet.getInt("idProject");
-                String keyCode = resultSet.getString("keycode");
-                Date startDate = resultSet.getDate("startDate");
-                Date endDate  = resultSet.getDate("endDate");
-                String description = resultSet.getString("description");
-                investigationProject = new InvestigationProject(idProject, keyCode, startDate, endDate, tittleProject, description);
-            }
-        }catch (SQLException e) {
-            throw new BusinessConnectionException("Perdida de conexión con la base de datos",e);
-        }finally{
-            dataBaseConnection.closeConnection();
-        }
-        return investigationProject;
-    }
+    
+    /**
+     * Método que recupera todos los proyectos de investigación almacenados en la base de datos
+     * @return ArrayList con los proyectos de investigación recuperados
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public ArrayList<InvestigationProject> findAllInvestigationProjects() throws BusinessConnectionException {

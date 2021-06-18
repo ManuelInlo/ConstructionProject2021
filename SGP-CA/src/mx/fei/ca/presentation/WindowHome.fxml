@@ -41,7 +41,11 @@
                   </Text>
                </children>
             </Pane>
+<<<<<<< HEAD
             <Pane layoutX="32.0" layoutY="291.0" onMouseClicked="#clickEvidences" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
+=======
+            <Pane layoutX="191.0" layoutY="209.0" onMouseClicked="#clickEvidences" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
+>>>>>>> 2516043ab8c6ca89a2b597bb3aae02617a5658e3
                <children>
                   <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="159.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -55,6 +59,7 @@
                   </Text>
                </children>
             </Pane>
+<<<<<<< HEAD
             <Pane layoutX="336.0" layoutY="291.0" onMouseClicked="#clickWorkPlan" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
                <children>
                   <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="159.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
@@ -104,6 +109,8 @@
                   </Text>
                </children>
             </Pane>
+=======
+>>>>>>> 2516043ab8c6ca89a2b597bb3aae02617a5658e3
          </children>
       </Pane>
       <Pane prefHeight="70.0" prefWidth="600.0" style="-fx-background-color: #A8CCE6;">
@@ -118,7 +125,7 @@
                   <Image url="@images/man%20(1).png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="48.0" fitWidth="45.0" layoutX="553.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imgLogOut" fitHeight="48.0" fitWidth="45.0" layoutX="553.0" layoutY="14.0" onMouseClicked="#signOff" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/logout.png" />
                </image>

@@ -15,10 +15,25 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
+/**
+ * Clase para representar los test de la clase MeetingDAO
+ * @author David Alexander Mijangos Paredes
+ */
+
 public class MeetingTest {
+    
+    /**
+     * Constructor para la creación de un MeetingTest 
+     */
+    
     public MeetingTest(){
         
     }
+    
+    /**
+     * Método que realiza test para la inserción de una nueva reunión en la base de datos
+     * @throws BusinessConnectionException 
+     */
     
     @Test
     public void testInsertMeeting() throws BusinessConnectionException{
@@ -45,12 +60,22 @@ public class MeetingTest {
         assertNotSame("Prueba insertar reunión", idMeetingResult, 0);
     }
     
+    /**
+     * Método que realiza test para la obtención de reuniones de acuerdo a un nombre de proyecto
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testFindMeetingsByProjectName() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
         ArrayList<Meeting> meetings = meetingDAO.findMeetingsByProjectName("Reunión CA");
         assertEquals("Prueba encontrar reuniones por nombre proyecto",meetings.size(), 7);
     }
+    
+    /**
+     * Método que realiza test para la obtención de reuniones de acuerdo a un nombre de proyecto y una fecha
+     * @throws BusinessConnectionException 
+     */
     
     @Test
     public void testFindMeetingsByProjectNameAndDate() throws BusinessConnectionException{
@@ -66,6 +91,11 @@ public class MeetingTest {
         ArrayList<Meeting> meetings = meetingDAO.findMeetingsByProjectNameAndDate("Reunión Anteproyecto", meetingDate);
         assertEquals("Prueba encontrar reuniones por nombre proyecto y fecha",meetings.size(), 1);
     }
+    
+    /**
+     * Método que realiza test para la modificación de una reunión en la base de datos
+     * @throws BusinessConnectionException 
+     */
     
     @Test
     public void testUpdateMeeting() throws BusinessConnectionException{
@@ -92,6 +122,11 @@ public class MeetingTest {
         assertTrue("Prueba modificar reunión", updateResult);
     }
     
+    /**
+     * Método que realiza test para la obtención de la curp del responsable de reunión
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testGetCurpOfResponsibleMeeting() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
@@ -100,6 +135,11 @@ public class MeetingTest {
         assertEquals("Prueba retornar curp del responsable de la reunión", curpExpected, resultingCurp);
     }
     
+    /**
+     * Método que realiza test para la obtención de las últimas 5 reuniones
+     * @throws BusinessConnectionException 
+     */
+    
     @Test 
     public void testFindLastFiveMeetings() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
@@ -107,12 +147,22 @@ public class MeetingTest {
         assertEquals("Prueba encontrar últimas 5 reuniones", meetings.size(), 5);
     }
     
+    /**
+     * Métodos que realiza test para la verificación de existencia de un asunto de reunión
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testExistsMeetingAffair() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
         boolean exists = meetingDAO.existsMeetingAffair("Revisar Anteproyecto");
         assertTrue("Prueba mandar un asunto que si existe", exists);
     }
+    
+    /**
+     * Método que realiza test para la verificación de fecha y hora disponible para una reunión
+     * @throws BusinessConnectionException 
+     */
     
     @Test 
     public void testExistsDateAndTimeAvailable() throws BusinessConnectionException{
@@ -137,12 +187,22 @@ public class MeetingTest {
         assertFalse("Prueba mandar fecha y hora ya registradas", available);
     }
     
+    /**
+     * Método que realiza test para la verificación de existencia de un asunto de reunión para modificación
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testExistsMeetingAffairForUpdate() throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
         boolean exists = meetingDAO.existsMeetingAffairForUpdate("Revisar tesis de José", 5);
         assertTrue("Prueba mandar un asunto modificado que ya existe", exists);
     }
+    
+    /**
+     * Método que realiza test para la verificación de fecha y hora disponible para modificación de una reunión
+     * @throws BusinessConnectionException 
+     */
     
     @Test 
     public void testExistsDateAndTimeAvailableForUpdate() throws BusinessConnectionException{
@@ -166,6 +226,11 @@ public class MeetingTest {
         boolean available = meetingDAO.existsDateAndTimeAvailableForUpdate(meetingDate, meetingTime, 5);
         assertFalse("Prueba mandar fecha y hora modificadas que ya están registradas", available);
     }
+    
+    /**
+     * Método que realiza test para la modificación del estado de una reunión
+     * @throws BusinessConnectionException 
+     */
     
     @Test
     public void testUpdatedStateOfMeeting() throws BusinessConnectionException{

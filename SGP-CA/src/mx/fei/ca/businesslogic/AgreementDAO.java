@@ -150,20 +150,22 @@ public class AgreementDAO implements IAgreementDAO{
     }
     
     /**
-     * Método que devuelve el identificador de un acuerdo de reunión de acuerdo a su descripción
+     * Método que devuelve el identificador de un acuerdo de reunión de acuerdo a su descripción e identificador de minuta
      * @param description Define la descripción del acuerdo a encontrar
+     * @param idMemorandum Define el identificador de la minuta a la cual pertenece el acuerdo
      * @return Entero con el identificador del acuerdo de minuta que coincide con la descripción. Devuelve 0 si no encotró coincidencias
      * @throws BusinessConnectionException 
      */
 
     @Override
-    public int getIdAgreementByDescription(String description) throws BusinessConnectionException {
+    public int getIdAgreementByDescription(String description, int idMemorandum) throws BusinessConnectionException {
         int idAgreement = 0;
-        String sql = "SELECT idAgreement FROM Agreement WHERE description = ?";
+        String sql = "SELECT idAgreement FROM Agreement WHERE description = ? AND idMemorandum = ?";
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, description);
+            preparedStatement.setInt(2, idMemorandum);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 idAgreement = resultSet.getInt("idAgreement");

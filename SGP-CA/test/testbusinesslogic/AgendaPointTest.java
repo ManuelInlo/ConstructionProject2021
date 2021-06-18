@@ -10,15 +10,29 @@ import mx.fei.ca.businesslogic.AgendaPointDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.AgendaPoint;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
+/**
+ * Clase para representar los test de la clase AgendaPointDAO
+ * @author David Alexander Mijangos Paredes
+ * @version 17-06-2021
+ */
 
 public class AgendaPointTest {
+    
+    /**
+     * Constructor para la creación de un nuevo AgendaPointTest 
+     */
+    
     public AgendaPointTest(){
         
     }
+    
+    /**
+     * Método que realiza el test para la inserción de nuevo punto de agenda en la base de datos
+     * @throws BusinessConnectionException 
+     */
     
     @Test 
     public void testInsertAgendaPoint() throws BusinessConnectionException{
@@ -41,6 +55,11 @@ public class AgendaPointTest {
         assertTrue("Prueba guardar punto de agenda", saveResult);
     }
     
+    /**
+     * Método que realiza test para la modificación de un punto de agenda en la base de datos
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testUpdateAgendaPoint() throws BusinessConnectionException{
         AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
@@ -62,12 +81,22 @@ public class AgendaPointTest {
         assertTrue("Prueba modificar punto agenda", updateResult);
     }
     
+    /**
+     * Método que realiza test para la eliminación de un punto de agenda específico de la base de datos
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testDeleteAgendaPointById() throws BusinessConnectionException{
         AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
         boolean deleteResult = agendaPointDAO.deletedAgendaPointById(3);
         assertTrue("Prueba eliminar punto agenda", deleteResult);
     }
+    
+    /**
+     * Método que realiza test para la obtención de los puntos de agenda de una reunión específica
+     * @throws BusinessConnectionException 
+     */
     
     @Test 
     public void testFindAgendaPointsByIdMeeting() throws BusinessConnectionException{
@@ -76,11 +105,16 @@ public class AgendaPointTest {
         assertEquals("Prueba correcta", agendaPoints.size(), 1);
     }
     
+    /**
+     * Método que realiza test para la obtención del identificador de un punto de agenda de acuerdo a su tema e identificador de la reunión
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testGetIdAgendaPointByTopic() throws BusinessConnectionException{
         AgendaPointDAO agendaPointDAO = new AgendaPointDAO();
         int idAgendaPointExpected = 19;
-        int idAgendaPointResult = agendaPointDAO.getIdAgendaPointByTopic("lista");
+        int idAgendaPointResult = agendaPointDAO.getIdAgendaPointByTopic("lista", 24);
         assertEquals("Prueba recuperar id de punto de agenda", idAgendaPointExpected, idAgendaPointResult);
     }
    
