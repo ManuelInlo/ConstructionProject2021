@@ -25,6 +25,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import mx.fei.ca.businesslogic.ArticleDAO;
+import mx.fei.ca.businesslogic.BookDAO;
+import mx.fei.ca.businesslogic.ChapterBookDAO;
 import mx.fei.ca.businesslogic.ReceptionWorkDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Article;
@@ -46,27 +49,27 @@ public class WindowMemberProductionController implements Initializable {
     @FXML
     private TableView<ReceptionWork> tbReceptionWorks;
     @FXML
-    private TableView<?> tbArticles;
+    private TableView<Article> tbArticles;
     @FXML
-    private TableView<?> tbBooks;
+    private TableView<Book> tbBooks;
     @FXML
-    private TableView<?> tbChapterBooks;
+    private TableView<ChapterBook> tbChapterBooks;
     @FXML
     private TableColumn<ReceptionWork, String> columnImpactCAReceptionWork;
     @FXML
     private TableColumn<ReceptionWork, String> columnNameReceptionWork;
     @FXML
-    private TableColumn<?, ?> columnImpactCAArticle;
+    private TableColumn<Article, String> columnImpactCAArticle;
     @FXML
-    private TableColumn<?, ?> columnNameArticle;
+    private TableColumn<Article, String> columnNameArticle;
     @FXML
-    private TableColumn<?, ?> columnImpactCABook;
+    private TableColumn<Book, String> columnImpactCABook;
     @FXML
-    private TableColumn<?, ?> columnNameBook;
+    private TableColumn<Book, String> columnNameBook;
     @FXML
-    private TableColumn<?, ?> columnImpactCAChapterBook;
+    private TableColumn<ChapterBook, String> columnImpactCAChapterBook;
     @FXML
-    private TableColumn<?, ?> columnNameChapterBook;
+    private TableColumn<ChapterBook, String> columnNameChapterBook;
     @FXML
     private Label lbUser;
     private Integrant integrant;
@@ -83,6 +86,7 @@ public class WindowMemberProductionController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             openReceptionWorkData();
+            openArticleData();
         } catch (BusinessConnectionException ex) {
             showLostConnectionAlert();
         }
@@ -112,7 +116,16 @@ public class WindowMemberProductionController implements Initializable {
     public void recoverEvidences() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findLastTwoReceptionWorksByCurpIntegrant(integrant.getCurp()); 
+        ArticleDAO articleDAO = new ArticleDAO();
+        ArrayList<Article> articles = articleDAO.findLastTwoArticlesByCurpIntegrant(integrant.getCurp());
+        BookDAO bookDAO = new BookDAO();
+        ArrayList<Book> books = bookDAO.findLastTwoBooksByCurpIntegrant(integrant.getCurp());
+        ChapterBookDAO chapterBookDAO = new ChapterBookDAO();
+        ArrayList<ChapterBook> chaptersBook = chapterBookDAO.findLastTwoChapterBooksByCurpIntegrant(integrant.getCurp());
         fillReceptionWorkTable(receptionWorks);
+        fillArticlesTable(articles);
+        fillBooksTable(books);
+        fillChaptersBookTable(chaptersBook);        
     }
     
     /**
@@ -133,7 +146,10 @@ public class WindowMemberProductionController implements Initializable {
      */
     
     private void fillArticlesTable(ArrayList<Article> articles){
-        
+        columnImpactCAArticle.setCellValueFactory(new PropertyValueFactory("impactCA"));
+        columnNameArticle.setCellValueFactory(new PropertyValueFactory("titleEvidence"));
+        ObservableList<Article> listArticles = FXCollections.observableArrayList(articles);
+        tbArticles.setItems(listArticles);
     }
     
     /**
@@ -142,7 +158,10 @@ public class WindowMemberProductionController implements Initializable {
      */
     
     private void fillBooksTable(ArrayList<Book> books){
-        
+        columnImpactCABook.setCellValueFactory(new PropertyValueFactory("impactCA"));
+        columnNameBook.setCellValueFactory(new PropertyValueFactory("titleReceptionWork"));
+        ObservableList<Book> listBooks = FXCollections.observableArrayList(books);
+        tbBooks.setItems(listBooks);
     }
     
     /**
@@ -151,7 +170,10 @@ public class WindowMemberProductionController implements Initializable {
      */
     
     private void fillChaptersBookTable(ArrayList<ChapterBook> chaptersBook){
-        
+        columnImpactCAChapterBook.setCellValueFactory(new PropertyValueFactory("impactCA"));
+        columnNameChapterBook.setCellValueFactory(new PropertyValueFactory("titleReceptionWork"));
+        ObservableList<ChapterBook> listChaptersBook = FXCollections.observableArrayList(chaptersBook);
+        tbChapterBooks.setItems(listChaptersBook);
     }
     
     /**
@@ -189,7 +211,27 @@ public class WindowMemberProductionController implements Initializable {
      */
     
     private void openArticleData() throws BusinessConnectionException{
-        
+        tbArticles.setOnMouseClicked((MouseEvent event) -> {
+            Article article = tbArticles.getItems().get(tbArticles.getSelectionModel().getSelectedIndex());
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowArticleData.fxml"));
+            Scene scene = null;
+            try {
+                scene = new Scene(fxmlLoader.load());
+            } catch (IOException ex) {
+                Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            WindowArticleDataController windowArticleDataController = (WindowArticleDataController) fxmlLoader.getController();
+            windowArticleDataController.setIntegrant(integrant);
+            windowArticleDataController.showArticleData(article);
+            stage.showAndWait();
+            try {
+                recoverEvidences();
+            } catch (BusinessConnectionException ex) {
+                showLostConnectionAlert();
+            }
+        });  
     }
     
     /**
@@ -198,7 +240,27 @@ public class WindowMemberProductionController implements Initializable {
      */
     
     private void openBookData() throws BusinessConnectionException{
-        
+        tbBooks.setOnMouseClicked((MouseEvent event) -> {
+            Book book = tbBooks.getItems().get(tbBooks.getSelectionModel().getSelectedIndex());
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowBookData.fxml"));
+            Scene scene = null;
+            try {
+                scene = new Scene(fxmlLoader.load());
+            } catch (IOException ex) {
+                Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            WindowBookDataController windowBookDataController = (WindowBookDataController) fxmlLoader.getController();
+            windowBookDataController.setIntegrant(integrant);
+            windowBookDataController.showBookData(book);
+            stage.showAndWait();
+            try {
+                recoverEvidences();
+            } catch (BusinessConnectionException ex) {
+                showLostConnectionAlert();
+            }
+        }); 
     }
     
     /**
@@ -207,7 +269,27 @@ public class WindowMemberProductionController implements Initializable {
      */
     
     private void openChapterBookData() throws BusinessConnectionException{
-        
+        tbChapterBooks.setOnMouseClicked((MouseEvent event) -> {
+            ChapterBook chapterBook = tbChapterBooks.getItems().get(tbChapterBooks.getSelectionModel().getSelectedIndex());
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowChapterBookData.fxml"));
+            Scene scene = null;
+            try {
+                scene = new Scene(fxmlLoader.load());
+            } catch (IOException ex) {
+                Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            WindowChapterBookDataController windowChapterBookDataController = (WindowChapterBookDataController) fxmlLoader.getController();
+            windowChapterBookDataController.setIntegrant(integrant);
+            windowChapterBookDataController.showChapterBookData(chapterBook);
+            stage.showAndWait();
+            try {
+                recoverEvidences();
+            } catch (BusinessConnectionException ex) {
+                showLostConnectionAlert();
+            }
+        }); 
     }
     
     /**
@@ -221,8 +303,11 @@ public class WindowMemberProductionController implements Initializable {
             try {
                 //Mandar a recuperar listas de las evidencias que coincidan con el texto ->QUITAR ESTE COMENTARIO DESPUES
                 ArrayList<ReceptionWork> receptionWorks = recoverReceptionWorks();
+                ArrayList<Article> articles = recoverArticles();
+                ArrayList<Book> books = recoverBooks();
                 
-                if(receptionWorks.isEmpty()){  //DEBE PREGUNTAR SI TODAS LAS LISTAS RECUPERADAS ESTAN VACIAS
+                
+                if(receptionWorks.isEmpty() || articles.isEmpty() || books.isEmpty()){  
                     showNoMatchAlert();
                 }
             } catch (BusinessConnectionException ex) {
@@ -242,7 +327,7 @@ public class WindowMemberProductionController implements Initializable {
     private ArrayList<ReceptionWork> recoverReceptionWorks() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         String titleReceptionWork = tfEvidenceName.getText();
-        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorkByInitialesOfTitle(titleReceptionWork, integrant.getCurp()); //Acá debe pasar la curp del que está loggeado
+        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorkByInitialesOfTitle(titleReceptionWork, integrant.getCurp()); 
         if(!receptionWorks.isEmpty()){
             fillReceptionWorkTable(receptionWorks);
         }
@@ -255,9 +340,15 @@ public class WindowMemberProductionController implements Initializable {
      * @throws BusinessConnectionException 
      */
     
-    //private ArrayList<Article> recoverArticles() throws BusinessConnectionException{
-        
-    //}
+    private ArrayList<Article> recoverArticles() throws BusinessConnectionException{
+        ArticleDAO articleDAO = new ArticleDAO();
+        String titleArticle = tfEvidenceName.getText();
+        ArrayList<Article> articles = articleDAO.findArticleByInitialesOfTitle(titleArticle, integrant.getCurp());
+        if(!articles.isEmpty()){
+            fillArticlesTable(articles);
+        }
+        return articles;
+    }
     
     /**
      * Método que manda a recuperar específicamente los libros de acuerdo a las iniciales del título ingresado en la GUI
@@ -265,9 +356,15 @@ public class WindowMemberProductionController implements Initializable {
      * @throws BusinessConnectionException 
      */
     
-   // private ArrayList<Book> recoverBooks() throws BusinessConnectionException{
-        
-   // }
+    private ArrayList<Book> recoverBooks() throws BusinessConnectionException{
+        BookDAO bookDAO = new BookDAO();
+        String titleBook = tfEvidenceName.getText();
+        ArrayList<Book> books = bookDAO.findBookByInitialesOfTitle(titleBook, integrant.getCurp());
+        if(!books.isEmpty()){
+            fillBooksTable(books);
+        }
+        return books;
+    }
     
     /**
      * Método que manda a recuperar específicamente los capítulos de libro de acuerdo a las iniciales del título ingresado en la GUI
@@ -276,8 +373,13 @@ public class WindowMemberProductionController implements Initializable {
      */
     
    // private ArrayList<ChapterBook> chaptersBook() throws BusinessConnectionException{
-        
-   // }
+     //   ChapterBookDAO chapterBookDAO = new ChapterBookDAO();
+       // String titleChapterBook = tfEvidenceName.getText();
+        //ArrayList<ChapterBook> chaptersBook = chapterBookDAO.
+         // if(!chaptersBook.isEmpty()){
+           //   fillChaptersBookTable(chaptersBook);
+          //}
+    //}
     
     /**
      * Método que manda a abrir la ventana para registrar un nuevo artículo

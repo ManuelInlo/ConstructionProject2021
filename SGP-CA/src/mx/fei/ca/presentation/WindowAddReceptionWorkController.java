@@ -19,6 +19,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import mx.fei.ca.businesslogic.ArticleDAO;
 import mx.fei.ca.businesslogic.CollaboratorDAO;
 import mx.fei.ca.businesslogic.InvestigationProjectDAO;
 import mx.fei.ca.businesslogic.ReceptionWorkDAO;
@@ -128,8 +129,7 @@ public class WindowAddReceptionWorkController implements Initializable {
     
     private void fillComboBoxType(){
         ObservableList<String> listType = FXCollections.observableArrayList("Tesis","Monografía", "Práctico");
-        cbType.setItems(listType);
-        
+        cbType.setItems(listType);  
     }
     
     /**
@@ -422,18 +422,21 @@ public class WindowAddReceptionWorkController implements Initializable {
     
     private boolean existsDuplicateValues() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
+        ArticleDAO articleDAO = new ArticleDAO();
         CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
         boolean duplicateValues = false;
         boolean receptionWorkTitleDuplicate = false;
         boolean fileRouteDuplicate = false;
         boolean collaboratorNameDuplicate = false;
-        if(receptionWorkDAO.existsReceptionWorkTitle(tfTitleReceptionWork.getText())){  //DEBE HACER LO MISMO CON LAS OTRAS EVIDENCIAS
+        if(receptionWorkDAO.existsReceptionWorkTitle(tfTitleReceptionWork.getText()) ||
+           articleDAO.existsArticleTitle(tfTitleReceptionWork.getText())){  //DEBE HACER LO MISMO CON LAS OTRAS EVIDENCIAS
             receptionWorkTitleDuplicate = true;
             TypeError typeError = TypeError.TITLEDUPLICATE;
             showInvalidFieldAlert(typeError);
         }
            
-        if(receptionWorkDAO.existsReceptionWorkFileRoute(tfFileRoute.getText())){
+        if(receptionWorkDAO.existsReceptionWorkFileRoute(tfFileRoute.getText()) ||
+           articleDAO.existsArticleFileRoute(tfFileRoute.getText())){
             fileRouteDuplicate = true;
             TypeError typeError = TypeError.FILEROUTEDUPLICATE;
             showInvalidFieldAlert(typeError);
@@ -486,7 +489,7 @@ public class WindowAddReceptionWorkController implements Initializable {
         }
         
         if(typeError == TypeError.TITLEDUPLICATE){
-            alert.setContentText("El título del trabajo recepcional ya se encuentra registrado en el sistema");
+            alert.setContentText("El título del trabajo recepcional ya se encuentra registrado en otra evidencia del el sistema");
         }
         
         if(typeError == TypeError.FILEROUTEDUPLICATE){
