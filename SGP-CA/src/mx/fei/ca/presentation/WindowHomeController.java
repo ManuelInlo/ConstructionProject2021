@@ -29,6 +29,8 @@ public class WindowHomeController implements Initializable {
     private Pane pnBtnProyectod;
     @FXML
     private Text lbUser;
+    @FXML
+    private Pane pnBtnProyectod1;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -80,6 +82,26 @@ public class WindowHomeController implements Initializable {
     @FXML
     private void clickWorkPlan(MouseEvent event) {
         
+    }
+
+    @FXML
+    private void clickProductionCA(MouseEvent event) {
+    }
+
+    @FXML
+    private void clickIntegrants(MouseEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowIntegrants.fxml"));
+            Parent root = fxmlLoader.load();
+            WindowIntegrantsController windowIntegrantsController = fxmlLoader.getController();
+            windowIntegrantsController.setIntegrant(integrant);
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(WindowHomeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

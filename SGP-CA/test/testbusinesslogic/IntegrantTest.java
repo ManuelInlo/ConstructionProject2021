@@ -10,6 +10,7 @@ import mx.fei.ca.businesslogic.IntegrantDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Integrant;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class IntegrantTest {
@@ -54,7 +55,7 @@ public class IntegrantTest {
     @Test    
     public void testDeleteIntegrantByCurp() throws BusinessConnectionException{
         IntegrantDAO integrantDAO = new IntegrantDAO();
-        boolean deleteResult = integrantDAO.deleteIntegrantByCurp("MCUD940585RDTRER28");
+        boolean deleteResult = integrantDAO.deleteIntegrantByCurp("JOPA820701HASBDFO9");
         assertEquals("Prueba correcta, se elimino integrante", deleteResult, true);       
     }    
     
@@ -80,6 +81,27 @@ public class IntegrantTest {
         Integrant integrant = integrantDAO.findIntegrantByCurp("JCPA940514RDTREOP1");
         String nameIntegrantExpected = "Juan Carlos Pérez Arriaga";
         assertEquals("Prueba encontrar integrante por curp", nameIntegrantExpected, integrant.getNameIntegrant());
+    }
+    
+    @Test
+    public void testExistsIntegrantName() throws BusinessConnectionException{
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        boolean exists = integrantDAO.existsIntegrantName("Juan Carlos Pérez Arriaga");
+        assertTrue("Prueba mandar a validar un nombre que ya existe de un integrante", exists);
+    }
+    
+    @Test
+    public void testExistsIntegrantCurp() throws BusinessConnectionException{
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        boolean exists = integrantDAO.existsIntegrantCurp("MCUD940585RDTRER23");
+        assertTrue("Prueba mandar a validar una curp que ya existe de un integrante", exists);
+    }
+    
+    @Test
+    public void testExistsIntegrantEmail() throws BusinessConnectionException{
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        boolean exists = integrantDAO.existsIntegrantEmail("kcortes@uv.mx");
+        assertTrue("Prueba mandar a validar una curp que ya existe de un integrante", exists);
     }
     
     @Test
