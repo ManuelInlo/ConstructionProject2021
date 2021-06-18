@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mx.fei.ca.businesslogic;
 
 import java.util.ArrayList;
@@ -10,14 +5,12 @@ import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.InvestigationProject;
 
 /**
- *
- * @author inigu
+ * Interface del objeto de acceso a datos de proyecto de investigación
+ * @author David Alexander Mijangos Paredes
+ * @version 17-06-2021
  */
+
 public interface IInvestigationProjectDAO {
-     public boolean savedInvestigationProject(InvestigationProject investigationproject, int keycode) throws BusinessConnectionException;
-     public boolean updateInvestigationproject(InvestigationProject investigationproject, int keycode) throws BusinessConnectionException;
-     public InvestigationProject findInvestigationProjectById(int idProject) throws BusinessConnectionException;
-     public InvestigationProject findInvestigationProjectByName(String tittleproject) throws BusinessConnectionException;
-     public ArrayList<InvestigationProject> findAllInvestigationProjects() throws BusinessConnectionException;
-     //maybe will be necessary more methods
+    public InvestigationProject findInvestigationProjectById(int idProject) throws BusinessConnectionException;
+    public ArrayList<InvestigationProject> findAllInvestigationProjects() throws BusinessConnectionException;
 }

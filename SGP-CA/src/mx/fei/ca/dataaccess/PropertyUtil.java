@@ -35,6 +35,7 @@ public class PropertyUtil{
     
     public static String getProperties(String name){
         readFile();
-        return property.getProperty(name);
+        String propertyResult = property.getProperty(name);
+        return propertyResult;
     }
 }

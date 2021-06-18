@@ -2,7 +2,7 @@
 package testdataaccess;
 
 import java.sql.Connection;
-import java.sql.SQLException;
+import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.dataaccess.DataBaseConnection;
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,11 +17,11 @@ public class DataBaseConnectionTest {
    
     /**
      * Metodo que realiza test de la conexión a la base de datos
-     * @throws SQLException
+     * @throws mx.fei.ca.businesslogic.exceptions.BusinessConnectionException
      */
     
     @Test
-    public void DataBaseConnectionTest() throws SQLException{
+    public void dataBaseConnectionTest() throws BusinessConnectionException{
         Connection currentConnection = (Connection) new DataBaseConnection().getConnection();
         Assert.assertNotNull(currentConnection);
     } 

@@ -72,8 +72,7 @@ public class AgendaPointDAO implements IAgendaPointDAO{
     
     @Override
     public boolean updatedAgendaPoint(AgendaPoint agendaPoint, int idAgendaPoint, int idMeeting) throws BusinessConnectionException{
-        String sql = "UPDATE agendaPoint SET startTime = ?, endTime = ?, topic =?, leader = ?, idMeeting = ? "
-                     + "WHERE idAgendaPoint = ?";
+        String sql = "UPDATE agendaPoint SET startTime = ?, endTime = ?, topic =?, leader = ?, idMeeting = ? WHERE idAgendaPoint = ?";
         boolean updateResult = false;
         try{
             connection = dataBaseConnection.getConnection();

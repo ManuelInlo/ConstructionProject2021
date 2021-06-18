@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 
 /**
  * Clase para representar la conexión a la base de datos
@@ -31,12 +32,16 @@ public class DataBaseConnection {
     
     /**
      * Método que devuelve la conexión con la base de datos
-     * @return La conexión a la base de datos
-     * @throws SQLException 
+     * @return La conexión a la base de datos 
+     * @throws mx.fei.ca.businesslogic.exceptions.BusinessConnectionException 
      */
    
-    public Connection getConnection() throws SQLException{
-       connection = DriverManager.getConnection(url, user, password);
+    public Connection getConnection() throws BusinessConnectionException{
+        try {
+            connection = DriverManager.getConnection(url, user, password);
+        } catch (SQLException ex) {
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }
        return connection;
     }
     
