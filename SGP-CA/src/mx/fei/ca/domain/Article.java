@@ -25,7 +25,7 @@ public class Article extends Evidence{
    private String curp;
    
    /**
-    * Constructor para la creación de una evidencia de tipo artículo
+    * Constructor para la creación de una evidencia de tipo artículo con estado actual de "Publicado"
     * @param evidence Define la clase padre de un artículo que contiene los atributos de impacto al CA, nombre de la evidencia y autor
     * @param issn Define la clave única del artículo
     * @param fileRoute Define la ruta del artículo
@@ -33,10 +33,10 @@ public class Article extends Evidence{
     * @param endPage Define el final de página del artículo en una revista
     * @param actualState Define al estado actual del artículo
     * @param magazineName Define el nombre de la revista en la que aparecerá el artículo
-    * @param country Define el país de la revista donde se publico el artículo
+    * @param country Define el país de la revista donde se realizo el artículo
     * @param publicationDate Define la fecha de publicación del artículo
-    * @param volume Define el volumen de la revista en la que se publico el artículo
-    * @param editorial Define la editorial de la revista en la que se público el artículo
+    * @param volume Define el volumen de la revista en la que se realizo el artículo
+    * @param editorial Define la editorial de la revista en la que se realizo el artículo
     * @param description Define la descripción general del artículo
     */
    
@@ -56,6 +56,39 @@ public class Article extends Evidence{
        this.editorial = editorial;
        this.description = description;
     }
+    
+       
+   /**
+    * Constructor para la creación de una evidencia de tipo artículo con estado actual de "En progreso o Terminado"
+    * @param evidence Define la clase padre de un artículo que contiene los atributos de impacto al CA, nombre de la evidencia y autor
+    * @param issn Define la clave única del artículo
+    * @param fileRoute Define la ruta del artículo
+    * @param homePage Define el inicio de página del artículo en una revista
+    * @param endPage Define el final de página del artículo en una revista
+    * @param actualState Define al estado actual del artículo
+    * @param magazineName Define el nombre de la revista en la que aparecerá el artículo
+    * @param country Define el país de la revista donde se realizo el artículo
+    * @param volume Define el volumen de la revista en la que se realizo el artículo
+    * @param editorial Define la editorial de la revista en la que se realizo el artículo
+    * @param description Define la descripción general del artículo
+    */
+   
+    public Article(Evidence evidence, String issn, String fileRoute, int homePage,
+                  int endPage, String actualState, String magazineName, String country, int volume, 
+                  String editorial, String description){
+       super(evidence.getImpactCA(), evidence.getTitleEvidence(), evidence.getAuthor());
+       this.issn = issn;
+       this.fileRoute = fileRoute;
+       this.homePage = homePage;
+       this.endPage = endPage;
+       this.actualState = actualState;
+       this.magazineName = magazineName;
+       this.country = country;
+       this.volume = volume;
+       this.editorial = editorial;
+       this.description = description;
+    }
+    
     
     /**
      * 

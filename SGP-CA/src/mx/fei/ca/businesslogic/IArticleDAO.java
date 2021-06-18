@@ -1,6 +1,7 @@
 
 package mx.fei.ca.businesslogic;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Article;
@@ -15,4 +16,5 @@ public interface IArticleDAO {
     public boolean existsArticleFileRoute(String fileRoute) throws BusinessConnectionException;
     public boolean existsArticleTitleForUpdate(String titleArticle, String issn) throws BusinessConnectionException;
     public boolean existsArticleFileRouteForUpdate(String fileRoute, String issn) throws BusinessConnectionException;
+    public ArrayList<Article> findArticlesByDateAndImpactCA(Date date) throws BusinessConnectionException;
 }

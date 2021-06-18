@@ -10,10 +10,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
@@ -245,6 +243,120 @@ public class IntegrantDAO implements IIntegrantDAO{
         }
         return integrant;
     }
+    
+    @Override
+    public Integrant findIntegrantByName(String name) throws BusinessConnectionException {
+        String sql = "SELECT * FROM integrant WHERE name = ?";
+        Integrant integrant = null;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, name);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                String role = resultSet.getString("role");
+                String curp = resultSet.getString("curp");
+                String studyDegree = resultSet.getString("studyDegree");
+                String studyDiscipline = resultSet.getString("studyDiscipline");
+                String prodepParticipation = resultSet.getString("prodepParticipation");
+                String typeTeaching = resultSet.getString("typeTeaching");
+                String eisStudyDegree = resultSet.getString("eisStudyDegree");
+                String institutionalMail = resultSet.getString("institutionalMail");
+                String numberPhone = resultSet.getString("numberPhone");
+                Date dateBirthday = resultSet.getDate("dateBirthday");
+                String statusIntegrant = resultSet.getString("statusIntegrant");
+                integrant = new Integrant(curp, role, name, studyDegree, studyDiscipline, prodepParticipation, typeTeaching,
+                                          eisStudyDegree, institutionalMail, numberPhone, dateBirthday, statusIntegrant);
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return integrant;
+    }
+    
+    /**
+     * Método que verifica si existe el nombre de un integrante en la base de datos
+     * @param name Define el nombre a verificar existencia
+     * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+
+    @Override
+    public boolean existsIntegrantName(String name) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM integrant WHERE nameIntegrant = ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, name);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }
+    
+    /**
+     * Método que verifica si existe la curp de un integrante en la base de datos
+     * @param curp Define la curp a verificar existencia
+     * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+
+    @Override
+    public boolean existsIntegrantCurp(String curp) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM integrant WHERE curp = ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, curp);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }
+    
+    /**
+     * Método que verifica si existe el correo electrónico de un integrante en la base de datos
+     * @param institutionalMail Define el correo electrónico a verificar existencia
+     * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+
+    @Override
+    public boolean existsIntegrantEmail(String institutionalMail) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM integrant WHERE institutionalMail = ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, institutionalMail);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }
+    
     
     @Override
     public ArrayList<Integrant> findAllIntegrants() throws BusinessConnectionException {

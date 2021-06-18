@@ -8,22 +8,36 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import mx.fei.ca.businesslogic.ArticleDAO;
 import mx.fei.ca.businesslogic.IntegrantDAO;
-import mx.fei.ca.businesslogic.ReceptionWorkDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Article;
 import mx.fei.ca.domain.Evidence;
 import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.InvestigationProject;
-import mx.fei.ca.domain.ReceptionWork;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
+/**
+ * Clase para representar las pruebas unitarias de los métodos de la clase ArticleDAO
+ * @author Gloria Mendoza González
+ * @version 17-06-2021
+ */
+
 public class ArticleTest {
+    
+    /**
+     * Constructor vacío de la clase
+     */
+    
     public ArticleTest(){
         
     }
+    
+    /**
+     * Test de agregación de artículo
+     * @throws BusinessConnectionException 
+     */
     
     @Test
     public void testInsertArticle() throws BusinessConnectionException{
@@ -55,6 +69,11 @@ public class ArticleTest {
         assertEquals("Prueba correcta, si guardó", saveResult, true);
     }
     
+    /**
+     * Test de modificación de un artículo previamente registrado
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testUpdateArticle() throws BusinessConnectionException{
         ArticleDAO articleDAO = new ArticleDAO();
@@ -84,12 +103,22 @@ public class ArticleTest {
         assertEquals("Prueba correcta, si actualizo", updateResult, true);
     }    
     
+    /**
+     * Test de búsqueda de artículos por su impacto positivo al CA
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testFindArticlesByPositiveImpactCA() throws BusinessConnectionException{
         ArticleDAO articleDAO = new ArticleDAO();
         ArrayList<Article> articles = articleDAO.findArticlesByPositiveImpactCA();
         assertEquals("Prueba busqueda de artículo por su impacto al CA", articles.size(), 5);
     }
+    
+    /**
+     * Test de búsqueda de artículos de un integrante
+     * @throws BusinessConnectionException 
+     */
     
     @Test
     public void testFindArticlesByCurpIntegrant() throws BusinessConnectionException{
@@ -98,12 +127,22 @@ public class ArticleTest {
         assertEquals("Prueba busqueda de artículo de un integrante por curp", articles.size(), 2);
     }
     
+    /**
+     * Test de búsqueda de artículos por las iniciales del titulo
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testFindArticleByInitialesOfTitle() throws BusinessConnectionException{
         ArticleDAO articleDAO = new ArticleDAO();
         ArrayList <Article> articles = articleDAO.findArticleByInitialesOfTitle("software", "MCUD940585RDTRER10");
         assertEquals("Prueba encontrar artículo por título", articles.size(), 5);
     }
+    
+    /**
+     * Test de verificación de existencia del título de un artículo
+     * @throws BusinessConnectionException 
+     */
     
     @Test
     public void testExistsArticleTitle() throws BusinessConnectionException{
@@ -112,6 +151,11 @@ public class ArticleTest {
         assertTrue("Prueba mandar a validar un titulo que ya existe de un artículo", exists);
     }
     
+    /**
+     * Test de verificación de existencia de la ruta de archivo de un artículo
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testExistsArticleFileRoute() throws BusinessConnectionException{
         ArticleDAO articleDAO = new ArticleDAO();
@@ -119,12 +163,22 @@ public class ArticleTest {
         assertTrue("Prueba mandar a validar una ruta de archivo que ya existe en un articulo", exists);
     }  
     
+    /**
+     * Test de verificación de existencia de título de artículo para modificación
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testExistsArticleTitleForUpdate() throws BusinessConnectionException{
         ArticleDAO articleDAO = new ArticleDAO();
         boolean exists = articleDAO.existsArticleTitleForUpdate("Datos de la ingeniería de software", "7487-0983");
         assertFalse("Prueba mandar a validar un titulo modificado que no existe de artículo", exists);
     }
+    
+    /**
+     * Test de verificación de existencia de ruta de archivo para modificación de un artículo
+     * @throws BusinessConnectionException 
+     */
      
     @Test
     public void testExistsArticleFileRouteForUpdate() throws BusinessConnectionException{

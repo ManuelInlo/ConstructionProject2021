@@ -150,8 +150,11 @@ public class ArticleDAO implements IArticleDAO{
                 String author = resultSet.getString("author");               
                 String description = resultSet.getString("description");
                 evidence = new Evidence(impactCA, titleEvidence, author);
-                article = new Article(evidence, issn, fileRoute, homePage,  endPage, actualState, magazineName,
-                                      country, publicationDate, volume, editorial, description);
+                if(publicationDate != null){
+                    article = new Article(evidence, issn, fileRoute, homePage, endPage, actualState, magazineName, country, publicationDate, volume, editorial, description);
+                }else{
+                     article = new Article(evidence, issn, fileRoute, homePage, endPage, actualState, magazineName, country, volume, editorial, description);
+                }               
                 articles.add(article);
             }
         }catch(SQLException ex){
@@ -197,8 +200,64 @@ public class ArticleDAO implements IArticleDAO{
                 String description = resultSet.getString("description");
                 int idProject = resultSet.getInt("idProject");               
                 evidence = new Evidence(impactCA, titleEvidence, author);
-                article = new Article(evidence, issn, fileRoute, homePage,  endPage, actualState, magazineName,
-                                      country, publicationDate, volume, editorial, description);
+                if(publicationDate != null){
+                    article = new Article(evidence, issn, fileRoute, homePage, endPage, actualState, magazineName, country, publicationDate, volume, editorial, description);
+                }else{
+                     article = new Article(evidence, issn, fileRoute, homePage, endPage, actualState, magazineName, country, volume, editorial, description);
+                }  
+                InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
+                InvestigationProject investigationProject = investigationProjectDAO.findInvestigationProjectById(idProject); 
+                article.setInvestigationProject(investigationProject);
+                articles.add(article);
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return articles;
+    }
+    
+    /**
+     * Método que recupera de la base de datos las evidencias de tipo artículo por fecha que impactan al CA
+     * @param date Define la fecha de la cual se quiere recuperar los artículos
+     * @return ArrayList con máximo dos artículos
+     * @throws BusinessConnectionException 
+     */
+    
+    @Override
+    public ArrayList<Article> findArticlesByDateAndImpactCA(Date date) throws BusinessConnectionException {
+        String sql = "SELECT * FROM article WHERE publicationDate = ? AND impactCA = 'SI' ORDER by ISSN DESC LIMIT 2";
+        ArrayList<Article> articles = new ArrayList<>();
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setDate(1, date);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Evidence evidence;
+                Article article;
+                String impactCA = resultSet.getString("impactCA");
+                String titleEvidence = resultSet.getString("titleEvidence");
+                String issn = resultSet.getString("ISSN");
+                String fileRoute = resultSet.getString("fileRoute");
+                int homePage = resultSet.getInt("homePage");
+                int endPage = resultSet.getInt("endPage");    
+                String actualState = resultSet.getString("actualState");
+                String magazineName = resultSet.getString("magazineName");
+                String country = resultSet.getString("country");                
+                Date publicationDate = resultSet.getDate("publicationDate");
+                int volume = resultSet.getInt("volume"); 
+                String editorial = resultSet.getString("editorial");
+                String author = resultSet.getString("author");               
+                String description = resultSet.getString("description");
+                int idProject = resultSet.getInt("idProject");               
+                evidence = new Evidence(impactCA, titleEvidence, author);
+                if(publicationDate != null){
+                    article = new Article(evidence, issn, fileRoute, homePage, endPage, actualState, magazineName, country, publicationDate, volume, editorial, description);
+                }else{
+                     article = new Article(evidence, issn, fileRoute, homePage, endPage, actualState, magazineName, country, volume, editorial, description);
+                }  
                 InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
                 InvestigationProject investigationProject = investigationProjectDAO.findInvestigationProjectById(idProject); 
                 article.setInvestigationProject(investigationProject);
@@ -249,8 +308,11 @@ public class ArticleDAO implements IArticleDAO{
                 String description = resultSet.getString("description");
                 int idProject = resultSet.getInt("idProject");               
                 evidence = new Evidence(impactCA, titleEvidence, author);
-                article = new Article(evidence, issn, fileRoute, homePage,  endPage, actualState, magazineName,
-                                      country, publicationDate, volume, editorial, description);
+                if(publicationDate != null){
+                    article = new Article(evidence, issn, fileRoute, homePage, endPage, actualState, magazineName, country, publicationDate, volume, editorial, description);
+                }else{
+                     article = new Article(evidence, issn, fileRoute, homePage, endPage, actualState, magazineName, country, volume, editorial, description);
+                }  
                 InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
                 InvestigationProject investigationProject = investigationProjectDAO.findInvestigationProjectById(idProject); 
                 article.setInvestigationProject(investigationProject);
@@ -375,4 +437,5 @@ public class ArticleDAO implements IArticleDAO{
         }
         return exists;
     }
+    
 }

@@ -57,12 +57,12 @@ public class WindowAddReceptionWorkController implements Initializable {
     private DatePicker dpEndDate;
     @FXML
     private ComboBox cbGrade;
-    @FXML
+    @FXML        
     private ComboBox cbPositionAuthor;
     @FXML
     private Label lbUser;
     private Integrant integrant;
-    
+       
     /**
      * Enumerado que representa los tipos de errores específicos de GUI al agregar un trabajo recepcional 
      */

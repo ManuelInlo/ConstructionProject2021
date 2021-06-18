@@ -1,29 +1,31 @@
 
 package mx.fei.ca.domain;
 
+/**
+ * 
+ * @author Gloria
+ */
+
 public class ChapterBook extends Evidence{
     private int chapterNumber;
     private int homePage;
     private int endPage;
-    private String ISBN;
-    private int idProject; 
+    private Book book;
+    private InvestigationProject investigationProject;
     private String curp;
     
-    public ChapterBook(Evidence evidence, int chapterNumber, int homepage, int endPage, String ISBN, int idProject, String curp){
+    public ChapterBook(Evidence evidence, int chapterNumber, int homePage, int endPage){
         super(evidence.getImpactCA(), evidence.getTitleEvidence(), evidence.getAuthor());
         this.chapterNumber = chapterNumber;
-        this.homePage = homepage;
+        this.homePage = homePage;
         this.endPage = endPage;
-        this.ISBN = ISBN;
-        this.idProject = idProject;
-        this.curp = curp;
     }
 
     public int getChapterNumber() {
         return chapterNumber;
     }
-   
-    public int getHomepage() {
+
+    public int getHomePage() {
         return homePage;
     }
 
@@ -31,12 +33,12 @@ public class ChapterBook extends Evidence{
         return endPage;
     }
 
-    public String getISBN() {
-        return ISBN;
+    public Book getBook() {
+        return book;
     }
 
-    public int getIdProject() {
-        return idProject;
+    public InvestigationProject getInvestigationProject() {
+        return investigationProject;
     }
 
     public String getCurp() {
@@ -47,24 +49,24 @@ public class ChapterBook extends Evidence{
         this.chapterNumber = chapterNumber;
     }
 
-    public void setHomepage(int homepage) {
-        this.homePage = homepage;
+    public void setHomePage(int homePage) {
+        this.homePage = homePage;
     }
 
     public void setEndPage(int endPage) {
         this.endPage = endPage;
     }
 
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
-    public void setIdProject(int idProject) {
-        this.idProject = idProject;
+    public void setInvestigationProject(InvestigationProject investigationProject) {
+        this.investigationProject = investigationProject;
     }
 
     public void setCurp(String curp) {
         this.curp = curp;
     }
-        
+       
 }
