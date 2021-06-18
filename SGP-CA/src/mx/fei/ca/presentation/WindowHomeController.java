@@ -32,11 +32,8 @@ public class WindowHomeController implements Initializable {
     @FXML
     private Text lbUser;
     @FXML
-<<<<<<< HEAD
     private Pane pnBtnProyectod1;
-=======
     private ImageView imgLogOut;
->>>>>>> 2516043ab8c6ca89a2b597bb3aae02617a5658e3
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

@@ -132,7 +132,7 @@ public class WindowReceptionWorkDataController implements Initializable {
     }
     
     /**
-     * Método que cierra la ventana actual datos del trabajo recepcional
+     * Método que cierra la ventana actual "Datos de trabajo recepcional"
      * @param event Define el evento generado
      */
 

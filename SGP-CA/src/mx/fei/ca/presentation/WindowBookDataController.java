@@ -1,4 +1,8 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package mx.fei.ca.presentation;
 
 import java.net.URL;
@@ -12,16 +16,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import mx.fei.ca.domain.Article;
+import mx.fei.ca.domain.Book;
 import mx.fei.ca.domain.Integrant;
 
 /**
- * Clase para representar el controlador del FXML WindowArticleData
+ * Clase para representar el controlador del FXML WindowBookData
  * @author Gloria Mendoza González
  * @version 18-06-2021
  */
 
-public class WindowArticleDataController implements Initializable {
+public class WindowBookDataController implements Initializable {
 
     @FXML
     private Label lbUser;
@@ -30,35 +34,38 @@ public class WindowArticleDataController implements Initializable {
     @FXML
     private Label lbAuthor;
     @FXML
+    private Label lbIsbn;
+    @FXML
+    private Label lbParticipationType;
+    @FXML
     private Label lbActualState;
-    @FXML
-    private Label lbIssn;
-    @FXML
-    private Label lbMagazineName;
-    @FXML
-    private Label lbCountry;
     @FXML
     private Label lbPublicationDate;
     @FXML
-    private Label lbVolume;
+    private Label lbEditorial;
+    @FXML
+    private Label lbEdition;
     @FXML
     private Label lbInvestigationProject;
     @FXML
     private Label lbFileRoute;
     @FXML
-    private Label lbHomePage;
+    private Label lbNumPages;
     @FXML
-    private Label lbEndPage;
+    private Label lbPrinting;
+    @FXML
+    private Label lbCountry;
     @FXML
     private Label lbTypeEvidence;
     @FXML
     private Label lbImpactCA;
     private Integrant integrant;
-    private Article article;
+    private Book book;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        // TODO
     }    
     
     /**
@@ -72,29 +79,31 @@ public class WindowArticleDataController implements Initializable {
     }
     
     /**
-     * Método que muestra la información del artículo en la GUI
-     * @param article Define el artículo con la información a mostrar
+     * Método que muestra la información del libro en la GUI
+     * @param book Define el libro con la información a mostrar
      */
     
-    public void showArticleData(Article article){
-        this.article = article;
-        lbTypeEvidence.setText("Artículo");
-        lbTitleEvidence.setText(article.getTitleEvidence());
-        lbAuthor.setText(article.getAuthor());
-        lbActualState.setText(article.getActualState());
-        lbIssn.setText(article.getIssn());
-        lbMagazineName.setText(article.getMagazineName());
-        lbCountry.setText(article.getCountry());
-        lbVolume.setText(String.valueOf(article.getVolume()));
-        lbInvestigationProject.setText(article.getInvestigationProject().getTittleProject());
-        lbFileRoute.setText(article.getFileRoute());
-        lbHomePage.setText(String.valueOf(article.getHomepage()));
-        lbEndPage.setText(String.valueOf(article.getEndPage()));
-        lbImpactCA.setText(article.getImpactCA());
-        if(article.getPublicationDate() != null){
-            lbPublicationDate.setText(convertDateToString(article.getPublicationDate()));
-        }        
+    public void showBookData(Book book){
+        this.book = book;
+        lbTypeEvidence.setText("Libro");
+        lbTitleEvidence.setText(book.getTitleEvidence());
+        lbAuthor.setText(book.getAuthor());
+        lbIsbn.setText(book.getIsbn());
+        lbParticipationType.setText(book.getParticipationType());
+        lbActualState.setText(book.getActualState());
+        lbEditorial.setText(book.getEditorial());
+        lbEdition.setText(book.getEdition());
+        lbInvestigationProject.setText(book.getInvestigationProject().getTittleProject());        
+        lbFileRoute.setText(book.getFileRoute());
+        lbNumPages.setText(String.valueOf(book.getNumPages()));
+        lbPrinting.setText(String.valueOf(book.getPrinting()));
+        lbCountry.setText(book.getCountry());
+        lbImpactCA.setText(book.getImpactCA());
+        if(book.getPublicationDate() != null){
+            lbPublicationDate.setText(convertDateToString(book.getPublicationDate()));
+        }    
     }
+    
     
     /**
      * Método que convierte una variable de tipo Date a String con la finalidad de poder mostrar la fecha en la GUI
@@ -109,21 +118,21 @@ public class WindowArticleDataController implements Initializable {
     }
     
     /**
-     * Método que manda a abrir la ventana de modificación de artículo
-     * @param event Define el evento generado
-     */
-
-    @FXML
-    private void modifyArticle(ActionEvent event) {
-    }
-
-    /**
-     * Método que cierra la ventana actual "Datos de artículo"
+     * Método que manda a abrir la ventana de modificación de libro
      * @param event Define el evento generado
      */
     
     @FXML
-    private void closeArticleData(ActionEvent event){
+    private void modifyBook(ActionEvent event) {
+    }
+    
+    /**
+     * Método que cierra la ventana actual "Datos de libro"
+     * @param event Define el evento generado
+     */
+
+    @FXML
+    private void closeBookData(ActionEvent event){
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
