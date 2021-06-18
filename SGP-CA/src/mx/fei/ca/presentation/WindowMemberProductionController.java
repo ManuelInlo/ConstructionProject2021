@@ -25,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import mx.fei.ca.businesslogic.ArticleDAO;
 import mx.fei.ca.businesslogic.ReceptionWorkDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Article;
@@ -46,27 +47,27 @@ public class WindowMemberProductionController implements Initializable {
     @FXML
     private TableView<ReceptionWork> tbReceptionWorks;
     @FXML
-    private TableView<?> tbArticles;
+    private TableView<Article> tbArticles;
     @FXML
-    private TableView<?> tbBooks;
+    private TableView<Book> tbBooks;
     @FXML
-    private TableView<?> tbChapterBooks;
+    private TableView<ChapterBook> tbChapterBooks;
     @FXML
     private TableColumn<ReceptionWork, String> columnImpactCAReceptionWork;
     @FXML
     private TableColumn<ReceptionWork, String> columnNameReceptionWork;
     @FXML
-    private TableColumn<?, ?> columnImpactCAArticle;
+    private TableColumn<Article, String> columnImpactCAArticle;
     @FXML
-    private TableColumn<?, ?> columnNameArticle;
+    private TableColumn<Article, String> columnNameArticle;
     @FXML
-    private TableColumn<?, ?> columnImpactCABook;
+    private TableColumn<Book, String> columnImpactCABook;
     @FXML
-    private TableColumn<?, ?> columnNameBook;
+    private TableColumn<Book, String> columnNameBook;
     @FXML
-    private TableColumn<?, ?> columnImpactCAChapterBook;
+    private TableColumn<ChapterBook, String> columnImpactCAChapterBook;
     @FXML
-    private TableColumn<?, ?> columnNameChapterBook;
+    private TableColumn<ChapterBook, String> columnNameChapterBook;
     @FXML
     private Label lbUser;
     private Integrant integrant;
@@ -111,8 +112,11 @@ public class WindowMemberProductionController implements Initializable {
     
     public void recoverEvidences() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
+        ArticleDAO articleDAO = new ArticleDAO();
         ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findLastTwoReceptionWorksByCurpIntegrant(integrant.getCurp()); 
+        ArrayList<Article> articles = articleDAO.findLastTwoArticlesByCurpIntegrant(integrant.getCurp());
         fillReceptionWorkTable(receptionWorks);
+        fillArticlesTable(articles);
     }
     
     /**
@@ -133,7 +137,10 @@ public class WindowMemberProductionController implements Initializable {
      */
     
     private void fillArticlesTable(ArrayList<Article> articles){
-        
+        columnImpactCAArticle.setCellValueFactory(new PropertyValueFactory("impactCA"));
+        columnNameArticle.setCellValueFactory(new PropertyValueFactory("titleEvidence"));
+        ObservableList<Article> listArticles = FXCollections.observableArrayList(articles);
+        tbArticles.setItems(listArticles);
     }
     
     /**
@@ -221,8 +228,9 @@ public class WindowMemberProductionController implements Initializable {
             try {
                 //Mandar a recuperar listas de las evidencias que coincidan con el texto ->QUITAR ESTE COMENTARIO DESPUES
                 ArrayList<ReceptionWork> receptionWorks = recoverReceptionWorks();
+                ArrayList<Article> articles = recoverArticles();
                 
-                if(receptionWorks.isEmpty()){  //DEBE PREGUNTAR SI TODAS LAS LISTAS RECUPERADAS ESTAN VACIAS
+                if(receptionWorks.isEmpty() || articles.isEmpty()){  //DEBE PREGUNTAR SI TODAS LAS LISTAS RECUPERADAS ESTAN VACIAS
                     showNoMatchAlert();
                 }
             } catch (BusinessConnectionException ex) {
@@ -242,7 +250,7 @@ public class WindowMemberProductionController implements Initializable {
     private ArrayList<ReceptionWork> recoverReceptionWorks() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         String titleReceptionWork = tfEvidenceName.getText();
-        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorkByInitialesOfTitle(titleReceptionWork, integrant.getCurp()); //Acá debe pasar la curp del que está loggeado
+        ArrayList<ReceptionWork> receptionWorks = receptionWorkDAO.findReceptionWorkByInitialesOfTitle(titleReceptionWork, integrant.getCurp()); 
         if(!receptionWorks.isEmpty()){
             fillReceptionWorkTable(receptionWorks);
         }
@@ -255,9 +263,15 @@ public class WindowMemberProductionController implements Initializable {
      * @throws BusinessConnectionException 
      */
     
-    //private ArrayList<Article> recoverArticles() throws BusinessConnectionException{
-        
-    //}
+    private ArrayList<Article> recoverArticles() throws BusinessConnectionException{
+        ArticleDAO articleDAO = new ArticleDAO();
+        String titleArticle = tfEvidenceName.getText();
+        ArrayList<Article> articles = articleDAO.findArticleByInitialesOfTitle(titleArticle, integrant.getCurp());
+        if(!articles.isEmpty()){
+            fillArticlesTable(articles);
+        }
+        return articles;
+    }
     
     /**
      * Método que manda a recuperar específicamente los libros de acuerdo a las iniciales del título ingresado en la GUI
