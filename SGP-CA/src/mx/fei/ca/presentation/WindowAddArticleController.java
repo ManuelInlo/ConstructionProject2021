@@ -3,6 +3,7 @@ package mx.fei.ca.presentation;
 
 import java.net.URL;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -75,7 +76,8 @@ public class WindowAddArticleController implements Initializable {
      */
     
     private enum TypeError{
-        EMPTYFIELD, INVALIDSTRING, MISSINGSELECTION, MISSINGDATE, TITLEDUPLICATE, FILEROUTEDUPLICATE;
+        EMPTYFIELD, INVALIDSTRING, MISSINGSELECTION, MISSINGDATE, TITLEDUPLICATE, FILEROUTEDUPLICATE, 
+        INCONSISTENTDATE, OVERDATE, INCONSISTENTPAGE, INVALIDLENGTH;
     }    
     
 
@@ -154,7 +156,6 @@ public class WindowAddArticleController implements Initializable {
             String author = tfAuthor.getText(); 
             String titleArticle = tfTitleEvidence.getText();        
             InvestigationProject investigationProject = cbInvestigationProject.getSelectionModel().getSelectedItem(); 
-            int idProject = investigationProject.getIdProject();
             if(cbActualState.getSelectionModel().getSelectedItem().toString().equals("Publicado")){
                publicationDate = parseToSqlDate(java.util.Date.from(dpPublicationDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())); 
             }        
@@ -163,6 +164,7 @@ public class WindowAddArticleController implements Initializable {
                                           volume, editorial, description);
             article.setInvestigationProject(investigationProject); 
             article.setIntegrant(integrant); 
+            article.setCurp(integrant.getCurp());
             ArticleDAO articleDAO = new ArticleDAO();
             boolean saveResult = articleDAO.savedArticle(article);
             if(saveResult){
@@ -206,12 +208,28 @@ public class WindowAddArticleController implements Initializable {
     
     private boolean existsInvalidFields() throws BusinessConnectionException{
         boolean invalidFields = false;
-        if(existsEmptyFields() || existsInvalidStrings() || existsMissingSelection() || existsInvalidDates()){
+        if(existsEmptyFields() || existsInvalidStrings() ||  existsMissingSelection() || existsDuplicateValues() || 
+           existInconsistentNumberPage() || existsInvalidDates() || existsInvalidLength()){
             invalidFields = true;
-        }else if(existsDuplicateValues()){
-            invalidFields = true;
-        }
+        }    
         return invalidFields;
+    }
+    
+    /**
+     * Método que verifica si la longitud del campo excede el límite permitido
+     * @return Boolean con el resultado de la verificación, devuelve true si existen campos vacíos, de lo contrario, devuelve false
+     */
+    
+    private boolean existsInvalidLength(){
+        boolean invalidLength = false;
+        if(tfTitleEvidence.getText().length() > 255 || tfFileRoute.getText().length() > 500 || tfAuthor.getText().length() > 255 || tfDescription.getText().length() > 255 ||
+           tfHomePage.getText().length() > 5 || tfEndPage.getText().length() > 5 || tfMagazineName.getText().length() > 225 || tfIssn.getText().length() > 9 ||
+           tfCountry.getText().length() > 255 || tfVolume.getText().length() > 5 || tfEditorial.getText().length() > 255){
+            invalidLength = true;
+            TypeError typeError = TypeError.INVALIDLENGTH;
+            showInvalidFieldAlert(typeError);
+        }
+        return invalidLength;
     }
     
     /**
@@ -239,7 +257,9 @@ public class WindowAddArticleController implements Initializable {
     private boolean existsInvalidStrings(){
         boolean invalidStrings = false;
         if(existsInvalidCharactersForTitle(tfTitleEvidence.getText()) || existsInvalidCharactersForName(tfAuthor.getText()) || existsInvalidCharactersForName(tfCountry.getText()) ||
-           existsInvalidCharactersForFileRoute(tfFileRoute.getText()) || existsInvalidCharactersForTitle(tfMagazineName.getText()) || existsInvalidCharactersForTitle(tfDescription.getText())){
+           existsInvalidCharactersForFileRoute(tfFileRoute.getText()) || existsInvalidCharactersForTitle(tfMagazineName.getText()) || existsInvalidCharactersForTitle(tfDescription.getText()) ||
+           existsInvalidCharactersForNumber(tfHomePage.getText()) || existsInvalidCharactersForNumber(tfEndPage.getText()) || existsInvalidCharactersForNumber(tfVolume.getText()) || 
+           existsInvalidCharactersForIssn(tfIssn.getText()) || existsInvalidCharactersForTitle(tfEditorial.getText())){
             invalidStrings = true;
             TypeError typeError = TypeError.INVALIDSTRING;
             showInvalidFieldAlert(typeError);
@@ -249,7 +269,7 @@ public class WindowAddArticleController implements Initializable {
     
     /**
      * Método que verifica si existen caracteres inválidos en campos de nombres propios
-     * @param textToValidate Define el nombre del autor a validar 
+     * @param textToValidate Define el nombre a validar 
      * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
      */
     
@@ -264,20 +284,20 @@ public class WindowAddArticleController implements Initializable {
     }
     
     /**
-     * Método que verifica si existen caracteres inválidos en campos de nombres propios
-     * @param textToValidate Define el nombre del autor a validar 
+     * Método que verifica si existen caracteres inválidos en un título
+     * @param textToValidate Define el título a validar
      * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
      */
     
-    private boolean existsInvalidCharactersForName(String textToValidate){
+    private boolean existsInvalidCharactersForTitle(String textToValidate){
         boolean invalidCharacters = false;
-        Pattern pattern = Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s]+$");
+        Pattern pattern = Pattern.compile("^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ\\s\\.#,:]+$");
         Matcher matcher = pattern.matcher(textToValidate);
         if(!matcher.find()){
            invalidCharacters = true; 
         }
         return invalidCharacters;
-    }    
+    }   
     
     /**
      * Método que verifica si existen caracteres inválidos en el artículo
@@ -287,13 +307,30 @@ public class WindowAddArticleController implements Initializable {
     
     private boolean existsInvalidCharactersForNumber(String textToValidate){
         boolean invalidCharacters = false;
-        Pattern pattern = Pattern.compile("[0-9]*");
+        Pattern pattern = Pattern.compile("^\\d+$");
         Matcher matcher = pattern.matcher(textToValidate);
         if(!matcher.find()){
            invalidCharacters = true; 
         }
         return invalidCharacters;
     }    
+    
+    /**
+     * Método que verifica si existen caracteres inválidos en el ISSN del artículo
+     * @param textToValidate Define el ISSN del artículo a validar
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     */
+    
+    private boolean existsInvalidCharactersForIssn(String textToValidate){
+        boolean invalidCharacters = false;
+        String validText = "[0-9]{4}[-]{1}[0-9X]{4}$";        
+        Pattern pattern = Pattern.compile(validText);
+        Matcher matcher = pattern.matcher(textToValidate);
+        if(!matcher.find()){
+           invalidCharacters = true; 
+        }
+        return invalidCharacters;
+    }     
     
     /**
      * Método que verifica si existen caracteres inválidos para una ruta de archivo
@@ -309,6 +346,143 @@ public class WindowAddArticleController implements Initializable {
             invalidCharacters = true;
         }   
         return invalidCharacters;
+    }
+    
+    /**
+     * Método que verifica si existen selecciones de campos faltantes en la GUI
+     * @return Booleano con el resultado de verificación, devuelve true si existen faltantes, de lo contrario, devuelve false
+     */
+    
+    private boolean existsMissingSelection(){
+        boolean missingSelection = false;
+        if(cbImpactCA.getSelectionModel().getSelectedIndex() < 0 || cbInvestigationProject.getSelectionModel().getSelectedIndex() < 0 ||
+           cbActualState.getSelectionModel().getSelectedIndex() < 0){
+            missingSelection = true;
+            TypeError typeError = TypeError.MISSINGSELECTION;
+            showInvalidFieldAlert(typeError);
+        }
+        return missingSelection;
+    }
+    
+    /**
+     * Método que verifica si existen fechas inválidas en los campos de la GUI
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     */
+    
+    private boolean existsInvalidDates(){
+        boolean invalidDates = false;
+        if(cbActualState.getSelectionModel().getSelectedItem().toString().equals("Publicado")){
+            if(existMissingDate(dpPublicationDate) || existInconsistentDates()){
+                invalidDates = true;
+            }
+        }else{
+            if(existLeftOverDateSelection(dpPublicationDate)){
+                invalidDates = true;
+            }
+        }
+        return invalidDates;
+    }
+    
+    /**
+     * Método que verifica si existe selección de fecha faltante del campo de tipo DatePicker
+     * @param datePicker Define la fecha seleccionada a verificar del campo de tipo DatePicker
+     * @return Booleano con el resultado de verificación, devuelve true si existe faltante, de lo contrario, devuelve false
+     */
+    
+    private boolean existMissingDate(DatePicker datePicker){
+        boolean missingDate = false;
+        if(datePicker.getValue() == null){
+            missingDate = true;
+            TypeError typeError = TypeError.MISSINGDATE;
+            showInvalidFieldAlert(typeError);
+        }
+        return missingDate;
+    }
+    
+    /**
+     * Método que verifica si existen inconsistencias con el número de inicio y fin del artículo
+     * @return Booleano con el resultado de verificación, devuelve true si existe incosistencia, de lo contrario, devuelve false
+     */
+    
+    private boolean existInconsistentNumberPage(){
+        boolean inconsistentDates = false;        
+        int homePage = Integer.parseInt(tfHomePage.getText());
+        int endPage = Integer.parseInt(tfEndPage.getText());
+        if(homePage > endPage){
+            inconsistentDates = true;
+            TypeError typeError = TypeError.INCONSISTENTPAGE;
+            showInvalidFieldAlert(typeError);
+        }
+        return inconsistentDates;
+    }   
+    
+    /**
+     * Método que verifica si existen inconsistencias con la fecha
+     * @return Booleano con el resultado de verificación, devuelve true si existe incosistencia, de lo contrario, devuelve false
+     */
+    
+    private boolean existInconsistentDates(){
+        boolean inconsistentDates = false;       
+        LocalDate currentDate = LocalDate.now();  
+        int datePublicationDay = dpPublicationDate.getValue().getDayOfMonth();
+        int datePublicationMonth = dpPublicationDate.getValue().getMonthValue();       
+        int datePublicationYear = dpPublicationDate.getValue().getYear();
+        int currentDateDay = currentDate.getDayOfMonth();
+        int currentDateMonth = currentDate.getMonthValue();        
+        int currentDateYear = currentDate.getYear();
+        if(datePublicationDay > currentDateDay && datePublicationMonth >= currentDateMonth && datePublicationYear >= currentDateYear){
+            inconsistentDates = true;
+            TypeError typeError = TypeError.INCONSISTENTDATE;
+            showInvalidFieldAlert(typeError);
+        }
+        return inconsistentDates;
+    }
+    
+    /**
+     * Método que manda a verificar si valores obtenidos de la GUI que no pueden duplicarse ya existen en la base de datos
+     * El método manda a llamar a otros métodos que se encargan de la verificación en la capa lógica     
+     * @return Booleano con el resultado de la verificación, devuelve true si existe valor duplicado, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+    
+    private boolean existsDuplicateValues() throws BusinessConnectionException{
+        ArticleDAO articleDAO = new ArticleDAO();
+        boolean duplicateValues = false;
+        boolean articleTitleDuplicate = false;
+        boolean fileRouteDuplicate = false;
+        if(articleDAO.existsArticleTitle(tfTitleEvidence.getText())){  
+            articleTitleDuplicate = true;
+            TypeError typeError = TypeError.TITLEDUPLICATE;
+            showInvalidFieldAlert(typeError);
+        }
+           
+        if(articleDAO.existsArticleFileRoute(tfFileRoute.getText())){
+            fileRouteDuplicate = true;
+            TypeError typeError = TypeError.FILEROUTEDUPLICATE;
+            showInvalidFieldAlert(typeError);
+        }
+        
+        if(articleTitleDuplicate || fileRouteDuplicate){
+            duplicateValues = true;
+        }
+        
+        return duplicateValues;
+    }
+    
+    /**
+     * Método que verifica si existe una selección de fecha sobrante
+     * @param datePicker Define el valor del campo de tipo DatePicker a verificar
+     * @return Booleano con el valor de verificación, devuelve true si existe fecha sobrante, de lo contrario, devuelve false
+     */
+    
+    private boolean existLeftOverDateSelection(DatePicker datePicker){
+        boolean selection = false;
+        if(datePicker.getValue() != null){
+            selection = true;
+            TypeError typeError = TypeError.OVERDATE;
+            showInvalidFieldAlert(typeError);
+        }
+        return selection;
     }
     
     /**
@@ -333,31 +507,39 @@ public class WindowAddArticleController implements Initializable {
         }
         
         if(typeError == TypeError.MISSINGDATE){
-            alert.setContentText("Existe fecha faltante, selecciona las fechas para poder guardar");
+            alert.setContentText("Existe fecha faltante, selecciona la fecha de publicación para poder guardar");
         }
         
         if(typeError == TypeError.INCONSISTENTDATE){
-            alert.setContentText("La fecha de inicio es mayor a la fecha de fin, corrige campos para poder guardar");
+            alert.setContentText("La fecha de publicación es mayor a la fecha actual, corrige el campo para poder guardar");
         }
         
         if(typeError == TypeError.OVERDATE){
-            alert.setContentText("El trabajo recepcional no está terminado, por lo tanto no puedes guardar una fecha de fin");
+            alert.setContentText("El artículo no está publicado, por lo tanto no puedes guardar una fecha de publicación");
         }
         
         if(typeError == TypeError.TITLEDUPLICATE){
-            alert.setContentText("El título del trabajo recepcional ya se encuentra registrado en el sistema");
+            alert.setContentText("El título del artículo ya se encuentra registrado en el sistema");
         }
         
         if(typeError == TypeError.FILEROUTEDUPLICATE){
-            alert.setContentText("La ruta de archivo del trabajo recepcional ya se encuentra registrado en otro trabajo recepcional");
+            alert.setContentText("La ruta de archivo del artículo ya se encuentra registrada en otro artículo");
         }
+ 
+        if(typeError == TypeError.INCONSISTENTPAGE){
+            alert.setContentText("La página de inicio es mayor que la página final, corrige el campo para poder guardar");
+        }   
+        
+        if(typeError == TypeError.INVALIDLENGTH){
+            alert.setContentText("El número de carácteres excede el límite permitido, corrige los campos para poder guardar");
+        } 
 
-        if(typeError == TypeError.COLLABORATORDUPLICATE){
-            alert.setContentText("El estudiante ya cuenta con un trabajo recepcional registrado en el sistema");
-        }
         alert.showAndWait();    
     }
     
+    /**
+     * Método que muestra alerta de confirmación de guardado
+     */
     
     @FXML
     private void showConfirmationAlert(){
@@ -368,6 +550,9 @@ public class WindowAddArticleController implements Initializable {
         alert.showAndWait();
     }
     
+    /**
+     * Método que muestra alerta de perdida de conexión con la base de datos
+     */
     
     @FXML    
     private void showLostConnectionAlert(){

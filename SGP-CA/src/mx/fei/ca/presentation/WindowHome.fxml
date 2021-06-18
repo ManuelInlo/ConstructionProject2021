@@ -41,11 +41,9 @@
                   </Text>
                </children>
             </Pane>
-<<<<<<< HEAD
             <Pane layoutX="32.0" layoutY="291.0" onMouseClicked="#clickEvidences" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
-=======
-            <Pane layoutX="191.0" layoutY="209.0" onMouseClicked="#clickEvidences" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
->>>>>>> 2516043ab8c6ca89a2b597bb3aae02617a5658e3
+         
+            <Pane onMouseClicked="#clickEvidences" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
                <children>
                   <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="159.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -58,61 +56,59 @@
                      </font>
                   </Text>
                </children>
-            </Pane>
-<<<<<<< HEAD
-            <Pane layoutX="336.0" layoutY="291.0" onMouseClicked="#clickWorkPlan" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
-               <children>
-                  <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="159.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/book.png" />
-                     </image>
-                  </ImageView>
-                  <Text layoutX="24.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Plan de trabajo">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Text>
-               </children>
-            </Pane>
-            <Pane fx:id="pnBtnProyectod1" layoutX="34.0" layoutY="84.0" onMouseClicked="#clickProductionCA" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
-               <children>
-                  <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="153.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/trabajo.png" />
-                     </image>
-                  </ImageView>
-                  <Text layoutX="14.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Producción del CA">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Text>
-               </children>
-            </Pane>
-            <Pane layoutX="338.0" layoutY="84.0" onMouseClicked="#clickIntegrants" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
-               <children>
-                  <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="151.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/colaboracion.png" />
-                     </image>
-                     <effect>
-                        <ColorAdjust brightness="0.05" contrast="0.55" hue="-0.86" saturation="-0.69">
-                           <input>
-                              <Bloom />
-                           </input>
-                        </ColorAdjust>
-                     </effect>
-                  </ImageView>
-                  <Text layoutX="28.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Integrantes">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Text>
-               </children>
-            </Pane>
-=======
->>>>>>> 2516043ab8c6ca89a2b597bb3aae02617a5658e3
+            </Pane>  
+          </Pane>
+         <Pane fx:id="pnBtnProyectod1" layoutX="32.0" layoutY="82.0" onMouseClicked="#clickProductionCA" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
+            <children>
+               <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="153.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@images/trabajo.png" />
+                  </image>
+               </ImageView>
+               <Text layoutX="14.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Producción del CA">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+               </Text>
+            </children>
+         </Pane>
+         <Pane layoutX="336.0" layoutY="82.0" onMouseClicked="#clickIntegrants" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
+            <children>
+               <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="151.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@images/colaboracion.png" />
+                  </image>
+                  <effect>
+                     <ColorAdjust brightness="0.05" contrast="0.55" hue="-0.86" saturation="-0.69">
+                        <input>
+                           <Bloom />
+                        </input>
+                     </ColorAdjust>
+                  </effect>
+               </ImageView>
+               <Text layoutX="28.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Integrantes">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+               </Text>
+            </children>
+         </Pane>
+         <Pane layoutX="336.0" layoutY="291.0" onMouseClicked="#clickWorkPlan" prefHeight="64.0" prefWidth="218.0" style="-fx-background-color: #A8CCE6;">
+            <children>
+               <ImageView fitHeight="56.0" fitWidth="79.0" layoutX="159.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@images/book.png" />
+                  </image>
+               </ImageView>
+               <Text layoutX="24.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Plan de trabajo">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+               </Text>
+            </children>
+         </Pane>
          </children>
-      </Pane>
+      </Pane>   
       <Pane prefHeight="70.0" prefWidth="600.0" style="-fx-background-color: #A8CCE6;">
          <children>
             <Text layoutX="8.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sistema Gestor de Cuespo Academico">
