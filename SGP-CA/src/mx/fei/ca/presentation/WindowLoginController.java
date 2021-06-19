@@ -34,8 +34,7 @@ public class WindowLoginController implements Initializable {
     @FXML
     private TextField tfEmail;
     @FXML
-    private PasswordField pfPassword;
-    
+    private PasswordField passwordFieldPassword;
     private Integrant integrant;
     
     /**
@@ -62,16 +61,40 @@ public class WindowLoginController implements Initializable {
     private void openHomePage(ActionEvent event){
         try {
             if(!existsInvalidFields()){
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowHome.fxml"));
-                Parent root = fxmlLoader.load();
-                WindowHomeController windowHomeController = fxmlLoader.getController();
-                windowHomeController.setIntegrant(integrant);
-                Scene scene = new Scene(root);
-                Stage stage = new Stage();
-                stage.setScene(scene);
-                stage.showAndWait();
-                closeWindowLogin(event);
+                if(existsInsecurePassword()){
+                    openChangePassword();
+                }else{
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowHome.fxml"));
+                    Parent root = fxmlLoader.load();
+                    WindowHomeController windowHomeController = fxmlLoader.getController();
+                    windowHomeController.setIntegrant(integrant);
+                    Scene scene = new Scene(root);
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.showAndWait(); 
+                    closeWindowLogin(event);
+                }
             }
+        } catch (IOException ex) {
+            Logger.getLogger(WindowLoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Método que manda a abrir la ventana de cambio de contraseña
+     */
+    
+    private void openChangePassword(){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowChangePassword.fxml"));
+            Parent root = fxmlLoader.load();
+            WindowChangePasswordController windowChangePasswordController = fxmlLoader.getController();
+            windowChangePasswordController.setIntegrant(integrant);
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.showAndWait();
+            cleanFields();
         } catch (IOException ex) {
             Logger.getLogger(WindowLoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -90,12 +113,30 @@ public class WindowLoginController implements Initializable {
     }
     
     /**
+     * Método que verifica si la contraseña del integrante es la misma a la contraseña asignada por defecto al registrarlo
+     * @return Booleano con el resultado de verificación, devuelve true si la contraseña es la misma, de lo contrario, devuelve false
+     */
+    
+    private boolean existsInsecurePassword(){
+        boolean existsInsecurePassword = false;
+        if(this.integrant.getPassword().equals(integrant.getCurp())){
+            existsInsecurePassword = true;
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setTitle("Contraseña insegura");
+            alert.setContentText("Tu contraseña no puede seguir siendo tu CURP, por favor cambia tu contraseña");
+            alert.showAndWait();
+        }
+        return existsInsecurePassword;
+        
+    }
+    
+    /**
      * Método que verifica si existen campos inválidos en la GUI. El método invoca a otros métodos con validaciones más específicas
      * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
      * @throws BusinessConnectionException 
      */
     
-    @FXML
     private boolean existsInvalidFields(){
         boolean invalidField = false;
         try {
@@ -114,10 +155,9 @@ public class WindowLoginController implements Initializable {
      * @return Booleano con el resultado de verificación, devuelve true si existen vacíos, de lo contrario, devuelve false
      */
     
-    @FXML
     private boolean existsEmptyFields(){
         boolean emptyFields = false;
-        if(tfEmail.getText().isEmpty() || pfPassword.getText().isEmpty()){
+        if(tfEmail.getText().isEmpty() || passwordFieldPassword.getText().isEmpty()){
             emptyFields = true;
             TypeError typeError = TypeError.EMPTYFIELD;
             showInvalidFieldAlert(typeError);
@@ -131,13 +171,12 @@ public class WindowLoginController implements Initializable {
      * @throws BusinessConnectionException 
      */
     
-    @FXML
     private boolean existsEmailAndPassword() throws BusinessConnectionException{
         boolean exists = true;
         integrant = getIntegrantByEmail();
         if(integrant == null){
             exists = false;
-        }else if(!integrant.getPassword().equals(pfPassword.getText())){
+        }else if(!integrant.getPassword().equals(passwordFieldPassword.getText())){
             exists = false;
         }
         if(!exists){
@@ -153,7 +192,6 @@ public class WindowLoginController implements Initializable {
      * @throws BusinessConnectionException 
      */
     
-    @FXML
     private Integrant getIntegrantByEmail(){
         try {
             IntegrantDAO integrantDAO = new IntegrantDAO();
@@ -169,7 +207,6 @@ public class WindowLoginController implements Initializable {
      * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
      */
     
-    @FXML
     private boolean existsInvalidEmail(){
         boolean invalidEmail = false;
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
@@ -188,7 +225,6 @@ public class WindowLoginController implements Initializable {
      * @param typeError Define el tipo de error que encontró
      */
     
-    @FXML 
     private void showInvalidFieldAlert(TypeError typeError){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
@@ -218,6 +254,15 @@ public class WindowLoginController implements Initializable {
         alert.setTitle("Perdida de conexión");
         alert.setContentText("Perdida de conexión con la base de datos, no se pudo guardar. Intente más tarde");
         alert.showAndWait();
+    }
+    
+    /**
+     * Método que limpia los campos de la GUI
+     */
+    
+    private void cleanFields(){
+        tfEmail.clear();
+        passwordFieldPassword.clear();
     }
     
 }

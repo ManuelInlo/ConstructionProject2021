@@ -19,6 +19,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import mx.fei.ca.businesslogic.ArticleDAO;
+import mx.fei.ca.businesslogic.BookDAO;
+import mx.fei.ca.businesslogic.ChapterBookDAO;
 import mx.fei.ca.businesslogic.CollaboratorDAO;
 import mx.fei.ca.businesslogic.InvestigationProjectDAO;
 import mx.fei.ca.businesslogic.ReceptionWorkDAO;
@@ -446,18 +449,23 @@ public class WindowModifyReceptionWorkController implements Initializable {
     
     private boolean existsDuplicateValues() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
+        ArticleDAO articleDAO = new ArticleDAO();
+        BookDAO bookDAO = new BookDAO();
+        ChapterBookDAO chapterBookDAO = new ChapterBookDAO();
         CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
         boolean duplicateValues = false;
         boolean receptionWorkTitleDuplicate = false;
         boolean fileRouteDuplicate = false;
         boolean collaboratorNameDuplicate = false;
-        if(receptionWorkDAO.existsReceptionWorkTitleForUpdate(tfTitleReceptionWork.getText(), idReceptionWorkToModify)){  //DEBE HACER LO MISMO CON LAS OTRAS EVIDENCIAS
+        if(receptionWorkDAO.existsReceptionWorkTitleForUpdate(tfTitleReceptionWork.getText(), idReceptionWorkToModify) ||
+           articleDAO.existsArticleTitle(tfTitleReceptionWork.getText()) || bookDAO.existsBookTitle(tfTitleReceptionWork.getText())){  //DEBE HACER LO MISMO CON LAS OTRAS EVIDENCIAS
             receptionWorkTitleDuplicate = true;
             TypeError typeError = TypeError.TITLEDUPLICATE;
             showInvalidFieldAlert(typeError);
         }
            
-        if(receptionWorkDAO.existsReceptionWorkFileRouteForUpdate(tfFileRoute.getText(), idReceptionWorkToModify)){
+        if(receptionWorkDAO.existsReceptionWorkFileRouteForUpdate(tfFileRoute.getText(), idReceptionWorkToModify) ||
+           articleDAO.existsArticleFileRoute(tfFileRoute.getText()) || bookDAO.existsBookFileRoute(tfFileRoute.getText())){
             fileRouteDuplicate = true;
             TypeError typeError = TypeError.FILEROUTEDUPLICATE;
             showInvalidFieldAlert(typeError);
@@ -510,11 +518,11 @@ public class WindowModifyReceptionWorkController implements Initializable {
         }
         
         if(typeError == TypeError.TITLEDUPLICATE){
-            alert.setContentText("El título del trabajo recepcional ya se encuentra registrado en el sistema");
+            alert.setContentText("El título del trabajo recepcional ya se encuentra registrado en otra evidencia");
         }
         
         if(typeError == TypeError.FILEROUTEDUPLICATE){
-            alert.setContentText("La ruta de archivo del trabajo recepcional ya se encuentra registrado en otro trabajo recepcional");
+            alert.setContentText("La ruta de archivo del trabajo recepcional ya se encuentra registrado en otra evidencia");
         }
 
         if(typeError == TypeError.COLLABORATORDUPLICATE){
