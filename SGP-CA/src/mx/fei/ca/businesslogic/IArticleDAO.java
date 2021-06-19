@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Article;
 
+/**
+ * Interface del objeto de acceso a datos de artículo
+ * @author Gloria Mendoza González
+ * @version 16-06-2021
+ */
+
 public interface IArticleDAO {
     public boolean savedArticle (Article article) throws BusinessConnectionException;    
     public boolean updatedArticle (Article article, String issn) throws BusinessConnectionException;   

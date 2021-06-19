@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Book;
 
+/**
+ * Interface del objeto de acceso a datos de libro
+ * @author Gloria Mendoza González
+ * @version 16-06-2021
+ */
+
 public interface IBookDAO {
     public boolean savedBook (Book book) throws BusinessConnectionException;
     public boolean updatedBook (Book book, String ISBN) throws BusinessConnectionException;  

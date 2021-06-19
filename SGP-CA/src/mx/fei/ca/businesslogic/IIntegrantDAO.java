@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Integrant;
 
+/**
+ * Interface del objeto de acceso a datos de integrante
+ * @author Gloria Mendoza González
+ * @version 16-06-2021
+ */
+
 public interface IIntegrantDAO {
     public boolean savedIntegrant(Integrant integrant) throws BusinessConnectionException;
     public boolean updatedIntegrant(Integrant integrant, String curp) throws BusinessConnectionException; 
