@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.dataaccess.DataBaseConnection;
-import mx.fei.ca.domain.Integrant;
 
 /**
  * Clase para representar el Objeto de acceso a datos de una LGAC
@@ -53,8 +52,7 @@ public class LgacDAO implements ILgacDAO{
             dataBaseConnection.closeConnection();
         }
         return saveResult;
-    }
-    
+    }   
         
     /**
      * Método para eliminar la relación entre el Integrante del CA y el LGAC al que pertenece

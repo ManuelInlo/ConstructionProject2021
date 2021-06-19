@@ -25,15 +25,32 @@ import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import org.apache.commons.codec.binary.Base64;
 
+/**
+ * Clase para representar el Objeto de acceso a datos de un integrante
+ * @author Gloria Mendoza González
+ * @version 16-06-2021
+ */
+
 public class IntegrantDAO implements IIntegrantDAO{
     private final DataBaseConnection dataBaseConnection;
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;    
+    
+    /**
+     * Constructor para la creación de un IntegrantDAO permitiendo también la creación de la conexión a la base de datos
+     */
  
     public IntegrantDAO(){
         dataBaseConnection = new DataBaseConnection();       
     }
+    
+    /**
+     * Método que guarda un nuevo integrante en la base de datos
+     * @param integrant Define el integrante a guardar
+     * @return Booleano con el resultado de guardado, devuelve true si guardó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public boolean savedIntegrant(Integrant integrant) throws BusinessConnectionException{
@@ -66,6 +83,14 @@ public class IntegrantDAO implements IIntegrantDAO{
         return saveResult;
     }
     
+    /**
+     * Método que modifica un integrante existente en la base de datos
+     * @param integrant Define el integrante modificado
+     * @param curp Define la curp del integrante a modificar
+     * @return Booleano con el resultado de modificación, devuelve true si guardó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+    
     @Override
     public boolean updatedIntegrant(Integrant integrant, String curp) throws BusinessConnectionException{
         String sql = "UPDATE Integrant SET curp = ?, role = ?, nameIntegrant = ?, studyDegree = ?, studyDiscipline = ?, prodepParticipation = ?, typeTeaching = ?, eisStudyDegree = ?, institutionalMail = ?, numberPhone = ?, dateBirthday = ?, statusIntegrant = ?"
@@ -96,7 +121,14 @@ public class IntegrantDAO implements IIntegrantDAO{
         }      
         return updateResult;       
     }
-            
+           
+    /**
+     * Método que elimina a un integrante existente en la base de datos
+     * @param curp Define la curp del integrante a eliminar 
+     * @return Booleano con el resultado de eliminación, devuelve true si eliminó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+    
     @Override
     public boolean deleteIntegrantByCurp(String curp) throws BusinessConnectionException{
         String sql = "DELETE FROM Integrant WHERE curp = ?";
@@ -114,6 +146,12 @@ public class IntegrantDAO implements IIntegrantDAO{
         }
         return deleteResult;
     }   
+    
+    /**
+     * Método que encripta la contraseña del integrante para guardar en la base de datos
+     * @param password Define la contraseña a encriptar
+     * @return String con el resultado de realizar la encriptación
+     */
 
     @Override
     public String encryptPassword(String password) {
@@ -138,6 +176,12 @@ public class IntegrantDAO implements IIntegrantDAO{
         return encryptedPassword;
     }
 
+    /**
+     * Método que desencripta la contraseña del integrante 
+     * @param encryptedPassword Define la contraseña encriptada a desencriptar
+     * @return String con el resultado de realizar la desencriptación de la contraseña
+     */
+    
     @Override
     public String decryptPassword(String encryptedPassword){
         String key = "Proyecto Construcción";
@@ -158,6 +202,13 @@ public class IntegrantDAO implements IIntegrantDAO{
         }
         return decryptedPassword;
     }
+    
+    /**
+     * Método que recupera de la base de datos un integrante de acuerdo a su correo institucional
+     * @param institutionalMail Define el correo electrónico a buscar del integrante
+     * @return Integrant que concida con el correo proporcionado, en el caso de no haber coincidencias devuelve null
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public Integrant getIntegrantByInstitutionalMail(String institutionalMail) throws BusinessConnectionException {
@@ -192,6 +243,14 @@ public class IntegrantDAO implements IIntegrantDAO{
         }
         return integrant;
     }
+    
+    /**
+     * Método que modifica la contraseña de un integrante existente en la base de datos
+     * @param password Define la nueva contraseña
+     * @param curp Define la curp del integrante a modificar
+     * @return Boolean con el resultado de modificación, devuelve true si guardó, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
 
     @Override
     public boolean changedPasswordIntegrant(String password, String curp) throws BusinessConnectionException {
@@ -212,6 +271,13 @@ public class IntegrantDAO implements IIntegrantDAO{
         return changedResult;
     }
 
+    /**
+     * Método que recupera de la base de datos a un integrante de acuerdo a su curp
+     * @param curp Define la curp del integrante a recuperar
+     * @return Integrant que concida con la curp proporcionada, en el caso de no haber coincidencias devuelve null
+     * @throws BusinessConnectionException 
+     */
+    
     @Override
     public Integrant findIntegrantByCurp(String curp) throws BusinessConnectionException {
         String sql = "SELECT * FROM integrant WHERE curp = ?";
@@ -243,6 +309,13 @@ public class IntegrantDAO implements IIntegrantDAO{
         }
         return integrant;
     }
+    
+    /**
+     * Método que recupera de la base de datos a un integrante de acuerdo a su nombre
+     * @param name Define el nombre del integrante a recuperar
+     * @return Integrant que concida con el nombre proporcionado, en el caso de no haber coincidencias devuelve null
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public Integrant findIntegrantByName(String name) throws BusinessConnectionException {
@@ -357,10 +430,15 @@ public class IntegrantDAO implements IIntegrantDAO{
         return exists;
     }
     
+    /**
+     * Método que recupera de la base de datos los integrantes activos del CA
+     * @return ArrayList con los integrantes activos del CA
+     * @throws BusinessConnectionException 
+     */
     
     @Override
     public ArrayList<Integrant> findAllIntegrants() throws BusinessConnectionException {
-        String sql = "SELECT * FROM integrant";
+        String sql = "SELECT * FROM integrant WHERE statusIntegrant = 'Activo'";
         ArrayList<Integrant> integrants = new ArrayList<>();
         try{
             connection = dataBaseConnection.getConnection();
@@ -390,5 +468,6 @@ public class IntegrantDAO implements IIntegrantDAO{
             dataBaseConnection.closeConnection();
         }
         return integrants;
-    }    
+    }  
+    
 }

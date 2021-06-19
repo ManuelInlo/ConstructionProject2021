@@ -33,10 +33,7 @@ public class WindowHomeController implements Initializable {
     private Text lbUser;
     @FXML
     private Pane pnBtnProyectod1;
-<<<<<<< HEAD
     @FXML
-=======
->>>>>>> 898b25c5b419296ccbca11f50676231a0902448e
     private ImageView imgLogOut;
     
     @Override
