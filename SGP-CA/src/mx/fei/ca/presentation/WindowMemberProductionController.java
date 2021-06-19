@@ -392,7 +392,7 @@ public class WindowMemberProductionController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddArticle.fxml"));
             Parent root = fxmlLoader.load();
             WindowAddArticleController windowAddArticleController = fxmlLoader.getController();
-            //windowAddArticleController.setIntegrant(integrant);
+            windowAddArticleController.setIntegrant(integrant);
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);

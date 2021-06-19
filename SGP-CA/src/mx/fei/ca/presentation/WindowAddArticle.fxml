@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowAddArticleController">
+<AnchorPane id="AnchorPane" prefHeight="506.0" prefWidth="816.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowAddArticleController">
    <children>
       <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="816.0" style="-fx-background-color: #60ABE0;">
          <children>
@@ -33,50 +33,49 @@
             </ImageView>
          </children>
       </Pane>
-      <Pane layoutY="412.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="816.0" style="-fx-background-color: #60ABE0;">
+      <Pane layoutY="466.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="816.0" style="-fx-background-color: #60ABE0;">
          <children>
-            <Label layoutX="215.0" layoutY="11.0" text="Facultad de Estadistica e Informatica - Universidad veracruzana">
+            <Label layoutX="215.0" layoutY="11.0" text="Facultad de Estadística e Informática - Universidad Veracruzana">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <Pane layoutY="60.0" prefHeight="352.0" prefWidth="816.0" style="-fx-background-color: #60ABE0;">
+      <Pane layoutY="60.0" prefHeight="405.0" prefWidth="816.0" style="-fx-background-color: #60ABE0;">
          <children>
             <Separator layoutY="-1.0" prefHeight="3.0" prefWidth="816.0" />
-            <Separator layoutX="1.0" layoutY="351.0" prefHeight="3.0" prefWidth="816.0" />
             <Label layoutX="29.0" layoutY="5.0" text="REGISTRO DE ARTÍCULO">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label layoutX="27.0" layoutY="98.0" text="Estado actual">
+            <Label layoutX="28.0" layoutY="84.0" text="Estado actual">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Button layoutX="695.0" layoutY="312.0" mnemonicParsing="false" onAction="#saveArticle" prefHeight="28.0" prefWidth="103.0" text="Guardar" />
-            <Button layoutX="555.0" layoutY="312.0" mnemonicParsing="false" onAction="#closeArticleRegistration" prefHeight="28.0" prefWidth="103.0" text="Cancelar" />
-            <Label layoutX="292.0" layoutY="97.0" text="Título del artículo">
+            <Button layoutX="693.0" layoutY="363.0" mnemonicParsing="false" onAction="#saveArticle" prefHeight="28.0" prefWidth="103.0" text="Guardar" />
+            <Button layoutX="558.0" layoutY="363.0" mnemonicParsing="false" onAction="#closeArticleRegistration" prefHeight="28.0" prefWidth="103.0" text="Cancelar" />
+            <Label layoutX="293.0" layoutY="83.0" text="Título del artículo">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="tfTitleEvidence" layoutX="290.0" layoutY="115.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
-            <Label layoutX="553.0" layoutY="97.0" text="ISSN">
+            <TextField fx:id="tfTitleEvidence" layoutX="291.0" layoutY="101.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
+            <Label layoutX="554.0" layoutY="83.0" text="ISSN">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="tfIssn" layoutX="553.0" layoutY="115.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
-            <Label layoutX="289.0" layoutY="148.0" text="De la página">
+            <TextField fx:id="tfIssn" layoutX="554.0" layoutY="101.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" promptText="Ejemplo 1875-0296" />
+            <Label layoutX="290.0" layoutY="141.0" text="De la página">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="tfMagazineName" layoutX="27.0" layoutY="167.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
-            <Label layoutX="554.0" layoutY="149.0" text="A la página">
+            <TextField fx:id="tfMagazineName" layoutX="28.0" layoutY="160.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
+            <Label layoutX="555.0" layoutY="142.0" text="A la página">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -86,8 +85,8 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="tfEndPage" layoutX="554.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
-            <Label layoutX="28.0" layoutY="149.0" text="Nombre de la revista">
+            <TextField fx:id="tfEndPage" layoutX="555.0" layoutY="159.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
+            <Label layoutX="29.0" layoutY="142.0" text="Nombre de la revista">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -99,29 +98,29 @@
                </font>
             </Label>
             <TextField fx:id="tfCountry" layoutX="290.0" layoutY="220.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
-            <Label layoutX="289.0" layoutY="255.0" text="Fecha de publicación">
+            <Label layoutX="289.0" layoutY="263.0" text="Fecha de publicación">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label layoutX="28.0" layoutY="255.0" text="Ruta del archivo">
+            <Label layoutX="28.0" layoutY="263.0" text="Ruta del archivo">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="tfFileRoute" layoutX="28.0" layoutY="272.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
-            <DatePicker fx:id="dpPublicationDate" layoutX="289.0" layoutY="272.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
+            <TextField fx:id="tfFileRoute" layoutX="28.0" layoutY="280.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
+            <DatePicker fx:id="dpPublicationDate" layoutX="289.0" layoutY="280.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
             <Label layoutX="29.0" layoutY="47.0" text="Impacto al CA:">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label layoutX="555.0" layoutY="255.0" text="Volumen">
+            <Label layoutX="555.0" layoutY="263.0" text="Volumen">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="tfVolume" layoutX="554.0" layoutY="272.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
+            <TextField fx:id="tfVolume" layoutX="554.0" layoutY="280.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
             <ComboBox fx:id="cbImpactCA" layoutX="127.0" layoutY="43.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="177.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
             <Label layoutX="383.0" layoutY="48.0" text="Proyecto de investigación:">
                <font>
@@ -129,21 +128,76 @@
                </font>
             </Label>
             <ComboBox fx:id="cbInvestigationProject" layoutX="555.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="241.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
-            <ComboBox fx:id="cbActualState" layoutX="26.0" layoutY="115.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
+            <ComboBox fx:id="cbActualState" layoutX="27.0" layoutY="101.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
             <Label layoutX="29.0" layoutY="203.0" text="Descripción">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
             <TextField fx:id="tfDescription" layoutX="29.0" layoutY="220.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
-            <TextField fx:id="tfHomePage" layoutX="290.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
-            <Button layoutX="171.0" layoutY="517.0" mnemonicParsing="false" onAction="#saveArticle" prefHeight="28.0" prefWidth="103.0" text="Guardar" />
-            <Label layoutX="29.0" layoutY="302.0" text="Autor(es):">
+            <TextField fx:id="tfHomePage" layoutX="291.0" layoutY="159.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
+            <Label layoutX="28.0" layoutY="328.0" text="Autor:">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="tfAuthor" layoutX="29.0" layoutY="320.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
+            <TextField fx:id="tfAuthor" layoutX="28.0" layoutY="346.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
+            <Label layoutX="292.0" layoutY="126.0" text="Máximo de carácteres: 255">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="28.0" layoutY="183.0" text="Máximo de carácteres: 255">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="28.0" layoutY="242.0" text="Máximo de carácteres: 255">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Separator layoutY="404.0" prefHeight="3.0" prefWidth="816.0" />
+            <Label layoutX="28.0" layoutY="370.0" text="Máximo de carácteres: 255">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="558.0" layoutY="242.0" text="Máximo de carácteres: 255">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="28.0" layoutY="305.0" text="Máximo de carácteres: 500">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="290.0" layoutY="244.0" text="Máximo de carácteres: 50">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="290.0" layoutY="183.0" text="Máximo de carácteres: 5">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="554.0" layoutY="183.0" text="Máximo de carácteres: 5">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="554.0" layoutY="305.0" text="Máximo de carácteres: 5">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="554.0" layoutY="126.0" text="Máximo de carácteres: 9">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>
