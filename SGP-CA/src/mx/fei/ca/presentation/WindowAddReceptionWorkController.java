@@ -192,16 +192,14 @@ public class WindowAddReceptionWorkController implements Initializable {
                 ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
                 boolean saveResult = receptionWorkDAO.savedReceptionWork(receptionWork);
                 if(saveResult){
-                    showConfirmationAlert();
-                    closeReceptionWorkRegistration(event);
+                    showConfirmationAlert(); 
                 }else{
                    showLostConnectionAlert(); 
-                   closeReceptionWorkRegistration(event);
                 }
             }else{
                 showLostConnectionAlert();
-                closeReceptionWorkRegistration(event);
             }
+            closeReceptionWorkRegistration(event);
         }
     }
     

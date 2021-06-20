@@ -15,7 +15,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -104,7 +103,7 @@ public class WindowMemberProductionController implements Initializable {
             recoverEvidences();
         } catch (BusinessConnectionException ex) {
             showLostConnectionAlert();
-        }    
+       }    
     }
     
     /**
@@ -196,7 +195,7 @@ public class WindowMemberProductionController implements Initializable {
             WindowReceptionWorkDataController windowReceptionWorkDataController = (WindowReceptionWorkDataController) fxmlLoader.getController();
             windowReceptionWorkDataController.setIntegrant(integrant);
             windowReceptionWorkDataController.showReceptionWorkData(receptionWork);
-            stage.showAndWait();
+            stage.show();
             try {
                 recoverEvidences();
             } catch (BusinessConnectionException ex) {
@@ -225,7 +224,7 @@ public class WindowMemberProductionController implements Initializable {
             WindowArticleDataController windowArticleDataController = (WindowArticleDataController) fxmlLoader.getController();
             windowArticleDataController.setIntegrant(integrant);
             windowArticleDataController.showArticleData(article);
-            stage.showAndWait();
+            stage.show();
             try {
                 recoverEvidences();
             } catch (BusinessConnectionException ex) {
@@ -254,7 +253,7 @@ public class WindowMemberProductionController implements Initializable {
             WindowBookDataController windowBookDataController = (WindowBookDataController) fxmlLoader.getController();
             windowBookDataController.setIntegrant(integrant);
             windowBookDataController.showBookData(book);
-            stage.showAndWait();
+            stage.show();
             try {
                 recoverEvidences();
             } catch (BusinessConnectionException ex) {
@@ -283,7 +282,7 @@ public class WindowMemberProductionController implements Initializable {
             WindowChapterBookDataController windowChapterBookDataController = (WindowChapterBookDataController) fxmlLoader.getController();
             windowChapterBookDataController.setIntegrant(integrant);
             windowChapterBookDataController.showChapterBookData(chapterBook);
-            stage.showAndWait();
+            stage.show();
             try {
                 recoverEvidences();
             } catch (BusinessConnectionException ex) {
@@ -388,72 +387,85 @@ public class WindowMemberProductionController implements Initializable {
 
     @FXML
     private void openArticleRegistration(ActionEvent event){
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddArticle.fxml"));
+        Scene scene = null;
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddArticle.fxml"));
-            Parent root = fxmlLoader.load();
-            WindowAddArticleController windowAddArticleController = fxmlLoader.getController();
-            windowAddArticleController.setIntegrant(integrant);
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.showAndWait();
+            scene = new Scene(fxmlLoader.load());
         } catch (IOException ex) {
             Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        WindowAddArticleController windowAddArticleController = (WindowAddArticleController) fxmlLoader.getController();
+        windowAddArticleController.setIntegrant(integrant);
+        stage.showAndWait();
+        closeMemberProduction(event);
     }
     
     /**
      * Método que manda a abrir la ventana para registrar un nuevo libro
      * @param event Define el evento generado
-     * @throws IOException 
      */
 
     @FXML
     private void openBookRegistration(ActionEvent event) throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddBook.fxml"));
-        Parent root = fxmlLoader.load();
-        WindowAddBookController windowAddBookController = fxmlLoader.getController();
-        windowAddBookController.setIntegrant(integrant);
-        Scene scene = new Scene(root);
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load());
+        } catch (IOException ex) {
+            Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Stage stage = new Stage();
         stage.setScene(scene);
+        WindowAddBookController windowAddBookController = (WindowAddBookController) fxmlLoader.getController();
+        windowAddBookController.setIntegrant(integrant);
         stage.showAndWait();
+        closeMemberProduction(event);
     }
     
     /**
      * Método que manda a abrir la ventana para registrar un nuevo capítulo de libro
      * @param event Define el evento generado
-     * @throws IOException 
      */
 
     @FXML
-    private void openChapterBookRegistration(ActionEvent event) throws IOException{
+    private void openChapterBookRegistration(ActionEvent event){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddChapterBook.fxml"));
-        Parent root = fxmlLoader.load();
-        WindowAddChapterBookController windowAddChapterBookController = fxmlLoader.getController();
-        //windowAddChapterBookController.setIntegrant(integrant);
-        Scene scene = new Scene(root);
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load());
+        } catch (IOException ex) {
+            Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Stage stage = new Stage();
         stage.setScene(scene);
+        WindowAddChapterBookController windowAddChapterBookController = (WindowAddChapterBookController) fxmlLoader.getController();
+        windowAddChapterBookController.setIntegrant(integrant);
         stage.showAndWait();
+        closeMemberProduction(event);
     }
     
     /**
      * Método que manda a abrir la ventana para registrar un nuevo trabajo recepcional
      * @param event Define el evento generado
-     * @throws IOException 
      */
 
     @FXML
-    private void openReceptionWorkRegistration(ActionEvent event) throws IOException{
+    private void openReceptionWorkRegistration(ActionEvent event){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddReceptionWork.fxml"));
-        Parent root = fxmlLoader.load();
-        WindowAddReceptionWorkController windowAddReceptionWorkController = fxmlLoader.getController();
-        windowAddReceptionWorkController.setIntegrant(integrant);
-        Scene scene = new Scene(root);
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load());
+        } catch (IOException ex) {
+            Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Stage stage = new Stage();
         stage.setScene(scene);
+        WindowAddReceptionWorkController windowAddReceptionWorkController = (WindowAddReceptionWorkController) fxmlLoader.getController();
+        windowAddReceptionWorkController.setIntegrant(integrant);
         stage.showAndWait();
+        closeMemberProduction(event);
     }
     
     /**

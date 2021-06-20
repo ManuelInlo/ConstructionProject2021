@@ -55,7 +55,7 @@ public class WindowMemorandumController implements Initializable {
     @FXML
     private TableView<MeetingAssistant> tbIntegrants;
     @FXML
-    private TableColumn<MeetingAssistant, String> columnIntegrant;
+    private TableColumn<MeetingAssistant, String> columnAssistant;
     @FXML
     private TableColumn<MeetingAssistant, String> columnRole;
     @FXML
@@ -91,6 +91,8 @@ public class WindowMemorandumController implements Initializable {
     @FXML
     private TableColumn<Agreement, String> columnAgreement;
     @FXML
+    private TableColumn<Agreement, String> columnIntegrant;
+    @FXML
     private TableColumn<Agreement, String> columnDate;
     @FXML
     private TextArea taNotes;
@@ -106,9 +108,10 @@ public class WindowMemorandumController implements Initializable {
     private Memorandum memorandum;
     private Meeting meeting;
     
+   
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }    
     
     /**
@@ -127,7 +130,6 @@ public class WindowMemorandumController implements Initializable {
      */
     
     public void showMeetingData(Meeting meeting){
-        this.meeting = meeting;
         lbNameProject.setText(meeting.getProjectName());
         lbMeetingPlace.setText(meeting.getMeetingPlace());
         lbAffair.setText(meeting.getAffair());
@@ -138,10 +140,8 @@ public class WindowMemorandumController implements Initializable {
         fillPrerequisitesTable(meeting.getPrerequisites());
         fillAgendaPointsTable(meeting.getAgendaPoints());
         MemorandumDAO memorandumDAO = new MemorandumDAO();
-        Memorandum memorandum = null;
         try {
-            memorandum = memorandumDAO.findMemorandumByIdMeeting(meeting.getIdMeeting());
-            this.memorandum = memorandum;
+            this.memorandum = memorandumDAO.findMemorandumByIdMeeting(meeting.getIdMeeting());
             AgreementDAO agreementDAO = new AgreementDAO();
             ArrayList<Agreement> agreements = agreementDAO.findAgreementsByIdMemorandum(memorandum.getIdMemorandum());
             fillAgreementsTable(agreements);
@@ -161,6 +161,7 @@ public class WindowMemorandumController implements Initializable {
         taPendings.setText(this.memorandum.getPending());
         taNotes.setEditable(false);
         taPendings.setEditable(true);
+        this.meeting = meeting;
     }
     
     /** 
@@ -181,7 +182,7 @@ public class WindowMemorandumController implements Initializable {
      */
     
      private void fillMeetingAssistantsTable(ArrayList<MeetingAssistant> meetingAssistants){
-        columnIntegrant.setCellValueFactory(new PropertyValueFactory("nameAssistant"));
+        columnAssistant.setCellValueFactory(new PropertyValueFactory("nameAssistant"));
         columnRole.setCellValueFactory(new PropertyValueFactory("role"));
         ObservableList<MeetingAssistant> listMeetingAssistants = FXCollections.observableArrayList(meetingAssistants);
         tbIntegrants.setItems(listMeetingAssistants);
@@ -286,7 +287,8 @@ public class WindowMemorandumController implements Initializable {
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
-            stage.showAndWait();
+            stage.show();
+            closeMemorandum(event);
         }else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);

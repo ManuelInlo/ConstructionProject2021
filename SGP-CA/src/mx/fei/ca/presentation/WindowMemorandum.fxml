@@ -67,7 +67,7 @@
                      </font></Label>
                   <TableView fx:id="tbIntegrants" layoutX="60.0" layoutY="180.0" prefHeight="127.0" prefWidth="617.0">
                     <columns>
-                      <TableColumn fx:id="columnIntegrant" prefWidth="326.0" text="Integrante del CA" />
+                      <TableColumn fx:id="columnAssistant" prefWidth="326.0" text="Integrante del CA" />
                       <TableColumn fx:id="columnRole" prefWidth="290.0" text="Rol" />
                     </columns>
                   </TableView>
@@ -97,7 +97,7 @@
                         <TableColumn fx:id="columnLeaderDiscussion" prefWidth="259.0" text="Líder de discusión" />
                     </columns>
                   </TableView>
-                  <Label fx:id="lbNameProject" layoutX="148.0" layoutY="45.0" />
+                  <Label fx:id="lbNameProject" layoutX="155.0" layoutY="45.0" />
                   <Label fx:id="lbMeetingPlace" layoutX="148.0" layoutY="75.0" />
                   <Label fx:id="lbAffair" layoutX="71.0" layoutY="102.0" />
                   <Label fx:id="lbMeetingDate" layoutX="470.0" layoutY="45.0" />

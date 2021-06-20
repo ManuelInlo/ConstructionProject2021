@@ -98,7 +98,7 @@
                         <TableColumn fx:id="columnLeaderDiscussion" prefWidth="259.0" text="Líder de discusión" />
                     </columns>
                   </TableView>
-                  <Label fx:id="lbNameProject" layoutX="148.0" layoutY="45.0" />
+                  <Label fx:id="lbNameProject" layoutX="152.0" layoutY="45.0" />
                   <Label fx:id="lbMeetingPlace" layoutX="148.0" layoutY="75.0" />
                   <Label fx:id="lbAffair" layoutX="71.0" layoutY="102.0" />
                   <Label fx:id="lbMeetingDate" layoutX="470.0" layoutY="45.0" />

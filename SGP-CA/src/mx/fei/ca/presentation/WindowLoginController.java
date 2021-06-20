@@ -71,7 +71,7 @@ public class WindowLoginController implements Initializable {
                     Scene scene = new Scene(root);
                     Stage stage = new Stage();
                     stage.setScene(scene);
-                    stage.showAndWait(); 
+                    stage.show();
                     closeWindowLogin(event);
                 }
             }

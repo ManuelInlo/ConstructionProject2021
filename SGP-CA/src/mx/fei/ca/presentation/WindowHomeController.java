@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -24,16 +25,10 @@ import mx.fei.ca.domain.Integrant;
  */
 
 public class WindowHomeController implements Initializable {
-    private Integrant integrant;
-    
-    @FXML
-    private Pane pnBtnProyectod;
+   
     @FXML
     private Text lbUser;
-    @FXML
-    private Pane pnBtnProyectod1;
-    @FXML
-    private ImageView imgLogOut;
+     private Integrant integrant;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -45,10 +40,6 @@ public class WindowHomeController implements Initializable {
         lbUser.setText(integrant.getNameIntegrant());
     }
     
-    @FXML
-    private void clickProjects(MouseEvent event) {
-        
-    }
 
     @FXML
     private void clickMettings(MouseEvent event) {
@@ -84,16 +75,15 @@ public class WindowHomeController implements Initializable {
 
     @FXML
     private void signOff(MouseEvent event) {
-        
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     private void clickProductionCA(MouseEvent event) {
     }
     
-    @FXML
-    private void clickWorkPlan(MouseEvent event) {
-    }    
 
     @FXML
     private void clickIntegrants(MouseEvent event) {
