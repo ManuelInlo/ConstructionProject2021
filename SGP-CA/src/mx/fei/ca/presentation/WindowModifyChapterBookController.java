@@ -9,6 +9,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import mx.fei.ca.domain.Book;
+import mx.fei.ca.domain.Integrant;
+import mx.fei.ca.domain.InvestigationProject;
 
 /**
  * Clase para representar el controlador del FXML WindowModifyChapterBook
@@ -29,18 +32,21 @@ public class WindowModifyChapterBookController implements Initializable {
     @FXML
     private TextField tfEndPage;
     @FXML
-    private ComboBox<?> cbImpactCA;
+    private ComboBox cbImpactCA;
     @FXML
     private TextField tfHomePage;
     @FXML
-    private ComboBox<?> cbBook;
+    private ComboBox<Book> cbBook;
     @FXML
-    private ComboBox<?> cbInvestigationProject;
+    private ComboBox<InvestigationProject> cbInvestigationProject;
+    private Integrant integrant;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+
+    }  
+    
+    
 
     @FXML
     private void saveModifyChapterBook(ActionEvent event) {
