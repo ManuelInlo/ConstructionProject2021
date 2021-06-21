@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -158,7 +159,7 @@ public class WindowMemberProductionController implements Initializable {
     
     private void fillBooksTable(ArrayList<Book> books){
         columnImpactCABook.setCellValueFactory(new PropertyValueFactory("impactCA"));
-        columnNameBook.setCellValueFactory(new PropertyValueFactory("titleReceptionWork"));
+        columnNameBook.setCellValueFactory(new PropertyValueFactory("titleEvidence"));
         ObservableList<Book> listBooks = FXCollections.observableArrayList(books);
         tbBooks.setItems(listBooks);
     }
@@ -170,7 +171,7 @@ public class WindowMemberProductionController implements Initializable {
     
     private void fillChaptersBookTable(ArrayList<ChapterBook> chaptersBook){
         columnImpactCAChapterBook.setCellValueFactory(new PropertyValueFactory("impactCA"));
-        columnNameChapterBook.setCellValueFactory(new PropertyValueFactory("titleReceptionWork"));
+        columnNameChapterBook.setCellValueFactory(new PropertyValueFactory("titleEvidence"));
         ObservableList<ChapterBook> listChaptersBook = FXCollections.observableArrayList(chaptersBook);
         tbChapterBooks.setItems(listChaptersBook);
     }
@@ -430,21 +431,14 @@ public class WindowMemberProductionController implements Initializable {
      */
 
     @FXML
-    private void openChapterBookRegistration(ActionEvent event){
+    private void openChapterBookRegistration (ActionEvent event) throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddChapterBook.fxml"));
-<<<<<<< HEAD
-        Parent root = fxmlLoader.load();
-        WindowAddChapterBookController windowAddChapterBookController = fxmlLoader.getController();
-        windowAddChapterBookController.setIntegrant(integrant);
-        Scene scene = new Scene(root);
-=======
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load());
         } catch (IOException ex) {
             Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
         }
->>>>>>> be2ada7d63e4bd2ee94133cd149bac7bf336acf0
         Stage stage = new Stage();
         stage.setScene(scene);
         WindowAddChapterBookController windowAddChapterBookController = (WindowAddChapterBookController) fxmlLoader.getController();

@@ -72,7 +72,7 @@ public class WindowAddIntegrantController implements Initializable {
     
     private enum TypeError{
         EMPTYFIELD, INVALIDSTRING, MISSINGSELECTION, MISSINGDATE, INCONSISTENTDATE, NOSELECTIONLGAC, NAMEDUPLICATE, 
-        CURPDUPLICATE, EMAILDUPLICATE;
+        CURPDUPLICATE, EMAILDUPLICATE, INVALIDROLE;
     }
 
     @Override
@@ -212,10 +212,26 @@ public class WindowAddIntegrantController implements Initializable {
     private boolean existsInvalidFields() throws BusinessConnectionException{
         boolean invalidFields = false;
         if(existsEmptyFields() || existsInvalidStrings() || existsMissingSelection() || existsInvalidDates() ||
-           existsDuplicateValues()){
+           existsDuplicateValues() || existsResponsable()){
             invalidFields = true;
         }
         return invalidFields;
+    }
+    
+    /**
+     * Método que verifica si existe el responsable del CA
+     * @return Boolean con el resultado de la verificación, devuelve true si existen campos vacíos, de lo contrario, devuelve false
+     */
+    
+    private boolean existsResponsable() throws BusinessConnectionException {
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        boolean invalidRole = false;
+        if(integrantDAO.existsIntegrantResponsable() && "Responsable".equals(cbRole.getSelectionModel().getSelectedItem().toString())){
+            invalidRole = true;
+            TypeError typeError = TypeError.INVALIDROLE;
+            showInvalidFieldAlert(typeError);            
+        }
+        return invalidRole;
     }
 
     /**
@@ -472,6 +488,10 @@ public class WindowAddIntegrantController implements Initializable {
         if(typeError == TypeError.INVALIDSTRING){
           alert.setContentText("Existen caracteres inválidos, revisa los textos para poder guardar");  
         }
+        
+        if(typeError == TypeError.INVALIDROLE){
+          alert.setContentText("El responsable del CA ya existe, corrige el campo para poder guardar");  
+        }        
         
         if(typeError == TypeError.MISSINGSELECTION){
             alert.setContentText("Existe selección de campo faltante, selecciona los campos para poder guardar");

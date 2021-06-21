@@ -48,15 +48,26 @@ public class LgacTest {
     }
     
     /**
-     * Método que recupera de la base de datos los LGAC a los que pertenece un integrante 
+     * Método que recupera de la base de datos los LGAC 1 a los que pertenece un integrante 
      * @throws BusinessConnectionException 
      */
     
     @Test
-    public void testFindLgacOfIntegrant() throws BusinessConnectionException{
+    public void testFindFirstLgacOfIntegrant() throws BusinessConnectionException{
         LgacDAO lgacDAO = new LgacDAO();       
-        ArrayList<String> lgacs = lgacDAO.findLgacOfIntegrant("GOZT010107MASDFZA0");
-        assertEquals("Prueba correcta en búsqueda de LGAC", lgacs.size(), 1);
+        boolean lgacs = lgacDAO.findFirstLgacOfIntegrant("GOZT010107MASDFZA0");
+        assertEquals("Prueba correcta en búsqueda de LGAC", lgacs, true);
     }    
-   
+
+    /**
+     * Método que recupera de la base de datos los LGAC 2 a los que pertenece un integrante 
+     * @throws BusinessConnectionException 
+     */
+    
+    @Test
+    public void testFinSecondLgacOfIntegrant() throws BusinessConnectionException{
+        LgacDAO lgacDAO = new LgacDAO();       
+        boolean lgacs = lgacDAO.findSecondLgacOfIntegrant("GOZT010107MASDFZA0");
+        assertEquals("Prueba correcta en búsqueda de LGAC 2", lgacs, false);
+    }   
 }

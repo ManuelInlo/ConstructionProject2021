@@ -19,11 +19,13 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.BookDAO;
 import mx.fei.ca.businesslogic.ChapterBookDAO;
+import mx.fei.ca.businesslogic.InvestigationProjectDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.domain.Book;
 import mx.fei.ca.domain.ChapterBook;
 import mx.fei.ca.domain.Evidence;
 import mx.fei.ca.domain.Integrant;
+import mx.fei.ca.domain.InvestigationProject;
 
 /**
  * Clase para representar el controlador del FXML WindowAddChapterBook
@@ -48,8 +50,11 @@ public class WindowAddChapterBookController implements Initializable {
     @FXML
     private ComboBox<Book> cbBook;
     @FXML
+    private ComboBox<InvestigationProject> cbInvestigationProject;    
+    @FXML
     private Label lbUser;
     private Integrant integrant;
+
     
     /**
      * Enumerado que representa los tipos de errores específicos de GUI al agregar un capítulo de libro
@@ -63,6 +68,7 @@ public class WindowAddChapterBookController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         fillComboBoxImpactCA();     
         try {
+            fillComboBoxInvestigationProject();            
             fillComboBoxBook();                     
         } catch (BusinessConnectionException ex) {
             showLostConnectionAlert();
@@ -88,6 +94,18 @@ public class WindowAddChapterBookController implements Initializable {
         ObservableList<String> listImpactCA = FXCollections.observableArrayList("SI","NO");
         cbImpactCA.setItems(listImpactCA);
     }     
+    
+   /**
+     * Método que llena el ComboBox proyectos de investigación recuperados de la base de datos
+     * @throws BusinessConnectionException 
+     */
+    
+    private void fillComboBoxInvestigationProject() throws BusinessConnectionException{
+        InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
+        ArrayList<InvestigationProject> investigationProjects = investigationProjectDAO.findAllInvestigationProjects();
+        ObservableList<InvestigationProject> listInvestigationProject = FXCollections.observableArrayList(investigationProjects);
+        cbInvestigationProject.setItems(listInvestigationProject);
+    }    
     
     /**
      * Método que llena el ComboBox de libros recuperados de la base de datos
@@ -118,10 +136,11 @@ public class WindowAddChapterBookController implements Initializable {
             String titleBook = tfTitleEvidence.getText();  
             Evidence evidence = new Evidence(impactCA, titleBook, author);
             ChapterBook chapterBook = new ChapterBook(evidence, chapterNumber, homePage, endPage);
-            chapterBook.setInvestigationProject(book.getInvestigationProject());
+            InvestigationProject investigationProject = cbInvestigationProject.getSelectionModel().getSelectedItem();             
+            chapterBook.setInvestigationProject(investigationProject);
             chapterBook.setBook(book);
             chapterBook.setIntegrant(integrant);
-            chapterBook.setCurp(integrant.getCurp());
+            chapterBook.setCurp(integrant.getCurp());         
             ChapterBookDAO chapterBookDAO = new ChapterBookDAO();
             int saveResult = chapterBookDAO.saveAndReturnIdNewChapterBook(chapterBook);
             if(saveResult != 0){
@@ -264,7 +283,8 @@ public class WindowAddChapterBookController implements Initializable {
     
     private boolean existsMissingSelection(){
         boolean missingSelection = false;
-        if(cbImpactCA.getSelectionModel().getSelectedIndex() < 0 || cbBook.getSelectionModel().getSelectedIndex() < 0){
+        if(cbImpactCA.getSelectionModel().getSelectedIndex() < 0 || cbBook.getSelectionModel().getSelectedIndex() < 0 ||
+           cbInvestigationProject.getSelectionModel().getSelectedIndex() < 0 ){
             missingSelection = true;
             TypeError typeError = TypeError.MISSINGSELECTION;
             showInvalidFieldAlert(typeError);

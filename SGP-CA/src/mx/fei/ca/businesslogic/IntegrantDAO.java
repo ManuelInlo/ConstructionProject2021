@@ -350,6 +350,44 @@ public class IntegrantDAO implements IIntegrantDAO{
     }
     
     /**
+     * Método que recupera de la base de datos al responsable del CA
+     * @return Integrant que sea el responsable del CA
+     * @throws BusinessConnectionException 
+     */
+    
+    @Override
+    public Integrant findIntegrantResponsable() throws BusinessConnectionException {
+        String sql = "SELECT * FROM integrant WHERE role = 'Responsable'";
+        Integrant integrant = null;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                String role = resultSet.getString("role");
+                String curp = resultSet.getString("curp");
+                String name = resultSet.getString("nameIntegrant");
+                String studyDegree = resultSet.getString("studyDegree");
+                String studyDiscipline = resultSet.getString("studyDiscipline");
+                String prodepParticipation = resultSet.getString("prodepParticipation");
+                String typeTeaching = resultSet.getString("typeTeaching");
+                String eisStudyDegree = resultSet.getString("eisStudyDegree");
+                String institutionalMail = resultSet.getString("institutionalMail");
+                String numberPhone = resultSet.getString("numberPhone");
+                Date dateBirthday = resultSet.getDate("dateBirthday");
+                String statusIntegrant = resultSet.getString("statusIntegrant");
+                integrant = new Integrant(curp, role, name, studyDegree, studyDiscipline, prodepParticipation, typeTeaching,
+                                          eisStudyDegree, institutionalMail, numberPhone, dateBirthday, statusIntegrant);
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return integrant;
+    }    
+    
+    /**
      * Método que verifica si existe el nombre de un integrante en la base de datos
      * @param name Define el nombre a verificar existencia
      * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
@@ -377,6 +415,35 @@ public class IntegrantDAO implements IIntegrantDAO{
     }
     
     /**
+     * Método que verifica si existe el nombre de un integrante en la base de datos para modificación
+     * @param name Define el nombre a verificar existencia
+     * @param curp Define la curp del integrante a modificar
+     * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+
+    @Override
+    public boolean existsIntegrantNameForUpdate(String name, String curp) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM integrant WHERE nameIntegrant = ? AND curp = ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, curp);            
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }   
+    
+    /**
      * Método que verifica si existe la curp de un integrante en la base de datos
      * @param curp Define la curp a verificar existencia
      * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
@@ -401,7 +468,7 @@ public class IntegrantDAO implements IIntegrantDAO{
             dataBaseConnection.closeConnection();
         }
         return exists;
-    }
+    }       
     
     /**
      * Método que verifica si existe el correo electrónico de un integrante en la base de datos
@@ -429,6 +496,61 @@ public class IntegrantDAO implements IIntegrantDAO{
         }
         return exists;
     }
+    
+    /**
+     * Método que verifica si existe el correo electrónico de un integrante en la base de datos para modificación
+     * @param institutionalMail Define el correo electrónico a verificar existencia
+     * @param curp Define la curp del integrante a modificar
+     * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+
+    @Override
+    public boolean existsIntegrantEmailForUpdate(String institutionalMail, String curp) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM integrant WHERE institutionalMail = ? ADN curp = ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, institutionalMail);
+            preparedStatement.setString(2, curp);           
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }    
+    
+    
+    /**
+     * Método que verifica si existe el responsable del CA en la base de datos
+     * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+
+    @Override
+    public boolean existsIntegrantResponsable() throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM integrant WHERE role = 'Responsable'";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }    
     
     /**
      * Método que recupera de la base de datos los integrantes activos del CA

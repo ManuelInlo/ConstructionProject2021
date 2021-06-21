@@ -18,7 +18,7 @@
    <children>
       <Pane layoutY="521.0" prefHeight="40.0" prefWidth="600.0" style="-fx-background-color: #60ABE0;">
          <children>
-            <Label layoutX="107.0" layoutY="11.0" text="Facultad de Estadistica e Informatica - Universidad veracruzana">
+            <Label layoutX="107.0" layoutY="11.0" text="Facultad de Estadística e Informática - Universidad  Veracruzana">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

@@ -4,10 +4,16 @@ package mx.fei.ca.presentation;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.LgacDAO;
@@ -37,8 +43,6 @@ public class WindowIntegrantDataController implements Initializable {
     @FXML
     private Label lbStatusIntegrant;
     @FXML
-    private Label lbL1;
-    @FXML
     private Label lbNameIntegrant;
     @FXML
     private Label lbIesStudyDegree;
@@ -48,6 +52,10 @@ public class WindowIntegrantDataController implements Initializable {
     private Label lbDateBirthday;
     @FXML
     private Label lbCurp;
+    @FXML
+    private Label lbLgac1;
+    @FXML
+    private Label lbLgac2;   
     @FXML
     private Label lbInstitutionalMail;
     private Integrant integrant; 
@@ -71,10 +79,10 @@ public class WindowIntegrantDataController implements Initializable {
     /**
      * Método que muestra la información del capítulo de libro en la GUI
      * @param integrant Define el integrante con la información a mostrar
+     * @throws mx.fei.ca.businesslogic.exceptions.BusinessConnectionException
      */
     
     public void showIntegrantData(Integrant integrant) throws BusinessConnectionException{   
-        LgacDAO lgacDAO = new LgacDAO();
         this.integrantSelect = integrant;
         lbNameIntegrant.setText(integrant.getNameIntegrant());
         lbRole.setText(integrant.getRole());
@@ -88,8 +96,14 @@ public class WindowIntegrantDataController implements Initializable {
         lbDateBirthday.setText(String.valueOf(integrant.getDateBirthday()));
         lbCurp.setText(integrant.getCurp());
         lbInstitutionalMail.setText(integrant.getInstitutionalMail());
-        lbL1.setText(String.valueOf(lgacDAO.findLgacOfIntegrant(lbCurp.getText())));       
-    }    
+        LgacDAO lgacDAO = new LgacDAO();  
+            if(lgacDAO.findFirstLgacOfIntegrant(integrant.getCurp())){
+                lbLgac1.setText("L1");
+            }        
+            if(lgacDAO.findSecondLgacOfIntegrant(integrant.getCurp())){
+                lbLgac2.setText("L2");
+            }  
+    }      
 
     /**
      * Método que manda a abrir la ventana de modificación de integrante
@@ -97,19 +111,42 @@ public class WindowIntegrantDataController implements Initializable {
      */
     
     @FXML
-    private void modifyIntegrant(ActionEvent event) {
+    private void modifyIntegrant(ActionEvent event) throws BusinessConnectionException {
+        if(integrant.getCurp().equals(lbCurp.getText())){
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowModifyIntegrant.fxml"));
+                Parent root = null;
+            try {
+                root = fxmlLoader.load();
+            } catch (IOException ex) {
+                Logger.getLogger(WindowIntegrantDataController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            WindowModifyIntegrantController windowModifyIntegrantController = fxmlLoader.getController();
+            windowModifyIntegrantController.setIntegrant(integrant);
+            windowModifyIntegrantController.fillFieldsIntegrants(integrantSelect);
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            closeIntegrantData(event);
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setTitle("Función de modificar deshabilitada");
+            alert.setContentText("Solo el integrante puede modificar su propio perfil");
+            alert.showAndWait();
+        }   
     }
-    
+
     /**
      * Método que cierra la ventana actual "Datos de integrante"
      * @param event Define el evento generado
      */
-
+    
     @FXML
     private void closeIntegrantData(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();        
+        stage.close();
     }
     
 }

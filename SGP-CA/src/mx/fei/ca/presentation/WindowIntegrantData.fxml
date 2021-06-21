@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowIntegrantDataController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowIntegrantDataController">
    <children>
       <Pane prefHeight="70.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">
          <children>
@@ -71,13 +71,13 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lbRole" layoutX="153.0" layoutY="24.0" prefHeight="17.0" prefWidth="2.0" />
-                  <Label fx:id="lbStudyDiscipline" layoutX="274.0" layoutY="49.0" prefHeight="17.0" prefWidth="2.0" />
-                  <Label fx:id="lbStudyDegree" layoutX="137.0" layoutY="72.0" prefHeight="17.0" prefWidth="2.0" />
-                  <Label fx:id="lbProdepParticipation" layoutX="117.0" layoutY="95.0" prefHeight="17.0" prefWidth="2.0" />
-                  <Label fx:id="lbTypeTeaching" layoutX="131.0" layoutY="116.0" prefHeight="17.0" prefWidth="2.0" />
-                  <Label fx:id="lbStatusIntegrant" layoutX="150.0" layoutY="140.0" prefHeight="17.0" prefWidth="2.0" />
-                  <Label fx:id="lbL1" layoutX="134.0" layoutY="160.0" prefHeight="17.0" prefWidth="2.0" />
+                  <Label fx:id="lbRole" layoutX="153.0" layoutY="24.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="316.0" />
+                  <Label fx:id="lbStudyDiscipline" layoutX="274.0" layoutY="49.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="441.0" />
+                  <Label fx:id="lbStudyDegree" layoutX="137.0" layoutY="72.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="596.0" />
+                  <Label fx:id="lbProdepParticipation" layoutX="117.0" layoutY="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="114.0" />
+                  <Label fx:id="lbTypeTeaching" layoutX="131.0" layoutY="116.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="596.0" />
+                  <Label fx:id="lbStatusIntegrant" layoutX="150.0" layoutY="140.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="580.0" />
+                  <Label fx:id="lbLgac1" layoutX="134.0" layoutY="160.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="77.0" />
                   <Label layoutX="16.0" layoutY="26.0" text="Cargo dentro del CA:">
                      <font>
                         <Font name="System Bold" size="13.0" />
@@ -118,13 +118,14 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lbNameIntegrant" layoutX="81.0" layoutY="5.0" />
-                  <Label fx:id="lbIesStudyDegree" layoutX="180.0" layoutY="202.0" prefHeight="17.0" prefWidth="2.0" />
-                  <Label fx:id="lbL2" layoutX="132.0" layoutY="179.0" prefHeight="17.0" prefWidth="2.0" />
-                  <Label fx:id="lbNumberPhone" layoutX="139.0" layoutY="220.0" prefHeight="17.0" prefWidth="2.0" />
-                  <Label fx:id="lbDateBirthday" layoutX="134.0" layoutY="238.0" prefHeight="17.0" prefWidth="2.0" />
-                  <Label fx:id="lbCurp" layoutX="65.0" layoutY="258.0" prefHeight="17.0" prefWidth="2.0" />
-                  <Label fx:id="lbInstitutionalMail" layoutX="151.0" layoutY="276.0" prefHeight="17.0" prefWidth="2.0" />
+                  <Label fx:id="lbNameIntegrant" layoutX="79.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="652.0" />
+                  <Label fx:id="lbIesStudyDegree" layoutX="180.0" layoutY="202.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="548.0" />
+                  <Label fx:id="lbL2" layoutX="132.0" layoutY="179.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="119.0" />
+                  <Label fx:id="lbNumberPhone" layoutX="139.0" layoutY="220.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="596.0" />
+                  <Label fx:id="lbDateBirthday" layoutX="134.0" layoutY="238.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="596.0" />
+                  <Label fx:id="lbCurp" layoutX="65.0" layoutY="258.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="667.0" />
+                  <Label fx:id="lbInstitutionalMail" layoutX="151.0" layoutY="276.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="580.0" />
+                  <Label fx:id="lbLgac2" layoutX="130.0" layoutY="188.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="77.0" />
                </children>
             </Pane>
             <Button layoutX="573.0" layoutY="351.0" mnemonicParsing="false" onAction="#modifyIntegrant" prefHeight="25.0" prefWidth="84.0" text="Modificar" />
