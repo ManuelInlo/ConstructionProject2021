@@ -1,5 +1,4 @@
 
-/*
 package mx.fei.ca.presentation;
 
 import java.net.URL;
@@ -8,6 +7,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
@@ -36,7 +37,7 @@ import mx.fei.ca.domain.InvestigationProject;
  * @version 17-06-2021
  */
 
-/*public class WindowModifyBookController implements Initializable {
+public class WindowModifyBookController implements Initializable {
 
     @FXML
     private Label lbUser;
@@ -86,8 +87,9 @@ import mx.fei.ca.domain.InvestigationProject;
      * Enumerado que representa los tipos de errores específicos de GUI al modificar un libro
      */
     
-   /* private enum TypeError{
-        EMPTYFIELD, INVALIDSTRING, MISSINGSELECTION, TITLEDUPLICATE, NUMBERDUPLICATE, INVALIDLENGTH, INCONSISTENTPAGE, INCONSISTENTPAGEBOOK;
+    private enum TypeError{
+        EMPTYFIELD, INVALIDSTRING, MISSINGSELECTION, TITLEDUPLICATE, NUMBERDUPLICATE, INVALIDLENGTH, 
+        INCONSISTENTPAGE, INVALIDPAGE, INCONSISTENTPAGEBOOK, INVALIDPRINTING, MISSINGDATE, INCONSISTENTDATE;
     }  
     
     /**
@@ -95,7 +97,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * @param integrant Define el integrante a establecer en la GUI
      */
     
-  /*  public void setIntegrant(Integrant integrant){
+    public void setIntegrant(Integrant integrant){
         this.integrant = integrant;
         lbUser.setText(integrant.getNameIntegrant());
     }
@@ -104,7 +106,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * Método que llena el ComboBox de impacto al CA
      */
 
-   /* private void fillComboBoxImpactCA() {
+    private void fillComboBoxImpactCA() {
         ObservableList<String> listImpactCA = FXCollections.observableArrayList("SI","NO");
         cbImpactCA.setItems(listImpactCA);
     }
@@ -113,7 +115,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * Método que llena el ComboBox estado actual del libro
      */
     
- /*   private void fillComboBoxActualState() {
+    private void fillComboBoxActualState() {
         ObservableList<String> listActualState = FXCollections.observableArrayList("En proceso","Terminado", "Publicado");
         cbActualState.setItems(listActualState);
     }
@@ -122,7 +124,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * Método que llena el ComboBox tipo de participación en la elaboración del libro
      */
     
- /*   private void fillComboBoxParticipationType() {
+    private void fillComboBoxParticipationType() {
         ObservableList<String> listParticipationType = FXCollections.observableArrayList("Estudiante");
         cbParticipationType.setItems(listParticipationType);
     }      
@@ -132,7 +134,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * @throws BusinessConnectionException 
      */
     
-  /*  private void fillComboBoxInvestigationProject() throws BusinessConnectionException{
+    private void fillComboBoxInvestigationProject() throws BusinessConnectionException{
         InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
         ArrayList<InvestigationProject> investigationProjects = investigationProjectDAO.findAllInvestigationProjects();
         ObservableList<InvestigationProject> listInvestigationProject = FXCollections.observableArrayList(investigationProjects);
@@ -144,7 +146,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * @param book Define el libro a modificar
      */
     
-  /*  public void fillFieldBook(Book book){         
+    public void fillFieldBook(Book book){         
         cbImpactCA.getSelectionModel().select(book.getImpactCA());
         tfIsbn.setText(book.getIsbn());
         tfPrinting.setText(String.valueOf(book.getPrinting()));   
@@ -169,42 +171,45 @@ import mx.fei.ca.domain.InvestigationProject;
      * @throws BusinessConnectionException 
      */       
     
- /*   @FXML
-    private void modifyBook(ActionEvent event) {
-        if(!existsInvalidFields()){    
-            Date publicationDate = null;        
-            String impactCA = cbImpactCA.getSelectionModel().getSelectedItem().toString();
-            String isbn = tfIsbn.getText();
-            int priting = Integer.parseInt(tfPrinting.getText());   
-            int numPages = Integer.parseInt(tfNumPages.getText()); 
-            String participationType = cbParticipationType.getSelectionModel().getSelectedItem().toString();
-            String actualState = cbActualState.getSelectionModel().getSelectedItem().toString();        
-            String country = tfCountry.getText();       
-            String editorial = tfEditorial.getText();           
-            String edition = tfEdition.getText();          
-            String fileRoute = tfFileRoute.getText();
-            String author = tfAuthor.getText(); 
-            String titleBook = tfTitleEvidence.getText(); 
-            if(cbActualState.getSelectionModel().getSelectedItem().toString().equals("Publicado")){
-               publicationDate = parseToSqlDate(java.util.Date.from(dpPublicationDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())); 
-            }   
-            InvestigationProject investigationProject = cbInvestigationProject.getSelectionModel().getSelectedItem(); 
-            Evidence evidence = new Evidence(impactCA, titleBook, author);
-            Book book = new Book(evidence, isbn, priting, numPages, participationType, actualState, country, publicationDate,
+    @FXML
+    private void modifyBook(ActionEvent event) {    
+        Date publicationDate = null;        
+        String impactCA = cbImpactCA.getSelectionModel().getSelectedItem().toString();
+        String isbn = tfIsbn.getText();
+        int priting = Integer.parseInt(tfPrinting.getText());   
+        int numPages = Integer.parseInt(tfNumPages.getText()); 
+        String participationType = cbParticipationType.getSelectionModel().getSelectedItem().toString();
+        String actualState = cbActualState.getSelectionModel().getSelectedItem().toString();        
+        String country = tfCountry.getText();       
+        String editorial = tfEditorial.getText();           
+        String edition = tfEdition.getText();          
+        String fileRoute = tfFileRoute.getText();
+        String author = tfAuthor.getText(); 
+        String titleBook = tfTitleEvidence.getText(); 
+        if(cbActualState.getSelectionModel().getSelectedItem().toString().equals("Publicado")){
+            publicationDate = parseToSqlDate(java.util.Date.from(dpPublicationDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())); 
+        }   
+        InvestigationProject investigationProject = cbInvestigationProject.getSelectionModel().getSelectedItem(); 
+        Evidence evidence = new Evidence(impactCA, titleBook, author);
+        Book book = new Book(evidence, isbn, priting, numPages, participationType, actualState, country, publicationDate,
                                 editorial, edition, fileRoute);
-            book.setInvestigationProject(investigationProject);
-            book.setIntegrant(integrant);
-            book.setCurp(integrant.getCurp());
-            BookDAO bookDAO = new BookDAO();
-            boolean saveResult = bookDAO.savedBook(book);
-            if(saveResult){
-                showConfirmationAlert();
-                closeBookRegistration(event);
-            }else{
-                showLostConnectionAlert(); 
-                closeBookRegistration(event);
-            }
-        }    
+        book.setInvestigationProject(investigationProject);
+        book.setIntegrant(integrant);
+        book.setCurp(integrant.getCurp());
+        BookDAO bookDAO = new BookDAO();
+        boolean updateResult = false;
+        try {
+            updateResult = bookDAO.updatedBook(book, isbn);
+        } catch (BusinessConnectionException ex) {
+            Logger.getLogger(WindowModifyBookController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(updateResult){
+            showConfirmationAlert();
+            closeModifyBook(event);
+        }else{
+            showLostConnectionAlert(); 
+            closeModifyBook(event);
+        }   
     }
 
 
@@ -213,7 +218,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * @param event Define el evento generado
      */    
     
-  /*  @FXML
+    @FXML
     private void closeModifyBook(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
@@ -226,24 +231,9 @@ import mx.fei.ca.domain.InvestigationProject;
      * @return Variable de tipo sql.Date
      */
     
- /*   private java.sql.Date parseToSqlDate(java.util.Date date){
+    private java.sql.Date parseToSqlDate(java.util.Date date){
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         return sqlDate;
-    }
-
-    /**
-     * Método que devuelve si existen o no campos inválidos
-     * @return Booleano con el resultado de la verificación, devuelve true si existen campos inválidos, de lo contrario devuelve false
-     * @throws BusinessConnectionException 
-     */
-    
-/*    private boolean existsInvalidFields() throws BusinessConnectionException{
-        boolean invalidFields = false;
-        if(existsEmptyFields() || existsInvalidStrings() || existsMissingSelection() || existsDuplicateValues() || 
-           existsInvalidDates() || existsInvalidLength() || existsInvalidNumbers()){
-            invalidFields = true;
-        }    
-        return invalidFields;
     }
     
     /**
@@ -251,7 +241,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * @return Boolean con el resultado de la verificación, devuelve true si existen campos vacíos, de lo contrario, devuelve false
      */
     
-  /*  private boolean existsInvalidLength(){
+    private boolean existsInvalidLength(){
         boolean invalidLength = false;
         if(tfTitleEvidence.getText().length() > 255 || tfFileRoute.getText().length() > 500 || tfAuthor.getText().length() > 255 || tfPrinting.getText().length() > 5 ||
            tfNumPages.getText().length() > 5 || tfCountry.getText().length() > 255 || tfEdition.getText().length() > 225 || tfIsbn.getText().length() > 17 || 
@@ -268,7 +258,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * @return Boolean con el resultado de la verificación, devuelve true si existen campos vacíos, de lo contrario, devuelve false
      */
     
-/*    private boolean existsEmptyFields(){
+    private boolean existsEmptyFields(){
         boolean emptyFields = false;
         if(tfTitleEvidence.getText().isEmpty() || tfFileRoute.getText().isEmpty() || tfAuthor.getText().isEmpty() || tfPrinting.getText().isEmpty() ||
            tfNumPages.getText().isEmpty() || tfCountry.getText().isEmpty() || tfEdition.getText().isEmpty() || tfIsbn.getText().isEmpty() ||
@@ -285,13 +275,13 @@ import mx.fei.ca.domain.InvestigationProject;
      * @return Booleano con el resultado de la verificación, devuelve true si existen cadenas inválidas, de lo contrario, devuelve false
      */
     
- /*   private boolean existsInvalidStrings(){
+    private boolean existsInvalidStrings(){
         boolean invalidStrings = false;
         if(existsInvalidCharactersForTitle(tfTitleEvidence.getText()) || existsInvalidCharactersForName(tfAuthor.getText()) || existsInvalidCharactersForName(tfCountry.getText()) ||
            existsInvalidCharactersForFileRoute(tfFileRoute.getText()) || existsInvalidCharactersForTitle(tfEdition.getText()) || existsInvalidCharactersForTitle(tfEditorial.getText()) ||
-           existsInvalidCharactersForNumber(tfNumPages.getText()) || existsInvalidCharactersForNumber(tfPrinting.getText()) || existsInvalidCharactersForIsbn(tfIsbn.getText())){
+           existsInvalidCharactersForNumber(tfNumPages.getText()) || existsInvalidCharactersForNumber(tfPrinting.getText())){
             invalidStrings = true;
-            WindowAddBookController.TypeError typeError = WindowAddBookController.TypeError.INVALIDSTRING;
+            TypeError typeError = TypeError.INVALIDSTRING;
             showInvalidFieldAlert(typeError);
         }
         return invalidStrings;
@@ -303,7 +293,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
      */
     
-  /*  private boolean existsInvalidCharactersForName(String textToValidate){
+    private boolean existsInvalidCharactersForName(String textToValidate){
         boolean invalidCharacters = false;
         Pattern pattern = Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s\\,]+$");
         Matcher matcher = pattern.matcher(textToValidate);
@@ -319,7 +309,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
      */
     
- /*   private boolean existsInvalidCharactersForTitle(String textToValidate){
+    private boolean existsInvalidCharactersForTitle(String textToValidate){
         boolean invalidCharacters = false;
         Pattern pattern = Pattern.compile("^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ\\s\\.#-,:]+$");
         Matcher matcher = pattern.matcher(textToValidate);
@@ -335,7 +325,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
      */
     
- /*   private boolean existsInvalidCharactersForNumber(String textToValidate){
+    private boolean existsInvalidCharactersForNumber(String textToValidate){
         boolean invalidCharacters = false;
         Pattern pattern = Pattern.compile("^\\d+$");
         Matcher matcher = pattern.matcher(textToValidate);
@@ -343,25 +333,7 @@ import mx.fei.ca.domain.InvestigationProject;
            invalidCharacters = true; 
         }
         return invalidCharacters;
-    }    
-    
-    /**
-     * Método que verifica si existen caracteres inválidos en el ISBN del libro
-     * @param textToValidate Define el ISBN del libro a validar
-     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
-     */
-    
-  /*  private boolean existsInvalidCharactersForIsbn(String textToValidate){
-        boolean invalidCharacters = false;
-        String validText = "/^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|"
-                           + "(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]? [0-9]+[- ]?[0-9]+[- ]?[0-9X]$/";       
-        Pattern pattern = Pattern.compile(validText);
-        Matcher matcher = pattern.matcher(textToValidate);
-        if(!matcher.find()){
-           invalidCharacters = true; 
-        }
-        return invalidCharacters;
-    }     
+    }        
     
     /**
      * Método que verifica si existen caracteres inválidos para una ruta de archivo
@@ -369,7 +341,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
      */
     
- /*   private boolean existsInvalidCharactersForFileRoute(String fileRoute){
+    private boolean existsInvalidCharactersForFileRoute(String fileRoute){
         boolean invalidCharacters = false;
         Pattern pattern = Pattern.compile("[!#$%&'*+=?^_`{|}~]");
         Matcher mather = pattern.matcher(fileRoute);
@@ -384,34 +356,15 @@ import mx.fei.ca.domain.InvestigationProject;
      * @return Booleano con el resultado de verificación, devuelve true si existen faltantes, de lo contrario, devuelve false
      */
     
-  /*  private boolean existsMissingSelection(){
+    private boolean existsMissingSelection(){
         boolean missingSelection = false;
         if(cbImpactCA.getSelectionModel().getSelectedIndex() < 0 || cbInvestigationProject.getSelectionModel().getSelectedIndex() < 0 ||
            cbActualState.getSelectionModel().getSelectedIndex() < 0 || cbParticipationType.getSelectionModel().getSelectedIndex() < 0){
             missingSelection = true;
-            WindowAddBookController.TypeError typeError = WindowAddBookController.TypeError.MISSINGSELECTION;
+            TypeError typeError = TypeError.MISSINGSELECTION;
             showInvalidFieldAlert(typeError);
         }
         return missingSelection;
-    }
-    
-    /**
-     * Método que verifica si existen fechas inválidas en los campos de la GUI
-     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
-     */
-    
-  /*  private boolean existsInvalidDates(){
-        boolean invalidDates = false;
-        if(cbActualState.getSelectionModel().getSelectedItem().toString().equals("Publicado")){
-            if(existMissingDate(dpPublicationDate) || existInconsistentDates()){
-                invalidDates = true;
-            }
-        }else{
-            if(existLeftOverDateSelection(dpPublicationDate)){
-                invalidDates = true;
-            }
-        }
-        return invalidDates;
     }
     
     /**
@@ -419,7 +372,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
      */
     
- /*   private boolean existsInvalidNumbers(){
+    private boolean existsInvalidNumbers(){
         boolean invalidNumbers = false;
         int numPages = Integer.parseInt(tfNumPages.getText());
         int printing = Integer.parseInt(tfPrinting.getText());        
@@ -427,13 +380,13 @@ import mx.fei.ca.domain.InvestigationProject;
         boolean invalidPrinting = false;      
         if(numPages < 49){  
             invalidPage = true;
-            WindowAddBookController.TypeError typeError = WindowAddBookController.TypeError.INVALIDPAGE;
+            TypeError typeError = TypeError.INVALIDPAGE;
             showInvalidFieldAlert(typeError);
         }
            
         if(printing < 0){
             invalidPrinting = true;
-            WindowAddBookController.TypeError typeError = WindowAddBookController.TypeError.INVALIDPRINTING;
+           TypeError typeError = TypeError.INVALIDPRINTING;
             showInvalidFieldAlert(typeError);
         }
         
@@ -451,11 +404,11 @@ import mx.fei.ca.domain.InvestigationProject;
      * @return Booleano con el resultado de verificación, devuelve true si existe faltante, de lo contrario, devuelve false
      */
     
- /*   private boolean existMissingDate(DatePicker datePicker){
+    private boolean existMissingDate(DatePicker datePicker){
         boolean missingDate = false;
         if(datePicker.getValue() == null){
             missingDate = true;
-            WindowAddBookController.TypeError typeError = WindowAddBookController.TypeError.MISSINGDATE;
+            TypeError typeError = TypeError.MISSINGDATE;
             showInvalidFieldAlert(typeError);
         }
         return missingDate;
@@ -466,7 +419,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * @return Booleano con el resultado de verificación, devuelve true si existe incosistencia, de lo contrario, devuelve false
      */
     
- /*   private boolean existInconsistentDates(){
+       private boolean existInconsistentDates(){
         boolean inconsistentDates = false;       
         LocalDate currentDate = LocalDate.now();  
         int datePublicationDay = dpPublicationDate.getValue().getDayOfMonth();
@@ -477,64 +430,10 @@ import mx.fei.ca.domain.InvestigationProject;
         int currentDateYear = currentDate.getYear();
         if(datePublicationDay > currentDateDay && datePublicationMonth >= currentDateMonth && datePublicationYear >= currentDateYear){
             inconsistentDates = true;
-            WindowAddBookController.TypeError typeError = WindowAddBookController.TypeError.INCONSISTENTDATE;
+            TypeError typeError = TypeError.INCONSISTENTDATE;
             showInvalidFieldAlert(typeError);
         }
         return inconsistentDates;
-    }
-    
-    /**
-     * Método que manda a verificar si valores obtenidos de la GUI que no pueden duplicarse ya existen en la base de datos
-     * El método manda a llamar a otros métodos que se encargan de la verificación en la capa lógica     
-     * @return Booleano con el resultado de la verificación, devuelve true si existe valor duplicado, de lo contrario, devuelve false
-     * @throws BusinessConnectionException 
-     */
-    
- /*   private boolean existsDuplicateValues() throws BusinessConnectionException{
-        BookDAO bookDAO = new BookDAO();
-        boolean duplicateValues = false;
-        boolean bookTitleDuplicate = false;
-        boolean fileRouteDuplicate = false;
-        boolean isbnDuplicate = false;        
-        if(bookDAO.existsBookTitle(tfTitleEvidence.getText())){  
-            bookTitleDuplicate = true;
-            WindowAddBookController.TypeError typeError = WindowAddBookController.TypeError.TITLEDUPLICATE;
-            showInvalidFieldAlert(typeError);
-        }
-           
-        if(bookDAO.existsBookFileRoute(tfFileRoute.getText())){
-            fileRouteDuplicate = true;
-            WindowAddBookController.TypeError typeError = WindowAddBookController.TypeError.FILEROUTEDUPLICATE;
-            showInvalidFieldAlert(typeError);
-        }
-        
-        if(bookDAO.existsBookIsbn(tfIsbn.getText())){
-            isbnDuplicate = true;
-            WindowAddBookController.TypeError typeError = WindowAddBookController.TypeError.ISBNDUPLICATE;
-            showInvalidFieldAlert(typeError);
-        }
-        
-        if(bookTitleDuplicate || fileRouteDuplicate || isbnDuplicate){
-            duplicateValues = true;
-        }
-        
-        return duplicateValues;
-    }
-    
-    /**
-     * Método que verifica si existe una selección de fecha sobrante
-     * @param datePicker Define el valor del campo de tipo DatePicker a verificar
-     * @return Booleano con el valor de verificación, devuelve true si existe fecha sobrante, de lo contrario, devuelve false
-     */
-    
-/*    private boolean existLeftOverDateSelection(DatePicker datePicker){
-        boolean selection = false;
-        if(datePicker.getValue() != null){
-            selection = true;
-            WindowAddBookController.TypeError typeError = WindowAddBookController.TypeError.OVERDATE;
-            showInvalidFieldAlert(typeError);
-        }
-        return selection;
     }
     
     /**
@@ -542,7 +441,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * @param typeError Define el tipo de error que encontró 
      */
     
-  /*  private void showInvalidFieldAlert(TypeError typeError){
+    private void showInvalidFieldAlert(TypeError typeError){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
         alert.setTitle("Campo inválido");
@@ -566,21 +465,9 @@ import mx.fei.ca.domain.InvestigationProject;
             alert.setContentText("La fecha de publicación es mayor a la fecha actual, corrige el campo para poder guardar");
         }
         
-        if(typeError == TypeError.OVERDATE){
-            alert.setContentText("El libro no está publicado, por lo tanto no puedes guardar una fecha de publicación");
-        }
-        
         if(typeError == TypeError.TITLEDUPLICATE){
             alert.setContentText("El título del libro ya se encuentra registrado en el sistema");
         }
-        
-        if(typeError == TypeError.FILEROUTEDUPLICATE){
-            alert.setContentText("La ruta de archivo del libro ya se encuentra registrada en otro libro");
-        } 
-        
-        if(typeError == TypeError.ISBNDUPLICATE){
-            alert.setContentText("El ISBN del libro ya se encuentra registrado en otro libro");
-        } 
         
         if(typeError == TypeError.INVALIDPAGE){
             alert.setContentText("Un libro no puede tener menos de 49 páginas, corrige el campo para poder guardar");
@@ -601,7 +488,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * Método que muestra alerta de confirmación de guardado de libro
      */
     
-  /*  private void showConfirmationAlert(){
+    private void showConfirmationAlert(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         alert.setTitle("Confirmación de guardado");
@@ -613,7 +500,7 @@ import mx.fei.ca.domain.InvestigationProject;
      * Método que muestra alerta de perdida de conexión con la base de datos
      */
     
- /*   private void showLostConnectionAlert(){
+    private void showLostConnectionAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
         alert.setTitle("Perdida de conexión");
@@ -621,7 +508,7 @@ import mx.fei.ca.domain.InvestigationProject;
         alert.showAndWait();
     }
 
-}*/
+}
    
     
 

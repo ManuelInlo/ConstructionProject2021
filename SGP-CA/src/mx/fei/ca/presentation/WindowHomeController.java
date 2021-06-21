@@ -126,7 +126,7 @@ public class WindowHomeController implements Initializable {
                 stage.setScene(scene);
                 stage.showAndWait();
             }else{
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowIntegrantsData.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowIntegrantData.fxml"));
                 Parent root = fxmlLoader.load();
                 WindowIntegrantDataController windowIntegrantDataController = fxmlLoader.getController();
                 windowIntegrantDataController.setIntegrant(integrant);
