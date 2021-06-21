@@ -219,6 +219,61 @@ public class ArticleDAO implements IArticleDAO{
     }
     
     /**
+     * Método que recupera de la base de datos el número de evidencias de tipo artículo de un integrante
+     * @param curp Define la curp del integrante del cual se quiere recuperar los artículos
+     * @return int con el número total de evidencias de tipo artículo de un integrante
+     * @throws BusinessConnectionException 
+     */
+
+    @Override
+    public int findArticlesByCurpIntegrant(String curp) throws BusinessConnectionException {
+        String sql = "SELECT * FROM article WHERE curp = ?";
+        ArrayList<Article> articles = new ArrayList<>();
+        int numberArticles = 0;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, curp);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Evidence evidence;
+                Article article;
+                String impactCA = resultSet.getString("impactCA");
+                String titleEvidence = resultSet.getString("titleEvidence");
+                String issn = resultSet.getString("ISSN");
+                String fileRoute = resultSet.getString("fileRoute");
+                int homePage = resultSet.getInt("homePage");
+                int endPage = resultSet.getInt("endPage");    
+                String actualState = resultSet.getString("actualState");
+                String magazineName = resultSet.getString("magazineName");
+                String country = resultSet.getString("country");                
+                Date publicationDate = resultSet.getDate("publicationDate");
+                int volume = resultSet.getInt("volume"); 
+                String editorial = resultSet.getString("editorial");
+                String author = resultSet.getString("author");               
+                String description = resultSet.getString("description");
+                int idProject = resultSet.getInt("idProject");               
+                evidence = new Evidence(impactCA, titleEvidence, author);
+                if(publicationDate != null){
+                    article = new Article(evidence, issn, fileRoute, homePage, endPage, actualState, magazineName, country, publicationDate, volume, editorial, description);
+                }else{
+                     article = new Article(evidence, issn, fileRoute, homePage, endPage, actualState, magazineName, country, volume, editorial, description);
+                }  
+                InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
+                InvestigationProject investigationProject = investigationProjectDAO.findInvestigationProjectById(idProject); 
+                article.setInvestigationProject(investigationProject);
+                articles.add(article);
+            }
+            numberArticles = articles.size();
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return numberArticles;
+    }   
+    
+    /**
      * Método que recupera de la base de datos las evidencias de tipo artículo por fecha que impactan al CA
      * @param date Define la fecha de la cual se quiere recuperar los artículos
      * @return ArrayList con máximo dos artículos
@@ -368,6 +423,33 @@ public class ArticleDAO implements IArticleDAO{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, fileRoute);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }
+    
+    /**
+     * Método que verifica si existe el ISSN de un artículo en la base de datos
+     * @param issn Define el ISSN a verificar existencia
+     * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+    
+    @Override
+    public boolean existsArticleIssn(String issn) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM article WHERE issn = ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, issn);
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 exists = true;

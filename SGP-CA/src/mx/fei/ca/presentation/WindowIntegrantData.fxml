@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowIntegrantDataController">
+   <children>
+      <Pane prefHeight="70.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">
+         <children>
+            <Separator layoutY="62.0" minHeight="-Infinity" prefHeight="10.0" prefWidth="800.0" />
+            <Label layoutX="14.0" layoutY="27.0" text="Sistema Gestor de Cuerpo Academico">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbUser" layoutX="600.0" layoutY="27.0" text="UserXXXX">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="370.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/CentralIcon.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane layoutY="70.0" prefHeight="426.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">
+         <children>
+            <Separator layoutY="386.0" prefHeight="10.0" prefWidth="800.0" />
+            <Label layoutX="220.0" layoutY="404.0" text="Facultad de Estadistica e Informática - Universidad  Veracruzana">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="25.0" layoutY="27.0" text="CURRÍCULUM PERSONAL">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Pane layoutX="25.0" layoutY="49.0" prefHeight="299.0" prefWidth="740.0" style="-fx-background-color: #A8CCE6;">
+               <children>
+                  <Label layoutX="17.0" layoutY="4.0" text="Nombre:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="17.0" layoutY="49.0" text="Disciplina de máximo grado de estudios:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="17.0" layoutY="71.0" text="Grado de estudios:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="17.0" layoutY="94.0" text="Perfil PRODEP:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="18.0" layoutY="115.0" text="Tipo de docencia:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbRole" layoutX="153.0" layoutY="24.0" prefHeight="17.0" prefWidth="2.0" />
+                  <Label fx:id="lbStudyDiscipline" layoutX="274.0" layoutY="49.0" prefHeight="17.0" prefWidth="2.0" />
+                  <Label fx:id="lbStudyDegree" layoutX="137.0" layoutY="72.0" prefHeight="17.0" prefWidth="2.0" />
+                  <Label fx:id="lbProdepParticipation" layoutX="117.0" layoutY="95.0" prefHeight="17.0" prefWidth="2.0" />
+                  <Label fx:id="lbTypeTeaching" layoutX="131.0" layoutY="116.0" prefHeight="17.0" prefWidth="2.0" />
+                  <Label fx:id="lbStatusIntegrant" layoutX="150.0" layoutY="140.0" prefHeight="17.0" prefWidth="2.0" />
+                  <Label fx:id="lbL1" layoutX="134.0" layoutY="160.0" prefHeight="17.0" prefWidth="2.0" />
+                  <Label layoutX="16.0" layoutY="26.0" text="Cargo dentro del CA:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="17.0" layoutY="139.0" text="Perfil dentro del CA:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="18.0" layoutY="159.0" text="LGAC registradas: ">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="18.0" layoutY="201.0" text="IES de máximos estudios:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="17.0" layoutY="219.0" text="Número telefónico:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="18.0" layoutY="237.0" text="Fecha nacimiento:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="18.0" layoutY="256.0" text="CURP:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="17.0" layoutY="275.0" text="Correo institucional:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbNameIntegrant" layoutX="81.0" layoutY="5.0" />
+                  <Label fx:id="lbIesStudyDegree" layoutX="180.0" layoutY="202.0" prefHeight="17.0" prefWidth="2.0" />
+                  <Label fx:id="lbL2" layoutX="132.0" layoutY="179.0" prefHeight="17.0" prefWidth="2.0" />
+                  <Label fx:id="lbNumberPhone" layoutX="139.0" layoutY="220.0" prefHeight="17.0" prefWidth="2.0" />
+                  <Label fx:id="lbDateBirthday" layoutX="134.0" layoutY="238.0" prefHeight="17.0" prefWidth="2.0" />
+                  <Label fx:id="lbCurp" layoutX="65.0" layoutY="258.0" prefHeight="17.0" prefWidth="2.0" />
+                  <Label fx:id="lbInstitutionalMail" layoutX="151.0" layoutY="276.0" prefHeight="17.0" prefWidth="2.0" />
+               </children>
+            </Pane>
+            <Button layoutX="573.0" layoutY="351.0" mnemonicParsing="false" onAction="#modifyIntegrant" prefHeight="25.0" prefWidth="84.0" text="Modificar" />
+            <Button layoutX="681.0" layoutY="351.0" mnemonicParsing="false" onAction="#closeIntegrantData" prefHeight="25.0" prefWidth="84.0" text="Salir" />
+            <Label layoutX="25.0" layoutY="1.0" text="CUERPO ACADÉMICO DE INGENIERÍA Y TECNOLOGÍA DE SOFTWARE">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

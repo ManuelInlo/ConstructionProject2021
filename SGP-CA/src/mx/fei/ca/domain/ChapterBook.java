@@ -8,6 +8,7 @@ package mx.fei.ca.domain;
  */
 
 public class ChapterBook extends Evidence{
+    private int idChapterBook;
     private int chapterNumber;
     private int homePage;
     private int endPage;
@@ -28,6 +29,15 @@ public class ChapterBook extends Evidence{
         this.chapterNumber = chapterNumber;
         this.homePage = homePage;
         this.endPage = endPage;
+    }
+    
+    /**
+     * 
+     * @return El identificador del capítulo de libro
+     */
+    
+    public int getIdChapterBook() {
+        return idChapterBook;
     }
     
     /**
@@ -82,6 +92,15 @@ public class ChapterBook extends Evidence{
 
     public String getCurp() {
         return curp;
+    }
+    
+    /**
+     * 
+     * @param idChapterBook El identificado a establecer al capítulo de libro
+     */
+    
+    public void setIdChapterBook(int idChapterBook) {
+        this.idChapterBook = idChapterBook;
     }
     
     /**

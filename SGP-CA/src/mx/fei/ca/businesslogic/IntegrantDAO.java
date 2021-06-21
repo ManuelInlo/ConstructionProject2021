@@ -72,7 +72,7 @@ public class IntegrantDAO implements IIntegrantDAO{
             preparedStatement.setString(10, integrant.getNumberPhone());
             preparedStatement.setDate(11, integrant.getDateBirthday()); 
             preparedStatement.setString(12, integrant.getStatusIntegrant());
-            preparedStatement.setString(13, integrant.getCurp());
+            preparedStatement.setString(13, encryptPassword(integrant.getCurp()));
             preparedStatement.executeUpdate();
             saveResult = true;
         }catch(SQLException ex){
@@ -469,5 +469,47 @@ public class IntegrantDAO implements IIntegrantDAO{
         }
         return integrants;
     }  
+    
+    /**
+     * Método que recupera de la base de datos los integrantes activos del CA de acuerdo a las iniciales de su nombre
+     * @param InitialesNameIntegrant Define las iniciales del nombre del integrante a recuperar
+     * @return ArrayList con los integrantes activos del CA
+     * @throws BusinessConnectionException 
+     */
+    
+    @Override
+    public ArrayList<Integrant> findIntegrantsByInitialesOfTitle(String InitialesNameIntegrant) throws BusinessConnectionException {
+        String sql = "SELECT * FROM integrant WHERE nameIntegrant LIKE CONCAT('%',?,'%') AND statusIntegrant = 'Activo'";
+        ArrayList<Integrant> integrants = new ArrayList<>();
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, InitialesNameIntegrant);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Integrant integrant;
+                String curp = resultSet.getString("curp");
+                String role = resultSet.getString("role");
+                String nameIntegrant = resultSet.getString("nameIntegrant");
+                String studyDegree = resultSet.getString("studyDegree");
+                String studyDiscipline = resultSet.getString("studyDiscipline");
+                String prodepParticipation = resultSet.getString("prodepParticipation");
+                String typeTeaching = resultSet.getString("typeTeaching");
+                String eisStudyDegree = resultSet.getString("eisStudyDegree");
+                String institutionalMail = resultSet.getString("institutionalMail");
+                String numberPhone = resultSet.getString("numberPhone");
+                Date dateBirthday = resultSet.getDate("dateBirthday");
+                String statusIntegrant = resultSet.getString("statusIntegrant");
+                integrant = new Integrant(curp, role, nameIntegrant, studyDegree, studyDiscipline, prodepParticipation, typeTeaching,
+                                          eisStudyDegree, institutionalMail, numberPhone, dateBirthday, statusIntegrant);
+                integrants.add(integrant);
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return integrants;
+    }      
     
 }

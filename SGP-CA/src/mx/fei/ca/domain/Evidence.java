@@ -96,4 +96,14 @@ public class Evidence {
         this.integrant = integrant;
     }
     
+    /**
+     * Método que devuelve el título de la evidencia para su posterior uso en la capa de presentación
+     * @return El título de la evidencia
+     */
+
+    @Override
+    public String toString() {
+        return titleEvidence;
+    }
+    
 }

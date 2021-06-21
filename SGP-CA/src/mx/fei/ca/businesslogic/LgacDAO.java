@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.dataaccess.DataBaseConnection;
 
@@ -80,5 +81,33 @@ public class LgacDAO implements ILgacDAO{
         }
         return deleteResult;
     }
+    
+    /**
+     * Método que recupera de la base de datos las LGAC al que pertenece un integrante
+     * @param curp Define la curp del integrante a buscar
+     * @return ArrayList con el nombre de la LGAC a la que pertenece un integrante
+     * @throws BusinessConnectionException
+     */
+    
+    @Override
+    public ArrayList<String> findLgacOfIntegrant (String curp) throws BusinessConnectionException{
+        String sql = "SELECT keyCode FROM participationlgac WHERE curp = ?";
+        ArrayList<String> lgacs = new ArrayList<>();
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, curp);             
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                String lgac = resultSet.getString("keyCode");
+                lgacs.add(lgac);
+            }            
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return lgacs;
+    }    
 
 }

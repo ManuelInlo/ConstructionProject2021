@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="446.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowAddChapterBookController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="816.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowAddChapterBookController">
    <children>
       <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="816.0" style="-fx-background-color: #60ABE0;">
          <children>
@@ -20,12 +20,7 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="681.0" layoutY="22.0" text="USER">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="721.0" layoutY="22.0" text="XXXXXXX">
+            <Label fx:id="lbUser" layoutX="592.0" layoutY="22.0" text="USER XXXXXXX">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -39,7 +34,7 @@
       </Pane>
       <Pane layoutY="412.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="816.0" style="-fx-background-color: #60ABE0;">
          <children>
-            <Label layoutX="215.0" layoutY="11.0" text="Facultad de Estadistica e Informatica - Universidad veracruzana">
+            <Label layoutX="215.0" layoutY="11.0" text="Facultad de Estadística e Informática - Universidad Veracruzana">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -97,12 +92,6 @@
                </font>
             </Label>
             <ComboBox fx:id="cbImpactCA" layoutX="127.0" layoutY="56.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="177.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
-            <Label layoutX="383.0" layoutY="61.0" text="Proyecto de investigación:">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <ComboBox fx:id="cbInvestigationProject" layoutX="555.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="241.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
             <TextField fx:id="tfHomePage" layoutX="287.0" layoutY="234.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
             <ComboBox fx:id="cbBook" layoutX="27.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
          </children>

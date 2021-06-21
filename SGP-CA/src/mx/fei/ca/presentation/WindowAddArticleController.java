@@ -77,7 +77,7 @@ public class WindowAddArticleController implements Initializable {
     
     private enum TypeError{
         EMPTYFIELD, INVALIDSTRING, MISSINGSELECTION, MISSINGDATE, TITLEDUPLICATE, FILEROUTEDUPLICATE, 
-        INCONSISTENTDATE, OVERDATE, INCONSISTENTPAGE, INVALIDLENGTH;
+        INCONSISTENTDATE, OVERDATE, INCONSISTENTPAGE, INVALIDLENGTH, ISSNDUPLICATE;
     }    
     
 
@@ -405,15 +405,15 @@ public class WindowAddArticleController implements Initializable {
      */
     
     private boolean existInconsistentNumberPage(){
-        boolean inconsistentDates = false;        
+        boolean inconsistentPages = false;        
         int homePage = Integer.parseInt(tfHomePage.getText());
         int endPage = Integer.parseInt(tfEndPage.getText());
         if(homePage > endPage){
-            inconsistentDates = true;
+            inconsistentPages = true;
             TypeError typeError = TypeError.INCONSISTENTPAGE;
             showInvalidFieldAlert(typeError);
         }
-        return inconsistentDates;
+        return inconsistentPages;
     }   
     
     /**
@@ -450,6 +450,7 @@ public class WindowAddArticleController implements Initializable {
         boolean duplicateValues = false;
         boolean articleTitleDuplicate = false;
         boolean fileRouteDuplicate = false;
+        boolean issnDuplicate = false;        
         if(articleDAO.existsArticleTitle(tfTitleEvidence.getText())){  
             articleTitleDuplicate = true;
             TypeError typeError = TypeError.TITLEDUPLICATE;
@@ -462,7 +463,13 @@ public class WindowAddArticleController implements Initializable {
             showInvalidFieldAlert(typeError);
         }
         
-        if(articleTitleDuplicate || fileRouteDuplicate){
+        if(articleDAO.existsArticleIssn(tfIssn.getText())){
+            issnDuplicate = true;
+            TypeError typeError = TypeError.ISSNDUPLICATE;
+            showInvalidFieldAlert(typeError);
+        }        
+        
+        if(articleTitleDuplicate || fileRouteDuplicate || issnDuplicate){
             duplicateValues = true;
         }
         
@@ -525,6 +532,10 @@ public class WindowAddArticleController implements Initializable {
         if(typeError == TypeError.FILEROUTEDUPLICATE){
             alert.setContentText("La ruta de archivo del artículo ya se encuentra registrada en otro artículo");
         }
+        
+        if(typeError == TypeError.ISSNDUPLICATE){
+            alert.setContentText("El ISSN del artículo ya se encuentra registrado en otro artículo");
+        }        
  
         if(typeError == TypeError.INCONSISTENTPAGE){
             alert.setContentText("La página de inicio es mayor que la página final, corrige el campo para poder guardar");

@@ -15,7 +15,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -152,12 +151,9 @@ public class WindowAddIntegrantController implements Initializable {
             Date dateBirthday = parseToSqlDate(java.util.Date.from(dpDateBirthday.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
             String statusIntegrant = cbStatusIntegrant.getSelectionModel().getSelectedItem().toString();        
             Integrant integrant = new Integrant(curp, role, nameIntegrant, studyDegree, studyDiscipline, prodepParticipation, typeTeaching,
-                    iesStudyDegree, institutionalMail, numberPhone, dateBirthday, statusIntegrant);
-            
+                    iesStudyDegree, institutionalMail, numberPhone, dateBirthday, statusIntegrant);           
             IntegrantDAO integrantDAO = new IntegrantDAO();
-            integrant.setPassword(integrantDAO.encryptPassword(curp));
-            boolean saveResult = integrantDAO.savedIntegrant(integrant);
-            
+            boolean saveResult = integrantDAO.savedIntegrant(integrant);           
             if(saveResult){
                 if(checkBoxL1.isSelected()){
                     LgacDAO lgacDAO = new LgacDAO();
@@ -527,4 +523,5 @@ public class WindowAddIntegrantController implements Initializable {
         alert.setContentText("Perdida de conexión con la base de datos, no se pudo guardar. Intente más tarde");
         alert.showAndWait();
     }
+    
 }

@@ -13,10 +13,26 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
+/**
+ * Clase para representar las pruebas unitarias de los métodos de la clase IntegrantDAO
+ * @author Gloria Mendoza González
+ * @version 17-06-2021
+ */
+
 public class IntegrantTest {
+    
+    /**
+     * Constructor para la creación de IntegrantTest
+     */
+    
     public IntegrantTest(){
         
     }
+    
+    /**
+     * Método que realiza test para la inserción de un nuevo integrante a la base de datos
+     * @throws BusinessConnectionException 
+     */
     
     @Test
     public void testInsertIntegrant() throws BusinessConnectionException{
@@ -35,6 +51,11 @@ public class IntegrantTest {
         assertEquals("Prueba correcta, si guardó", saveResult, true);
     }
 
+    /**
+     * Método que realiza test para la modificación de un integrante de acuerdo a su curp
+     * @throws BusinessConnectionException 
+     */
+    
     @Test    
     public void testUpdateIntegrant() throws BusinessConnectionException{
         IntegrantDAO integrantDAO = new IntegrantDAO();
@@ -52,12 +73,22 @@ public class IntegrantTest {
         assertEquals("Prueba correcta, si actualizo", updateResult, true);
     }    
     
+    /**
+     * Método que realiza test para la eliminación de un integrante de acuerdo a su curp
+     * @throws BusinessConnectionException 
+     */
+    
     @Test    
     public void testDeleteIntegrantByCurp() throws BusinessConnectionException{
         IntegrantDAO integrantDAO = new IntegrantDAO();
-        boolean deleteResult = integrantDAO.deleteIntegrantByCurp("JOPA820701HASBDFO9");
+        boolean deleteResult = integrantDAO.deleteIntegrantByCurp("GOZT010107MASDFZA0");
         assertEquals("Prueba correcta, se elimino integrante", deleteResult, true);       
     }    
+    
+    /**
+     * Método que realiza test para la modificación de la contraseña de inicio de sesión de un integrante 
+     * @throws BusinessConnectionException 
+     */
     
     @Test 
     public void testChangedPasswordIntegrant() throws BusinessConnectionException{
@@ -67,6 +98,11 @@ public class IntegrantTest {
         assertEquals("Prueba cambio contraseña", changedResult, true);
     }
     
+    /**
+     * Método que realiza test para la obtención de un integrante de acuerdo a su correo institucional y su contraseña
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testGetIntegrantByInstitutionalMail() throws BusinessConnectionException{
         IntegrantDAO integrantDAO = new IntegrantDAO();
@@ -74,6 +110,11 @@ public class IntegrantTest {
         Integrant integrant = integrantDAO.getIntegrantByInstitutionalMail("kcortes@uv.mx");
         assertEquals("Prueba encontrar integrante por email", passwordIntegrantExpected, integrant.getPassword());
     }
+    
+    /**
+     * Método que realiza test para la obtención de un integrante de acuerdo a su curp
+     * @throws BusinessConnectionException 
+     */
     
     @Test
     public void testFindIntegrantByCurp() throws BusinessConnectionException{
@@ -83,12 +124,22 @@ public class IntegrantTest {
         assertEquals("Prueba encontrar integrante por curp", nameIntegrantExpected, integrant.getNameIntegrant());
     }
     
+    /**
+     * Método que realiza test para la verificación de existencia de nombre de un integrante
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testExistsIntegrantName() throws BusinessConnectionException{
         IntegrantDAO integrantDAO = new IntegrantDAO();
         boolean exists = integrantDAO.existsIntegrantName("Juan Carlos Pérez Arriaga");
         assertTrue("Prueba mandar a validar un nombre que ya existe de un integrante", exists);
     }
+    
+    /**
+     * Método que realiza test para la verificación de existencia de curp de un integrante
+     * @throws BusinessConnectionException 
+     */
     
     @Test
     public void testExistsIntegrantCurp() throws BusinessConnectionException{
@@ -97,6 +148,11 @@ public class IntegrantTest {
         assertTrue("Prueba mandar a validar una curp que ya existe de un integrante", exists);
     }
     
+    /**
+     * Método que realiza test para la verificación de existencia de correo institucional de un integrante
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testExistsIntegrantEmail() throws BusinessConnectionException{
         IntegrantDAO integrantDAO = new IntegrantDAO();
@@ -104,11 +160,28 @@ public class IntegrantTest {
         assertTrue("Prueba mandar a validar una curp que ya existe de un integrante", exists);
     }
     
+    /**
+     * Método que realiza test para la obtención de todos los integrantes activos del CA
+     * @throws BusinessConnectionException 
+     */
+    
     @Test
     public void testFindAllIntegrants() throws BusinessConnectionException{
         IntegrantDAO integrantDAO = new IntegrantDAO();
         ArrayList<Integrant> integrants = integrantDAO.findAllIntegrants();
         assertEquals("Prueba busqueda de todos los integrantes", integrants.size(), 4);
     }
+    
+    /**
+     * Método que realiza test para la obtención de integrantes de acuerdo a las iniciales de su nombre
+     * @throws BusinessConnectionException 
+     */
+    
+    @Test
+    public void testFindIntegrantByInitialesOfTitle() throws BusinessConnectionException{
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        ArrayList <Integrant> integrants = integrantDAO.findIntegrantsByInitialesOfTitle("Juan");
+        assertEquals("Prueba encontrar integrante por iniciales de nombre", integrants.size(), 2);
+    }    
           
 }

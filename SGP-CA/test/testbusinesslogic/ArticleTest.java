@@ -27,7 +27,7 @@ import org.junit.Test;
 public class ArticleTest {
     
     /**
-     * Constructor vacío de la clase
+     * Constructor para la creación de un ArticleTest
      */
     
     public ArticleTest(){
@@ -35,7 +35,7 @@ public class ArticleTest {
     }
     
     /**
-     * Test de agregación de artículo
+     * Método que realiza test para la inserción de un nuevo artículo en la base de datos
      * @throws BusinessConnectionException 
      */
     
@@ -70,7 +70,7 @@ public class ArticleTest {
     }
     
     /**
-     * Test de modificación de un artículo previamente registrado
+     * Método que realiza test para la modificación de un artículo específico
      * @throws BusinessConnectionException 
      */
     
@@ -104,7 +104,7 @@ public class ArticleTest {
     }    
     
     /**
-     * Test de búsqueda de artículos por su impacto positivo al CA
+     * Método que realiza test de búsqueda de artículos por su impacto positivo al CA
      * @throws BusinessConnectionException 
      */
     
@@ -116,7 +116,7 @@ public class ArticleTest {
     }
     
     /**
-     * Test de búsqueda de artículos de un integrante
+     * Método que realiza test de búsqueda de artículos de un integrante
      * @throws BusinessConnectionException 
      */
     
@@ -128,7 +128,19 @@ public class ArticleTest {
     }
     
     /**
-     * Test de búsqueda de artículos por las iniciales del titulo
+     * Método que realiza test de búsqueda de total de artículos de un integrante
+     * @throws BusinessConnectionException 
+     */
+    
+    @Test
+    public void testFindNumberArticlesByCurpIntegrant() throws BusinessConnectionException{
+        ArticleDAO articleDAO = new ArticleDAO();
+        int numberArticles = articleDAO.findArticlesByCurpIntegrant("MCUD940585RDTRER10");
+        assertEquals("Prueba busqueda de artículo de un integrante por curp", numberArticles, 5);
+    }   
+    
+    /**
+     * Método que realiza test de búsqueda de artículos por las iniciales del titulo
      * @throws BusinessConnectionException 
      */
     
@@ -140,7 +152,7 @@ public class ArticleTest {
     }
     
     /**
-     * Test de verificación de existencia del título de un artículo
+     * Método que realiza test de verificación de existencia del título de un artículo
      * @throws BusinessConnectionException 
      */
     
@@ -152,7 +164,7 @@ public class ArticleTest {
     }
     
     /**
-     * Test de verificación de existencia de la ruta de archivo de un artículo
+     * Método que realiza test de verificación de existencia de la ruta de archivo de un artículo
      * @throws BusinessConnectionException 
      */
     
@@ -162,9 +174,21 @@ public class ArticleTest {
         boolean exists = articleDAO.existsArticleFileRoute("C:\\usuarios\\alicia\\arc1.fil");
         assertTrue("Prueba mandar a validar una ruta de archivo que ya existe en un articulo", exists);
     }  
+
+    /**
+     * Método que realiza test de verificación de existencia del ISSN de un artículo
+     * @throws BusinessConnectionException 
+     */
+    
+    @Test
+    public void testExistsArticleIssn() throws BusinessConnectionException{
+        ArticleDAO articleDAO = new ArticleDAO();
+        boolean exists = articleDAO.existsArticleIssn("7000-0982");
+        assertTrue("Prueba mandar a validar un ISSN que ya existe en un articulo", exists);
+    }  
     
     /**
-     * Test de verificación de existencia de título de artículo para modificación
+     * Método que realiza test de verificación de existencia de título de artículo para modificación
      * @throws BusinessConnectionException 
      */
     
@@ -176,7 +200,7 @@ public class ArticleTest {
     }
     
     /**
-     * Test de verificación de existencia de ruta de archivo para modificación de un artículo
+     * Método que realiza test de verificación de existencia de ruta de archivo para modificación de un artículo
      * @throws BusinessConnectionException 
      */
      

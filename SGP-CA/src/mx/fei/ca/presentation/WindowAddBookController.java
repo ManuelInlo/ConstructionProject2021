@@ -75,7 +75,7 @@ public class WindowAddBookController implements Initializable {
     
     private enum TypeError{
         EMPTYFIELD, INVALIDSTRING, MISSINGSELECTION, MISSINGDATE, TITLEDUPLICATE, FILEROUTEDUPLICATE, 
-        INCONSISTENTDATE, OVERDATE, INVALIDLENGTH;
+        INCONSISTENTDATE, OVERDATE, INVALIDLENGTH, ISBNDUPLICATE, INVALIDPAGE, INVALIDPRINTING;
     }  
 
     @Override
@@ -128,7 +128,7 @@ public class WindowAddBookController implements Initializable {
     }    
 
     /**
-     * Método que llena el ComboBox proyectos de investigación recuperando de la base de datos
+     * Método que llena el ComboBox proyectos de investigación recuperados de la base de datos
      * @throws BusinessConnectionException 
      */
     
@@ -206,7 +206,7 @@ public class WindowAddBookController implements Initializable {
         return sqlDate;
     }
 
-        /**
+    /**
      * Método que devuelve si existen o no campos inválidos
      * @return Booleano con el resultado de la verificación, devuelve true si existen campos inválidos, de lo contrario devuelve false
      * @throws BusinessConnectionException 
@@ -214,8 +214,8 @@ public class WindowAddBookController implements Initializable {
     
     private boolean existsInvalidFields() throws BusinessConnectionException{
         boolean invalidFields = false;
-        if(existsEmptyFields() || existsInvalidStrings() ||  existsMissingSelection() || existsDuplicateValues() || 
-           existsInvalidDates() || existsInvalidLength()){
+        if(existsEmptyFields() || existsInvalidStrings() || existsMissingSelection() || existsDuplicateValues() || 
+           existsInvalidDates() || existsInvalidLength() || existsInvalidNumbers()){
             invalidFields = true;
         }    
         return invalidFields;
@@ -280,7 +280,7 @@ public class WindowAddBookController implements Initializable {
     
     private boolean existsInvalidCharactersForName(String textToValidate){
         boolean invalidCharacters = false;
-        Pattern pattern = Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s]+$");
+        Pattern pattern = Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s\\,]+$");
         Matcher matcher = pattern.matcher(textToValidate);
         if(!matcher.find()){
            invalidCharacters = true; 
@@ -296,7 +296,7 @@ public class WindowAddBookController implements Initializable {
     
     private boolean existsInvalidCharactersForTitle(String textToValidate){
         boolean invalidCharacters = false;
-        Pattern pattern = Pattern.compile("^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ\\s\\.#,:]+$");
+        Pattern pattern = Pattern.compile("^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ\\s\\.#-,:]+$");
         Matcher matcher = pattern.matcher(textToValidate);
         if(!matcher.find()){
            invalidCharacters = true; 
@@ -328,7 +328,8 @@ public class WindowAddBookController implements Initializable {
     
     private boolean existsInvalidCharactersForIsbn(String textToValidate){
         boolean invalidCharacters = false;
-        String validText = "^(?:ISBN(?:-10)?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$)[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$";        
+        String validText = "/^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|"
+                           + "(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]? [0-9]+[- ]?[0-9]+[- ]?[0-9X]$/";       
         Pattern pattern = Pattern.compile(validText);
         Matcher matcher = pattern.matcher(textToValidate);
         if(!matcher.find()){
@@ -389,6 +390,37 @@ public class WindowAddBookController implements Initializable {
     }
     
     /**
+     * Método que verifica si existen inconsistencias con los campos que tienen números
+     * @return Booleano con el resultado de verificación, devuelve true si existen inválidos, de lo contrario, devuelve false
+     */
+    
+    private boolean existsInvalidNumbers(){
+        boolean invalidNumbers = false;
+        int numPages = Integer.parseInt(tfNumPages.getText());
+        int printing = Integer.parseInt(tfPrinting.getText());        
+        boolean invalidPage = false;
+        boolean invalidPrinting = false;      
+        if(numPages < 49){  
+            invalidPage = true;
+            TypeError typeError = TypeError.INVALIDPAGE;
+            showInvalidFieldAlert(typeError);
+        }
+           
+        if(printing < 0){
+            invalidPrinting = true;
+            TypeError typeError = TypeError.INVALIDPRINTING;
+            showInvalidFieldAlert(typeError);
+        }
+        
+        if(invalidPage || invalidPrinting){
+            invalidNumbers = true;
+        }
+        
+        return invalidNumbers;
+    }    
+    
+    
+    /**
      * Método que verifica si existe selección de fecha faltante del campo de tipo DatePicker
      * @param datePicker Define la fecha seleccionada a verificar del campo de tipo DatePicker
      * @return Booleano con el resultado de verificación, devuelve true si existe faltante, de lo contrario, devuelve false
@@ -438,6 +470,7 @@ public class WindowAddBookController implements Initializable {
         boolean duplicateValues = false;
         boolean bookTitleDuplicate = false;
         boolean fileRouteDuplicate = false;
+        boolean isbnDuplicate = false;        
         if(bookDAO.existsBookTitle(tfTitleEvidence.getText())){  
             bookTitleDuplicate = true;
             TypeError typeError = TypeError.TITLEDUPLICATE;
@@ -450,7 +483,13 @@ public class WindowAddBookController implements Initializable {
             showInvalidFieldAlert(typeError);
         }
         
-        if(bookTitleDuplicate || fileRouteDuplicate){
+        if(bookDAO.existsBookIsbn(tfIsbn.getText())){
+            isbnDuplicate = true;
+            TypeError typeError = TypeError.ISBNDUPLICATE;
+            showInvalidFieldAlert(typeError);
+        }
+        
+        if(bookTitleDuplicate || fileRouteDuplicate || isbnDuplicate){
             duplicateValues = true;
         }
         
@@ -514,10 +553,22 @@ public class WindowAddBookController implements Initializable {
             alert.setContentText("La ruta de archivo del libro ya se encuentra registrada en otro libro");
         } 
         
+        if(typeError == TypeError.ISBNDUPLICATE){
+            alert.setContentText("El ISBN del libro ya se encuentra registrado en otro libro");
+        } 
+        
+        if(typeError == TypeError.INVALIDPAGE){
+            alert.setContentText("Un libro no puede tener menos de 49 páginas, corrige el campo para poder guardar");
+        }        
+
+        if(typeError == TypeError.INVALIDPRINTING){
+            alert.setContentText("Un libro no puede contener menos de 49 páginas, corrige el campo para poder guardar");
+        }    
+                
         if(typeError == TypeError.INVALIDLENGTH){
             alert.setContentText("El número de carácteres excede el límite permitido, corrige los campos para poder guardar");
-        } 
-
+        }         
+        
         alert.showAndWait();    
     }
     

@@ -1,6 +1,7 @@
 
 package testbusinesslogic;
 
+import java.util.ArrayList;
 import mx.fei.ca.businesslogic.LgacDAO;
 import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import static org.junit.Assert.assertEquals;
@@ -23,7 +24,7 @@ public class LgacTest {
     }
     
     /**
-     * Test de relación entre el integrante del CA y el LGAC al que pertenece
+     * Método que realiza test que guarda una nueva relación entre el integrante del CA y el LGAC al que pertenece en la base de datos
      * @throws BusinessConnectionException 
      */
     
@@ -35,15 +36,27 @@ public class LgacTest {
     }
     
     /**
-     * Test de eliminación de relación entre el integrante del CA y su LGAC 
+     * Método que realiza test de eliminación de relación entre el integrante del CA y su LGAC 
      * @throws BusinessConnectionException 
      */
     
     @Test
     public void testDeletedLgacOfIntegrant() throws BusinessConnectionException{
         LgacDAO lgacDAO = new LgacDAO();       
-        boolean saveResult = lgacDAO.deletedLgacOfIntegrant("JCPA940514RDTREOP1", "L1");
+        boolean saveResult = lgacDAO.deletedLgacOfIntegrant("GOZT010107MASDFZA0", "L2");
         assertEquals("Prueba correcta, si elimino", saveResult, true);
     }
+    
+    /**
+     * Método que recupera de la base de datos los LGAC a los que pertenece un integrante 
+     * @throws BusinessConnectionException 
+     */
+    
+    @Test
+    public void testFindLgacOfIntegrant() throws BusinessConnectionException{
+        LgacDAO lgacDAO = new LgacDAO();       
+        ArrayList<String> lgacs = lgacDAO.findLgacOfIntegrant("GOZT010107MASDFZA0");
+        assertEquals("Prueba correcta en búsqueda de LGAC", lgacs.size(), 1);
+    }    
    
 }

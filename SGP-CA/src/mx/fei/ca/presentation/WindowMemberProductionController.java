@@ -431,7 +431,7 @@ public class WindowMemberProductionController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddChapterBook.fxml"));
         Parent root = fxmlLoader.load();
         WindowAddChapterBookController windowAddChapterBookController = fxmlLoader.getController();
-        //windowAddChapterBookController.setIntegrant(integrant);
+        windowAddChapterBookController.setIntegrant(integrant);
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setScene(scene);

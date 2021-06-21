@@ -12,6 +12,7 @@ import mx.fei.ca.domain.Evidence;
 import mx.fei.ca.domain.Integrant;
 import mx.fei.ca.domain.InvestigationProject;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
@@ -23,7 +24,7 @@ import org.junit.Test;
 public class ChapterBookTest {
     
     /**
-     * Constructor vacío de la clase
+     * Constructor para la creación de un ChapterBookTest
      */
     
     public ChapterBookTest(){
@@ -31,7 +32,7 @@ public class ChapterBookTest {
     }
     
     /**
-     * Test de agregación de  capítulo de libro
+     * Método que realiza test para la inserción de un nuevo capítulo de libro en la base de datos
      * @throws BusinessConnectionException 
      */
     
@@ -47,19 +48,19 @@ public class ChapterBookTest {
         BookDAO bookDAO = new BookDAO();
         Book book = bookDAO.findBookByIsbn("908-3-16-148410-4");
         
-        Evidence evidence = new Evidence("SI", "Procesos de la ingeniería de software", "Mauricio Piñeda");
+        Evidence evidence = new Evidence("SI", "La ingeniería de software", "Mauricio Piñeda");
         ChapterBook chapterBook = new ChapterBook(evidence, 4 , 1, 95);
         
         chapterBook.setCurp(integrant.getCurp());
         chapterBook.setInvestigationProject(investigationProject);
         chapterBook.setBook(book);
         
-        boolean saveResult = chapterBookDAO.savedChapterBook(chapterBook);
-        assertEquals("Prueba correcta, si guardó", saveResult, true);
+        int saveResult = chapterBookDAO.saveAndReturnIdNewChapterBook(chapterBook);
+        assertEquals("Prueba correcta, si guardó", saveResult, 4);
     }
     
     /**
-     * Test de modificación de un capítulo libro previamente registrado
+     * Método que realiza test para la modificación de un capítulo libro específico
      * @throws BusinessConnectionException 
      */
     
@@ -87,7 +88,7 @@ public class ChapterBookTest {
     }   
     
     /**
-     * Test de búsqueda de capítulos de libros por su impacto positivo al CA
+     * Método que realiza test de búsqueda de capítulos de libros por su impacto positivo al CA
      * @throws BusinessConnectionException 
      */
     
@@ -95,11 +96,11 @@ public class ChapterBookTest {
     public void testFindChapterBooksByPositiveImpactCA() throws BusinessConnectionException{
         ChapterBookDAO chapterBookDAO = new ChapterBookDAO();
         ArrayList<ChapterBook> chapterBooks = chapterBookDAO.findChapterBooksByPositiveImpactCA();
-        assertEquals("Prueba busqueda de capítulos de libro por su impacto al CA", chapterBooks.size(), 3);
+        assertEquals("Prueba busqueda de capítulos de libro por su impacto al CA", chapterBooks.size(), 4);
     }
     
     /**
-     * Test de búsqueda de capítulos de libros de un integrante
+     * Método que realiza test de búsqueda de capítulos de libros de un integrante
      * @throws BusinessConnectionException 
      */
     
@@ -110,4 +111,51 @@ public class ChapterBookTest {
         assertEquals("Prueba busqueda de capítulos de libros de un integrante por curp", chapterBooks.size(), 2);
     }
     
+    /**
+     * Método que realiza test de búsqueda de total de capítulos de libros de un integrante
+     * @throws BusinessConnectionException 
+     */
+    
+    @Test
+    public void testFindNumberChapterBooksByCurpIntegrant() throws BusinessConnectionException{
+        ChapterBookDAO chapterBookDAO = new ChapterBookDAO();
+        int chapterBooks = chapterBookDAO.findChapterBooksByCurpIntegrant("JCPA940514RDTREOP1");
+        assertEquals("Prueba busqueda de total de capítulos de libros de un integrante por curp", chapterBooks, 3);
+    }    
+    
+    /**
+     * Método que realiza test para la obtención de capítulo de libro de acuerdo a las iniciales del título
+     * @throws BusinessConnectionException 
+     */
+    
+    @Test
+    public void testFindChapterBooksByByInitialesOfTitle() throws BusinessConnectionException{
+        ChapterBookDAO chapterBookDAO = new ChapterBookDAO();
+        ArrayList<ChapterBook> chapterBooks = chapterBookDAO.findChapterBookByCurpIntegrantInitialesOfTitle("software", "JCPA940514RDTREOP1");
+        assertEquals("Prueba encontrar capítulos de libros por título", chapterBooks.size(), 3);
+    }    
+    
+    /**
+     * Método que realiza test para la verificación de existencia de título de capítulo de libro
+     * @throws BusinessConnectionException 
+     */   
+    
+    @Test
+    public void testExistsChapterBookTitle() throws BusinessConnectionException{
+        ChapterBookDAO chapterBookDAO = new ChapterBookDAO();
+        boolean exists = chapterBookDAO.existsChapterBookTitle("Ingeniería de software y la IA");
+        assertTrue("Prueba mandar a validar un titulo que ya existe de capítulo de libro", exists);
+    }
+    
+    /**
+     * Método que realiza test para la verificación de existencia de un número de capítulo de libro de un libro específico
+     * @throws BusinessConnectionException 
+     */   
+    
+    @Test
+    public void testExistsNumberChapterByBook() throws BusinessConnectionException{
+        ChapterBookDAO chapterBookDAO = new ChapterBookDAO();
+        boolean exists = chapterBookDAO.existsNumberChapterByBook(4, "908-3-16-148410-4");
+        assertTrue("Prueba mandar a validar un número de capítulo de libro de un libro específico existente", exists);
+    }    
 }

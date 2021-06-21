@@ -50,12 +50,12 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lbNameIntegrant" layoutX="14.0" layoutY="62.0" text="Nombre del profesor: ">
+                  <Label layoutX="14.0" layoutY="62.0" text="Nombre del profesor: ">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Button fx:id="btnExit" layoutX="673.0" layoutY="366.0" minHeight="-Infinity" mnemonicParsing="false" onAction="#closeWindowIntegrants" prefHeight="28.0" prefWidth="103.0" text="Salir">
+                  <Button layoutX="673.0" layoutY="366.0" minHeight="-Infinity" mnemonicParsing="false" onAction="#closeWindowIntegrants" prefHeight="28.0" prefWidth="103.0" text="Salir">
                      <font>
                         <Font size="13.0" />
                      </font>
@@ -65,12 +65,12 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Button fx:id="btnSearch" layoutX="673.0" layoutY="58.0" mnemonicParsing="false" onAction="#searchIntegrant" prefHeight="28.0" prefWidth="103.0" text="Buscar">
+                  <Button layoutX="673.0" layoutY="58.0" mnemonicParsing="false" onAction="#searchIntegrant" prefHeight="28.0" prefWidth="103.0" text="Buscar">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnRegistration" layoutX="673.0" layoutY="13.0" mnemonicParsing="false" onAction="#addIntegrant" prefHeight="28.0" prefWidth="103.0" text="Registrar">
+                  <Button layoutX="673.0" layoutY="13.0" mnemonicParsing="false" onAction="#addIntegrant" prefHeight="28.0" prefWidth="103.0" text="Registrar">
                      <font>
                         <Font size="13.0" />
                      </font>

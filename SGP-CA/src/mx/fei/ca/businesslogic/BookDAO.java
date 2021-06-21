@@ -163,6 +163,52 @@ public class BookDAO implements IBookDAO{
     }
     
     /**
+     * Método que recupera de la base de datos todas las evidencias de tipo libro 
+     * @return ArrayList con todas las evidencias de tipo libro 
+     * @throws BusinessConnectionException 
+     */
+    
+    @Override
+    public ArrayList<Book> findAllBooks() throws BusinessConnectionException {
+        String sql = "SELECT * FROM book";
+        ArrayList<Book> books = new ArrayList<>();
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Evidence evidence;
+                Book book;
+                String impactCA = resultSet.getString("impactCA");
+                String titleEvidence = resultSet.getString("titleEvidence");
+                String isbn = resultSet.getString("ISBN");
+                int printing = resultSet.getInt("printing");
+                int numPages = resultSet.getInt("numPages");
+                String participationType = resultSet.getString("participationType");
+                String actualState = resultSet.getString("actualState");
+                String country = resultSet.getString("country");      
+                String author = resultSet.getString("author");               
+                Date publicationDate = resultSet.getDate("publicationDate");
+                String editorial = resultSet.getString("editorial");
+                String edition = resultSet.getString("edition");      
+                String fileRoute = resultSet.getString("fileRoute");                
+                evidence = new Evidence(impactCA, titleEvidence, author);
+                if(publicationDate != null){
+                    book = new Book(evidence, isbn, printing, numPages, participationType, actualState, country, publicationDate, editorial, edition, fileRoute);
+                }else{
+                    book = new Book(evidence, isbn, printing, numPages, participationType, actualState, country, editorial, edition, fileRoute);
+                }
+                books.add(book);
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return books;
+    }   
+    
+    /**
      * Método que recupera de la base de datos las evidencias de tipo libro por fecha que impactan al CA
      * @param date Define la fecha de la cual se quiere recuperar los libros
      * @return ArrayList con máximo dos libros
@@ -261,6 +307,60 @@ public class BookDAO implements IBookDAO{
         }
         return books;
     }
+    
+    /**
+     * Método que recupera de la base de datos el número de evidencias de tipo libro de un integrante
+     * @param curp Define la curp del integrante del cual se quiere recuperar los libros
+     * @return int con el número total de evidencias de tipo libro de un integrante
+     * @throws BusinessConnectionException 
+     */
+    
+    @Override
+    public int findBooksByCurpIntegrant(String curp) throws BusinessConnectionException {
+        String sql = "SELECT * FROM book WHERE curp = ?";
+        ArrayList<Book> books = new ArrayList<>();
+        int numberBooks = 0;        
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, curp);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Evidence evidence;
+                Book book;
+                String impactCA = resultSet.getString("impactCA");
+                String titleEvidence = resultSet.getString("titleEvidence");
+                String isbn = resultSet.getString("ISBN");
+                int printing = resultSet.getInt("printing");
+                int numPages = resultSet.getInt("numPages");
+                String participationType = resultSet.getString("participationType");
+                String actualState = resultSet.getString("actualState");
+                String country = resultSet.getString("country");      
+                String author = resultSet.getString("author");               
+                Date publicationDate = resultSet.getDate("publicationDate");
+                String editorial = resultSet.getString("editorial");
+                String edition = resultSet.getString("edition");      
+                String fileRoute = resultSet.getString("fileRoute");
+                int idProject = resultSet.getInt("idProject");                
+                evidence = new Evidence(impactCA, titleEvidence, author);
+                if(publicationDate != null){
+                    book = new Book(evidence, isbn, printing, numPages, participationType, actualState, country, publicationDate, editorial, edition, fileRoute);
+                }else{
+                    book = new Book(evidence, isbn, printing, numPages, participationType, actualState, country, editorial, edition, fileRoute);
+                }
+                InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
+                InvestigationProject investigationProject = investigationProjectDAO.findInvestigationProjectById(idProject); 
+                book.setInvestigationProject(investigationProject);
+                books.add(book);             
+            }
+            numberBooks = books.size();               
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexión con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return numberBooks;
+    }   
     
     /**
      * Método que recupera los libros de acuerdo a las iniciales del título
@@ -371,6 +471,33 @@ public class BookDAO implements IBookDAO{
     }
     
     /**
+     * Método que verifica si existe el ISBN de un libro en la base de datos
+     * @param isbn Define el ISBN a verificar existencia
+     * @return Booleano con el resultado de verificación, devuelve true si existe, de lo contrario, devuelve false
+     * @throws BusinessConnectionException 
+     */
+    
+    @Override
+    public boolean existsBookIsbn(String isbn) throws BusinessConnectionException {
+        String sql = "SELECT 1 FROM book WHERE isbn = ?";
+        boolean exists = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, isbn);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                exists = true;
+            }
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return exists;
+    }
+    
+    /**
      * Método que verifica si existe el título de un libro en la base de datos para modificación
      * @param titleBook Define el título del libro a verificar existencia
      * @param isbn Define el identificador único del libro a modificar
@@ -426,10 +553,10 @@ public class BookDAO implements IBookDAO{
             dataBaseConnection.closeConnection();
         }
         return exists;
-    }
+    } 
     
     /**
-     * Método que recupera el libro de acuerdo a al ISBN proporcionado
+     * Método que recupera el libro de acuerdo a el ISBN proporcionado
      * @param isbn Define el identificador único del libro a buscar
      * @return Una evidencia de tipo libro
      * @throws BusinessConnectionException 

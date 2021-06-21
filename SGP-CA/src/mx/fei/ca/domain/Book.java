@@ -295,5 +295,16 @@ public class Book extends Evidence{
     
     public void setCurp(String curp) {
         this.curp = curp;
-    }   
+    }  
+    
+    /**
+     * Método que devuelve el título del libro para su posterior uso en la capa de presentación
+     * @return El título de la evidencia de tipo libro
+     */
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+      
 }

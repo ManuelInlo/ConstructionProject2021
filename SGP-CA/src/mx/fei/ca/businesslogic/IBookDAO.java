@@ -24,4 +24,7 @@ public interface IBookDAO {
     public boolean existsBookTitleForUpdate(String titleBook, String issn) throws BusinessConnectionException;
     public boolean existsBookFileRouteForUpdate(String fileRoute, String isbn) throws BusinessConnectionException;
     public Book findBookByIsbn(String isbn) throws BusinessConnectionException;
+    public boolean existsBookIsbn(String isbn) throws BusinessConnectionException;   
+    public ArrayList<Book> findAllBooks() throws BusinessConnectionException;   
+    public int findBooksByCurpIntegrant(String curp) throws BusinessConnectionException;    
 }

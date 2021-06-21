@@ -27,7 +27,7 @@ import org.junit.Test;
 public class BookTest {
     
     /**
-     * Constructor vacío de la clase
+     * Constructor para la creación de BookTest
      */
     
     public BookTest(){
@@ -35,7 +35,7 @@ public class BookTest {
     }
     
     /**
-     * Test de agregación de libro
+     * Método que realiza test para la inserción de un nuevo libro a la base de datos
      * @throws BusinessConnectionException 
      */
     
@@ -69,7 +69,7 @@ public class BookTest {
     }
    
     /**
-     * Test de modificación de un libro previamente registrado
+     * Método que realiza test para la modificación de un libro de acuerdo a su ISBN
      * @throws BusinessConnectionException 
      */
     
@@ -103,7 +103,7 @@ public class BookTest {
     }
     
     /**
-     * Test de búsqueda de libros por su impacto positivo al CA
+     * Método que realiza test de búsqueda de libros por su impacto positivo al CA
      * @throws BusinessConnectionException 
      */  
     
@@ -115,7 +115,7 @@ public class BookTest {
     }
     
     /**
-     * Test de búsqueda de libros de un integrante
+     * Método que realiza test de búsqueda de libros de un integrante
      * @throws BusinessConnectionException 
      */
     
@@ -127,7 +127,19 @@ public class BookTest {
     }
     
     /**
-     * Test de búsqueda de libros por las iniciales del titulo
+     * Método que realiza test de búsqueda de total de libros de un integrante
+     * @throws BusinessConnectionException 
+     */
+    
+    @Test
+    public void testFindNumberBooksByCurpIntegrant() throws BusinessConnectionException{
+        BookDAO bookDAO = new BookDAO();
+        int numberBooks = bookDAO.findBooksByCurpIntegrant("MCUD940585RDTRER10");
+        assertEquals("Prueba busqueda de total de libros de un integrante por curp", numberBooks, 4);
+    }    
+    
+    /**
+     * Método que realiza test de búsqueda de libros por las iniciales del titulo
      * @throws BusinessConnectionException 
      */
     
@@ -139,7 +151,19 @@ public class BookTest {
     }
     
     /**
-     * Test de verificación de existencia del título de un libro
+     * Método que realiza test de búsqueda de todos los libros registrados en la base de datos
+     * @throws BusinessConnectionException 
+     */
+    
+    @Test
+    public void testFindAllBooks() throws BusinessConnectionException{
+        BookDAO bookDAO = new BookDAO();
+        ArrayList <Book> books = bookDAO.findAllBooks();
+        assertEquals("Prueba encontrar todos los libros registrados", books.size(), 8);
+    }    
+    
+    /**
+     * Método que realiza test de verificación de existencia del título de un libro
      * @throws BusinessConnectionException 
      */
     
@@ -151,7 +175,7 @@ public class BookTest {
     }
     
     /**
-     * Test de verificación de existencia de la ruta de archivo de un libro
+     * Método que realiza test de verificación de existencia de la ruta de archivo de un libro
      * @throws BusinessConnectionException 
      */
     
@@ -163,7 +187,19 @@ public class BookTest {
     }  
     
     /**
-     * Test de verificación de existencia de título de libro para modificación 
+     * Método que realiza test de verificación de existencia de la ISBN de un libro
+     * @throws BusinessConnectionException 
+     */
+    
+    @Test
+    public void testExistsBookIsbn() throws BusinessConnectionException{
+        BookDAO bookDAO = new BookDAO();
+        boolean exists = bookDAO.existsBookIsbn("908-3-16-148410-4");
+        assertTrue("Prueba mandar a validar un ISBN que ya existe en un libro", exists);
+    }     
+    
+    /**
+     * Método que realiza test de verificación de existencia de título de libro para modificación 
      * @throws BusinessConnectionException 
      */
     
@@ -175,7 +211,7 @@ public class BookTest {
     }
      
     /**
-     * Test de verificación de existencia de ruta de archivo para modificación de un libro
+     * Método que realiza test de verificación de existencia de ruta de archivo para modificación de un libro
      * @throws BusinessConnectionException 
      */
     
@@ -187,7 +223,7 @@ public class BookTest {
     }    
     
     /**
-     * Test de búsqueda por fecha de libros que impactan positivamente al CA
+     * Método que realiza test de búsqueda por fecha de libros que impactan positivamente al CA
      * @throws BusinessConnectionException 
      */
     

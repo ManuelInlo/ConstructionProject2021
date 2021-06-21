@@ -23,4 +23,6 @@ public interface IArticleDAO {
     public boolean existsArticleTitleForUpdate(String titleArticle, String issn) throws BusinessConnectionException;
     public boolean existsArticleFileRouteForUpdate(String fileRoute, String issn) throws BusinessConnectionException;
     public ArrayList<Article> findArticlesByDateAndImpactCA(Date date) throws BusinessConnectionException;
+    public boolean existsArticleIssn(String issn) throws BusinessConnectionException;   
+    public int findArticlesByCurpIntegrant(String curp) throws BusinessConnectionException;
 }
