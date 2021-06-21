@@ -71,7 +71,7 @@ public class WindowAddReceptionWorkController implements Initializable {
     
     private enum TypeError{
         EMPTYFIELD, INVALIDSTRING, MISSINGSELECTION, MISSINGDATE, OVERDATE, INCONSISTENTDATE, TITLEDUPLICATE, 
-        FILEROUTEDUPLICATE, COLLABORATORDUPLICATE;
+        FILEROUTEDUPLICATE, COLLABORATORDUPLICATE, INVALIDLENGTH;
     }
     
     @Override
@@ -235,7 +235,7 @@ public class WindowAddReceptionWorkController implements Initializable {
     
     private boolean existsInvalidFields() throws BusinessConnectionException{
         boolean invalidFields = false;
-        if(existsEmptyFields() || existsInvalidStrings() || existsMissingSelection() || existsInvalidDates()){
+        if(existsEmptyFields() || existsInvalidStrings() || existsMissingSelection() || existsInvalidDates() || existsInvalidLength()){
             invalidFields = true;
         }else if(existsDuplicateValues()){
             invalidFields = true;
@@ -256,6 +256,21 @@ public class WindowAddReceptionWorkController implements Initializable {
             showInvalidFieldAlert(typeError);
         }
         return emptyFields;
+    }
+    
+    /**
+     * Método que verifica si la longitud del campo excede el límite permitido
+     * @return Boolean con el resultado de la verificación, devuelve true si existen campos vacíos, de lo contrario, devuelve false
+     */
+    
+    private boolean existsInvalidLength(){
+        boolean invalidLength = false;
+        if(tfTitleReceptionWork.getText().length() > 255 || tfFileRoute.getText().length() > 255 || tfAuthor.getText().length() > 255){
+            invalidLength = true;
+            TypeError typeError = TypeError.INVALIDLENGTH;
+            showInvalidFieldAlert(typeError);
+        }
+        return invalidLength;
     }
     
     /**
@@ -431,7 +446,8 @@ public class WindowAddReceptionWorkController implements Initializable {
         boolean fileRouteDuplicate = false;
         boolean collaboratorNameDuplicate = false;
         if(receptionWorkDAO.existsReceptionWorkTitle(tfTitleReceptionWork.getText()) ||
-           articleDAO.existsArticleTitle(tfTitleReceptionWork.getText()) || bookDAO.existsBookTitle(tfTitleReceptionWork.getText())){ //FALTA EL DE CHAPTER  
+           articleDAO.existsArticleTitle(tfTitleReceptionWork.getText()) || bookDAO.existsBookTitle(tfTitleReceptionWork.getText()) ||
+           chapterBookDAO.existsChapterBookTitle(tfTitleReceptionWork.getText())){   
             receptionWorkTitleDuplicate = true;
             TypeError typeError = TypeError.TITLEDUPLICATE;
             showInvalidFieldAlert(typeError);
@@ -493,6 +509,10 @@ public class WindowAddReceptionWorkController implements Initializable {
         if(typeError == TypeError.TITLEDUPLICATE){
             alert.setContentText("El título del trabajo recepcional ya se encuentra registrado en otra evidencia del el sistema");
         }
+        
+        if(typeError == TypeError.INVALIDLENGTH){
+            alert.setContentText("El número de carácteres excede el límite permitido (255 caracteres), corrige los campos para poder guardar");
+        }   
         
         if(typeError == TypeError.FILEROUTEDUPLICATE){
             alert.setContentText("La ruta de archivo del trabajo recepcional ya se encuentra registrado en otra evidencia");

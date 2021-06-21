@@ -118,7 +118,7 @@ public class WindowModifyAgendaController implements Initializable {
     private enum TypeError{
         EMPTYFIELDS, INVALIDSTRINGS, MISSINGMEETINGTIME, MISSINGDATE, MEETINGAFFAIRDUPLICATE, DATEANDTIMEDUPLICATE,
         MANYROLES, DUPLICATEROLE, INCORRETDATE, MISSINGSELECTION, MINORHOUR, BUSYTIME, WRONGTIMEAGENDAPOINT, COLUMNMISSINGSELECTION,
-        EMPTYTABLE, MISSINGROLE, DUPLICATEVALUE, UNNECESSARYSELECTION;
+        EMPTYTABLE, MISSINGROLE, DUPLICATEVALUE, UNNECESSARYSELECTION, INVALIDLENGTH;
     }
 
     @Override
@@ -624,6 +624,11 @@ public class WindowModifyAgendaController implements Initializable {
         if(invalidFields || existsDuplicateValuesForMeeting() || existsEmptyTable()){
             invalidFields = true;
         }
+        
+        if(invalidFields || existsInvalidLength(tfProjectName.getText()) || existsInvalidLength(tfMeetingPlace.getText()) || existsInvalidLength(tfAffair.getText())){
+            invalidFields = true;
+        }
+        
         return invalidFields;
     }
     
@@ -636,7 +641,7 @@ public class WindowModifyAgendaController implements Initializable {
     private boolean existsInvalidFieldsForPrerequisites(){
         boolean invalidFields = false;
         if(existsEmptyFields(tfDescription.getText()) || existsInvalidCharacters(tfDescription.getText()) 
-           || existsMissingSelection(cbPrerequisiteManager)){
+           || existsMissingSelection(cbPrerequisiteManager) || existsInvalidLength(tfDescription.getText())){
             invalidFields = true;
         }
         return invalidFields;
@@ -651,10 +656,26 @@ public class WindowModifyAgendaController implements Initializable {
     private boolean existsInvalidFieldsForAgendaPoint(){
         boolean invalidFields = false;
         if(existsEmptyFields(tfTopic.getText()) || existsMissingSelection(cbLeaderDiscussion) ||
-           existsInvalidCharacters(tfTopic.getText()) || existsInvalidHours()){
+           existsInvalidCharacters(tfTopic.getText()) || existsInvalidHours() || existsInvalidLength(tfTopic.getText())){
             invalidFields = true;
         }
         return invalidFields;
+    }
+    
+    /**
+     * Método que verifica si la longitud del campo excede el límite permitido
+     * @param textToValidate Define el texto a validar
+     * @return Boolean con el resultado de la verificación, devuelve true si existen campos vacíos, de lo contrario, devuelve false
+     */
+    
+    private boolean existsInvalidLength(String textToValidate){
+        boolean invalidLength = false;
+        if(textToValidate.length() > 255){
+            invalidLength = true;
+            TypeError typeError = TypeError.INVALIDLENGTH;
+            showInvalidFieldAlert(typeError);
+        }
+        return invalidLength;
     }
     
     /**
@@ -1159,6 +1180,11 @@ public class WindowModifyAgendaController implements Initializable {
         if(typeError == TypeError.UNNECESSARYSELECTION){
             alert.setContentText("Para añadir no debes seleccionar una fila de la tabla");
         }
+        
+        if(typeError == TypeError.INVALIDLENGTH){
+            alert.setContentText("El número de carácteres excede el límite permitido (255 caracteres), corrige los campos para poder guardar");
+        }   
+         
         alert.showAndWait();
     }
     

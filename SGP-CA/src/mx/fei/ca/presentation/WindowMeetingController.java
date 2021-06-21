@@ -80,7 +80,7 @@ public class WindowMeetingController implements Initializable {
      */
     
     public enum TypeError{
-        EMPTYFIELDS, MISSINGSELECTION, INVALIDYEAR, EMPTYTABLE, COLUMNMISSINGSELECTION, INVALIDSTRING, DUPLICATEVALUE;
+        EMPTYFIELDS, MISSINGSELECTION, INVALIDYEAR, EMPTYTABLE, COLUMNMISSINGSELECTION, INVALIDSTRING, DUPLICATEVALUE, INVALIDLENGTH;
     }
 
     @Override
@@ -244,7 +244,8 @@ public class WindowMeetingController implements Initializable {
     private boolean existsInvalidFieldsForAgreement(){
         boolean invalidFields = false;
         if(existsEmptyFields(tfAgreement.getText()) || existsInvalidCharacters(tfAgreement.getText()) || existsMissingSelection() ||
-           existsEmptyFields(tfYear.getText()) || existsInvalidCharactersForYear(tfYear.getText()) || existsDuplicateValueForAgreement()){
+           existsEmptyFields(tfYear.getText()) || existsInvalidCharactersForYear(tfYear.getText()) || existsDuplicateValueForAgreement() ||
+           existsInvalidLength(tfAgreement.getText())){
             invalidFields = true;
         }
         return invalidFields;
@@ -259,7 +260,7 @@ public class WindowMeetingController implements Initializable {
     private boolean existsInvalidFieldsForMemorandum(){
         boolean invalidFields = false;
         if(existsEmptyFields(taPendings.getText()) || existsEmptyFields(taNotes.getText()) || existsInvalidCharactersForMemorandum(taPendings.getText()) ||
-           existsInvalidCharactersForMemorandum(taNotes.getText()) || existsEmptyTable()){
+           existsInvalidCharactersForMemorandum(taNotes.getText()) || existsEmptyTable() || existsInvalidLength(taPendings.getText()) || existsInvalidLength(taNotes.getText())){
             invalidFields = true;
         }
         return invalidFields;
@@ -294,6 +295,22 @@ public class WindowMeetingController implements Initializable {
             showInvalidFieldAlert(typeError);
         }
         return missingSelection;
+    }
+    
+    /**
+     * Método que verifica si la longitud del campo excede el límite permitido
+     * @param textToValidate Define el texto a validar
+     * @return Boolean con el resultado de la verificación, devuelve true si existen campos vacíos, de lo contrario, devuelve false
+     */
+    
+    private boolean existsInvalidLength(String textToValidate){
+        boolean invalidLength = false;
+        if(textToValidate.length() > 255){
+            invalidLength = true;
+            TypeError typeError = TypeError.INVALIDLENGTH;
+            showInvalidFieldAlert(typeError);
+        }
+        return invalidLength;
     }
     
     /**
@@ -431,6 +448,10 @@ public class WindowMeetingController implements Initializable {
         if(typeError == TypeError.EMPTYTABLE){
             alert.setContentText("La reunión debe tener por lo menos un acuerdo, llena la tabla acuerdos para poder guardar");
         }
+        
+        if(typeError == TypeError.INVALIDLENGTH){
+            alert.setContentText("El número de carácteres excede el límite permitido (255 caracteres), corrige los campos para poder guardar");
+        }   
         
         if(typeError == TypeError.COLUMNMISSINGSELECTION){
             alert.setContentText("Selección de columna faltante. Selecciona una columna para poder eliminar");

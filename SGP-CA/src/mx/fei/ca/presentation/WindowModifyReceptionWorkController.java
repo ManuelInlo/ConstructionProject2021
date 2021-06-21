@@ -73,7 +73,7 @@ public class WindowModifyReceptionWorkController implements Initializable {
 
     private enum TypeError{
         EMPTYFIELD, INVALIDSTRING, MISSINGSELECTION, MISSINGDATE, OVERDATE, INCONSISTENTDATE, TITLEDUPLICATE, 
-        FILEROUTEDUPLICATE, COLLABORATORDUPLICATE;
+        FILEROUTEDUPLICATE, COLLABORATORDUPLICATE, INVALIDLENGTH;
     }
     
     @Override
@@ -285,6 +285,21 @@ public class WindowModifyReceptionWorkController implements Initializable {
         return emptyFields;
     }
     
+     /**
+     * Método que verifica si la longitud del campo excede el límite permitido
+     * @return Boolean con el resultado de la verificación, devuelve true si existen campos vacíos, de lo contrario, devuelve false
+     */
+    
+    private boolean existsInvalidLength(){
+        boolean invalidLength = false;
+        if(tfTitleReceptionWork.getText().length() > 255 || tfFileRoute.getText().length() > 255 || tfAuthor.getText().length() > 255){
+            invalidLength = true;
+            TypeError typeError = TypeError.INVALIDLENGTH;
+            showInvalidFieldAlert(typeError);
+        }
+        return invalidLength;
+    }
+    
     /**
      * Método que verifica si existen cadenas inválidas
      * @return Booleano con el resultado de la verificación, devuelve true si existen cadenas inválidas, de lo contrario, devuelve false
@@ -458,7 +473,8 @@ public class WindowModifyReceptionWorkController implements Initializable {
         boolean fileRouteDuplicate = false;
         boolean collaboratorNameDuplicate = false;
         if(receptionWorkDAO.existsReceptionWorkTitleForUpdate(tfTitleReceptionWork.getText(), idReceptionWorkToModify) ||
-           articleDAO.existsArticleTitle(tfTitleReceptionWork.getText()) || bookDAO.existsBookTitle(tfTitleReceptionWork.getText())){  //DEBE HACER LO MISMO CON LAS OTRAS EVIDENCIAS
+           articleDAO.existsArticleTitle(tfTitleReceptionWork.getText()) || bookDAO.existsBookTitle(tfTitleReceptionWork.getText()) ||
+           chapterBookDAO.existsChapterBookTitle(tfTitleReceptionWork.getText())){  
             receptionWorkTitleDuplicate = true;
             TypeError typeError = TypeError.TITLEDUPLICATE;
             showInvalidFieldAlert(typeError);
@@ -516,6 +532,10 @@ public class WindowModifyReceptionWorkController implements Initializable {
         if(typeError == TypeError.OVERDATE){
             alert.setContentText("El trabajo recepcional no está terminado, por lo tanto no puedes guardar una fecha de fin");
         }
+        
+        if(typeError == TypeError.INVALIDLENGTH){
+            alert.setContentText("El número de carácteres excede el límite permitido (255 caracteres), corrige los campos para poder modificar");
+        }   
         
         if(typeError == TypeError.TITLEDUPLICATE){
             alert.setContentText("El título del trabajo recepcional ya se encuentra registrado en otra evidencia");
