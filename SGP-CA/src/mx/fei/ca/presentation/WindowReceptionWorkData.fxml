@@ -99,7 +99,7 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label layoutX="581.0" layoutY="21.0" text="Proyecto de investigación;">
+                  <Label layoutX="547.0" layoutY="21.0" text="Proyecto de investigación;">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
@@ -113,7 +113,7 @@
                   <Label fx:id="lbEndDate" layoutX="376.0" layoutY="85.0" />
                   <Label fx:id="lbGrade" layoutX="376.0" layoutY="130.0" />
                   <Label fx:id="lbPositionAuthor" layoutX="376.0" layoutY="175.0" />
-                  <Label fx:id="lbInvestigationProject" layoutX="581.0" layoutY="35.0" />
+                  <Label fx:id="lbInvestigationProject" layoutX="547.0" layoutY="35.0" />
                </children>
             </Pane>
             <Button fx:id="btnExit" layoutX="702.0" layoutY="361.0" mnemonicParsing="false" onAction="#closeReceptionWorkData" prefHeight="25.0" prefWidth="84.0" text="Salir" />
