@@ -83,16 +83,16 @@ public class LgacDAO implements ILgacDAO{
     }
     
     /**
-     * Método que recupera de la base de datos las LGAC al que pertenece un integrante
+     * Método que recupera de la base de datos las LGAC 1 si pertenece el integrante
      * @param curp Define la curp del integrante a buscar
-     * @return ArrayList con el nombre de la LGAC a la que pertenece un integrante
+     * @return boolean si el integrante pertenece al LGAC
      * @throws BusinessConnectionException
      */
     
     @Override
-    public ArrayList<String> findLgacOfIntegrant (String curp) throws BusinessConnectionException{
-        String sql = "SELECT keyCode FROM participationlgac WHERE curp = ?";
-        ArrayList<String> lgacs = new ArrayList<>();
+    public boolean findFirstLgacOfIntegrant (String curp) throws BusinessConnectionException{
+        String sql = "SELECT * FROM participationlgac WHERE curp = ? AND keyCode = 'L1'";
+        boolean lgacs = false;
         try{
             connection = dataBaseConnection.getConnection();
             preparedStatement = connection.prepareStatement(sql);
@@ -100,14 +100,43 @@ public class LgacDAO implements ILgacDAO{
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 String lgac = resultSet.getString("keyCode");
-                lgacs.add(lgac);
-            }            
+                lgacs = true;
+            }    
+            lgacs = true;
         }catch(SQLException ex){
             throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
         }finally{
             dataBaseConnection.closeConnection();
         }
         return lgacs;
-    }    
+    }  
+    
+    /**
+     * Método que recupera de la base de datos las LGAC 2 si pertenece el integrante
+     * @param curp Define la curp del integrante a buscar
+     * @return boolean si el integrante pertenece al LGAC
+     * @throws BusinessConnectionException
+     */
+    
+    @Override
+    public boolean findSecondLgacOfIntegrant (String curp) throws BusinessConnectionException{
+        String sql = "SELECT * FROM participationlgac WHERE curp = ? AND keyCode = 'L2'";
+        boolean lgacs = false;
+        try{
+            connection = dataBaseConnection.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, curp);             
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                String lgac = resultSet.getString("keyCode");
+                lgacs = true;
+            }    
+        }catch(SQLException ex){
+            throw new BusinessConnectionException("Perdida de conexion con la base de datos", ex);
+        }finally{
+            dataBaseConnection.closeConnection();
+        }
+        return lgacs;
+    }     
 
 }

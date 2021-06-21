@@ -1,11 +1,168 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowModifyIntegrantController">
-    
+<AnchorPane id="AnchorPane" prefHeight="561.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowModifyIntegrantController">
+   <children>
+      <Pane layoutY="521.0" prefHeight="40.0" prefWidth="600.0" style="-fx-background-color: #60ABE0;">
+         <children>
+            <Label layoutX="107.0" layoutY="11.0" text="Facultad de Estadística e Informática - Universidad  Veracruzana">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane prefHeight="60.0" prefWidth="600.0" style="-fx-background-color: #60ABE0;">
+         <children>
+            <Label layoutX="14.0" layoutY="21.0" text="Sistema Gestor de Cuerpo Académico">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbUser" layoutX="382.0" layoutY="22.0" text="User XXXXX">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="51.0" fitWidth="55.0" layoutX="300.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/CentralIcon.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane layoutY="60.0" prefHeight="460.0" prefWidth="600.0" style="-fx-background-color: #60ABE0;">
+         <children>
+            <Separator layoutY="-1.0" prefHeight="3.0" prefWidth="600.0" />
+            <Separator layoutY="459.0" prefHeight="3.0" prefWidth="600.0" />
+            <Label layoutX="37.0" layoutY="5.0" text="MODIFICACIÓN DE MIEMBRO">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Pane layoutX="37.0" layoutY="33.0" prefHeight="415.0" prefWidth="478.0" style="-fx-background-color: #A8CCE6;">
+               <children>
+                  <Label layoutX="12.0" layoutY="16.0" text="Nombre:">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfNameIntegrant" layoutX="116.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="350.0" />
+                  <Label layoutX="11.0" layoutY="43.0" text="Cargo dentro del CA:">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfStudyDiscipline" layoutX="116.0" layoutY="68.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="350.0" />
+                  <ComboBox fx:id="cbRole" layoutX="116.0" layoutY="39.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="350.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
+                  <Label layoutX="10.0" layoutY="72.0" text="Disciplina de estudio:">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="103.0" text="Grado de estudios:">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="cbProdepParticipation" layoutX="116.0" layoutY="127.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="350.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
+                  <TextField fx:id="tfTypeTeaching" layoutX="116.0" layoutY="159.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="350.0" />
+                  <Label layoutX="11.0" layoutY="134.0" text="Perfil PRODEP:">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="163.0" text="Tipo de docencia:">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="11.0" layoutY="189.0" text="LGAC registradas">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfIesStudyDegree" layoutX="116.0" layoutY="235.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="350.0" />
+                  <TextField fx:id="tfNumberPhone" layoutX="116.0" layoutY="265.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="350.0" />
+                  <TextField fx:id="tfCurp" editable="false" layoutX="116.0" layoutY="326.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="350.0" />
+                  <TextField fx:id="tfInstitutionalMail" layoutX="116.0" layoutY="355.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="350.0" />
+                  <ComboBox fx:id="cbStatusIntegrant" layoutX="116.0" layoutY="384.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="350.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;">
+                     <effect>
+                        <Bloom threshold="1.0" />
+                     </effect>
+                  </ComboBox>
+                  <Label layoutX="13.0" layoutY="235.0" text="IES de máximos ">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="13.0" layoutY="269.0" text="Número telefónico:">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="13.0" layoutY="246.0" text="estudios:">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="11.0" layoutY="299.0" text="Fecha de nacimiento:">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="12.0" layoutY="330.0" text="CURP:">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="12.0" layoutY="359.0" text="Correo institucional:">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="12.0" layoutY="381.0" text="Estado de actividad">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="12.0" layoutY="394.0" text="dentro del CA:">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="dpDateBirthday" layoutX="116.0" layoutY="295.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="350.0" />
+                  <Label layoutX="155.0" layoutY="189.0" text="Gestión, modelado y desarrollo de software.">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="155.0" layoutY="212.0" text="Tecnologías de software.">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="cbStudyDegree" layoutX="116.0" layoutY="96.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="350.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
+                  <CheckBox fx:id="checkBoxL1" layoutX="116.0" layoutY="189.0" mnemonicParsing="false" text="L1" />
+                  <CheckBox fx:id="checkBoxL2" layoutX="116.0" layoutY="212.0" mnemonicParsing="false" text="L2" />
+               </children>
+            </Pane>
+            <Button layoutX="521.0" layoutY="385.0" mnemonicParsing="false" onAction="#closeModifyIntegrant" text="Cancelar" />
+            <Button layoutX="520.0" layoutY="421.0" mnemonicParsing="false" onAction="#modifyIntegrant" text="Guardar" />
+         </children>
+      </Pane>
+   </children>
 </AnchorPane>

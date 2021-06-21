@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="816.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowAddChapterBookController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="816.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowAddChapterBookController">
    <children>
       <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="816.0" style="-fx-background-color: #60ABE0;">
          <children>
@@ -94,6 +94,12 @@
             <ComboBox fx:id="cbImpactCA" layoutX="127.0" layoutY="56.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="177.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
             <TextField fx:id="tfHomePage" layoutX="287.0" layoutY="234.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" />
             <ComboBox fx:id="cbBook" layoutX="27.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="245.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
+            <Label layoutX="375.0" layoutY="60.0" text="Proyecto de investigación:">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="cbInvestigationProject" layoutX="547.0" layoutY="57.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="252.0" promptText="Seleccione una opción" style="-fx-background-color: #FFFFFF;" />
          </children>
       </Pane>
    </children>

@@ -71,7 +71,11 @@ public class WindowIntegrantsController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        try {
+            openIntegrantData();
+        } catch (BusinessConnectionException ex) {
+            showLostConnectionAlert();
+        }
     }   
     
     /**
@@ -129,13 +133,17 @@ public class WindowIntegrantsController implements Initializable {
             try {
                 scene = new Scene(fxmlLoader.load());
             } catch (IOException ex) {
-                Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(WindowIntegrantsController.class.getName()).log(Level.SEVERE, null, ex);
             }
             Stage stage = new Stage();
             stage.setScene(scene);
             WindowIntegrantDataController windowIntegrantDataController = (WindowIntegrantDataController) fxmlLoader.getController();
             windowIntegrantDataController.setIntegrant(this.integrant);
-            //windowIntegrantDataController.showReceptionWorkData(receptionWork);
+            try {
+                windowIntegrantDataController.showIntegrantData(integrant);
+            } catch (BusinessConnectionException ex) {
+                Logger.getLogger(WindowIntegrantsController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             stage.showAndWait();
             try {
                 recoverIntegrants();

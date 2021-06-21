@@ -25,5 +25,9 @@ public interface IIntegrantDAO {
     public String decryptPassword(String encryptedPassword);
     public boolean existsIntegrantCurp(String curp) throws BusinessConnectionException;
     public boolean existsIntegrantEmail(String institutionalMail) throws BusinessConnectionException;
-    public ArrayList<Integrant> findIntegrantsByInitialesOfTitle(String InitialesNameIntegrant) throws BusinessConnectionException;    
+    public ArrayList<Integrant> findIntegrantsByInitialesOfTitle(String InitialesNameIntegrant) throws BusinessConnectionException; 
+    public boolean existsIntegrantResponsable() throws BusinessConnectionException;
+    public Integrant findIntegrantResponsable() throws BusinessConnectionException;   
+    public boolean existsIntegrantEmailForUpdate(String institutionalMail, String curp) throws BusinessConnectionException;
+    public boolean existsIntegrantNameForUpdate(String name, String curp) throws BusinessConnectionException;
 }

@@ -125,6 +125,19 @@ public class IntegrantTest {
     }
     
     /**
+     * Método que realiza test para la obtención del responsable del CA
+     * @throws BusinessConnectionException 
+     */
+    
+    @Test
+    public void testFindIntegrantResponsable() throws BusinessConnectionException{
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        Integrant integrant = integrantDAO.findIntegrantResponsable();
+        Integrant responsable = integrantDAO.findIntegrantByCurp("MCUD940585RDTRER23");
+        assertEquals("Prueba encontrar responsable", integrant, responsable);
+    }    
+    
+    /**
      * Método que realiza test para la verificación de existencia de nombre de un integrante
      * @throws BusinessConnectionException 
      */
@@ -134,7 +147,7 @@ public class IntegrantTest {
         IntegrantDAO integrantDAO = new IntegrantDAO();
         boolean exists = integrantDAO.existsIntegrantName("Juan Carlos Pérez Arriaga");
         assertTrue("Prueba mandar a validar un nombre que ya existe de un integrante", exists);
-    }
+    }    
     
     /**
      * Método que realiza test para la verificación de existencia de curp de un integrante
@@ -159,6 +172,18 @@ public class IntegrantTest {
         boolean exists = integrantDAO.existsIntegrantEmail("kcortes@uv.mx");
         assertTrue("Prueba mandar a validar una curp que ya existe de un integrante", exists);
     }
+    
+    /**
+     * Método que realiza test para la verificación de existencia de un responsable del CA
+     * @throws BusinessConnectionException 
+     */
+    
+    @Test
+    public void testExistsResponsable() throws BusinessConnectionException{
+        IntegrantDAO integrantDAO = new IntegrantDAO();
+        boolean exists = integrantDAO.existsIntegrantResponsable();
+        assertTrue("Prueba mandar a validar que ya existe de un responsable", exists);
+    }    
     
     /**
      * Método que realiza test para la obtención de todos los integrantes activos del CA

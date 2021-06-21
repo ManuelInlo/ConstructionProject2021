@@ -14,5 +14,6 @@ import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 public interface ILgacDAO {
     public boolean applyLgacByIntegrant (String curp, String lgac) throws BusinessConnectionException, SQLException;
     public boolean deletedLgacOfIntegrant (String curp, String lgac) throws BusinessConnectionException;
-    public ArrayList<String> findLgacOfIntegrant (String curp) throws BusinessConnectionException;    
+    public boolean findFirstLgacOfIntegrant (String curp) throws BusinessConnectionException; 
+    public boolean findSecondLgacOfIntegrant (String curp) throws BusinessConnectionException;    
 }

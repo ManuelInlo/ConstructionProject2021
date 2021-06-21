@@ -29,11 +29,6 @@
                         <Image url="@images/CentralIcon.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="726.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/logout.png" />
-                     </image>
-                  </ImageView>
                   <Label fx:id="lbUser" layoutX="542.0" layoutY="25.0" text="USER XXXX">
                      <font>
                         <Font name="System Bold" size="14.0" />

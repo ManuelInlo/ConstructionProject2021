@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import mx.fei.ca.businesslogic.IntegrantDAO;
 import mx.fei.ca.domain.Integrant;
 
 /**
@@ -105,14 +106,26 @@ public class WindowHomeController implements Initializable {
     @FXML
     private void clickIntegrants(MouseEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowIntegrants.fxml"));
-            Parent root = fxmlLoader.load();
-            WindowIntegrantsController windowIntegrantsController = fxmlLoader.getController();
-            windowIntegrantsController.setIntegrant(integrant);
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.showAndWait();
+            IntegrantDAO integrantDAO = new IntegrantDAO();
+            if("Responsable".equals(integrant.getRole())){
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowIntegrants.fxml"));
+                Parent root = fxmlLoader.load();
+                WindowIntegrantsController windowIntegrantsController = fxmlLoader.getController();
+                windowIntegrantsController.setIntegrant(integrant);
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.showAndWait();
+            }else{
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowIntegrantsData.fxml"));
+                Parent root = fxmlLoader.load();
+                WindowIntegrantDataController windowIntegrantDataController = fxmlLoader.getController();
+                windowIntegrantDataController.setIntegrant(integrant);
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.showAndWait();
+            }
         } catch (IOException ex) {
             Logger.getLogger(WindowHomeController.class.getName()).log(Level.SEVERE, null, ex);
         }
