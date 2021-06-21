@@ -117,7 +117,7 @@ public class WindowNewMeetingController implements Initializable {
     private enum TypeError{
         EMPTYFIELDS, INVALIDSTRINGS, MISSINGMEETINGTIME, MISSINGDATE, MEETINGAFFAIRDUPLICATE, DATEANDTIMEDUPLICATE,
         MANYROLES, DUPLICATEROLE, INCORRETDATE, MISSINGSELECTION, MINORHOUR, BUSYTIME, WRONGTIMEAGENDAPOINT, COLUMNMISSINGSELECTION,
-        EMPTYTABLE, MISSINGROLE, DUPLICATEVALUE;
+        EMPTYTABLE, MISSINGROLE, DUPLICATEVALUE, INVALIDLENGTH;
     }
     
     /**
@@ -435,6 +435,10 @@ public class WindowNewMeetingController implements Initializable {
         if(invalidFields || existsDuplicateValuesForMeeting() || existsEmptyTable()){
             invalidFields = true;
         }
+        
+        if(invalidFields || existsInvalidLength(tfProjectName.getText()) || existsInvalidLength(tfMeetingPlace.getText()) || existsInvalidLength(tfAffair.getText())){
+            invalidFields = true;
+        }
         return invalidFields;
     }
     
@@ -454,6 +458,22 @@ public class WindowNewMeetingController implements Initializable {
             showInvalidFieldAlert(typeError);
         }
         return emptyTable;
+    }
+    
+    /**
+     * Método que verifica si la longitud del campo excede el límite permitido
+     * @param textToValidate Define el texto a validar
+     * @return Boolean con el resultado de la verificación, devuelve true si existen campos vacíos, de lo contrario, devuelve false
+     */
+    
+    private boolean existsInvalidLength(String textToValidate){
+        boolean invalidLength = false;
+        if(textToValidate.length() > 255){
+            invalidLength = true;
+            TypeError typeError = TypeError.INVALIDLENGTH;
+            showInvalidFieldAlert(typeError);
+        }
+        return invalidLength;
     }
     
     /**
@@ -707,7 +727,7 @@ public class WindowNewMeetingController implements Initializable {
     private boolean existsInvalidFieldsForPrerequisites(){
         boolean invalidFields = false;
         if(existsEmptyFields(tfDescription.getText()) || existsInvalidCharacters(tfDescription.getText()) 
-           || existsMissingSelection(cbPrerequisiteManager) || existsDuplicateValueForPrerequisite()){
+           || existsMissingSelection(cbPrerequisiteManager) || existsDuplicateValueForPrerequisite() || existsInvalidLength(tfDescription.getText())){
             invalidFields = true;
         }
         return invalidFields;
@@ -722,7 +742,7 @@ public class WindowNewMeetingController implements Initializable {
     private boolean existsInvalidFieldsForAgendaPoint(){
         boolean invalidFields = false;
         if(existsEmptyFields(tfTopic.getText()) || existsMissingSelection(cbLeaderDiscussion) ||
-           existsInvalidCharacters(tfTopic.getText()) || existsInvalidHours() || existsDuplicateValueForAgendaPoint()){
+           existsInvalidCharacters(tfTopic.getText()) || existsInvalidHours() || existsDuplicateValueForAgendaPoint() || existsInvalidLength(tfTopic.getText())){
             invalidFields = true;
         }
         return invalidFields;
@@ -932,6 +952,11 @@ public class WindowNewMeetingController implements Initializable {
         if(typeError == TypeError.DUPLICATEVALUE){
             alert.setContentText("El texto que deseas añadir ya se encuentra registrado, verifica por favor");
         }
+        
+        if(typeError == TypeError.INVALIDLENGTH){
+            alert.setContentText("El número de carácteres excede el límite permitido (255 caracteres), corrige los campos para poder guardar");
+        }   
+         
         alert.showAndWait();
     }
     
