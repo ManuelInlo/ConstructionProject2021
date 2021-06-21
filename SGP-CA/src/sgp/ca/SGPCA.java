@@ -11,12 +11,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import mx.fei.ca.businesslogic.exceptions.BusinessConnectionException;
 import mx.fei.ca.presentation.WindowLoginController;
+
+/**
+ * Clase principal del Sistema Gestor de Productividad De Cuerpo Académico
+ * @author David Alexander Mijangos Paredes
+ * @version 20-06-2021
+ */
+
 public class SGPCA extends Application {
     
+    /**
+     * Método de inicio que manda a abrir la ventana login del sistema
+     * @param stage Define el escenario principal
+     */
+    
     @Override
-    public void start(Stage stage) throws IOException, BusinessConnectionException {
+    public void start(Stage stage){
         try{   
             URL url = new File("src/mx/fei/ca/presentation/WindowLogin.fxml").toURI().toURL();
             try{
@@ -36,6 +47,11 @@ public class SGPCA extends Application {
                Logger.getLogger(SGPCA.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /**
+     * Método main del sistema que invoca el arranque de la aplicación
+     * @param args Define el array de string que es necesario para el método main
+     */
 
     public static void main(String[] args) {
         launch(args);
