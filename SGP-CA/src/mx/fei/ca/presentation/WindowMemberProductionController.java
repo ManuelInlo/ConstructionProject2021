@@ -433,14 +433,10 @@ public class WindowMemberProductionController implements Initializable {
     @FXML
     private void openChapterBookRegistration (ActionEvent event) throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddChapterBook.fxml"));
-<<<<<<< HEAD
         Parent root = fxmlLoader.load();
         WindowAddChapterBookController windowAddChapterBookController = fxmlLoader.getController();
         windowAddChapterBookController.setIntegrant(integrant);
         Scene scene = new Scene(root);
-=======
->>>>>>> 6065958fca587d2dcf0f9b91e8d9cd3a9b262ea3
-        Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load());
         } catch (IOException ex) {
@@ -448,8 +444,6 @@ public class WindowMemberProductionController implements Initializable {
         }
         Stage stage = new Stage();
         stage.setScene(scene);
-        WindowAddChapterBookController windowAddChapterBookController = (WindowAddChapterBookController) fxmlLoader.getController();
-        windowAddChapterBookController.setIntegrant(integrant);
         stage.showAndWait();
         closeMemberProduction(event);
     }
