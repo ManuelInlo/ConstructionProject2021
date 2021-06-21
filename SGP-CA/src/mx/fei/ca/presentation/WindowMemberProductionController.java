@@ -301,20 +301,18 @@ public class WindowMemberProductionController implements Initializable {
     private void searchEvidence(ActionEvent event){
         if(!existsInvalidField()){
             try {
-                //Mandar a recuperar listas de las evidencias que coincidan con el texto ->QUITAR ESTE COMENTARIO DESPUES
                 ArrayList<ReceptionWork> receptionWorks = recoverReceptionWorks();
                 ArrayList<Article> articles = recoverArticles();
                 ArrayList<Book> books = recoverBooks();
+                ArrayList<ChapterBook> chaptersBook = recoverChaptersBook();
                 
-                
-                if(receptionWorks.isEmpty() || articles.isEmpty() || books.isEmpty()){  
+                if(receptionWorks.isEmpty() || articles.isEmpty() || books.isEmpty() || chaptersBook.isEmpty()){  
                     showNoMatchAlert();
                 }
             } catch (BusinessConnectionException ex) {
                 showLostConnectionAlert();
                 closeMemberProduction(event);
             }
-  
         }
     }
     
@@ -372,14 +370,15 @@ public class WindowMemberProductionController implements Initializable {
      * @throws BusinessConnectionException 
      */
     
-   // private ArrayList<ChapterBook> chaptersBook() throws BusinessConnectionException{
-     //   ChapterBookDAO chapterBookDAO = new ChapterBookDAO();
-       // String titleChapterBook = tfEvidenceName.getText();
-        //ArrayList<ChapterBook> chaptersBook = chapterBookDAO.
-         // if(!chaptersBook.isEmpty()){
-           //   fillChaptersBookTable(chaptersBook);
-          //}
-    //}
+    private ArrayList<ChapterBook> recoverChaptersBook() throws BusinessConnectionException{
+        ChapterBookDAO chapterBookDAO = new ChapterBookDAO();
+        String titleChapterBook = tfEvidenceName.getText();
+        ArrayList<ChapterBook> chaptersBook = chapterBookDAO.findChapterBookByCurpIntegrantInitialesOfTitle(titleChapterBook, integrant.getCurp());
+        if(!chaptersBook.isEmpty()){
+            fillChaptersBookTable(chaptersBook);
+        }
+        return chaptersBook;
+    }
     
     /**
      * Método que manda a abrir la ventana para registrar un nuevo artículo
