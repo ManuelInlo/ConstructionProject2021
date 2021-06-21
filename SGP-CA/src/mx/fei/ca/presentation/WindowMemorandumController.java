@@ -31,6 +31,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.AgreementDAO;
+import mx.fei.ca.businesslogic.IntegrantDAO;
 import mx.fei.ca.businesslogic.MeetingDAO;
 import mx.fei.ca.businesslogic.MemorandumApproverDAO;
 import mx.fei.ca.businesslogic.MemorandumDAO;
@@ -104,10 +105,12 @@ public class WindowMemorandumController implements Initializable {
     private CheckBox checkBoxApprove;
     @FXML
     private Label lbUser;
+    @FXML
+    private Label lbResponsibleMeeting;
     private Integrant integrant;
     private Memorandum memorandum;
     private Meeting meeting;
-    
+    private String curpResponsible;    
    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -154,6 +157,10 @@ public class WindowMemorandumController implements Initializable {
                 checkBoxApprove.setSelected(true);
                 checkBoxApprove.setDisable(true);
             }
+            MeetingDAO meetingDAO = new MeetingDAO();
+            this.curpResponsible = meetingDAO.getCurpOfResponsibleMeeting(meeting.getIdMeeting());
+            IntegrantDAO integrantDAO = new IntegrantDAO();
+            lbResponsibleMeeting.setText(integrantDAO.findIntegrantByCurp(curpResponsible).getNameIntegrant());
         } catch (BusinessConnectionException ex) {
             showLostConnectionAlert();
         }
@@ -273,7 +280,7 @@ public class WindowMemorandumController implements Initializable {
     @FXML
     private void editMemorandum(ActionEvent event) throws BusinessConnectionException{
         MeetingDAO meetingDAO = new MeetingDAO();
-        if(meetingDAO.getCurpOfResponsibleMeeting(this.meeting.getIdMeeting()).equals(integrant.getCurp())){ 
+        if(curpResponsible.equals(integrant.getCurp())){ 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowEditMemorandum.fxml"));
             Parent root = null;
             try {

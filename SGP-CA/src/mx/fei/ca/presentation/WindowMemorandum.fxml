@@ -16,7 +16,7 @@
                <font>
                   <Font name="System Bold" size="17.0" />
                </font></Label>
-            <Label fx:id="lbUser" layoutX="714.0" layoutY="20.0" text="UserXXXX">
+            <Label fx:id="lbUser" layoutX="659.0" layoutY="20.0" text="UserXXXX">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font></Label>
@@ -154,6 +154,12 @@
                         <Button layoutX="91.0" layoutY="92.0" mnemonicParsing="false" onAction="#closeMemorandum" prefHeight="25.0" prefWidth="94.0" text="Salir" />
                      </children>
                   </Pane>
+                  <Label layoutX="562.0" layoutY="103.0" text="Responsable:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbResponsibleMeeting" layoutX="649.0" layoutY="104.0" />
                </children>
             </AnchorPane>
         </content>

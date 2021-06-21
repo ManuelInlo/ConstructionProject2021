@@ -11,9 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mx.fei.ca.domain.Integrant;
@@ -35,12 +33,21 @@ public class WindowHomeController implements Initializable {
       
     }     
     
+    /**
+     * Método que establece el integrante loggeado y proyecta su nombre en la GUI
+     * @param integrant Define el integrante a establecer en la GUI
+     */
+    
     public void setIntegrant(Integrant integrant){
         this.integrant = integrant;
         lbUser.setText(integrant.getNameIntegrant());
     }
     
-
+    /**
+     * Método que manda a abrir la ventana de historial de reuniones
+     * @param event Define el evento generado
+     */
+    
     @FXML
     private void clickMettings(MouseEvent event) {
         try {
@@ -56,6 +63,11 @@ public class WindowHomeController implements Initializable {
             Logger.getLogger(WindowHomeController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /**
+     * Método que manda a abrir la ventana de lista de evidencias del integrante
+     * @param event Define el evento generado
+     */
 
     @FXML
     private void clickEvidences(MouseEvent event){
@@ -72,6 +84,11 @@ public class WindowHomeController implements Initializable {
             Logger.getLogger(WindowHomeController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /**
+     * Método que cierra la ventana actual "Inicio"
+     * @param event Define el evento generado
+     */
 
     @FXML
     private void signOff(MouseEvent event) {

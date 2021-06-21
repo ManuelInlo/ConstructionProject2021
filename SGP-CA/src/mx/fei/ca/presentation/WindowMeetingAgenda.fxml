@@ -16,7 +16,7 @@
                <font>
                   <Font name="System Bold" size="15.0" />
                </font></Label>
-            <Label fx:id="lbUser" layoutX="562.0" layoutY="27.0" text="UserXXXX">
+            <Label fx:id="lbUser" layoutX="513.0" layoutY="27.0" text="UserXXXX">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font></Label>
@@ -111,6 +111,12 @@
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
                   <Label fx:id="lbState" layoutX="71.0" layoutY="128.0" />
+                  <Label layoutX="356.0" layoutY="128.0" text="Responsable:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbResponsibleMeeting" layoutX="437.0" layoutY="128.0" />
                </children>
             </AnchorPane>
         </content>
