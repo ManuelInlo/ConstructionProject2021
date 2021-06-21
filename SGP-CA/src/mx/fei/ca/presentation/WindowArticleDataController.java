@@ -53,9 +53,11 @@ public class WindowArticleDataController implements Initializable {
     private Label lbTypeEvidence;
     @FXML
     private Label lbImpactCA;
+    @FXML
+    private Label lbDescription;
     private Integrant integrant;
     private Article article;
-
+   
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
@@ -91,6 +93,7 @@ public class WindowArticleDataController implements Initializable {
         lbHomePage.setText(String.valueOf(article.getHomepage()));
         lbEndPage.setText(String.valueOf(article.getEndPage()));
         lbImpactCA.setText(article.getImpactCA());
+        lbDescription.setText(article.getDescription());
         if(article.getPublicationDate() != null){
             lbPublicationDate.setText(convertDateToString(article.getPublicationDate()));
         }        

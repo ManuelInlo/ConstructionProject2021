@@ -75,4 +75,6 @@ public class WindowProductionCAController implements Initializable {
     private void closeProductionCA(ActionEvent event) {
     }
     
+    
+    
 }

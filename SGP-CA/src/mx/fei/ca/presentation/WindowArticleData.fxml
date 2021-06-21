@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="549.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="mx.fei.ca.presentation.WindowArticleDataController">
+<AnchorPane id="AnchorPane" prefHeight="549.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.fei.ca.presentation.WindowArticleDataController">
      <children>
       <Pane prefHeight="70.0" prefWidth="800.0" style="-fx-background-color: #60ABE0;">
          <children>
@@ -116,7 +116,7 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label layoutX="14.0" layoutY="303.0" />
+                  <Label fx:id="lbDescription" layoutX="14.0" layoutY="303.0" />
                </children>
             </Pane>
             <Label fx:id="lbTypeEvidence" layoutX="135.0" layoutY="56.0" />

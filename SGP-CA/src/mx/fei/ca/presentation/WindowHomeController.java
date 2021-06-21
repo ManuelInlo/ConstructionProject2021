@@ -97,12 +97,21 @@ public class WindowHomeController implements Initializable {
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
+    
+    /**
+     * Método que manda a abrir la ventana de producción del cuerpo académico
+     * @param event Define el evento generado
+     */
 
     @FXML
     private void clickProductionCA(MouseEvent event) {
     }
     
 
+    /**
+     * Método que manda a abrir la ventana de integrantes que funciona para el responsable
+     * @param event Define el evento generado
+     */
     @FXML
     private void clickIntegrants(MouseEvent event) {
         try {

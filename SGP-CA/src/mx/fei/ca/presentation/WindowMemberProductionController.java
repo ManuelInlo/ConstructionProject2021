@@ -301,20 +301,17 @@ public class WindowMemberProductionController implements Initializable {
     private void searchEvidence(ActionEvent event){
         if(!existsInvalidField()){
             try {
-                //Mandar a recuperar listas de las evidencias que coincidan con el texto ->QUITAR ESTE COMENTARIO DESPUES
                 ArrayList<ReceptionWork> receptionWorks = recoverReceptionWorks();
                 ArrayList<Article> articles = recoverArticles();
                 ArrayList<Book> books = recoverBooks();
-                
-                
-                if(receptionWorks.isEmpty() || articles.isEmpty() || books.isEmpty()){  
+                ArrayList<ChapterBook> chaptersBook = recoverChaptersBook();
+                if(receptionWorks.isEmpty() && articles.isEmpty() && books.isEmpty() && chaptersBook.isEmpty()){  
                     showNoMatchAlert();
                 }
             } catch (BusinessConnectionException ex) {
                 showLostConnectionAlert();
                 closeMemberProduction(event);
             }
-  
         }
     }
     
@@ -372,14 +369,15 @@ public class WindowMemberProductionController implements Initializable {
      * @throws BusinessConnectionException 
      */
     
-   // private ArrayList<ChapterBook> chaptersBook() throws BusinessConnectionException{
-     //   ChapterBookDAO chapterBookDAO = new ChapterBookDAO();
-       // String titleChapterBook = tfEvidenceName.getText();
-        //ArrayList<ChapterBook> chaptersBook = chapterBookDAO.
-         // if(!chaptersBook.isEmpty()){
-           //   fillChaptersBookTable(chaptersBook);
-          //}
-    //}
+    private ArrayList<ChapterBook> recoverChaptersBook() throws BusinessConnectionException{
+        ChapterBookDAO chapterBookDAO = new ChapterBookDAO();
+        String titleChapterBook = tfEvidenceName.getText();
+        ArrayList<ChapterBook> chaptersBook = chapterBookDAO.findChapterBookByCurpIntegrantInitialesOfTitle(titleChapterBook, integrant.getCurp());
+        if(!chaptersBook.isEmpty()){
+            fillChaptersBookTable(chaptersBook);
+        }
+        return chaptersBook;
+    }
     
     /**
      * Método que manda a abrir la ventana para registrar un nuevo artículo
@@ -433,10 +431,7 @@ public class WindowMemberProductionController implements Initializable {
     @FXML
     private void openChapterBookRegistration (ActionEvent event) throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddChapterBook.fxml"));
-        Parent root = fxmlLoader.load();
-        WindowAddChapterBookController windowAddChapterBookController = fxmlLoader.getController();
-        windowAddChapterBookController.setIntegrant(integrant);
-        Scene scene = new Scene(root);
+        Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load());
         } catch (IOException ex) {
@@ -444,6 +439,8 @@ public class WindowMemberProductionController implements Initializable {
         }
         Stage stage = new Stage();
         stage.setScene(scene);
+        WindowAddChapterBookController windowAddChapterBookController = (WindowAddChapterBookController) fxmlLoader.getController();
+        windowAddChapterBookController.setIntegrant(integrant);
         stage.showAndWait();
         closeMemberProduction(event);
     }
