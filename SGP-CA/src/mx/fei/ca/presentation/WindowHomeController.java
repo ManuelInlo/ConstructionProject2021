@@ -119,11 +119,11 @@ public class WindowHomeController implements Initializable {
         }
     }
     
-
     /**
      * Método que manda a abrir la ventana de integrantes que funciona para el responsable
      * @param event Define el evento generado
      */
+    
     @FXML
     private void clickIntegrants(MouseEvent event) {
         try {
