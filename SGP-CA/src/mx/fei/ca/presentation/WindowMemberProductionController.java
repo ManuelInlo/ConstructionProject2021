@@ -305,8 +305,7 @@ public class WindowMemberProductionController implements Initializable {
                 ArrayList<Article> articles = recoverArticles();
                 ArrayList<Book> books = recoverBooks();
                 ArrayList<ChapterBook> chaptersBook = recoverChaptersBook();
-                
-                if(receptionWorks.isEmpty() || articles.isEmpty() || books.isEmpty() || chaptersBook.isEmpty()){  
+                if(receptionWorks.isEmpty() && articles.isEmpty() && books.isEmpty() && chaptersBook.isEmpty()){  
                     showNoMatchAlert();
                 }
             } catch (BusinessConnectionException ex) {
@@ -432,10 +431,7 @@ public class WindowMemberProductionController implements Initializable {
     @FXML
     private void openChapterBookRegistration (ActionEvent event) throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddChapterBook.fxml"));
-        Parent root = fxmlLoader.load();
-        WindowAddChapterBookController windowAddChapterBookController = fxmlLoader.getController();
-        windowAddChapterBookController.setIntegrant(integrant);
-        Scene scene = new Scene(root);
+        Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load());
         } catch (IOException ex) {
@@ -443,6 +439,8 @@ public class WindowMemberProductionController implements Initializable {
         }
         Stage stage = new Stage();
         stage.setScene(scene);
+        WindowAddChapterBookController windowAddChapterBookController = (WindowAddChapterBookController) fxmlLoader.getController();
+        windowAddChapterBookController.setIntegrant(integrant);
         stage.showAndWait();
         closeMemberProduction(event);
     }
