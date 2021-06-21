@@ -27,6 +27,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.AgendaPointDAO;
+import mx.fei.ca.businesslogic.IntegrantDAO;
 import mx.fei.ca.businesslogic.MeetingAssistantDAO;
 import mx.fei.ca.businesslogic.MeetingDAO;
 import mx.fei.ca.businesslogic.PrerequisiteDAO;
@@ -80,10 +81,13 @@ public class WindowMeetingAgendaController implements Initializable {
     @FXML
     private Label lbState;
     @FXML
+    private Label lbResponsibleMeeting;
+    @FXML
     private Label lbUser;
     private Meeting meeting;
     private Integrant integrant;
-   
+    private String curpResponsible;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
@@ -124,6 +128,10 @@ public class WindowMeetingAgendaController implements Initializable {
             meeting.setAssistants(meetingAssistants);
             meeting.setPrerequisites(prerequisites);
             meeting.setAgendaPoints(agendaPoints);
+            MeetingDAO meetingDAO = new MeetingDAO();
+            this.curpResponsible = meetingDAO.getCurpOfResponsibleMeeting(meeting.getIdMeeting());
+            IntegrantDAO integrantDAO = new IntegrantDAO();
+            lbResponsibleMeeting.setText(integrantDAO.findIntegrantByCurp(curpResponsible).getNameIntegrant());
         } catch (BusinessConnectionException ex) {
             showLostConnectionAlert();
         }
@@ -200,8 +208,7 @@ public class WindowMeetingAgendaController implements Initializable {
 
     @FXML
     private void openModifyMeeting(ActionEvent event) throws BusinessConnectionException{
-        MeetingDAO meetingDAO = new MeetingDAO();
-        if(this.meeting.getState().equals("Pendiente") && meetingDAO.getCurpOfResponsibleMeeting(this.meeting.getIdMeeting()).equals(integrant.getCurp())){ 
+        if(this.meeting.getState().equals("Pendiente") && curpResponsible.equals(integrant.getCurp())){ 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowModifyAgenda.fxml"));
             Parent root = null;
             try {
@@ -275,8 +282,7 @@ public class WindowMeetingAgendaController implements Initializable {
     
     @FXML
     private void openStartMeeting(ActionEvent event) throws BusinessConnectionException{
-        MeetingDAO meetingDAO = new MeetingDAO();
-        if (this.meeting.getState().equals("Pendiente") && meetingDAO.getCurpOfResponsibleMeeting(this.meeting.getIdMeeting()).equals(integrant.getCurp())){ 
+        if (this.meeting.getState().equals("Pendiente") && curpResponsible.equals(integrant.getCurp())){ 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMeeting.fxml"));
             Parent root = null;
             try {

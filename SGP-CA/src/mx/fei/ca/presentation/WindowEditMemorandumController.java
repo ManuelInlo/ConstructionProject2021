@@ -351,7 +351,7 @@ public class WindowEditMemorandumController implements Initializable {
     
     private boolean existsMissingSelection(){
         boolean missingSelection = false;
-        if(cbMonth.getSelectionModel().getSelectedItem().equals("")|| cbIntegrants.getSelectionModel().getSelectedItem().equals("")){ //Cambiar acá debe ser a null porque selecciona integrantes
+        if(cbMonth.getSelectionModel().getSelectedIndex() < 0 || cbIntegrants.getSelectionModel().getSelectedItem() == null){
             missingSelection = true;
             TypeError typeError = TypeError.MISSINGSELECTION;
             showInvalidFieldAlert(typeError);

@@ -16,7 +16,7 @@
                <font>
                   <Font name="System Bold" size="17.0" />
                </font></Label>
-            <Label fx:id="lbUser" layoutX="714.0" layoutY="20.0" text="UserXXXX">
+            <Label fx:id="lbUser" layoutX="659.0" layoutY="20.0" text="UserXXXX">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font></Label>
@@ -67,7 +67,7 @@
                      </font></Label>
                   <TableView fx:id="tbIntegrants" layoutX="60.0" layoutY="180.0" prefHeight="127.0" prefWidth="617.0">
                     <columns>
-                      <TableColumn fx:id="columnIntegrant" prefWidth="326.0" text="Integrante del CA" />
+                      <TableColumn fx:id="columnAssistant" prefWidth="326.0" text="Integrante del CA" />
                       <TableColumn fx:id="columnRole" prefWidth="290.0" text="Rol" />
                     </columns>
                   </TableView>
@@ -97,7 +97,7 @@
                         <TableColumn fx:id="columnLeaderDiscussion" prefWidth="259.0" text="Líder de discusión" />
                     </columns>
                   </TableView>
-                  <Label fx:id="lbNameProject" layoutX="148.0" layoutY="45.0" />
+                  <Label fx:id="lbNameProject" layoutX="155.0" layoutY="45.0" />
                   <Label fx:id="lbMeetingPlace" layoutX="148.0" layoutY="75.0" />
                   <Label fx:id="lbAffair" layoutX="71.0" layoutY="102.0" />
                   <Label fx:id="lbMeetingDate" layoutX="470.0" layoutY="45.0" />
@@ -154,6 +154,12 @@
                         <Button layoutX="91.0" layoutY="92.0" mnemonicParsing="false" onAction="#closeMemorandum" prefHeight="25.0" prefWidth="94.0" text="Salir" />
                      </children>
                   </Pane>
+                  <Label layoutX="562.0" layoutY="103.0" text="Responsable:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbResponsibleMeeting" layoutX="649.0" layoutY="104.0" />
                </children>
             </AnchorPane>
         </content>

@@ -242,4 +242,12 @@ public class Meeting {
         this.assistants = assistants;
     }
     
+    /**
+     * Método que finaliza una reunión cambiando su estado
+     */
+    
+    public void endMeeting(){
+        this.state = "Finalizada";
+    }
+    
 }

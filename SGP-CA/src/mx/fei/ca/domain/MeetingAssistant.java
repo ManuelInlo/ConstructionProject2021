@@ -80,7 +80,7 @@ public class MeetingAssistant {
      */
 
     public String getNameAssistant() {
-        return nameAssistant;
+        return this.getIntegrant().getNameIntegrant();
     }
     
     /**

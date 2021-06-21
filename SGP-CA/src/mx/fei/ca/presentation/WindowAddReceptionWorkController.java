@@ -20,6 +20,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mx.fei.ca.businesslogic.ArticleDAO;
+import mx.fei.ca.businesslogic.BookDAO;
+import mx.fei.ca.businesslogic.ChapterBookDAO;
 import mx.fei.ca.businesslogic.CollaboratorDAO;
 import mx.fei.ca.businesslogic.InvestigationProjectDAO;
 import mx.fei.ca.businesslogic.ReceptionWorkDAO;
@@ -190,16 +192,14 @@ public class WindowAddReceptionWorkController implements Initializable {
                 ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
                 boolean saveResult = receptionWorkDAO.savedReceptionWork(receptionWork);
                 if(saveResult){
-                    showConfirmationAlert();
-                    closeReceptionWorkRegistration(event);
+                    showConfirmationAlert(); 
                 }else{
                    showLostConnectionAlert(); 
-                   closeReceptionWorkRegistration(event);
                 }
             }else{
                 showLostConnectionAlert();
-                closeReceptionWorkRegistration(event);
             }
+            closeReceptionWorkRegistration(event);
         }
     }
     
@@ -423,20 +423,22 @@ public class WindowAddReceptionWorkController implements Initializable {
     private boolean existsDuplicateValues() throws BusinessConnectionException{
         ReceptionWorkDAO receptionWorkDAO = new ReceptionWorkDAO();
         ArticleDAO articleDAO = new ArticleDAO();
+        BookDAO bookDAO = new BookDAO();
+        ChapterBookDAO chapterBookDAO = new ChapterBookDAO();
         CollaboratorDAO collaboratorDAO = new CollaboratorDAO();
         boolean duplicateValues = false;
         boolean receptionWorkTitleDuplicate = false;
         boolean fileRouteDuplicate = false;
         boolean collaboratorNameDuplicate = false;
         if(receptionWorkDAO.existsReceptionWorkTitle(tfTitleReceptionWork.getText()) ||
-           articleDAO.existsArticleTitle(tfTitleReceptionWork.getText())){  //DEBE HACER LO MISMO CON LAS OTRAS EVIDENCIAS
+           articleDAO.existsArticleTitle(tfTitleReceptionWork.getText()) || bookDAO.existsBookTitle(tfTitleReceptionWork.getText())){ //FALTA EL DE CHAPTER  
             receptionWorkTitleDuplicate = true;
             TypeError typeError = TypeError.TITLEDUPLICATE;
             showInvalidFieldAlert(typeError);
         }
            
         if(receptionWorkDAO.existsReceptionWorkFileRoute(tfFileRoute.getText()) ||
-           articleDAO.existsArticleFileRoute(tfFileRoute.getText())){
+           articleDAO.existsArticleFileRoute(tfFileRoute.getText()) || bookDAO.existsBookFileRoute(tfFileRoute.getText())){
             fileRouteDuplicate = true;
             TypeError typeError = TypeError.FILEROUTEDUPLICATE;
             showInvalidFieldAlert(typeError);
@@ -493,7 +495,7 @@ public class WindowAddReceptionWorkController implements Initializable {
         }
         
         if(typeError == TypeError.FILEROUTEDUPLICATE){
-            alert.setContentText("La ruta de archivo del trabajo recepcional ya se encuentra registrado en otro trabajo recepcional");
+            alert.setContentText("La ruta de archivo del trabajo recepcional ya se encuentra registrado en otra evidencia");
         }
 
         if(typeError == TypeError.COLLABORATORDUPLICATE){

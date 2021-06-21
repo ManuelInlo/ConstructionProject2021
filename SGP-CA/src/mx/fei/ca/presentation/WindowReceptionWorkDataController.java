@@ -127,7 +127,7 @@ public class WindowReceptionWorkDataController implements Initializable {
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setScene(scene);
-        stage.showAndWait();
+        stage.show();
         closeReceptionWorkData(event);
     }
     
