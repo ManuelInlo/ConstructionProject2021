@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -51,16 +56,6 @@
                   <Font name="System Bold" size="17.0" />
                </font>
             </Label>
-            <Label layoutX="34.0" layoutY="28.0" text="Fecha de consulta:">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Button layoutX="667.0" layoutY="25.0" mnemonicParsing="false" onAction="#searchProductionCA" prefHeight="25.0" prefWidth="99.0" text="Buscar">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Button>
             <Button layoutX="674.0" layoutY="477.0" minHeight="-Infinity" mnemonicParsing="false" onAction="#closeProductionCA" prefHeight="25.0" prefWidth="89.0" text="Salir">
                <font>
                   <Font name="System Bold" size="12.0" />
@@ -68,10 +63,8 @@
             </Button>
             <TableView fx:id="tbReceptionWorks" layoutX="34.0" layoutY="76.0" prefHeight="85.0" prefWidth="731.0" style="-fx-background-color: #A8CCE6;">
                <columns>
-                  <TableColumn fx:id="columnTitleReceptionWork" prefWidth="225.0" text="Título" />
-                  <TableColumn fx:id="columnActualStateReceptionWork" maxWidth="252.0" minWidth="-Infinity" prefWidth="209.0" text="Estado actual" />
-                  <TableColumn fx:id="columnAuthorReceptionWork" minWidth="0.0" prefWidth="165.0" text="Autor" />
-                  <TableColumn fx:id="columnStartDate" prefWidth="131.0" text="Fecha inicio" />
+                  <TableColumn fx:id="columnTitleReceptionWork" prefWidth="354.0" text="Título" />
+                  <TableColumn fx:id="columnActualStateReceptionWork" maxWidth="505.0" minWidth="-Infinity" prefWidth="376.0" text="Estado actual" />
                </columns>
             </TableView>
             <Label layoutX="34.0" layoutY="59.0" text="Trabajos recepcionales">
@@ -98,26 +91,22 @@
                <columns>
                   <TableColumn fx:id="columnTitleArticle" prefWidth="224.0" text="Título" />
                   <TableColumn fx:id="columnActualStateArticle" prefWidth="209.0" text="Estado actual" />
-                  <TableColumn fx:id="columnArticle" prefWidth="166.0" text="Autor" />
-                  <TableColumn fx:id="columnIssn" prefWidth="131.0" text="ISSN" />
+                  <TableColumn fx:id="columnaAuthorArticle" prefWidth="297.0" text="Autor" />
                </columns>
             </TableView>
             <TableView fx:id="tbBooks" layoutX="34.0" layoutY="287.0" prefHeight="80.0" prefWidth="731.0" style="-fx-background-color: #A8CCE6;">
                <columns>
                   <TableColumn fx:id="columnTitleBook" prefWidth="226.0" text="Título" />
                   <TableColumn fx:id="columnActualStateBook" prefWidth="208.0" text="Estado actual" />
-                  <TableColumn fx:id="columnAuthorBook" prefWidth="168.0" text="Autor" />
-                  <TableColumn fx:id="columnIsbn" prefWidth="128.0" text="ISBN" />
+                  <TableColumn fx:id="columnAuthorBook" prefWidth="296.0" text="Autor" />
                </columns>
             </TableView>
             <TableView fx:id="tbChapterBooks" layoutX="34.0" layoutY="392.0" prefHeight="80.0" prefWidth="731.0" style="-fx-background-color: #A8CCE6;">
                <columns>
-                  <TableColumn fx:id="columnTitleChapterBook" prefWidth="220.0" text="Título" />
-                  <TableColumn fx:id="columnNumberChapterBook" prefWidth="314.0" text="Número de capítulo" />
-                  <TableColumn fx:id="columnTitleBookOfChapterBook" prefWidth="196.0" text="Libro" />
+                  <TableColumn fx:id="columnTitleChapterBook" prefWidth="402.0" text="Título" />
+                  <TableColumn fx:id="columnNumberChapterBook" prefWidth="328.0" text="Número de capítulo" />
                </columns>
             </TableView>
-            <DatePicker fx:id="dpDate" layoutX="170.0" layoutY="26.0" prefHeight="25.0" prefWidth="486.0" />
          </children>
       </Pane>
    </children>

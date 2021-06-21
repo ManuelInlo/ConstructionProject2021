@@ -104,7 +104,19 @@ public class WindowHomeController implements Initializable {
      */
 
     @FXML
-    private void clickProductionCA(MouseEvent event) {
+    private void clickProductionCA(MouseEvent event){
+         try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowProductionCA.fxml"));
+            Parent root = fxmlLoader.load();
+            WindowProductionCAController windowProductionCAController = fxmlLoader.getController();
+            windowProductionCAController.setIntegrant(integrant);
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(WindowHomeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 
