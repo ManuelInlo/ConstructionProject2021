@@ -104,14 +104,26 @@ public class WindowHomeController implements Initializable {
      */
 
     @FXML
-    private void clickProductionCA(MouseEvent event) {
+    private void clickProductionCA(MouseEvent event){
+         try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowProductionCA.fxml"));
+            Parent root = fxmlLoader.load();
+            WindowProductionCAController windowProductionCAController = fxmlLoader.getController();
+            windowProductionCAController.setIntegrant(integrant);
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(WindowHomeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
-
     /**
      * Método que manda a abrir la ventana de integrantes que funciona para el responsable
      * @param event Define el evento generado
      */
+    
     @FXML
     private void clickIntegrants(MouseEvent event) {
         try {
