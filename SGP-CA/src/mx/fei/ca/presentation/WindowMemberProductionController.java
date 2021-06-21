@@ -432,19 +432,16 @@ public class WindowMemberProductionController implements Initializable {
     @FXML
     private void openChapterBookRegistration(ActionEvent event){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowAddChapterBook.fxml"));
-<<<<<<< HEAD
         Parent root = fxmlLoader.load();
         WindowAddChapterBookController windowAddChapterBookController = fxmlLoader.getController();
         windowAddChapterBookController.setIntegrant(integrant);
         Scene scene = new Scene(root);
-=======
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load());
         } catch (IOException ex) {
             Logger.getLogger(WindowMemberProductionController.class.getName()).log(Level.SEVERE, null, ex);
         }
->>>>>>> be2ada7d63e4bd2ee94133cd149bac7bf336acf0
         Stage stage = new Stage();
         stage.setScene(scene);
         WindowAddChapterBookController windowAddChapterBookController = (WindowAddChapterBookController) fxmlLoader.getController();
